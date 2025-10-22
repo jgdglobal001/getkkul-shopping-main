@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { adminDb } from "@/lib/firebase/admin";
+import { prisma } from "@/lib/prisma";
 
 // This is a development utility endpoint to set admin role
 // In production, this should be secured or done through Firebase Admin Console
@@ -17,9 +17,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Update user role to admin
-    await adminDb.collection("users").doc(email).update({
-      role: "admin",
-      updatedAt: new Date().toISOString(),
+    await prisma.user.update({
+      where: { email },
+      data: {
+        role: "admin",
+        updatedAt: new Date(),
+      }
     });
 
     return NextResponse.json({

@@ -25,14 +25,16 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Get user role
-    const userDoc = await getDoc(doc(db, "users", session.user.email));
-    if (!userDoc.exists()) {
+    // Get user role from Prisma
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email }
+    });
+
+    if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const userData = userDoc.data();
-    const userRole = userData.role || "user";
+    const userRole = user.role || "user";
 
     // Check if user has permission to view orders
     if (!hasPermission(userRole, "orders", "read")) {
@@ -48,36 +50,53 @@ export async function GET(request: NextRequest) {
     }
 
     // Build query based on role
-    let ordersQuery;
+    let orders;
 
     if (userRole === "admin" || userRole === "account") {
       // Admin and accountant can see all orders
-      ordersQuery = query(
-        collection(db, "orders"),
-        orderBy("createdAt", "desc")
-      );
+      orders = await prisma.order.findMany({
+        orderBy: { createdAt: "desc" },
+        include: {
+          user: {
+            select: { name: true, email: true }
+          },
+          orderItems: {
+            include: {
+              product: true
+            }
+          }
+        }
+      });
     } else {
       // Role-based filtering
-      ordersQuery = query(
-        collection(db, "orders"),
-        where("status", "in", visibleStatuses),
-        orderBy("createdAt", "desc")
-      );
+      orders = await prisma.order.findMany({
+        where: {
+          status: { in: visibleStatuses }
+        },
+        orderBy: { createdAt: "desc" },
+        include: {
+          user: {
+            select: { name: true, email: true }
+          },
+          orderItems: {
+            include: {
+              product: true
+            }
+          }
+        }
+      });
     }
 
-    const ordersSnapshot = await getDocs(ordersQuery);
-    const orders = ordersSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-      createdAt:
-        doc.data().createdAt?.toDate?.()?.toISOString() ||
-        new Date().toISOString(),
-      updatedAt:
-        doc.data().updatedAt?.toDate?.()?.toISOString() ||
-        new Date().toISOString(),
+    const transformedOrders = orders.map((order) => ({
+      id: order.id,
+      ...order,
+      createdAt: order.createdAt.toISOString(),
+      updatedAt: order.updatedAt.toISOString(),
+      customerName: order.user?.name || "Unknown User",
+      customerEmail: order.user?.email || "",
     }));
 
-    return NextResponse.json({ orders });
+    return NextResponse.json({ orders: transformedOrders });
   } catch (error) {
     console.error("Error fetching orders:", error);
     return NextResponse.json(

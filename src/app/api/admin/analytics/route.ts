@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "../../../../../auth";
-import { adminDb } from "@/lib/firebase/admin";
+import { prisma } from "@/lib/prisma";
 
 export async function GET(request: NextRequest) {
   try {
@@ -11,16 +11,15 @@ export async function GET(request: NextRequest) {
     }
 
     // Check if user is admin
-    const usersRef = adminDb.collection("users");
-    const userQuery = usersRef.where("email", "==", session.user.email);
-    const userSnapshot = await userQuery.get();
+    const user = await prisma.user.findUnique({
+      where: { email: session.user.email }
+    });
 
-    if (userSnapshot.empty) {
+    if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const userData = userSnapshot.docs[0].data();
-    if (userData.role !== "admin") {
+    if (user.role !== "admin") {
       return NextResponse.json(
         { error: "Forbidden - Admin access required" },
         { status: 403 }
@@ -28,17 +27,14 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch recent orders for analytics
-    const ordersRef = adminDb.collection("orders");
-    const ordersQuery = ordersRef.orderBy("createdAt", "desc").limit(100);
-    const ordersSnapshot = await ordersQuery.get();
-
-    const orders = ordersSnapshot.docs.map((doc) => {
-      const data = doc.data();
-      return {
-        id: doc.id,
-        ...data,
-        createdAt: data.createdAt?.toDate() || new Date(),
-      };
+    const orders = await prisma.order.findMany({
+      orderBy: { createdAt: "desc" },
+      take: 100,
+      include: {
+        user: {
+          select: { name: true, email: true }
+        }
+      }
     });
 
     // Calculate analytics data

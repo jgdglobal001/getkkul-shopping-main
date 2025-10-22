@@ -1,17 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { db } from "@/lib/firebase/config";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  updateDoc,
-  doc,
-  arrayUnion,
-} from "firebase/firestore";
+import { prisma } from "@/lib/prisma";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "sk_test_dummy");
 
 export async function POST(request: NextRequest) {
   try {
@@ -37,37 +28,39 @@ export async function POST(request: NextRequest) {
     }
 
     // Find user in Firestore first
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, where("email", "==", email));
-    const querySnapshot = await getDocs(q);
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: {
+        orders: true
+      }
+    });
 
-    if (querySnapshot.empty) {
+    if (!user) {
       return NextResponse.json(
         { success: false, error: "User not found" },
         { status: 404 }
       );
     }
 
-    const userDoc = querySnapshot.docs[0];
-    const userData = userDoc.data();
-
     // Check if order already exists to prevent duplicates
-    if (userData.orders && Array.isArray(userData.orders)) {
-      const existingOrder = userData.orders.find(
-        (order: any) => order.id === sessionId
-      );
-      if (existingOrder) {
-        return NextResponse.json({
-          success: true,
-          message: "Order already processed",
-          order: {
-            id: existingOrder.orderId,
-            amount: existingOrder.amount,
-            status: existingOrder.status,
-            items: existingOrder.items?.length || 0,
-          },
-        });
+    const existingOrder = await prisma.order.findFirst({
+      where: {
+        userId: user.id,
+        orderId: sessionId
       }
+    });
+
+    if (existingOrder) {
+      return NextResponse.json({
+        success: true,
+        message: "Order already processed",
+        order: {
+          id: existingOrder.orderId,
+          amount: existingOrder.totalAmount,
+          status: existingOrder.status,
+          items: 0, // Will be updated with actual count if needed
+        },
+      });
     }
 
     // Extract order information with enhanced details
@@ -117,21 +110,40 @@ export async function POST(request: NextRequest) {
       updatedAt: new Date().toISOString(),
     };
 
-    // Add order to user's orders array
-    const userDocRef = doc(db, "users", userDoc.id);
-    await updateDoc(userDocRef, {
-      orders: arrayUnion(orderData),
-      updatedAt: new Date().toISOString(),
+    // Create order in Prisma
+    const order = await prisma.order.create({
+      data: {
+        orderId: orderData.orderId,
+        userId: user.id,
+        userEmail: email,
+        status: orderData.status,
+        paymentStatus: orderData.paymentStatus,
+        paymentMethod: orderData.paymentMethod,
+        totalAmount: parseFloat(orderData.amount),
+        shippingAddress: orderData.shippingAddress ? JSON.stringify(orderData.shippingAddress) : null,
+        orderItems: {
+          create: orderData.items.map((item: any) => ({
+            productId: item.id || "",
+            title: item.name || "",
+            quantity: item.quantity || 1,
+            price: item.price || 0,
+            image: item.images?.[0] || "",
+          }))
+        }
+      },
+      include: {
+        orderItems: true
+      }
     });
 
     return NextResponse.json({
       success: true,
       message: "Order processed successfully",
       order: {
-        id: orderData.orderId,
-        amount: orderData.amount,
-        status: orderData.status,
-        items: orderData.items.length,
+        id: order.orderId,
+        amount: order.totalAmount,
+        status: order.status,
+        items: order.orderItems.length,
       },
     });
   } catch (error) {

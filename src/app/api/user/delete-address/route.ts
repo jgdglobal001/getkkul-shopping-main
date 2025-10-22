@@ -1,13 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/firebase/config";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  updateDoc,
-  doc,
-} from "firebase/firestore";
+import { prisma } from "@/lib/prisma";
 
 export async function DELETE(request: NextRequest) {
   try {
@@ -20,17 +12,23 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, where("email", "==", email));
-    const snapshot = await getDocs(q);
+    const user = await prisma.user.findUnique({
+      where: { email }
+    });
 
-    if (snapshot.empty) {
+    if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const userDoc = snapshot.docs[0];
-    const userData = userDoc.data();
-    let addresses = userData.profile?.addresses || [];
+    // Parse addresses from JSON string if it exists
+    let addresses = [];
+    if (user.addresses) {
+      try {
+        addresses = JSON.parse(user.addresses);
+      } catch (e) {
+        addresses = [];
+      }
+    }
 
     // Remove address at specified index
     if (addressIndex >= 0 && addressIndex < addresses.length) {
@@ -42,9 +40,13 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    await updateDoc(doc(db, "users", userDoc.id), {
-      "profile.addresses": addresses,
-      updatedAt: new Date().toISOString(),
+    // Update user with new addresses
+    await prisma.user.update({
+      where: { email },
+      data: {
+        addresses: JSON.stringify(addresses),
+        updatedAt: new Date(),
+      }
     });
 
     return NextResponse.json({ success: true, addresses });

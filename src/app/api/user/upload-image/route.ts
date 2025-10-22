@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { storage } from "@/lib/firebase/config";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+// Firebase storage removed - using local file storage or cloud storage alternative
 
 export async function POST(request: NextRequest) {
   try {
@@ -31,28 +30,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create a unique filename
-    const timestamp = Date.now();
-    const fileName = `profile-images/${email}-${timestamp}`;
-
-    // Create storage reference
-    const storageRef = ref(storage, fileName);
-
-    // Convert file to buffer
-    const buffer = await file.arrayBuffer();
-
-    // Upload file
-    await uploadBytes(storageRef, buffer, {
-      contentType: file.type,
-    });
-
-    // Get download URL
-    const downloadURL = await getDownloadURL(storageRef);
+    // Firebase storage removed - return placeholder for now
+    // In production, implement cloud storage (AWS S3, Cloudinary, etc.)
 
     return NextResponse.json({
-      success: true,
-      imageUrl: downloadURL,
-    });
+      success: false,
+      error: "Image upload service temporarily unavailable. Firebase storage has been removed.",
+      message: "Please implement alternative cloud storage solution",
+    }, { status: 501 });
   } catch (error) {
     console.error("Image upload error:", error);
     return NextResponse.json(

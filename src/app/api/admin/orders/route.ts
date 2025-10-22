@@ -1,16 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hasPermission } from "@/lib/rbac/roles";
-import { db } from "@/lib/firebase/config";
-import {
-  collection,
-  getDocs,
-  doc,
-  updateDoc,
-  deleteDoc,
-  getDoc,
-  query,
-  orderBy,
-} from "firebase/firestore";
+import { prisma } from "@/lib/prisma";
 
 export async function GET(request: NextRequest) {
   try {
@@ -18,63 +8,52 @@ export async function GET(request: NextRequest) {
     // For now, assume admin access
 
     // Fetch all users with their orders
-    const usersRef = collection(db, "users");
-    const usersSnapshot = await getDocs(usersRef);
-
-    const users = usersSnapshot.docs.map((doc) => {
-      const userData = doc.data();
-      return {
-        id: doc.id,
-        name: userData.name || userData.displayName || "Unknown User",
-        email: userData.email || "",
-        role: userData.role || "user",
-        createdAt: userData.createdAt || new Date().toISOString(),
-        orders: userData.orders || [],
-      };
+    const users = await prisma.user.findMany({
+      include: {
+        orders: {
+          orderBy: { createdAt: "desc" }
+        }
+      },
+      orderBy: { createdAt: "desc" }
     });
 
-    // Sort users by creation date
-    users.sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    const transformedUsers = users.map((user) => ({
+      id: user.id,
+      name: user.name || "Unknown User",
+      email: user.email || "",
+      role: user.role || "user",
+      createdAt: user.createdAt.toISOString(),
+      orders: user.orders || [],
+    }));
+
+    // Also fetch standalone orders from the orders table
+    const standaloneOrders = await prisma.order.findMany({
+      include: {
+        user: {
+          select: { name: true, email: true }
+        }
+      },
+      orderBy: { createdAt: "desc" }
+    });
+
+    const transformedStandaloneOrders = standaloneOrders.map(order => ({
+      id: order.id,
+      ...order,
+      createdAt: order.createdAt.toISOString(),
+      updatedAt: order.updatedAt.toISOString(),
+      customerName: order.user?.name || "Unknown User",
+      customerEmail: order.user?.email || "",
+    }));
+
+    return NextResponse.json(
+      {
+        users: transformedUsers,
+        standaloneOrders: transformedStandaloneOrders,
+        totalUsers: transformedUsers.length,
+        totalOrders: transformedUsers.reduce((sum, user) => sum + (user.orders?.length || 0), 0) + standaloneOrders.length,
+      },
+      { status: 200 }
     );
-
-    // Also fetch orders from the orders collection if it exists
-    try {
-      const ordersRef = collection(db, "orders");
-      const ordersSnapshot = await getDocs(ordersRef);
-
-      const standaloneOrders = ordersSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-
-      return NextResponse.json(
-        {
-          users,
-          standaloneOrders,
-          totalUsers: users.length,
-          totalOrders:
-            users.reduce((sum, user) => sum + (user.orders?.length || 0), 0) +
-            standaloneOrders.length,
-        },
-        { status: 200 }
-      );
-    } catch (ordersError) {
-      // Orders collection might not exist yet, just return users
-      return NextResponse.json(
-        {
-          users,
-          standaloneOrders: [],
-          totalUsers: users.length,
-          totalOrders: users.reduce(
-            (sum, user) => sum + (user.orders?.length || 0),
-            0
-          ),
-        },
-        { status: 200 }
-      );
-    }
   } catch (error) {
     console.error("Error fetching orders:", error);
     return NextResponse.json(
@@ -100,69 +79,23 @@ export async function PUT(request: NextRequest) {
     if (status) updateFields.status = status;
     if (paymentStatus) updateFields.paymentStatus = paymentStatus;
 
-    // If orderId exists in orders collection, update it there
+    // Try to update order in Prisma orders table
     try {
-      const orderRef = doc(db, "orders", orderId);
-      const orderDoc = await getDoc(orderRef);
-
-      if (orderDoc.exists()) {
-        await updateDoc(orderRef, {
+      const updatedOrder = await prisma.order.update({
+        where: { id: orderId },
+        data: {
           ...updateFields,
-          updatedAt: new Date().toISOString(),
-        });
-        return NextResponse.json({
-          success: true,
-          updated: "orders_collection",
-        });
-      }
-    } catch (orderError) {
-      console.log("Order not found in orders collection, checking user orders");
-    }
-
-    // If userId provided, update the order in user's orders array
-    if (userId) {
-      const userRef = doc(db, "users", userId);
-      const userDoc = await getDoc(userRef);
-
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        const orders = userData.orders || [];
-
-        const orderIndex = orders.findIndex(
-          (order: any) => order.id === orderId
-        );
-        if (orderIndex !== -1) {
-          orders[orderIndex] = {
-            ...orders[orderIndex],
-            ...updateFields,
-            updatedAt: new Date().toISOString(),
-          };
-
-          await updateDoc(userRef, { orders });
-          return NextResponse.json({ success: true, updated: "user_orders" });
+          updatedAt: new Date(),
         }
-      }
-    }
+      });
 
-    // If no userId provided, search all users for the order
-    const usersRef = collection(db, "users");
-    const usersSnapshot = await getDocs(usersRef);
-
-    for (const userDoc of usersSnapshot.docs) {
-      const userData = userDoc.data();
-      const orders = userData.orders || [];
-
-      const orderIndex = orders.findIndex((order: any) => order.id === orderId);
-      if (orderIndex !== -1) {
-        orders[orderIndex] = {
-          ...orders[orderIndex],
-          ...updateFields,
-          updatedAt: new Date().toISOString(),
-        };
-
-        await updateDoc(userDoc.ref, { orders });
-        return NextResponse.json({ success: true, updated: "user_orders" });
-      }
+      return NextResponse.json({
+        success: true,
+        updated: "orders_table",
+        order: updatedOrder
+      });
+    } catch (orderError) {
+      console.log("Order not found in orders table:", orderError);
     }
 
     return NextResponse.json({ error: "Order not found" }, { status: 404 });
@@ -179,49 +112,26 @@ export async function DELETE(request: NextRequest) {
   try {
     // TODO: Add proper authentication and permission checks
 
-    const { orderId, userId } = await request.json();
+    const { orderId } = await request.json();
 
     if (!orderId) {
       return NextResponse.json({ error: "Order ID required" }, { status: 400 });
     }
 
-    // Try to delete from orders collection first
+    // Try to delete from Prisma orders table
     try {
-      const orderRef = doc(db, "orders", orderId);
-      const orderDoc = await getDoc(orderRef);
+      await prisma.order.delete({
+        where: { id: orderId }
+      });
 
-      if (orderDoc.exists()) {
-        await deleteDoc(orderRef);
-        return NextResponse.json({
-          success: true,
-          deleted: "orders_collection",
-        });
-      }
+      return NextResponse.json({
+        success: true,
+        deleted: "orders_table",
+      });
     } catch (orderError) {
-      console.log("Order not found in orders collection, checking user orders");
+      console.log("Order not found in orders table:", orderError);
+      return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
-
-    // If userId provided, remove the order from user's orders array
-    if (userId) {
-      const userRef = doc(db, "users", userId);
-      const userDoc = await getDoc(userRef);
-
-      if (userDoc.exists()) {
-        const userData = userDoc.data();
-        const orders = userData.orders || [];
-
-        const filteredOrders = orders.filter(
-          (order: any) => order.id !== orderId
-        );
-
-        if (filteredOrders.length !== orders.length) {
-          await updateDoc(userRef, { orders: filteredOrders });
-          return NextResponse.json({ success: true, deleted: "user_orders" });
-        }
-      }
-    }
-
-    return NextResponse.json({ error: "Order not found" }, { status: 404 });
   } catch (error) {
     console.error("Error deleting order:", error);
     return NextResponse.json(

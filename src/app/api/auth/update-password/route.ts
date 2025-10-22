@@ -1,14 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hash, compare } from "bcryptjs";
-import { db } from "@/lib/firebase/config";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  updateDoc,
-  doc,
-} from "firebase/firestore";
+import { prisma } from "@/lib/prisma";
 
 export async function PUT(request: NextRequest) {
   try {
@@ -31,20 +23,17 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    // Find user in Firestore
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, where("email", "==", email));
-    const querySnapshot = await getDocs(q);
+    // Find user in Prisma
+    const user = await prisma.user.findUnique({
+      where: { email }
+    });
 
-    if (querySnapshot.empty) {
+    if (!user) {
       return NextResponse.json(
         { success: false, error: "User not found" },
         { status: 404 }
       );
     }
-
-    const userDoc = querySnapshot.docs[0];
-    const user = userDoc.data();
 
     // Check if user has existing password (for OAuth users setting first password)
     if (user.password && currentPassword) {
@@ -67,11 +56,13 @@ export async function PUT(request: NextRequest) {
     // Hash new password
     const hashedPassword = await hash(newPassword, 12);
 
-    // Update password in Firestore
-    const userDocRef = doc(db, "users", userDoc.id);
-    await updateDoc(userDocRef, {
-      password: hashedPassword,
-      updatedAt: new Date().toISOString(),
+    // Update password in Prisma
+    await prisma.user.update({
+      where: { email },
+      data: {
+        password: hashedPassword,
+        updatedAt: new Date(),
+      }
     });
 
     return NextResponse.json({

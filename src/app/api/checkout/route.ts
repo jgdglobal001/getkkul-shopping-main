@@ -5,11 +5,10 @@ import {
   PAYMENT_STATUSES,
   PAYMENT_METHODS,
 } from "@/lib/orderStatus";
-import { db } from "@/lib/firebase/config";
-import { collection, doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { prisma } from "@/lib/prisma";
 
 export const POST = async (request: NextRequest) => {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "sk_test_dummy");
   try {
     const reqBody = await request.json();
     const { items, email, shippingAddress, orderId, orderAmount } = reqBody;
@@ -109,53 +108,35 @@ export const POST = async (request: NextRequest) => {
       customer_email: email,
     });
 
-    // Create or update the order in the database
-    const orderRef = doc(collection(db, "orders"));
-    await setDoc(orderRef, {
-      email,
-      items: extractingItems.map((item: any) => ({
-        productId: item.price_data.product_data.metadata.productId,
-        title: item.price_data.product_data.name,
-        quantity: item.quantity,
-        price: item.price_data.unit_amount / 100, // Convert back to original price
-        image: item.price_data.product_data.images?.[0] || "",
-      })),
-      total:
-        orderAmount ||
-        Math.round(
-          extractingItems.reduce(
-            (sum: number, item: any) =>
-              sum + (item.price_data.unit_amount || 0) * (item.quantity || 1),
-            0
-          ) / 100
-        ),
-      shippingAddress,
-      orderId: orderId || orderRef.id, // Use provided orderId or generated id
-      status: ORDER_STATUSES.PENDING,
-      paymentStatus: PAYMENT_STATUSES.PENDING,
-      paymentMethod: PAYMENT_METHODS.ONLINE,
-      userEmail: email,
-      createdAt: serverTimestamp(),
-      updatedAt: serverTimestamp(),
-      statusHistory: [
-        {
-          status: ORDER_STATUSES.PENDING,
-          timestamp: new Date().toISOString(),
-          updatedBy: email,
-          userRole: "user",
-          notes: "Order placed via online payment",
-        },
-      ],
-      paymentHistory: [
-        {
-          status: PAYMENT_STATUSES.PENDING,
-          timestamp: new Date().toISOString(),
-          updatedBy: email,
-          userRole: "user",
-          method: PAYMENT_METHODS.ONLINE,
-          notes: "Stripe checkout session created",
-        },
-      ],
+    // Create order in Prisma database
+    const totalAmount = orderAmount ||
+      Math.round(
+        extractingItems.reduce(
+          (sum: number, item: any) =>
+            sum + (item.price_data.unit_amount || 0) * (item.quantity || 1),
+          0
+        ) / 100
+      );
+
+    const order = await prisma.order.create({
+      data: {
+        orderId: orderId || `ORD-${Date.now()}`,
+        status: ORDER_STATUSES.PENDING,
+        paymentStatus: PAYMENT_STATUSES.PENDING,
+        paymentMethod: PAYMENT_METHODS.ONLINE,
+        totalAmount: totalAmount,
+        shippingAddress: shippingAddress ? JSON.stringify(shippingAddress) : null,
+        userEmail: email,
+        orderItems: {
+          create: extractingItems.map((item: any) => ({
+            productId: item.price_data.product_data.metadata.productId || "",
+            title: item.price_data.product_data.name || "",
+            quantity: item.quantity || 1,
+            price: (item.price_data.unit_amount || 0) / 100,
+            image: item.price_data.product_data.images?.[0] || "",
+          }))
+        }
+      }
     });
 
     return NextResponse.json({

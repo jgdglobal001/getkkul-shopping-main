@@ -1,19 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/firebase/config";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  updateDoc,
-  doc,
-  arrayUnion,
-} from "firebase/firestore";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(request: NextRequest) {
   try {
     const orderData = await request.json();
-    const { customerEmail } = orderData;
+    const { customerEmail, items, totalAmount, shippingAddress, status = "pending" } = orderData;
 
     if (!customerEmail) {
       return NextResponse.json(
@@ -23,15 +14,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Find the user by email
-    const usersRef = collection(db, "users");
-    const q = query(usersRef, where("email", "==", customerEmail));
-    const snapshot = await getDocs(q);
+    const user = await prisma.user.findUnique({
+      where: { email: customerEmail }
+    });
 
-    if (snapshot.empty) {
+    if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
-
-    const userDoc = snapshot.docs[0];
 
     // Generate a unique order ID
     const orderId = `ORD-${Date.now()}-${Math.random()
@@ -39,17 +28,30 @@ export async function POST(request: NextRequest) {
       .substr(2, 9)
       .toUpperCase()}`;
 
-    // Create the order object
-    const order = {
-      id: orderId,
-      orderId: orderId,
-      ...orderData,
-      createdAt: new Date().toISOString(),
-    };
-
-    // Add the order to the user's orders array
-    await updateDoc(doc(db, "users", userDoc.id), {
-      orders: arrayUnion(order),
+    // Create the order in Prisma
+    const order = await prisma.order.create({
+      data: {
+        orderId: orderId,
+        userId: user.id,
+        userEmail: customerEmail,
+        status: status,
+        paymentStatus: "pending",
+        paymentMethod: "online",
+        totalAmount: totalAmount || 0,
+        shippingAddress: shippingAddress ? JSON.stringify(shippingAddress) : null,
+        orderItems: {
+          create: items?.map((item: any) => ({
+            productId: item.productId || item.id || "",
+            title: item.title || item.name || "",
+            quantity: item.quantity || 1,
+            price: item.price || 0,
+            image: item.image || "",
+          })) || []
+        }
+      },
+      include: {
+        orderItems: true
+      }
     });
 
     return NextResponse.json({

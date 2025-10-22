@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "../../../../../auth";
-import { db } from "@/lib/firebase/config";
-import { collection, query, where, getDocs, orderBy } from "firebase/firestore";
+import { prisma } from "@/lib/prisma";
 
 export async function GET(request: NextRequest) {
   try {
@@ -14,21 +13,27 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Get user's orders from their subcollection
-    const userOrdersRef = collection(db, "users", session.user.id, "orders");
-    const ordersQuery = query(userOrdersRef, orderBy("createdAt", "desc"));
-    const ordersSnapshot = await getDocs(ordersQuery);
+    // Get user's orders from Prisma
+    const orders = await prisma.order.findMany({
+      where: { userId: session.user.id },
+      orderBy: { createdAt: "desc" },
+      include: {
+        orderItems: {
+          include: {
+            product: true
+          }
+        }
+      }
+    });
 
-    const orders = ordersSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-      createdAt:
-        doc.data().createdAt?.toDate?.()?.toISOString() || doc.data().createdAt,
-      updatedAt:
-        doc.data().updatedAt?.toDate?.()?.toISOString() || doc.data().updatedAt,
+    const transformedOrders = orders.map((order) => ({
+      id: order.id,
+      ...order,
+      createdAt: order.createdAt.toISOString(),
+      updatedAt: order.updatedAt.toISOString(),
     }));
 
-    return NextResponse.json(orders);
+    return NextResponse.json(transformedOrders);
   } catch (error) {
     console.error("Error fetching user orders:", error);
     return NextResponse.json(
