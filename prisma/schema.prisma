@@ -1,0 +1,193 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  name          String?
+  email         String         @unique
+  password      String?
+  image         String?
+  role          String         @default("user")
+  provider      String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  firstName     String?
+  lastName      String?
+  phone         String?
+  newsletter    Boolean        @default(false)
+  notifications Boolean        @default(true)
+  emailVerified DateTime?
+  accounts      Account[]
+  addresses     Address[]
+  cartItems     CartItem[]
+  orders        Order[]
+  sessions      Session[]
+  wishlist      WishlistItem[]
+
+  @@map("users")
+}
+
+model Address {
+  id        String  @id @default(cuid())
+  type      String
+  street    String
+  city      String
+  state     String
+  zipCode   String
+  country   String
+  isDefault Boolean @default(false)
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("addresses")
+}
+
+model CartItem {
+  id                 String  @id @default(cuid())
+  quantity           Int     @default(1)
+  productId          String
+  title              String
+  price              Float
+  image              String?
+  category           String?
+  brand              String?
+  discountPercentage Float?
+  userId             String
+  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product            Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@map("cart_items")
+}
+
+model WishlistItem {
+  id                 String  @id @default(cuid())
+  productId          String
+  title              String
+  price              Float
+  image              String?
+  category           String?
+  brand              String?
+  discountPercentage Float?
+  userId             String
+  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product            Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@map("wishlist_items")
+}
+
+model Product {
+  id                    String   @id @default(cuid())
+  title                 String
+  description           String   @db.Text
+  price                 Float
+  discountPercentage    Float    @default(0)
+  rating                Float    @default(0)
+  stock                 Int      @default(0)
+  brand                 String?
+  category              String
+  thumbnail             String
+  images                String[] // Array of image URLs
+  tags                  String[] // Array of tags
+  sku                   String   @unique
+  weight                Float?
+  dimensions            Json?    // {width, height, depth}
+  warrantyInformation   String?
+  shippingInformation   String?
+  returnPolicy          String?
+  minimumOrderQuantity  Int      @default(1)
+  availabilityStatus    String   @default("In Stock")
+  meta                  Json?    // {barcode, qrCode, createdAt, updatedAt}
+  isActive              Boolean  @default(true)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  // Relations
+  cartItems             CartItem[]
+  wishlistItems         WishlistItem[]
+  orderItems            OrderItem[]
+
+  @@map("products")
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  orderId         String      @unique
+  status          String      @default("pending")
+  paymentStatus   String      @default("pending")
+  paymentMethod   String      @default("online")
+  totalAmount     Float
+  currency        String      @default("KRW")
+  shippingAddress Json
+  billingAddress  Json?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  userId          String
+  orderItems      OrderItem[]
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id                 String  @id @default(cuid())
+  quantity           Int
+  productId          String
+  title              String
+  price              Float
+  total              Float
+  image              String?
+  category           String?
+  originalPrice      Float?
+  discountPercentage Float?
+  orderId            String
+  order              Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product            Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("order_items")
+}
