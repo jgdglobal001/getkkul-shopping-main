@@ -13,6 +13,7 @@ const Logo = () => {
         height={84}
         className="w-52 h-auto"
         style={{ width: 'auto', height: 'auto' }}
+        unoptimized
       />
     </Link>
   );

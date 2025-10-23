@@ -16,7 +16,7 @@ const Footer = () => {
       <Container className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         <div className="flex flex-col items-start gap-y-5">
           <Link href={"/"}>
-            <Image src={logo} alt="겟꿀쇼핑 로고" width={224} height={80} />
+            <Image src={logo} alt="겟꿀쇼핑 로고" width={224} height={80} unoptimized />
           </Link>
           <p>
             We are a team of designers and developers that create high quality
