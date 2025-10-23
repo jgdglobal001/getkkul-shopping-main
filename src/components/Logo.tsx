@@ -12,7 +12,6 @@ const Logo = () => {
         width={210}
         height={84}
         className="w-32 h-auto"
-        style={{ width: 'auto', height: 'auto' }}
         unoptimized
       />
     </Link>
