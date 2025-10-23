@@ -11,7 +11,7 @@ const Logo = () => {
         alt="겟꿀쇼핑 로고"
         width={210}
         height={84}
-        className="w-32 h-auto"
+        className="w-80 h-auto"
         unoptimized
       />
     </Link>
