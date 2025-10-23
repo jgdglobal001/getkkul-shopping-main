@@ -6,6 +6,7 @@ import { prisma } from "../prisma";
 import { findUserByEmail, createUser } from "../prisma/userService";
 
 export const authConfig: NextAuthConfig = {
+  trustHost: true,
   providers: [
     Google({
       clientId: process.env.GOOGLE_CLIENT_ID!,
