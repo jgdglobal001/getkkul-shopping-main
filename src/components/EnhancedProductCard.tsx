@@ -2,6 +2,7 @@ import React from "react";
 import { ProductType } from "../../type";
 import AddToCartButton from "./AddToCartButton";
 import Link from "next/link";
+import Image from "next/image";
 import ProductPrice from "./ProductPrice";
 import { FaStar, FaHeart, FaEye } from "react-icons/fa";
 
@@ -27,10 +28,12 @@ const EnhancedProductCard = ({ product, view = "grid" }: Props) => {
                 query: { id: product?.id },
               }}
             >
-              <img
+              <Image
                 src={product?.images[0]}
                 alt={product?.title}
-                className="w-full h-full object-cover group-hover/image:scale-105 transition-transform duration-300"
+                fill
+                className="object-cover group-hover/image:scale-105 transition-transform duration-300"
+                unoptimized
               />
             </Link>
 
@@ -169,10 +172,12 @@ const EnhancedProductCard = ({ product, view = "grid" }: Props) => {
             query: { id: product?.id },
           }}
         >
-          <img
+          <Image
             src={product?.images[0]}
             alt={product?.title}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            fill
+            className="object-cover group-hover:scale-110 transition-transform duration-500"
+            unoptimized
           />
         </Link>
 

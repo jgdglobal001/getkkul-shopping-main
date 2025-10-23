@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { ProductType, StateType } from "../../type";
 import AddToCartButton from "./AddToCartButton";
 import Link from "next/link";
+import Image from "next/image";
 import ProductPrice from "./ProductPrice";
 import { FaStar, FaEye } from "react-icons/fa";
 import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
@@ -56,10 +57,12 @@ const ProductCard = ({ product }: Props) => {
             query: { id: product?.id },
           }}
         >
-          <img
+          <Image
             src={product?.images[0]}
             alt={product?.title}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            fill
+            className="object-cover group-hover:scale-110 transition-transform duration-500"
+            unoptimized
           />
         </Link>
 

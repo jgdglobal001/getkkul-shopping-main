@@ -1,4 +1,5 @@
 import Container from "@/components/Container";
+import Image from "next/image";
 import { ProductType } from "../../../../../type";
 import AddToCartButton from "@/components/AddToCartButton";
 import { getData } from "@/app/(user)/helpers";
@@ -111,10 +112,11 @@ const SingleProductPage = async ({ params }: Props) => {
           />
 
           <div className="bg-[#f7f7f7] p-5 rounded-md flex flex-col items-center justify-center gap-2">
-            <img
-              src={paymentImage.src}
+            <Image
+              src={paymentImage}
               alt="payment"
               className="w-auto object-cover"
+              unoptimized
             />
             <p className="font-semibold">Guaranteed safe & secure checkout</p>
           </div>

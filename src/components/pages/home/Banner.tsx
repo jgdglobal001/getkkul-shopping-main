@@ -1,4 +1,5 @@
 import Container from "@/components/Container";
+import Image from "next/image";
 import Button from "@/components/ui/Button";
 import { banner } from "@/constants";
 import { GoArrowRight } from "react-icons/go";
@@ -22,8 +23,14 @@ const Banner = async () => {
             Shop Now <GoArrowRight className="text-lg" />
           </Button>
         </div>
-        <div>
-          <img src={banner?.image.src} alt="bannerImageOne" />
+        <div className="relative w-96 h-96">
+          <Image
+            src={banner?.image.src}
+            alt="bannerImageOne"
+            fill
+            className="object-contain"
+            unoptimized
+          />
         </div>
       </Container>
     </div>

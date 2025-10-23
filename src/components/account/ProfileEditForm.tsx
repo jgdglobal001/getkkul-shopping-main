@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef } from "react";
+import Image from "next/image";
 import { useSession } from "next-auth/react";
 
 interface ProfileEditFormProps {
@@ -141,10 +142,13 @@ export default function ProfileEditForm({
       <div className="text-center">
         <div className="relative inline-block">
           {formData.image ? (
-            <img
+            <Image
               src={formData.image}
               alt="Profile"
-              className="w-[120px] h-[120px] rounded-full object-cover border-4 border-gray-200"
+              width={120}
+              height={120}
+              className="rounded-full object-cover border-4 border-gray-200"
+              unoptimized
             />
           ) : (
             <div className="w-[120px] h-[120px] bg-gray-300 rounded-full flex items-center justify-center">

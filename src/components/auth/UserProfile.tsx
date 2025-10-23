@@ -2,6 +2,7 @@
 
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import {
   FaUser,
@@ -55,10 +56,13 @@ export default function UserProfile() {
         className="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 transition-colors"
       >
         {session?.user?.image ? (
-          <img
+          <Image
             src={session.user.image}
             alt={session.user.name || "User"}
-            className="w-8 h-8 rounded-full border-2 border-gray-200"
+            width={32}
+            height={32}
+            className="rounded-full border-2 border-gray-200"
+            unoptimized
           />
         ) : (
           <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">

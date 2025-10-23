@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   FiPlus,
   FiSearch,
@@ -304,10 +305,12 @@ const ProductGridCard = ({ product, onDelete }: { product: Product; onDelete: (i
     <div className="bg-white border border-gray-200 rounded-xl hover:shadow-lg transition-all duration-300 overflow-hidden">
       {/* 이미지 */}
       <div className="relative aspect-square overflow-hidden bg-gray-50">
-        <img
+        <Image
           src={product.thumbnail}
           alt={product.title}
-          className="w-full h-full object-cover"
+          fill
+          className="object-cover"
+          unoptimized
         />
         {product.discountPercentage > 0 && (
           <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
@@ -400,10 +403,13 @@ const ProductListCard = ({ product, onDelete }: { product: Product; onDelete: (i
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition-all duration-300">
       <div className="flex items-center gap-4">
-        <img
+        <Image
           src={product.thumbnail}
           alt={product.title}
-          className="w-16 h-16 object-cover rounded-lg"
+          width={64}
+          height={64}
+          className="object-cover rounded-lg"
+          unoptimized
         />
         <div className="flex-1">
           <h3 className="font-semibold text-gray-900">{product.title}</h3>

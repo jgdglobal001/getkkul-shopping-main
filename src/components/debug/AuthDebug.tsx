@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useSession } from "next-auth/react";
 
 const AuthDebug = () => {
@@ -35,10 +36,13 @@ const AuthDebug = () => {
         {session.user.image && (
           <div className="mt-2">
             <strong>Image Preview:</strong>
-            <img
+            <Image
               src={session.user.image}
               alt="Session user"
-              className="w-8 h-8 rounded-full mt-1"
+              width={32}
+              height={32}
+              className="rounded-full mt-1"
+              unoptimized
               onError={() => console.log("Session image failed to load")}
               onLoad={() => console.log("Session image loaded successfully")}
             />

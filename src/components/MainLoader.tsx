@@ -1,12 +1,16 @@
+import Image from "next/image";
+
 const MainLoader = () => {
   return (
     <div className="w-full min-h-screen absolute top-0 left-0 bg-white flex flex-col gap-2 items-center justify-center z-50">
       <div className="w-96 p-8 rounded-lg bg-amazonBlue flex items-center justify-center relative">
-        <img
+        <Image
           src={"/getkkul-logo-Up-down.png"}
           alt="겟꿀쇼핑 로고"
+          width={576}
+          height={576}
           className="object-contain"
-          style={{ width: '36rem', height: 'auto' }}
+          unoptimized
         />
       </div>
 

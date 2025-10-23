@@ -1,6 +1,7 @@
 import React from "react";
 import { ProductType } from "../../../type";
 import Link from "next/link";
+import Image from "next/image";
 import PriceFormat from "../PriceFormat";
 import AddToCartButton from "../AddToCartButton";
 import { IoClose } from "react-icons/io5";
@@ -22,12 +23,14 @@ const CartProduct = ({ product }: { product: ProductType }) => {
           pathname: `/products/${product?.id}`,
           query: { id: product?.id },
         }}
-        className="h-24 w-24 sm:h-48 sm:w-48 border border-sky-color/30 hover:border-sky-color overflow-hidden flex items-center justify-center rounded-md"
+        className="h-24 w-24 sm:h-48 sm:w-48 border border-sky-color/30 hover:border-sky-color overflow-hidden flex items-center justify-center rounded-md relative"
       >
-        <img
+        <Image
           src={product?.images[0]}
           alt="productImage"
-          className="h-full w-full p-2 rounded-md object-contain bg-[#f7f7f7] hover:scale-110 duration-200"
+          fill
+          className="p-2 rounded-md object-contain bg-[#f7f7f7] hover:scale-110 duration-200"
+          unoptimized
         />
       </Link>
       {/* Details */}

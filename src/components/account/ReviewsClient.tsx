@@ -1,6 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FiStar, FiEdit, FiTrash2, FiCalendar, FiPackage } from "react-icons/fi";
@@ -153,10 +154,13 @@ export default function ReviewsClient() {
               <div className="flex items-start space-x-4">
                 {/* Product Image */}
                 <div className="flex-shrink-0">
-                  <img
+                  <Image
                     src={review.productImage}
                     alt={review.productTitle}
-                    className="w-16 h-16 object-cover rounded-lg"
+                    width={64}
+                    height={64}
+                    className="object-cover rounded-lg"
+                    unoptimized
                   />
                 </div>
 

@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
@@ -135,10 +136,13 @@ const SettingsDropdown = () => {
           <div className="px-4 py-3 border-b border-gray-100">
             <div className="flex items-center gap-3">
               {session?.user?.image ? (
-                <img
+                <Image
                   src={session.user.image}
                   alt={session?.user?.name || "Profile"}
-                  className="w-8 h-8 rounded-full object-cover"
+                  width={32}
+                  height={32}
+                  className="rounded-full object-cover"
+                  unoptimized
                 />
               ) : (
                 <div className="w-8 h-8 rounded-full bg-theme-color/10 flex items-center justify-center">

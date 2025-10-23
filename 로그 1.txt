@@ -1,0 +1,296 @@
+18:25:07.883 Running build in Washington, D.C., USA (East) – iad1
+18:25:07.884 Build machine configuration: 2 cores, 8 GB
+18:25:07.900 Cloning github.com/jgdglobal001/getkkul-shopping-main (Branch: master, Commit: 8f68cde)
+18:25:08.055 Previous build caches not available
+18:25:08.345 Cloning completed: 445.000ms
+18:25:08.750 Running "vercel build"
+18:25:09.142 Vercel CLI 48.2.9
+18:25:09.519 Installing dependencies...
+18:25:14.716 npm warn deprecated @types/bcryptjs@3.0.0: This is a stub types definition. bcryptjs provides its own type definitions, so you do not need this installed.
+18:25:32.022 
+18:25:32.023 added 433 packages in 22s
+18:25:32.024 
+18:25:32.024 157 packages are looking for funding
+18:25:32.024   run `npm fund` for details
+18:25:32.064 Detected Next.js version: 15.4.6
+18:25:32.069 Running "npm run build"
+18:25:32.323 
+18:25:32.324 > shofy@0.1.0 prebuild
+18:25:32.324 > prisma generate
+18:25:32.324 
+18:25:33.341 Loaded Prisma config from prisma.config.ts.
+18:25:33.342 
+18:25:33.557 Prisma config detected, skipping environment variable loading.
+18:25:33.558 Prisma schema loaded from prisma/schema.prisma
+18:25:33.887 
+18:25:33.887 ✔ Generated Prisma Client (v6.18.0) to ./node_modules/@prisma/client in 167ms
+18:25:33.888 
+18:25:33.888 Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+18:25:33.888 
+18:25:33.888 Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+18:25:33.888 
+18:25:33.902 
+18:25:33.903 > shofy@0.1.0 build
+18:25:33.903 > next build
+18:25:33.903 
+18:25:34.488 Attention: Next.js now collects completely anonymous telemetry regarding usage.
+18:25:34.489 This information is used to shape Next.js' roadmap and prioritize features.
+18:25:34.489 You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+18:25:34.490 https://nextjs.org/telemetry
+18:25:34.490 
+18:25:34.554    ▲ Next.js 15.4.6
+18:25:34.555 
+18:25:34.616    Creating an optimized production build ...
+18:26:18.177  ✓ Compiled successfully in 40.0s
+18:26:18.181    Skipping validation of types
+18:26:18.182    Linting ...
+18:26:23.285 
+18:26:23.285 ./src/app/(user)/account/orders/[id]/page.tsx
+18:26:23.285 70:6  Warning: React Hook useEffect has a missing dependency: 'fetchOrderDetails'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+18:26:23.286 343:25  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.286 
+18:26:23.286 ./src/app/(user)/checkout/page.tsx
+18:26:23.286 44:6  Warning: React Hook useEffect has a missing dependency: 'fetchExistingOrder'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+18:26:23.286 298:25  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.286 
+18:26:23.286 ./src/app/(user)/favorite/page.tsx
+18:26:23.287 119:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.287 
+18:26:23.287 ./src/app/(user)/products/[id]/page.tsx
+18:26:23.287 114:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.287 
+18:26:23.287 ./src/app/(user)/success/page.tsx
+18:26:23.287 31:6  Warning: React Hook useEffect has a missing dependency: 'processOrder'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+18:26:23.287 
+18:26:23.287 ./src/app/delivery-dashboard/page.tsx
+18:26:23.287 84:6  Warning: React Hook useEffect has a missing dependency: 'router'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+18:26:23.287 
+18:26:23.288 ./src/app/user-dashboard/page.tsx
+18:26:23.288 71:6  Warning: React Hook useEffect has a missing dependency: 'router'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+18:26:23.288 373:29  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.291 545:31  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.350 
+18:26:23.350 ./src/components/EnhancedProductCard.tsx
+18:26:23.351 30:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.351 172:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.351 
+18:26:23.351 ./src/components/MainLoader.tsx
+18:26:23.351 5:9  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.352 
+18:26:23.352 ./src/components/ProductCard.tsx
+18:26:23.352 59:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.352 
+18:26:23.352 ./src/components/ProductImages.tsx
+18:26:23.353 14:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.353 27:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.353 
+18:26:23.353 ./src/components/account/AccountClient.tsx
+18:26:23.353 45:6  Warning: React Hook useEffect has a missing dependency: 'fetchProfile'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+18:26:23.354 150:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.354 
+18:26:23.354 ./src/components/account/AddressForm.tsx
+18:26:23.354 59:6  Warning: React Hook useEffect has a missing dependency: 'formData.city'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+18:26:23.354 
+18:26:23.355 ./src/components/account/AddressesClient.tsx
+18:26:23.355 27:6  Warning: React Hook useEffect has a missing dependency: 'fetchAddresses'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+18:26:23.355 
+18:26:23.355 ./src/components/account/OrdersList.tsx
+18:26:23.355 61:6  Warning: React Hook useEffect has a missing dependency: 'fetchOrders'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+18:26:23.362 252:25  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.362 500:31  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.362 620:25  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.362 
+18:26:23.362 ./src/components/account/ProfileEditForm.tsx
+18:26:23.362 144:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.362 
+18:26:23.362 ./src/components/account/ReviewsClient.tsx
+18:26:23.363 156:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.363 
+18:26:23.363 ./src/components/admin/AccountLayout.tsx
+18:26:23.363 99:6  Warning: React Hook useEffect has a missing dependency: 'fetchOrderCount'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+18:26:23.363 
+18:26:23.363 ./src/components/admin/AdminOrdersClient.tsx
+18:26:23.363 133:6  Warning: React Hook useEffect has a missing dependency: 'fetchUserRole'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+18:26:23.364 140:6  Warning: React Hook useEffect has a missing dependency: 'fetchOrders'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+18:26:23.364 948:29  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.364 
+18:26:23.370 ./src/components/admin/ProductDetailClient.tsx
+18:26:23.374 70:6  Warning: React Hook useEffect has a missing dependency: 'fetchProduct'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+18:26:23.378 198:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.378 219:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.378 
+18:26:23.378 ./src/components/admin/ProductFormClient.tsx
+18:26:23.378 116:6  Warning: React Hook useEffect has a missing dependency: 'fetchProduct'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+18:26:23.379 568:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.379 609:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.379 
+18:26:23.379 ./src/components/admin/ProductsManagementClient.tsx
+18:26:23.379 92:6  Warning: React Hook useEffect has a missing dependency: 'fetchProducts'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+18:26:23.379 307:9  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.379 403:9  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.386 
+18:26:23.386 ./src/components/auth/UserProfile.tsx
+18:26:23.386 58:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.387 
+18:26:23.387 ./src/components/cart/CartProduct.tsx
+18:26:23.387 27:9  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.387 
+18:26:23.387 ./src/components/cart/ShippingAddressSelector.tsx
+18:26:23.387 31:6  Warning: React Hook useEffect has a missing dependency: 'fetchAddresses'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+18:26:23.388 
+18:26:23.388 ./src/components/debug/AuthDebug.tsx
+18:26:23.388 38:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.388 
+18:26:23.388 ./src/components/header/SettingsDropdown.tsx
+18:26:23.388 138:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.388 
+18:26:23.388 ./src/components/header/UserProfileDropdown.tsx
+18:26:23.389 130:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.389 
+18:26:23.389 ./src/components/notifications/CurrencyNotification.tsx
+18:26:23.389 49:6  Warning: React Hook useEffect has a missing dependency: 'handleClose'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+18:26:23.389 
+18:26:23.389 ./src/components/pages/categories/CategoryGrid.tsx
+18:26:23.389 117:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.390 
+18:26:23.390 ./src/components/pages/categories/InfiniteCategoryGrid.tsx
+18:26:23.390 141:9  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.390 
+18:26:23.390 ./src/components/pages/home/Banner.tsx
+18:26:23.391 26:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.391 
+18:26:23.391 ./src/components/pages/home/FeaturedCategories.tsx
+18:26:23.391 69:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.392 
+18:26:23.392 ./src/components/pages/home/RoundedCategoriesCarousel.tsx
+18:26:23.392 217:27  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.392 
+18:26:23.393 ./src/components/pages/home/RoundedFeaturedCategories.tsx
+18:26:23.393 177:6  Warning: React Hook React.useEffect has missing dependencies: 'goToNext' and 'scrollToIndex'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+18:26:23.393 281:27  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+18:26:23.394 
+18:26:23.394 ./src/hooks/useProductSearch.ts
+18:26:23.394 112:6  Warning: React Hook useEffect has a missing dependency: 'performSearch'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+18:26:23.395 
+18:26:23.395 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+18:26:23.408    Collecting page data ...
+18:26:28.926    Generating static pages (0/59) ...
+18:26:29.721    Generating static pages (14/59) 
+18:26:30.329    Generating static pages (29/59) 
+18:26:31.366    Generating static pages (44/59) 
+18:26:31.414  ✓ Generating static pages (59/59)
+18:26:31.930    Finalizing page optimization ...
+18:26:31.930    Collecting build traces ...
+18:26:38.785 
+18:26:38.797 Route (app)                                    Size  First Load JS
+18:26:38.797 ┌ ƒ /                                       3.59 kB         156 kB
+18:26:38.798 ├ ○ /_not-found                               225 B        99.8 kB
+18:26:38.798 ├ ƒ /about                                    165 B         103 kB
+18:26:38.798 ├ ƒ /account                                6.63 kB         132 kB
+18:26:38.798 ├ ƒ /account/addresses                      5.29 kB         108 kB
+18:26:38.799 ├ ƒ /account/admin                          3.06 kB         122 kB
+18:26:38.799 ├ ƒ /account/admin/products                 2.87 kB         122 kB
+18:26:38.799 ├ ƒ /account/admin/products/[id]            2.66 kB         121 kB
+18:26:38.799 ├ ƒ /account/admin/products/[id]/edit         140 B         123 kB
+18:26:38.799 ├ ƒ /account/admin/products/new               140 B         123 kB
+18:26:38.799 ├ ƒ /account/notifications                  1.05 kB         101 kB
+18:26:38.799 ├ ƒ /account/orders                         6.15 kB         123 kB
+18:26:38.799 ├ ƒ /account/orders/[id]                     5.2 kB         122 kB
+18:26:38.799 ├ ƒ /account/payment                          774 B         104 kB
+18:26:38.799 ├ ƒ /account/profile                          225 B        99.8 kB
+18:26:38.799 ├ ƒ /account/reviews                        3.51 kB         136 kB
+18:26:38.799 ├ ƒ /account/settings                       2.89 kB         119 kB
+18:26:38.799 ├ ƒ /api/admin/analytics                      225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/admin/dashboard/recent-orders        225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/admin/dashboard/stats                225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/admin/orders                         225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/admin/orders/[id]                    225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/admin/orders/bulk-delete             225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/admin/orders/bulk-delete-selected    225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/admin/products                       225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/admin/products/[id]                  225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/admin/setup                          225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/admin/stats                          225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/admin/users                          225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/admin/users/bulk-delete              225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/auth/[...nextauth]                   225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/auth/register                        225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/auth/update-password                 225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/checkout                             225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/orders                               225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/orders/place                         225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/orders/process                       225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/orders/update-payment                225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/user/[id]                            225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/user/delete-address                  225 B        99.8 kB
+18:26:38.799 ├ ƒ /api/user/orders                          225 B        99.8 kB
+18:26:38.800 ├ ƒ /api/user/profile                         225 B        99.8 kB
+18:26:38.800 ├ ƒ /api/user/upload-image                    225 B        99.8 kB
+18:26:38.800 ├ ○ /auth/error                             1.29 kB         104 kB
+18:26:38.800 ├ ○ /auth/register                          2.28 kB         125 kB
+18:26:38.800 ├ ○ /auth/signin                            2.28 kB         125 kB
+18:26:38.800 ├ ƒ /cancel                                   653 B         111 kB
+18:26:38.800 ├ ƒ /cart                                   10.1 kB         163 kB
+18:26:38.800 ├ ƒ /categories                             4.67 kB         110 kB
+18:26:38.800 ├ ƒ /checkout                               6.37 kB         123 kB
+18:26:38.800 ├ ƒ /contact                                  225 B        99.8 kB
+18:26:38.800 ├ ○ /dashboard                              1.08 kB         104 kB
+18:26:38.800 ├ ○ /delivery                                 564 B         100 kB
+18:26:38.800 ├ ○ /delivery-dashboard                     3.71 kB         111 kB
+18:26:38.800 ├ ƒ /faqs                                    4.7 kB         115 kB
+18:26:38.800 ├ ƒ /favorite                               3.18 kB         136 kB
+18:26:38.800 ├ ○ /icon.png                                   0 B            0 B
+18:26:38.800 ├ ƒ /inquiry                                  225 B        99.8 kB
+18:26:38.800 ├ ƒ /offers                                 2.19 kB         192 kB
+18:26:38.800 ├ ƒ /orders/[id]                              225 B        99.8 kB
+18:26:38.800 ├ ○ /packer-dashboard                       5.12 kB         118 kB
+18:26:38.800 ├ ƒ /products                               6.11 kB         193 kB
+18:26:38.800 ├ ƒ /products/[id]                          2.15 kB         154 kB
+18:26:38.800 ├ ƒ /success                                3.75 kB         134 kB
+18:26:38.800 ├ ○ /unauthorized                           2.16 kB         119 kB
+18:26:38.800 └ ○ /user-dashboard                         3.83 kB         115 kB
+18:26:38.800 + First Load JS shared by all               99.6 kB
+18:26:38.800   ├ chunks/4bd1b696-602635ee57868870.js     54.1 kB
+18:26:38.800   ├ chunks/5964-a917d24f2e966807.js         43.5 kB
+18:26:38.800   └ other shared chunks (total)             1.93 kB
+18:26:38.800 
+18:26:38.800 
+18:26:38.800 ○  (Static)   prerendered as static content
+18:26:38.800 ƒ  (Dynamic)  server-rendered on demand
+18:26:38.800 
+18:26:38.825 
+18:26:38.825 > shofy@0.1.0 postbuild
+18:26:38.825 > next-sitemap
+18:26:38.825 
+18:26:38.929 ✨ [next-sitemap] Loading next-sitemap config: file:///vercel/path0/next-sitemap.config.js
+18:26:38.943 ✅ [next-sitemap] Generation completed
+18:26:38.944 ┌───────────────┬────────┐
+18:26:38.944 │ (index)       │ Values │
+18:26:38.944 ├───────────────┼────────┤
+18:26:38.944 │ indexSitemaps │ 1      │
+18:26:38.944 │ sitemaps      │ 1      │
+18:26:38.945 └───────────────┴────────┘
+18:26:38.945 -----------------------------------------------------
+18:26:38.945  SITEMAP INDICES 
+18:26:38.945 -----------------------------------------------------
+18:26:38.945 
+18:26:38.945    ○ https://shofy.reactbd.com/sitemap.xml
+18:26:38.946 
+18:26:38.946 
+18:26:38.946 -----------------------------------------------------
+18:26:38.946  SITEMAPS 
+18:26:38.946 -----------------------------------------------------
+18:26:38.946 
+18:26:38.946    ○ https://shofy.reactbd.com/sitemap-0.xml
+18:26:38.946 
+18:26:38.946 
+18:26:39.190 Traced Next.js server files in: 108.45ms
+18:26:39.585 Created all serverless functions in: 394.764ms
+18:26:39.604 Collected static files (public/, static/, .next/static): 13.527ms
+18:26:39.775 Build Completed in /vercel/output [2m]
+18:26:39.992 Deploying outputs...
+18:26:53.152 Deployment completed
+18:26:54.144 Creating build cache...
+18:27:21.730 Created build cache: 27.587s
+18:27:21.734 Uploading build cache [373.65 MB]
+18:27:26.441 Build cache uploaded: 4.709s

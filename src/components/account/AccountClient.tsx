@@ -1,6 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import ProfileEditForm from "@/components/account/ProfileEditForm";
@@ -147,10 +148,13 @@ export default function AccountClient() {
           <div className="flex items-center space-x-4 mb-4 md:mb-0">
             <div className="relative">
               {session?.user?.image ? (
-                <img
+                <Image
                   src={session.user.image}
                   alt={session?.user?.name || "Profile"}
-                  className="w-20 h-20 rounded-full object-cover"
+                  width={80}
+                  height={80}
+                  className="rounded-full object-cover"
+                  unoptimized
                 />
               ) : (
                 <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center">

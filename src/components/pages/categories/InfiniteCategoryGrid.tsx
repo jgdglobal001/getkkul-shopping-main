@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { FiArrowRight, FiPackage } from "react-icons/fi";
 
 interface Category {
@@ -138,15 +139,16 @@ const CategoryCard: React.FC<{ category: Category; index: number }> = ({
     >
       {/* Image Container */}
       <div className="relative h-36 lg:h-44 overflow-hidden">
-        <img
+        <Image
           src={image}
           alt={categoryName}
-          className={`w-full h-full object-cover transition-transform duration-700 ${
+          fill
+          className={`object-cover transition-transform duration-700 ${
             isDisabled
               ? "filter grayscale"
               : "group-hover:scale-110 filter group-hover:brightness-110"
           }`}
-          loading="lazy"
+          unoptimized
         />
 
         {/* Multi-layered Overlay - Only for enabled categories */}

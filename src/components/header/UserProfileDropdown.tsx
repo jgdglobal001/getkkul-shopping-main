@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import {
   FaUser,
@@ -126,11 +127,13 @@ const UserProfileDropdown = ({ user }: UserProfileDropdownProps) => {
         className="flex items-center gap-2 cursor-pointer group"
       >
         <Link href="/account" className="flex items-center">
-          <div className="border border-gray-500 w-10 h-10 rounded-full text-xl overflow-hidden">
-            <img
+          <div className="border border-gray-500 w-10 h-10 rounded-full text-xl overflow-hidden relative">
+            <Image
               src={!user?.image ? fallbackImage : user.image}
               alt={user?.name || "User"}
-              className="w-full h-full rounded-full object-cover"
+              fill
+              className="rounded-full object-cover"
+              unoptimized
             />
           </div>
         </Link>

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
@@ -368,12 +369,14 @@ export default function UserDashboard() {
                   <div className="flex flex-wrap gap-4">
                     {order.items.slice(0, 3).map((item, index) => (
                       <div key={index} className="flex items-center space-x-3">
-                        <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                        <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center relative">
                           {item.image ? (
-                            <img
+                            <Image
                               src={item.image}
                               alt={item.name}
-                              className="w-full h-full object-cover rounded-lg"
+                              fill
+                              className="object-cover rounded-lg"
+                              unoptimized
                             />
                           ) : (
                             <span className="text-2xl">📦</span>
@@ -540,12 +543,14 @@ export default function UserDashboard() {
                         className="flex justify-between items-center py-2 border-b border-gray-200 last:border-b-0"
                       >
                         <div className="flex items-center space-x-3">
-                          <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center">
+                          <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center relative">
                             {item.image ? (
-                              <img
+                              <Image
                                 src={item.image}
                                 alt={item.name}
-                                className="w-full h-full object-cover rounded-lg"
+                                fill
+                                className="object-cover rounded-lg"
+                                unoptimized
                               />
                             ) : (
                               <span className="text-xl">📦</span>

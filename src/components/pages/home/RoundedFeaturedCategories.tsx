@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { FiArrowRight, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 interface FeaturedCategory {
@@ -278,10 +279,12 @@ const FeaturedCategories: React.FC = () => {
 
                         {/* Main image container */}
                         <div className="relative w-full h-full rounded-full overflow-hidden shadow-xl ring-4 ring-white group-hover:ring-blue-100 transition-all duration-300 transform group-hover:scale-105 group-hover:-translate-y-1">
-                          <img
+                          <Image
                             src={category.image}
                             alt={category.name}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            fill
+                            className="object-cover group-hover:scale-110 transition-transform duration-500"
+                            unoptimized
                           />
                           {/* Subtle overlay for depth */}
                           <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-black/10 group-hover:to-black/5 transition-all duration-300"></div>

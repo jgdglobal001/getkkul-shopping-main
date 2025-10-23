@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { useSelector, useDispatch } from "react-redux";
 import { useSession } from "next-auth/react";
 import { StateType } from "../../../../type";
@@ -116,10 +117,12 @@ const FavoritePage = () => {
                 {/* Product Image */}
                 <div className="relative aspect-square overflow-hidden">
                   <Link href={`/products/${product.id}`}>
-                    <img
+                    <Image
                       src={product.images?.[0] || "/placeholder-product.jpg"}
                       alt={product.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      unoptimized
                     />
                   </Link>
 

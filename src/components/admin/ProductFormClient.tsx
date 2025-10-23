@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import {
   FiSave,
   FiArrowLeft,
@@ -565,10 +566,13 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
             />
             {formData.thumbnail && (
               <div className="mt-2">
-                <img
+                <Image
                   src={formData.thumbnail}
                   alt="썸네일 미리보기"
-                  className="w-32 h-32 object-cover rounded-lg border"
+                  width={128}
+                  height={128}
+                  className="object-cover rounded-lg border"
+                  unoptimized
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
                   }}
@@ -605,14 +609,13 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
             {formData.images.length > 0 && (
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {formData.images.map((image, index) => (
-                  <div key={index} className="relative group">
-                    <img
+                  <div key={index} className="relative group aspect-square">
+                    <Image
                       src={image}
                       alt={`상품 이미지 ${index + 1}`}
-                      className="w-full aspect-square object-cover rounded-lg border"
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                      }}
+                      fill
+                      className="object-cover rounded-lg border"
+                      unoptimized
                     />
                     <button
                       type="button"

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import Container from "@/components/Container";
 import PriceFormat from "@/components/PriceFormat";
@@ -295,10 +296,13 @@ const CheckoutPage = () => {
                   >
                     <div className="flex-shrink-0">
                       {item.images && item.images[0] ? (
-                        <img
+                        <Image
                           src={item.images[0]}
                           alt={item.name || item.title}
-                          className="w-20 h-20 rounded-lg object-cover"
+                          width={80}
+                          height={80}
+                          className="rounded-lg object-cover"
+                          unoptimized
                         />
                       ) : (
                         <div className="w-20 h-20 bg-gray-300 rounded-lg flex items-center justify-center">

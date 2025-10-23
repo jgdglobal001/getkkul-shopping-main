@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import Link from "next/link";
+import Image from "next/image";
 import Container from "@/components/Container";
 
 interface Category {
@@ -213,12 +214,13 @@ const RoundedCategoriesCarousel: React.FC<RoundedCategoriesCarouselProps> = ({
                         <div className="absolute inset-0 rounded-full shadow-inner"></div>
                         <div className="absolute inset-0 rounded-full bg-gradient-to-t from-black/10 via-transparent to-white/20"></div>
 
-                        <div className="overflow-hidden w-full h-full rounded-full">
-                          <img
+                        <div className="overflow-hidden w-full h-full rounded-full relative">
+                          <Image
                             src={category.image}
                             alt={category.name}
-                            className="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-500"
-                            loading="lazy"
+                            fill
+                            className="object-cover rounded-full group-hover:scale-110 transition-transform duration-500"
+                            unoptimized
                           />
                         </div>
 

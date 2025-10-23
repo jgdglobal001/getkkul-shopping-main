@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import PriceFormat from "@/components/PriceFormat";
 import {
   FiEye,
@@ -249,10 +250,13 @@ export default function OrdersList({
                   >
                     <div className="flex-shrink-0">
                       {item.images && item.images[0] ? (
-                        <img
+                        <Image
                           src={item.images[0]}
                           alt={item.name}
-                          className="w-20 h-20 rounded-lg object-cover"
+                          width={80}
+                          height={80}
+                          className="rounded-lg object-cover"
+                          unoptimized
                         />
                       ) : (
                         <div className="w-20 h-20 bg-gray-300 rounded-lg flex items-center justify-center">
@@ -497,10 +501,13 @@ export default function OrdersList({
                             className="inline-block h-6 w-6 rounded-full ring-2 ring-white overflow-hidden flex-shrink-0"
                           >
                             {item.images && item.images[0] ? (
-                              <img
+                              <Image
                                 src={item.images[0]}
                                 alt={item.name}
-                                className="h-6 w-6 rounded-full object-cover"
+                                width={24}
+                                height={24}
+                                className="rounded-full object-cover"
+                                unoptimized
                               />
                             ) : (
                               <div className="h-6 w-6 bg-gray-300 rounded-full flex items-center justify-center">
@@ -617,10 +624,13 @@ export default function OrdersList({
                       className="inline-block h-6 w-6 rounded-full ring-1 ring-white overflow-hidden"
                     >
                       {item.images && item.images[0] ? (
-                        <img
+                        <Image
                           src={item.images[0]}
                           alt={item.name}
-                          className="h-6 w-6 rounded-full object-cover"
+                          width={24}
+                          height={24}
+                          className="rounded-full object-cover"
+                          unoptimized
                         />
                       ) : (
                         <div className="h-6 w-6 bg-gray-300 rounded-full flex items-center justify-center">

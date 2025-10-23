@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { AdminTableSkeleton } from "./AdminSkeletons";
 import { toast } from "react-hot-toast";
@@ -945,10 +946,13 @@ export default function AdminOrdersClient() {
                       >
                         <div className="flex items-center space-x-3">
                           {item.images && item.images[0] && (
-                            <img
+                            <Image
                               src={item.images[0]}
                               alt={item.name}
-                              className="h-12 w-12 object-cover rounded"
+                              width={48}
+                              height={48}
+                              className="object-cover rounded"
+                              unoptimized
                             />
                           )}
                           <div>
