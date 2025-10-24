@@ -69,7 +69,7 @@ const SingleProductPage = async ({ params }: Props) => {
     <div>
       <Container className="grid grid-cols-1 md:grid-cols-2 gap-10 py-10">
         {/* Product Image */}
-        <ProductImages images={product?.images} />
+        <ProductImages thumbnail={product?.thumbnail} images={product?.images} />
         {/* Product Details */}
         <div className="flex flex-col gap-4">
           <h2 className="text-3xl font-bold">{product?.title}</h2>

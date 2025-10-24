@@ -132,7 +132,8 @@ model Product {
   brand                 String?
   category              String
   thumbnail             String
-  images                String[] // Array of image URLs
+  images                String[] // Array of image URLs (up to 5 images)
+  detailImages          String[] // Array of detail page images (up to 5 images)
   tags                  String[] // Array of tags
   sku                   String   @unique
   weight                Float?

@@ -29,6 +29,7 @@ interface ProductFormData {
   category: string;
   thumbnail: string;
   images: string[];
+  detailImages: string[];
   tags: string[];
   sku: string;
   weight: string;
@@ -57,6 +58,7 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
   const [error, setError] = useState<string | null>(null);
   const [newTag, setNewTag] = useState("");
   const [newImage, setNewImage] = useState("");
+  const [newDetailImage, setNewDetailImage] = useState("");
 
   const [formData, setFormData] = useState<ProductFormData>({
     title: "",
@@ -69,6 +71,7 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
     category: "",
     thumbnail: "",
     images: [],
+    detailImages: [],
     tags: [],
     sku: "",
     weight: "",
@@ -221,9 +224,28 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
       ...prev,
       images: prev.images.filter(img => img !== imageToRemove),
       // 썸네일이 제거된 이미지였다면 첫 번째 이미지로 변경
-      thumbnail: prev.thumbnail === imageToRemove 
+      thumbnail: prev.thumbnail === imageToRemove
         ? prev.images.filter(img => img !== imageToRemove)[0] || ""
         : prev.thumbnail,
+    }));
+  };
+
+  // 상세 이미지 추가
+  const addDetailImage = () => {
+    if (newDetailImage.trim() && !formData.detailImages.includes(newDetailImage.trim())) {
+      setFormData(prev => ({
+        ...prev,
+        detailImages: [...prev.detailImages, newDetailImage.trim()],
+      }));
+      setNewDetailImage("");
+    }
+  };
+
+  // 상세 이미지 제거
+  const removeDetailImage = (imageToRemove: string) => {
+    setFormData(prev => ({
+      ...prev,
+      detailImages: prev.detailImages.filter(img => img !== imageToRemove),
     }));
   };
 
@@ -631,6 +653,68 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
                     )}
                   </div>
                 ))}
+              </div>
+            )}
+          </div>
+
+          {/* 상세페이지 이미지 */}
+          <div className="mt-8 pt-8 border-t">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              상세페이지 이미지 (최대 5장)
+            </label>
+            <p className="text-xs text-gray-500 mb-4">
+              상품 상세 페이지에 표시될 이미지들입니다. 최대 5장까지 추가할 수 있습니다.
+            </p>
+            <div className="flex gap-2 mb-4">
+              <input
+                type="url"
+                value={newDetailImage}
+                onChange={(e) => setNewDetailImage(e.target.value)}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="상세 이미지 URL을 입력하세요"
+                onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addDetailImage())}
+                disabled={formData.detailImages.length >= 5}
+              />
+              <button
+                type="button"
+                onClick={addDetailImage}
+                disabled={formData.detailImages.length >= 5}
+                className="bg-theme-color text-white px-4 py-2 rounded-lg hover:bg-theme-color/80 transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <FiPlus className="w-4 h-4" />
+                추가
+              </button>
+            </div>
+
+            {/* 상세 이미지 목록 */}
+            {formData.detailImages.length > 0 && (
+              <div>
+                <p className="text-xs text-gray-500 mb-2">
+                  {formData.detailImages.length}/5 이미지 추가됨
+                </p>
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                  {formData.detailImages.map((image, index) => (
+                    <div key={index} className="relative group aspect-square">
+                      <Image
+                        src={image}
+                        alt={`상세 이미지 ${index + 1}`}
+                        fill
+                        className="object-cover rounded-lg border"
+                        unoptimized
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeDetailImage(image)}
+                        className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <FiX className="w-4 h-4" />
+                      </button>
+                      <div className="absolute bottom-2 left-2 bg-gray-800 text-white text-xs px-2 py-1 rounded">
+                        {index + 1}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>

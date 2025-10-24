@@ -1,5 +1,6 @@
 import { ProductType } from "../../type";
 import { FiPackage, FiTruck, FiShield, FiInfo } from "react-icons/fi";
+import Image from "next/image";
 
 interface ProductSpecificationsProps {
   product: ProductType;
@@ -100,6 +101,26 @@ const ProductSpecifications = ({ product }: ProductSpecificationsProps) => {
                 {product.dimensions.depth}&quot;
               </p>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Detail Images if available */}
+      {product?.detailImages && product.detailImages.length > 0 && (
+        <div className="mt-6 bg-purple-50 rounded-lg p-6">
+          <h4 className="font-semibold text-gray-900 mb-4">상세 이미지</h4>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {product.detailImages.map((image, index) => (
+              <div key={index} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200">
+                <Image
+                  src={image}
+                  alt={`상세 이미지 ${index + 1}`}
+                  fill
+                  className="object-cover"
+                  unoptimized
+                />
+              </div>
+            ))}
           </div>
         </div>
       )}
