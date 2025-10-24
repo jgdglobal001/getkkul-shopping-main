@@ -305,16 +305,16 @@ NEXTAUTH_URL=http://localhost:3002
 NEXTAUTH_SECRET=your-secret-key-here
 
 # 구글 OAuth (필수)
-AUTH_GOOGLE_ID=your-google-client-id
-AUTH_GOOGLE_SECRET=your-google-client-secret
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_CLIENT_SECRET=your-google-client-secret
 
 # 카카오 OAuth (필수)
-AUTH_KAKAO_CLIENT_ID=your-kakao-client-id
-AUTH_KAKAO_CLIENT_SECRET=your-kakao-client-secret
+KAKAO_CLIENT_ID=your-kakao-client-id
+KAKAO_CLIENT_SECRET=your-kakao-client-secret
 
 # 네이버 OAuth (필수)
-AUTH_NAVER_CLIENT_ID=your-naver-client-id
-AUTH_NAVER_CLIENT_SECRET=your-naver-client-secret
+NAVER_CLIENT_ID=your-naver-client-id
+NAVER_CLIENT_SECRET=your-naver-client-secret
 
 # Neon PostgreSQL 데이터베이스
 DATABASE_URL="postgresql://username:password@host/database?sslmode=require"
@@ -422,8 +422,8 @@ npx prisma db seed
    ```
 6. **"만들기"** 클릭
 7. **클라이언트 ID**와 **클라이언트 보안 비밀** 복사:
-   - 클라이언트 ID → `AUTH_GOOGLE_ID`
-   - 클라이언트 보안 비밀 → `AUTH_GOOGLE_SECRET`
+   - 클라이언트 ID → `GOOGLE_CLIENT_ID`
+   - 클라이언트 보안 비밀 → `GOOGLE_CLIENT_SECRET`
 
 ### **� 카카오 OAuth 설정 (필수)**
 
@@ -438,7 +438,7 @@ npx prisma db seed
 1. 앱 이름: `겟꿀쇼핑`
 2. 사업자명: 본인 이름 또는 회사명
 3. **"저장"** 클릭
-4. 생성된 앱의 **"앱 키"**에서 **REST API 키** 복사 → `AUTH_KAKAO_CLIENT_ID`
+4. 생성된 앱의 **"앱 키"**에서 **REST API 키** 복사 → `KAKAO_CLIENT_ID`
 
 #### **3단계: 플랫폼 설정**
 
@@ -454,7 +454,7 @@ npx prisma db seed
    http://localhost:3002/api/auth/callback/kakao
    https://yourdomain.com/api/auth/callback/kakao
    ```
-3. **"보안"** → **"Client Secret"** 생성 → `AUTH_KAKAO_CLIENT_SECRET`
+3. **"보안"** → **"Client Secret"** 생성 → `KAKAO_CLIENT_SECRET`
 
 ### **🟢 네이버 OAuth 설정 (필수)**
 
@@ -478,8 +478,8 @@ npx prisma db seed
 
 #### **3단계: 인증 정보 복사**
 
-1. **"Client ID"** 복사 → `AUTH_NAVER_CLIENT_ID`
-2. **"Client Secret"** 복사 → `AUTH_NAVER_CLIENT_SECRET`
+1. **"Client ID"** 복사 → `NAVER_CLIENT_ID`
+2. **"Client Secret"** 복사 → `NAVER_CLIENT_SECRET`
 
 ### **🔒 NextAuth 시크릿 생성**
 
