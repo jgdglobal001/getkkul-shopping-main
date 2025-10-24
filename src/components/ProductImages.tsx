@@ -10,18 +10,23 @@ interface Props {
 
 const ProductImages = ({ thumbnail, images = [] }: Props) => {
   // 썸네일을 첫 번째로, 그 다음 추가 이미지들을 배열로 구성
+  // 소비자는 썸네일을 클릭하거나 추가 이미지를 클릭해서 선택 가능
   const allImages = thumbnail
     ? [thumbnail, ...images.filter(img => img !== thumbnail)]
     : images;
 
-  const [currentImage, setCurrentImage] = useState("");
+  // 현재 표시되는 이미지 (초기값: 썸네일)
+  const [currentImage, setCurrentImage] = useState(thumbnail || "");
 
-  // allImages가 변경될 때마다 currentImage를 첫 번째 이미지로 설정
+  // 페이지 로드 시 또는 상품이 변경될 때 썸네일로 리셋
+  // 자동으로 이미지가 변경되지 않음 - 소비자가 클릭할 때만 변경됨
   useEffect(() => {
-    if (allImages.length > 0) {
-      setCurrentImage(allImages[0]);
+    if (thumbnail) {
+      setCurrentImage(thumbnail);
+    } else if (images && images.length > 0) {
+      setCurrentImage(images[0]);
     }
-  }, [allImages]);
+  }, [thumbnail]);
 
   if (!currentImage) {
     return (
