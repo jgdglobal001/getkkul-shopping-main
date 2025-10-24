@@ -20,11 +20,10 @@ export const authConfig: NextAuthConfig = {
         },
       },
     }),
-    // Kakao는 회사 핸드폰 인증 후 활성화 예정
-    // Kakao({
-    //   clientId: process.env.KAKAO_CLIENT_ID!,
-    //   clientSecret: process.env.KAKAO_CLIENT_SECRET!,
-    // }),
+    Kakao({
+      clientId: process.env.KAKAO_CLIENT_ID!,
+      clientSecret: process.env.KAKAO_CLIENT_SECRET!,
+    }),
     Naver({
       clientId: process.env.NAVER_CLIENT_ID!,
       clientSecret: process.env.NAVER_CLIENT_SECRET!,

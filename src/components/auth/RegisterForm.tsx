@@ -30,14 +30,14 @@ export default function RegisterForm() {
       </div>
 
       <div className="space-y-3">
-        {/* Kakao 로그인 - 회사 핸드폰 인증 후 활성화 예정 */}
+        {/* Kakao 로그인 */}
         <button
-          disabled
-          className="w-full inline-flex justify-center py-3 px-4 rounded-md shadow-sm text-sm font-medium text-gray-400 cursor-not-allowed opacity-50"
-          style={{ backgroundColor: "#F5F5F5" }}
+          onClick={() => handleOAuthSignIn("kakao")}
+          className="w-full inline-flex justify-center py-3 px-4 rounded-md shadow-sm text-sm font-medium text-black hover:opacity-90 transition-opacity"
+          style={{ backgroundColor: "#FEE500" }}
         >
           <SiKakao className="h-5 w-5" />
-          <span className="ml-2">카카오로 회원가입 (준비중)</span>
+          <span className="ml-2">카카오로 회원가입</span>
         </button>
 
         {/* Naver 로그인 */}
