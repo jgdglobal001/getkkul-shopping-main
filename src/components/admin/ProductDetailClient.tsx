@@ -80,7 +80,9 @@ const ProductDetailClient = ({ productId }: ProductDetailClientProps) => {
 
       const productData = await response.json();
       setProduct(productData);
-      setSelectedImage(productData.thumbnail || productData.images[0] || "");
+      // images 배열이 undefined일 수 있으므로 안전하게 처리
+      const images = Array.isArray(productData.images) ? productData.images : [];
+      setSelectedImage(productData.thumbnail || images[0] || "");
     } catch (err) {
       setError(err instanceof Error ? err.message : "알 수 없는 오류가 발생했습니다");
     } finally {
@@ -206,9 +208,9 @@ const ProductDetailClient = ({ productId }: ProductDetailClientProps) => {
           </div>
 
           {/* 이미지 썸네일 */}
-          {product.images.length > 1 && (
+          {Array.isArray(product.images) && product.images.length > 1 && (
             <div className="grid grid-cols-4 gap-2">
-              {[product.thumbnail, ...product.images].filter(Boolean).map((image, index) => (
+              {[product.thumbnail, ...(product.images || [])].filter(Boolean).map((image, index) => (
                 <button
                   key={index}
                   onClick={() => setSelectedImage(image)}

@@ -138,8 +138,9 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
         brand: product.brand || "",
         category: product.category || "",
         thumbnail: product.thumbnail || "",
-        images: product.images || [],
-        tags: product.tags || [],
+        images: Array.isArray(product.images) ? product.images : [],
+        detailImages: Array.isArray(product.detailImages) ? product.detailImages : [],
+        tags: Array.isArray(product.tags) ? product.tags : [],
         sku: product.sku || "",
         weight: product.weight?.toString() || "",
         dimensions: {
