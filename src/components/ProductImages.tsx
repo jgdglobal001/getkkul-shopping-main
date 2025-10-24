@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 interface Props {
@@ -14,7 +14,14 @@ const ProductImages = ({ thumbnail, images = [] }: Props) => {
     ? [thumbnail, ...images.filter(img => img !== thumbnail)]
     : images;
 
-  const [currentImage, setCurrentImage] = useState(allImages[0] || "");
+  const [currentImage, setCurrentImage] = useState("");
+
+  // allImages가 변경될 때마다 currentImage를 첫 번째 이미지로 설정
+  useEffect(() => {
+    if (allImages.length > 0) {
+      setCurrentImage(allImages[0]);
+    }
+  }, [allImages]);
 
   if (!currentImage) {
     return (
