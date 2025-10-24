@@ -11,7 +11,7 @@ const navigation = [
   { title: "Products", href: "/products" },
   { title: "Offers", href: "/offers" },
   { title: "Cart", href: "/cart" },
-  { title: "Orders", href: "/order" },
+  { title: "Orders", href: "/account/orders" },
 ];
 
 const MobileNavigation = () => {
