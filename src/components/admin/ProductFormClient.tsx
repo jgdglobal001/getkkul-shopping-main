@@ -208,9 +208,10 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
         images: [...prev.images, newImage.trim()],
       }));
       setNewImage("");
-      
-      // 첫 번째 이미지를 썸네일로 설정
-      if (!formData.thumbnail) {
+
+      // 썸네일이 명시적으로 설정되지 않았을 때만 첫 번째 추가 이미지를 썸네일로 설정
+      // 관리자가 이미 썸네일을 설정했다면 절대 덮어쓰지 않음
+      if (!formData.thumbnail && formData.images.length === 0) {
         setFormData(prev => ({
           ...prev,
           thumbnail: newImage.trim(),
