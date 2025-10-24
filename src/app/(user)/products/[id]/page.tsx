@@ -12,6 +12,11 @@ import ProductPrice from "@/components/ProductPrice";
 import ProductFeatures from "@/components/ProductFeatures";
 import ProductSpecifications from "@/components/ProductSpecifications";
 import RelatedProducts from "@/components/RelatedProducts";
+import { prisma } from "@/lib/prisma";
+import { notFound } from "next/navigation";
+
+// 동적 렌더링 설정 (DB 쿼리 때문에)
+export const dynamic = "force-dynamic";
 
 interface Props {
   params: {
@@ -21,13 +26,41 @@ interface Props {
 
 const SingleProductPage = async ({ params }: Props) => {
   const { id } = await params;
-  const endpoint = `https://dummyjson.com/products/${id}`;
-  const product: ProductType = await getData(endpoint);
 
-  // Fetch related products for the same category
-  const allProductsEndpoint = "https://dummyjson.com/products?limit=0";
-  const allProductsData = await getData(allProductsEndpoint);
-  const allProducts: ProductType[] = allProductsData.products || [];
+  // DB에서 먼저 상품 찾기
+  let product: any = await prisma.product.findUnique({
+    where: { id },
+  });
+
+  // DB에 없으면 DummyJSON에서 찾기 (모바일 카테고리만)
+  if (!product) {
+    const dummyEndpoint = `https://dummyjson.com/products/${id}`;
+    product = await getData(dummyEndpoint);
+
+    // DummyJSON에서 찾은 상품이 smartphones 카테고리가 아니면 404
+    if (!product || product.category !== "smartphones") {
+      notFound();
+    }
+  }
+
+  // 관련 상품 조회 (같은 카테고리)
+  let allProducts: ProductType[] = [];
+  if (product.category === "smartphones") {
+    // 더미 카테고리면 DummyJSON에서 조회
+    const dummyData = await getData(`https://dummyjson.com/products/category/smartphones?limit=0`);
+    allProducts = dummyData?.products || [];
+  } else {
+    // DB 카테고리면 DB에서 조회
+    const dbRelated = await prisma.product.findMany({
+      where: {
+        category: product.category,
+        isActive: true,
+        NOT: { id: product.id }
+      },
+      take: 10,
+    });
+    allProducts = dbRelated;
+  }
 
   const regularPrice = product?.price;
   const discountedPrice = product?.price + product?.discountPercentage / 100;

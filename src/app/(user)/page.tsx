@@ -9,16 +9,27 @@ import {
   getNewArrivals,
   getOffers,
 } from "./helpers/productHelpers";
+import { prisma } from "@/lib/prisma";
+
+// 동적 렌더링 설정 (DB 쿼리 때문에)
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const endpoint = `https://dummyjson.com/products?limit=0`; // Fetch all products
-  const productData = await getData(endpoint);
-  const allProducts = productData?.products || [];
+  // DB에서 실제 상품 조회
+  const dbProducts = await prisma.product.findMany({
+    where: { isActive: true },
+    orderBy: { createdAt: "desc" },
+  });
 
-  // Categorize products
-  const bestSellers = getBestSellers(allProducts);
-  const newArrivals = getNewArrivals(allProducts);
-  const offers = getOffers(allProducts);
+  // 더미 참고용 상품 (모바일 카테고리만)
+  const dummyEndpoint = `https://dummyjson.com/products/category/smartphones?limit=0`;
+  const dummyData = await getData(dummyEndpoint);
+  const dummyProducts = dummyData?.products || [];
+
+  // DB 상품 기반 카테고리화
+  const bestSellers = getBestSellers(dbProducts);
+  const newArrivals = getNewArrivals(dbProducts);
+  const offers = getOffers(dbProducts);
 
   return (
     <main>
@@ -59,6 +70,19 @@ export default async function Home() {
         products={offers}
         viewMoreLink="/offers"
       />
+
+      {/* Reference Products Section (Dummy - Mobile Category) */}
+      {dummyProducts.length > 0 && (
+        <>
+          <SectionDivider />
+          <ProductSection
+            title="📱 참고 상품 (모바일)"
+            subtitle="다양한 모바일 기기들을 참고하세요"
+            products={dummyProducts.slice(0, 8)}
+            viewMoreLink="/products?category=smartphones"
+          />
+        </>
+      )}
     </main>
   );
 }

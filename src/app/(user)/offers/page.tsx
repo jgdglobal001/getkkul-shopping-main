@@ -4,6 +4,10 @@ import OffersHero from "@/components/pages/offers/OffersHero";
 import { ProductType } from "../../../../type";
 import OffersList from "@/components/pages/offers/OffersList";
 import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+
+// 동적 렌더링 설정 (DB 쿼리 때문에)
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "특가 상품 - Getkkul-shopping",
@@ -23,14 +27,17 @@ const OffersPage = async ({ searchParams }: OffersPageProps) => {
   // Await searchParams for Next.js 15 compatibility
   const params = await searchParams;
 
-  // Fetch all products
-  const productsData = await getData(`https://dummyjson.com/products?limit=0`);
-  let { products } = productsData;
+  // DB에서 할인 상품 조회
+  const dbProducts = await prisma.product.findMany({
+    where: {
+      isActive: true,
+      discountPercentage: { gt: 0 },
+    },
+    orderBy: { createdAt: "desc" },
+  });
 
-  // Filter products with offers (discount > 0)
-  const offersProducts = products.filter(
-    (product: ProductType) => product.discountPercentage > 0
-  );
+  let products = [...dbProducts];
+  const offersProducts = products;
 
   // Apply additional filters
   if (params.category) {

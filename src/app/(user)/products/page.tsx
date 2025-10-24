@@ -10,6 +10,10 @@ import {
   getProductsByCategory,
 } from "../helpers/productHelpers";
 import Link from "next/link";
+import { prisma } from "@/lib/prisma";
+
+// 동적 렌더링 설정 (DB 쿼리 때문에)
+export const dynamic = "force-dynamic";
 
 interface Props {
   searchParams: Promise<{
@@ -30,38 +34,45 @@ const ProductsPage = async ({ searchParams }: Props) => {
   // Await searchParams for Next.js 15 compatibility
   const params = await searchParams;
 
-  // Fetch all products and categories
-  const [productsData, categoriesData] = await Promise.all([
-    getData(`https://dummyjson.com/products?limit=0`),
-    getData(`https://dummyjson.com/products/categories`),
-  ]);
+  // DB에서 실제 상품 조회
+  const dbProducts = await prisma.product.findMany({
+    where: { isActive: true },
+    orderBy: { createdAt: "desc" },
+  });
 
-  let { products } = productsData;
+  // 더미 참고용 상품 (모바일 카테고리만)
+  const dummyData = await getData(`https://dummyjson.com/products/category/smartphones?limit=0`);
+  const dummyProducts = dummyData?.products || [];
+
+  let products = [...dbProducts]; // DB 상품을 메인으로
   const allProducts = [...products]; // Keep original for filters
 
-  // Extract unique brands from all products
+  // Extract unique brands from DB products only
   const uniqueBrands = [
-    ...new Set(allProducts.map((product: any) => product.brand)),
+    ...new Set(allProducts.map((product: any) => product.brand).filter(Boolean)),
   ].sort();
 
-  // Apply filters
-  if (params.category) {
+  // 카테고리 필터링 - smartphones는 더미에서 가져오기
+  if (params.category === "smartphones") {
+    products = dummyProducts;
+  } else if (params.category) {
+    // 다른 카테고리는 DB에서만
     switch (params.category) {
       case "bestsellers":
-        products = getBestSellers(products);
+        products = getBestSellers(dbProducts);
         break;
       case "new":
-        products = getNewArrivals(products);
+        products = getNewArrivals(dbProducts);
         break;
       case "offers":
-        products = getOffers(products);
+        products = getOffers(dbProducts);
         break;
       default:
-        products = getProductsByCategory(products, params.category);
+        products = getProductsByCategory(dbProducts, params.category);
     }
   }
 
-  // Filter by search term
+  // Filter by search term (DB에서만 검색)
   if (params.search) {
     products = searchProducts(products, params.search);
   }
@@ -164,7 +175,10 @@ const ProductsPage = async ({ searchParams }: Props) => {
         {/* Sidebar Filters */}
         <div className="w-full lg:w-1/5">
           <EnhancedProductsSideNav
-            categories={categoriesData}
+            categories={[
+              ...new Set(dbProducts.map((p: any) => p.category).filter(Boolean)),
+              "smartphones", // 더미 참고용 카테고리
+            ]}
             brands={uniqueBrands}
             allProducts={allProducts}
           />

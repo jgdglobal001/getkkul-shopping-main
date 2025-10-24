@@ -31,12 +31,13 @@ export const useProductSearch = ({
   const API_BASE_URL =
     process.env.NEXT_PUBLIC_API_BASE_URL || "https://dummyjson.com";
 
-  // Fetch all products on hook initialization (fallback)
+  // Fetch all products on hook initialization (DB에서만)
   useEffect(() => {
     const getProducts = async () => {
-      const endpoint = `${API_BASE_URL}/products`;
       try {
-        const data = await getData(endpoint);
+        // DB에서 상품 조회
+        const response = await fetch("/api/products/search?q=");
+        const data = await response.json();
         setProducts(data?.products || []);
         // Set first 10 products as suggested/trending products
         setSuggestedProducts((data?.products || []).slice(0, 10));
@@ -45,9 +46,9 @@ export const useProductSearch = ({
       }
     };
     getProducts();
-  }, [API_BASE_URL]);
+  }, []);
 
-  // Search function using API endpoint
+  // Search function using DB API endpoint only
   const performSearch = async (searchTerm: string) => {
     if (!searchTerm.trim()) {
       setFilteredProducts([]);
@@ -60,11 +61,10 @@ export const useProductSearch = ({
     setHasSearched(true);
 
     try {
-      // Use API search endpoint for better results
-      const searchEndpoint = `${API_BASE_URL}/products/search?q=${encodeURIComponent(
-        searchTerm
-      )}&limit=10`;
-      const searchData = await getData(searchEndpoint);
+      // DB에서만 검색 (더미 검색 제외)
+      const searchEndpoint = `/api/products/search?q=${encodeURIComponent(searchTerm)}`;
+      const response = await fetch(searchEndpoint);
+      const searchData = await response.json();
 
       if (searchData?.products) {
         setFilteredProducts(searchData.products);

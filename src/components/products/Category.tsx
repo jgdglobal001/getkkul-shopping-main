@@ -20,7 +20,7 @@ const Category = ({ categories = [], allProducts = [] }: CategoryProps) => {
     if (!allProducts || allProducts.length === 0) return 0;
     return allProducts.filter(
       (product: any) =>
-        product.category.toLowerCase() === categorySlug.toLowerCase()
+        product.category && product.category.toLowerCase() === categorySlug.toLowerCase()
     ).length;
   };
 
@@ -33,7 +33,7 @@ const Category = ({ categories = [], allProducts = [] }: CategoryProps) => {
         // Products with rating >= 4.5 or high review count
         return allProducts.filter(
           (product: any) =>
-            product.rating >= 4.5 ||
+            (product.rating && product.rating >= 4.5) ||
             (product.reviews && product.reviews.length > 50)
         ).length;
       case "new":
@@ -42,7 +42,7 @@ const Category = ({ categories = [], allProducts = [] }: CategoryProps) => {
       case "offers":
         // Products with discount percentage > 10%
         return allProducts.filter(
-          (product: any) => product.discountPercentage > 10
+          (product: any) => product.discountPercentage && product.discountPercentage > 10
         ).length;
       default:
         return 0;
@@ -120,23 +120,26 @@ const Category = ({ categories = [], allProducts = [] }: CategoryProps) => {
 
                 {/* Regular Categories */}
                 {categories.map((category, index) => {
-                  const isActive = currentCategory === category.slug;
-                  const count = getProductCountForCategory(category.slug);
+                  // Handle both string and object formats
+                  const categorySlug = typeof category === 'string' ? category : category.slug;
+                  const categoryName = typeof category === 'string' ? category : category.name;
+                  const isActive = currentCategory === categorySlug;
+                  const count = getProductCountForCategory(categorySlug);
                   return (
                     <div key={index} className="flex items-center">
                       <input
                         type="radio"
-                        id={`category-${category.slug}`}
+                        id={`category-${categorySlug}`}
                         name="category"
                         checked={isActive}
                         onChange={() => {}}
                         className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
                       />
                       <button
-                        onClick={() => handleCategoryClick(category.slug)}
+                        onClick={() => handleCategoryClick(categorySlug)}
                         className="ml-2 text-sm font-medium text-gray-900 hover:text-blue-600 transition-colors flex-1 text-left"
                       >
-                        {category.name} ({count})
+                        {categoryName} ({count})
                       </button>
                     </div>
                   );
