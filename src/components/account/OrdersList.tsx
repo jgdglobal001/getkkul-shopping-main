@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import PriceFormat from "@/components/PriceFormat";
 import {
@@ -46,6 +47,7 @@ export default function OrdersList({
   onOrdersChange,
 }: OrdersListProps) {
   const { data: session } = useSession();
+  const { t } = useTranslation();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -178,10 +180,10 @@ export default function OrdersList({
           <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 bg-gray-50">
             <div>
               <h3 className="text-lg font-semibold text-gray-900">
-                Order Details - {selectedOrder.orderId}
+                {t("account.order_details")} - {selectedOrder.orderId}
               </h3>
               <p className="text-sm text-gray-600">
-                Placed on {formatDate(selectedOrder.createdAt)}
+                {t("account.placed_on")} {formatDate(selectedOrder.createdAt)}
               </p>
             </div>
             <button
@@ -201,7 +203,7 @@ export default function OrdersList({
                   <FiPackage className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Status</p>
+                  <p className="text-sm text-gray-600">{t("account.status")}</p>
                   <span
                     className={`inline-flex px-2 py-1 text-xs font-medium rounded-full capitalize ${getStatusColor(
                       selectedOrder.status
@@ -217,7 +219,7 @@ export default function OrdersList({
                   <FiCreditCard className="w-5 h-5 text-green-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Total Amount</p>
+                  <p className="text-sm text-gray-600">{t("account.total_amount")}</p>
                   <p className="font-semibold text-gray-900">
                     <PriceFormat amount={parseFloat(selectedOrder.amount)} />
                   </p>
@@ -229,7 +231,7 @@ export default function OrdersList({
                   <FiCalendar className="w-5 h-5 text-purple-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">Payment Status</p>
+                  <p className="text-sm text-gray-600">{t("account.payment_status")}</p>
                   <p className="font-medium text-gray-900 capitalize">
                     {selectedOrder.paymentStatus}
                   </p>
@@ -240,7 +242,7 @@ export default function OrdersList({
             {/* Order Items */}
             <div>
               <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                Items ({selectedOrder.items.length})
+                {t("account.items")} ({selectedOrder.items.length})
               </h4>
               <div className="space-y-4">
                 {selectedOrder.items.map((item, index) => (
@@ -295,7 +297,7 @@ export default function OrdersList({
                 onClick={closeOrderModal}
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
               >
-                Close
+                {t("common.close")}
               </button>
               {selectedOrder.status.toLowerCase() === "confirmed" &&
                 selectedOrder.paymentStatus.toLowerCase() === "paid" && (
@@ -303,7 +305,7 @@ export default function OrdersList({
                     href={`/account/orders/${selectedOrder.id}`}
                     className="px-4 py-2 text-sm font-medium text-white bg-theme-color rounded-md hover:bg-theme-color/90 transition-colors"
                   >
-                    Track Order
+                    {t("account.track_order")}
                   </Link>
                 )}
               {selectedOrder.paymentStatus.toLowerCase() === "pending" && (
@@ -311,7 +313,7 @@ export default function OrdersList({
                   href={`/checkout?orderId=${selectedOrder.id}`}
                   className="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 transition-colors"
                 >
-                  Pay Now
+                  {t("account.pay_now")}
                 </Link>
               )}
             </div>
@@ -326,8 +328,8 @@ export default function OrdersList({
       <div className="space-y-4">
         {showHeader && (
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Order History</h2>
-            <p className="text-gray-600">Track and manage your orders</p>
+            <h2 className="text-2xl font-bold text-gray-900">{t("account.order_history")}</h2>
+            <p className="text-gray-600">{t("account.track_manage_orders")}</p>
           </div>
         )}
         {[...Array(3)].map((_, i) => (
@@ -351,14 +353,14 @@ export default function OrdersList({
       <div className="text-center py-12">
         <div className="text-red-600 mb-2">⚠️</div>
         <h3 className="text-lg font-medium text-gray-900 mb-2">
-          Error Loading Orders
+          {t("account.error_loading_orders")}
         </h3>
         <p className="text-gray-600 mb-4">{error}</p>
         <button
           onClick={fetchOrders}
           className="px-4 py-2 bg-theme-color text-white rounded-lg hover:bg-theme-color/90 transition-colors"
         >
-          Try Again
+          {t("common.try_again")}
         </button>
       </div>
     );
@@ -369,23 +371,22 @@ export default function OrdersList({
       <div className="text-center py-12">
         {showHeader && (
           <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Order History</h2>
-            <p className="text-gray-600">Track and manage your orders</p>
+            <h2 className="text-2xl font-bold text-gray-900">{t("account.order_history")}</h2>
+            <p className="text-gray-600">{t("account.track_manage_orders")}</p>
           </div>
         )}
         <div className="text-6xl mb-4">🛍️</div>
         <h3 className="text-lg font-medium text-gray-900 mb-2">
-          No Orders Yet
+          {t("account.no_orders_yet")}
         </h3>
         <p className="text-gray-600 mb-6">
-          Looks like you haven&apos;t placed any orders yet. Start shopping to
-          see your orders here.
+          {t("account.no_orders_desc")}
         </p>
         <Link
           href="/products"
           className="inline-block px-6 py-3 bg-theme-color text-white rounded-lg hover:bg-theme-color/90 transition-colors"
         >
-          Start Shopping
+          {t("common.start_shopping")}
         </Link>
       </div>
     );
@@ -395,9 +396,9 @@ export default function OrdersList({
     <div className="w-full min-w-0">
       {showHeader && (
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">Order History</h2>
+          <h2 className="text-2xl font-bold text-gray-900">{t("account.order_history")}</h2>
           <p className="text-gray-600">
-            {orders.length} order{orders.length !== 1 ? "s" : ""} found
+            {orders.length} {t("account.orders_found")}
           </p>
         </div>
       )}
@@ -407,8 +408,7 @@ export default function OrdersList({
         <div className="mb-4 flex items-center justify-between bg-blue-50 border border-blue-200 rounded-lg p-4">
           <div className="flex items-center">
             <span className="text-sm text-blue-700">
-              {selectedOrders.length} order
-              {selectedOrders.length !== 1 ? "s" : ""} selected
+              {selectedOrders.length} {t("account.orders_selected")}
             </span>
           </div>
           <button
@@ -418,8 +418,8 @@ export default function OrdersList({
           >
             <FiTrash2 className="w-4 h-4 mr-2" />
             {isDeleting
-              ? "Deleting..."
-              : `Delete Selected (${selectedOrders.length})`}
+              ? t("common.deleting")
+              : `${t("common.delete_selected")} (${selectedOrders.length})`}
           </button>
         </div>
       )}
@@ -442,22 +442,22 @@ export default function OrdersList({
                   />
                 </th>
                 <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
-                  Order
+                  {t("account.order")}
                 </th>
                 <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
-                  Date
+                  {t("common.date")}
                 </th>
                 <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
-                  Items
+                  {t("account.items")}
                 </th>
                 <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
-                  Status
+                  {t("account.status")}
                 </th>
                 <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
-                  Total
+                  {t("account.total")}
                 </th>
                 <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
-                  Actions
+                  {t("common.actions")}
                 </th>
               </tr>
             </thead>
@@ -663,7 +663,7 @@ export default function OrdersList({
                   className="flex items-center justify-center px-3 py-1 text-xs border border-gray-300 rounded hover:bg-gray-50 transition-colors whitespace-nowrap"
                 >
                   <FiEye className="w-3 h-3 mr-1" />
-                  View
+                  {t("common.view")}
                 </button>
                 {order.status.toLowerCase() === "confirmed" &&
                   order.paymentStatus.toLowerCase() === "paid" && (
@@ -671,7 +671,7 @@ export default function OrdersList({
                       href={`/account/orders/${order.id}`}
                       className="flex items-center justify-center px-3 py-1 text-xs bg-theme-color text-white rounded hover:bg-theme-color/90 transition-colors whitespace-nowrap"
                     >
-                      Track
+                      {t("account.track")}
                     </Link>
                   )}
                 {order.paymentStatus.toLowerCase() === "pending" && (
@@ -679,7 +679,7 @@ export default function OrdersList({
                     href={`/checkout?orderId=${order.id}`}
                     className="flex items-center justify-center px-3 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700 transition-colors whitespace-nowrap"
                   >
-                    Pay Now
+                    {t("account.pay_now")}
                   </Link>
                 )}
               </div>
@@ -703,26 +703,24 @@ export default function OrdersList({
               <FiTrash2 className="w-6 h-6 text-red-600" />
             </div>
             <h3 className="text-lg font-medium text-gray-900 text-center mb-2">
-              Delete Selected Orders
+              {t("account.delete_orders")}
             </h3>
             <p className="text-sm text-gray-500 text-center mb-6">
-              Are you sure you want to delete {selectedOrders.length} order
-              {selectedOrders.length !== 1 ? "s" : ""}? This action cannot be
-              undone.
+              {t("account.delete_orders_confirm", { count: selectedOrders.length })}
             </p>
             <div className="flex space-x-3">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
                 className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
               >
-                Cancel
+                {t("common.cancel")}
               </button>
               <button
                 onClick={handleDeleteSelected}
                 disabled={isDeleting}
                 className="flex-1 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 disabled:opacity-50"
               >
-                {isDeleting ? "Deleting..." : "Delete"}
+                {isDeleting ? t("common.deleting") : t("common.delete")}
               </button>
             </div>
           </div>

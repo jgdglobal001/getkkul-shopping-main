@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 interface TabItem {
   id: string;
@@ -21,6 +22,7 @@ interface AccountLayoutProps {
 export default function AccountLayout({ children }: AccountLayoutProps) {
   const { data: session } = useSession();
   const pathname = usePathname();
+  const { t } = useTranslation();
   const [orderCount, setOrderCount] = useState(0);
 
   // Check if user is admin
@@ -31,38 +33,38 @@ export default function AccountLayout({ children }: AccountLayoutProps) {
   const regularTabs: TabItem[] = [
     {
       id: "profile",
-      label: "Profile",
+      label: t("account.profile"),
       icon: "👤",
       path: "/account",
     },
     {
       id: "addresses",
-      label: "Addresses",
+      label: t("account.addresses"),
       icon: "📍",
       path: "/account/addresses",
     },
     {
       id: "orders",
-      label: "Orders",
+      label: t("account.orders"),
       icon: "🛍️",
       path: "/account/orders",
       count: orderCount,
     },
     {
       id: "payment",
-      label: "Payment",
+      label: t("account.payment"),
       icon: "💳",
       path: "/account/payment",
     },
     {
       id: "notifications",
-      label: "Notifications",
+      label: t("account.notifications"),
       icon: "🔔",
       path: "/account/notifications",
     },
     {
       id: "settings",
-      label: "Settings",
+      label: t("account.settings"),
       icon: "⚙️",
       path: "/account/settings",
     },
@@ -71,19 +73,19 @@ export default function AccountLayout({ children }: AccountLayoutProps) {
   const adminTabs: TabItem[] = [
     {
       id: "dashboard",
-      label: "Dashboard",
+      label: t("account.dashboard"),
       icon: "📊",
       path: "/account/admin",
     },
     {
       id: "profile",
-      label: "Profile",
+      label: t("account.profile"),
       icon: "👤",
       path: "/account",
     },
     {
       id: "settings",
-      label: "Settings",
+      label: t("account.settings"),
       icon: "⚙️",
       path: "/account/settings",
     },
@@ -119,12 +121,12 @@ export default function AccountLayout({ children }: AccountLayoutProps) {
       <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">
-            {isAdmin ? "Admin Dashboard" : "My Account"}
+            {isAdmin ? t("account.admin_dashboard") : t("account.my_account")}
           </h1>
           <p className="text-gray-600 mt-2">
             {isAdmin
-              ? "Manage users, orders, analytics, and system settings"
-              : "Manage your profile, addresses, orders, and account settings"}
+              ? t("account.manage_system")
+              : t("account.manage_profile")}
           </p>
         </div>
 
@@ -158,7 +160,7 @@ export default function AccountLayout({ children }: AccountLayoutProps) {
           {/* Mobile Dropdown */}
           <div className="md:hidden">
             <label htmlFor="tab-select" className="sr-only">
-              Select a section
+              {t("account.select_section")}
             </label>
             <select
               id="tab-select"

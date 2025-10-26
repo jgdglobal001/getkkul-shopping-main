@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { useTranslation } from "react-i18next";
 import Sidebar from "./Sidebar";
 import AddressForm from "./AddressForm";
 import { getCountryByCode } from "./countryData";
@@ -26,6 +27,7 @@ export default function AddressManagement({
   onAddressesChange,
 }: AddressManagementProps) {
   const { data: session } = useSession();
+  const { t } = useTranslation();
   const [addresses, setAddresses] = useState<Address[]>(initialAddresses);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -204,12 +206,12 @@ export default function AddressManagement({
       <div className="space-y-6">
         {/* Header */}
         <div className="flex justify-between items-center">
-          <h2 className="text-xl font-semibold">Manage Addresses</h2>
+          <h2 className="text-xl font-semibold">{t("account.manage_addresses")}</h2>
           <button
             onClick={() => setShowAddSidebar(true)}
             className="px-4 py-2 bg-theme-color text-white rounded-md hover:bg-theme-color/90 transition-colors"
           >
-            Add New Address
+            {t("account.add_new_address")}
           </button>
         </div>
 
@@ -232,17 +234,16 @@ export default function AddressManagement({
               <div className="space-y-3">
                 <div className="text-4xl">📍</div>
                 <h3 className="text-lg font-medium text-gray-900">
-                  No Addresses Found
+                  {t("account.no_addresses")}
                 </h3>
                 <p className="text-gray-500 max-w-md mx-auto">
-                  You haven&apos;t added any addresses yet. Add your first
-                  address to get started.
+                  {t("account.no_addresses_desc")}
                 </p>
                 <button
                   onClick={() => setShowAddSidebar(true)}
                   className="inline-block mt-4 px-6 py-2 bg-theme-color text-white rounded-md hover:bg-theme-color/90 transition-colors"
                 >
-                  Add Your First Address
+                  {t("account.add_first_address")}
                 </button>
               </div>
             </div>
@@ -256,7 +257,7 @@ export default function AddressManagement({
                   <div className="flex-1">
                     {address.isDefault && (
                       <span className="inline-block bg-theme-color text-white px-2 py-1 rounded text-xs font-medium mb-3">
-                        DEFAULT ADDRESS
+                        {t("account.default_address")}
                       </span>
                     )}
                     <div className="text-gray-900">
@@ -277,7 +278,7 @@ export default function AddressManagement({
                       onClick={() => openEditSidebar(address, index)}
                       className="px-4 py-2 text-sm bg-blue-50 text-blue-600 rounded-md hover:bg-blue-100 transition-colors"
                     >
-                      Edit
+                      {t("common.edit")}
                     </button>
                     {!address.isDefault && (
                       <button
@@ -285,7 +286,7 @@ export default function AddressManagement({
                         disabled={loading}
                         className="px-4 py-2 text-sm bg-green-50 text-green-600 rounded-md hover:bg-green-100 disabled:opacity-50 transition-colors"
                       >
-                        Set Default
+                        {t("account.set_default")}
                       </button>
                     )}
                     <button
@@ -293,7 +294,7 @@ export default function AddressManagement({
                       disabled={loading}
                       className="px-4 py-2 text-sm bg-red-50 text-red-600 rounded-md hover:bg-red-100 disabled:opacity-50 transition-colors"
                     >
-                      Delete
+                      {t("common.delete")}
                     </button>
                   </div>
                 </div>
@@ -307,7 +308,7 @@ export default function AddressManagement({
       <Sidebar
         isOpen={showAddSidebar}
         onClose={closeSidebars}
-        title="Add New Address"
+        title={t("account.add_new_address")}
         width="w-96"
       >
         <AddressForm
@@ -322,7 +323,7 @@ export default function AddressManagement({
       <Sidebar
         isOpen={showEditSidebar}
         onClose={closeSidebars}
-        title="Edit Address"
+        title={t("account.edit_address")}
         width="w-96"
       >
         {editingAddress && (

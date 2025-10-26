@@ -87,11 +87,13 @@ export interface StateType {
 
 export interface Address {
   id?: string;
-  street: string;
-  city: string;
-  state: string;
+  recipientName: string;
+  phone: string;
   zipCode: string;
-  country: string;
+  address: string;
+  detailAddress: string;
+  deliveryRequest: string;
+  entranceCode?: string;
   isDefault?: boolean;
 }
 

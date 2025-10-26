@@ -1,16 +1,18 @@
 "use client";
 
 import { useSession } from "next-auth/react";
+import { useTranslation } from "react-i18next";
 
 export default function PaymentClient() {
   const { data: session } = useSession();
+  const { t } = useTranslation();
 
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Payment Methods</h1>
+        <h1 className="text-2xl font-bold text-gray-900">{t("account.payment_methods")}</h1>
         <p className="text-gray-600">
-          Manage your saved payment methods and billing information
+          {t("account.manage_payment")}
         </p>
       </div>
 
@@ -20,10 +22,10 @@ export default function PaymentClient() {
             <span className="text-3xl">💳</span>
           </div>
           <h3 className="text-lg font-medium text-gray-900 mb-2">
-            Payment Methods
+            {t("account.payment_methods")}
           </h3>
           <p className="text-gray-500 mb-6">
-            Manage your saved payment methods and billing information
+            {t("account.manage_payment")}
           </p>
 
           <div className="max-w-md mx-auto space-y-4">
@@ -35,17 +37,17 @@ export default function PaymentClient() {
                   </div>
                   <div>
                     <div className="font-medium">•••• •••• •••• 4242</div>
-                    <div className="text-sm text-gray-500">Expires 12/26</div>
+                    <div className="text-sm text-gray-500">{t("account.expires")} 12/26</div>
                   </div>
                 </div>
                 <button className="text-red-600 hover:text-red-800 text-sm">
-                  Remove
+                  {t("common.delete")}
                 </button>
               </div>
             </div>
 
             <button className="w-full p-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-theme-color hover:text-theme-color transition-colors">
-              + Add New Payment Method
+              + {t("account.add_payment_method")}
             </button>
           </div>
         </div>

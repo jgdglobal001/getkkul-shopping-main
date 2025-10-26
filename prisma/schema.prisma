@@ -74,16 +74,17 @@ model User {
 }
 
 model Address {
-  id        String  @id @default(cuid())
-  type      String
-  street    String
-  city      String
-  state     String
-  zipCode   String
-  country   String
-  isDefault Boolean @default(false)
-  userId    String
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id               String  @id @default(cuid())
+  recipientName    String
+  phone            String
+  zipCode          String
+  address          String  // 도로명 또는 지번 주소
+  detailAddress    String  // 상세주소
+  deliveryRequest  String  @default("문 앞")
+  entranceCode     String?
+  isDefault        Boolean @default(false)
+  userId           String
+  user             User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("addresses")
 }
@@ -258,4 +259,19 @@ model ProductAnswer {
   updatedAt   DateTime @updatedAt
 
   @@map("product_answers")
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  slug        String   @unique
+  description String?  @db.Text
+  image       String?
+  icon        String?
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("categories")
 }

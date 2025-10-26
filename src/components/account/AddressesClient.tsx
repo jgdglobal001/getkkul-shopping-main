@@ -2,6 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import AddressManagement from "@/components/account/AddressManagement";
 
 interface Address {
@@ -16,6 +17,7 @@ interface Address {
 
 export default function AddressesClient() {
   const { data: session } = useSession();
+  const { t } = useTranslation();
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -65,9 +67,9 @@ export default function AddressesClient() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Manage Addresses</h1>
+        <h1 className="text-2xl font-bold text-gray-900">{t("account.manage_addresses")}</h1>
         <p className="text-gray-600">
-          Add, edit, or remove your saved addresses
+          {t("account.manage_addresses_desc")}
         </p>
       </div>
       <AddressManagement

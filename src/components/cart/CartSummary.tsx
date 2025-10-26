@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 import Title from "../Title";
 import Button from "../ui/Button";
 import PriceFormat from "../PriceFormat";
@@ -18,6 +19,7 @@ interface Props {
 }
 
 const CartSummary = ({ cart }: Props) => {
+  const { t } = useTranslation();
   const [totalAmt, setTotalAmt] = useState(0);
   const [discountAmt, setDiscountAmt] = useState(0);
   const [shippingCost, setShippingCost] = useState(0);
@@ -65,7 +67,7 @@ const CartSummary = ({ cart }: Props) => {
     }
 
     if (!selectedAddress) {
-      alert("Please select a shipping address before placing your order.");
+      alert(t("cart.please_select_address"));
       return;
     }
 
@@ -117,7 +119,7 @@ const CartSummary = ({ cart }: Props) => {
       }
     } catch (error) {
       console.error("Error placing order:", error);
-      alert("Failed to place order. Please try again.");
+      alert(t("common.error_occurred"));
     } finally {
       setPlacing(false);
     }
@@ -127,7 +129,7 @@ const CartSummary = ({ cart }: Props) => {
 
   return (
     <section className="rounded-lg bg-gray-100 px-4 py-6 sm:p-10 lg:col-span-5 mt-16 lg:mt-0">
-      <Title>Cart Summary</Title>
+      <Title>{t("cart.cart_summary")}</Title>
 
       {/* Show different content based on authentication status */}
       {session?.user ? (
@@ -144,7 +146,7 @@ const CartSummary = ({ cart }: Props) => {
               <div className="flex items-center text-orange-800">
                 <FiAlertCircle className="text-orange-600 text-lg mr-2" />
                 <span className="text-sm font-medium">
-                  Please select a shipping address to proceed with checkout
+                  {t("cart.please_select_address")}
                 </span>
               </div>
             </div>
@@ -157,18 +159,17 @@ const CartSummary = ({ cart }: Props) => {
             <FaSignInAlt className="text-blue-600 text-lg mr-3 mt-0.5" />
             <div className="flex-1">
               <h3 className="text-blue-800 font-medium mb-2">
-                Login Required to Place Order
+                {t("cart.login_required_to_place_order")}
               </h3>
               <p className="text-blue-700 text-sm mb-3">
-                You can browse and add items to your cart, but you&apos;ll need
-                to sign in to complete your purchase and access checkout.
+                {t("cart.you_can_browse_and_add")}
               </p>
               <Link
                 href="/auth/signin?callbackUrl=/cart"
                 className="inline-flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium underline"
               >
                 <FaSignInAlt className="w-3 h-3" />
-                Sign in to continue
+                {t("cart.sign_in_to_continue")}
               </Link>
             </div>
           </div>
@@ -181,7 +182,7 @@ const CartSummary = ({ cart }: Props) => {
           <div className="flex items-center text-green-800">
             <CiDeliveryTruck className="text-green-600 text-xl mr-2" />
             <span className="text-sm font-medium">
-              🎉 Congratulations! You qualify for FREE shipping!
+              {t("cart.congratulations_free_shipping")}
             </span>
           </div>
         </div>
@@ -191,16 +192,21 @@ const CartSummary = ({ cart }: Props) => {
             <CiDeliveryTruck className="text-blue-600 text-xl mr-2" />
             <div className="text-sm">
               <div className="font-medium">
-                Add{" "}
-                <PriceFormat
-                  amount={freeShippingThreshold - (totalAmt - discountAmt)}
-                  className="font-bold"
-                />{" "}
-                more for FREE shipping!
+                {t("cart.add_more_for_free_shipping", {
+                  amount: (
+                    <PriceFormat
+                      amount={freeShippingThreshold - (totalAmt - discountAmt)}
+                      className="font-bold"
+                    />
+                  ),
+                })}
               </div>
               <div className="text-xs text-blue-600 mt-1">
-                Free shipping on orders over{" "}
-                <PriceFormat amount={freeShippingThreshold} />
+                {t("cart.free_shipping_on_orders_over", {
+                  amount: (
+                    <PriceFormat amount={freeShippingThreshold} />
+                  ),
+                })}
               </div>
             </div>
           </div>
@@ -209,30 +215,30 @@ const CartSummary = ({ cart }: Props) => {
 
       <div className="mt-5 flex flex-col gap-3">
         <div className="flex items-center justify-between">
-          <Title className="text-lg font-medium">Sub Total</Title>
+          <Title className="text-lg font-medium">{t("cart.sub_total")}</Title>
           <PriceFormat amount={totalAmt} />
         </div>
         <div className="flex items-center justify-between">
-          <Title className="text-lg font-medium">Discount</Title>
+          <Title className="text-lg font-medium">{t("cart.discount")}</Title>
           <PriceFormat amount={discountAmt} />
         </div>
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <Title className="text-lg font-medium">Shipping</Title>
+            <Title className="text-lg font-medium">{t("cart.shipping")}</Title>
             {isFreeShipping && (
               <span className="ml-2 text-xs bg-green-100 text-green-800 px-2 py-1 rounded-full">
-                FREE
+                {t("cart.free_shipping")}
               </span>
             )}
           </div>
           {isFreeShipping ? (
-            <span className="text-green-600 font-medium">Free</span>
+            <span className="text-green-600 font-medium">{t("cart.free")}</span>
           ) : (
             <PriceFormat amount={shippingCost} />
           )}
         </div>
         <div className="border-t border-gray-300 pt-3 flex items-center justify-between">
-          <Title className="text-lg font-bold">총 결제금액</Title>
+          <Title className="text-lg font-bold">{t("cart.total_payment")}</Title>
           <PriceFormat
             amount={totalAmt - discountAmt + shippingCost}
             className="text-lg font-bold text-theme-color"
@@ -246,16 +252,16 @@ const CartSummary = ({ cart }: Props) => {
           disabled={isCheckoutDisabled}
         >
           {!session?.user ? (
-            "주문하려면 로그인하세요"
+            t("cart.login_to_order")
           ) : placing ? (
             <>
               <FiLoader className="animate-spin mr-2" />
-              주문 처리 중...
+              {t("cart.placing_order")}
             </>
           ) : !selectedAddress ? (
-            "주소를 선택하여 주문하세요"
+            t("cart.select_address_to_checkout")
           ) : (
-            "주문하기"
+            t("cart.place_order")
           )}
         </Button>
       </div>

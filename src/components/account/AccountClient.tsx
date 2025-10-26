@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 import ProfileEditForm from "@/components/account/ProfileEditForm";
 import Sidebar from "@/components/account/Sidebar";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
@@ -28,6 +29,7 @@ interface Address {
 
 export default function AccountClient() {
   const { data: session, update } = useSession();
+  const { t } = useTranslation();
 
   // Sync user data between session and Redux store
   useUserSync();
@@ -317,10 +319,10 @@ export default function AccountClient() {
               <div className="mr-3 text-2xl">📍</div>
               <div>
                 <div className="font-medium text-gray-900 group-hover:text-theme-color">
-                  Manage Addresses
+                  {t("account.manage_addresses")}
                 </div>
                 <div className="text-sm text-gray-500">
-                  {profile?.addresses?.length || 0} saved
+                  {profile?.addresses?.length || 0} {t("account.saved_addresses")}
                 </div>
               </div>
             </Link>
@@ -332,9 +334,9 @@ export default function AccountClient() {
               <div className="mr-3 text-2xl">🛍️</div>
               <div>
                 <div className="font-medium text-gray-900 group-hover:text-theme-color">
-                  Order History
+                  {t("account.order_history")}
                 </div>
-                <div className="text-sm text-gray-500">{orderCount} orders</div>
+                <div className="text-sm text-gray-500">{orderCount} {t("account.total_orders")}</div>
               </div>
             </Link>
 
@@ -345,9 +347,9 @@ export default function AccountClient() {
               <div className="mr-3 text-2xl">💳</div>
               <div>
                 <div className="font-medium text-gray-900 group-hover:text-theme-color">
-                  Payment Methods
+                  {t("account.payment_methods")}
                 </div>
-                <div className="text-sm text-gray-500">Manage cards</div>
+                <div className="text-sm text-gray-500">{t("account.manage_payment")}</div>
               </div>
             </Link>
 
@@ -358,9 +360,9 @@ export default function AccountClient() {
               <div className="mr-3 text-2xl">⚙️</div>
               <div>
                 <div className="font-medium text-gray-900 group-hover:text-theme-color">
-                  Settings
+                  {t("account.settings")}
                 </div>
-                <div className="text-sm text-gray-500">Privacy & security</div>
+                <div className="text-sm text-gray-500">{t("account.manage_security")}</div>
               </div>
             </Link>
           </div>

@@ -7,7 +7,26 @@ export async function GET(request: NextRequest) {
     const session = await auth();
 
     if (!session?.user?.email) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      console.log("No session or email found");
+      return NextResponse.json(
+        {
+          error: "Unauthorized",
+          profile: {
+            firstName: "",
+            lastName: "",
+            phone: "",
+            addresses: [],
+          },
+          preferences: {
+            newsletter: false,
+            notifications: true,
+          },
+          cart: [],
+          wishlist: [],
+          orders: [],
+        },
+        { status: 200 }
+      );
     }
 
     // Get email from query params or session
@@ -42,7 +61,26 @@ export async function GET(request: NextRequest) {
     });
 
     if (!user) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      console.log("User not found for email:", email);
+      return NextResponse.json(
+        {
+          error: "User not found",
+          profile: {
+            firstName: "",
+            lastName: "",
+            phone: "",
+            addresses: [],
+          },
+          preferences: {
+            newsletter: false,
+            notifications: true,
+          },
+          cart: [],
+          wishlist: [],
+          orders: [],
+        },
+        { status: 200 }
+      );
     }
 
     // Transform data to match expected format
@@ -89,14 +127,83 @@ export async function PUT(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, phone, firstName, lastName, image, newsletter, notifications } = body;
+    const { name, phone, firstName, lastName, image, newsletter, notifications, addAddress, updateAddress, email } = body;
+
+    // Use provided email or session email
+    const userEmail = email || session.user.email;
 
     const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
+      where: { email: userEmail },
     });
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    // Handle address update
+    if (updateAddress) {
+      const { id, ...updateData } = updateAddress;
+
+      await prisma.address.update({
+        where: { id },
+        data: {
+          recipientName: updateData.recipientName,
+          phone: updateData.phone,
+          zipCode: updateData.zipCode,
+          address: updateData.address,
+          detailAddress: updateData.detailAddress,
+          deliveryRequest: updateData.deliveryRequest || "문 앞",
+          entranceCode: updateData.entranceCode || null,
+          isDefault: updateData.isDefault || false,
+        },
+      });
+
+      // Fetch all addresses for this user
+      const allAddresses = await prisma.address.findMany({
+        where: { userId: user.id },
+      });
+
+      return NextResponse.json({
+        success: true,
+        addresses: allAddresses,
+      });
+    }
+
+    // Handle address addition
+    if (addAddress) {
+      // If this is the first address, make it default
+      let isDefault = addAddress.isDefault || false;
+      const existingAddresses = await prisma.address.findMany({
+        where: { userId: user.id },
+      });
+      if (existingAddresses.length === 0) {
+        isDefault = true;
+      }
+
+      // Create the address
+      await prisma.address.create({
+        data: {
+          recipientName: addAddress.recipientName,
+          phone: addAddress.phone,
+          zipCode: addAddress.zipCode,
+          address: addAddress.address,
+          detailAddress: addAddress.detailAddress,
+          deliveryRequest: addAddress.deliveryRequest || "문 앞",
+          entranceCode: addAddress.entranceCode || null,
+          isDefault: isDefault,
+          userId: user.id,
+        },
+      });
+
+      // Fetch all addresses for this user
+      const allAddresses = await prisma.address.findMany({
+        where: { userId: user.id },
+      });
+
+      return NextResponse.json({
+        success: true,
+        addresses: allAddresses,
+      });
     }
 
     // Prepare update data, only include defined fields

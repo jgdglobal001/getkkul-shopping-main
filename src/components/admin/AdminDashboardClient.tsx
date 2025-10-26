@@ -18,6 +18,7 @@ import {
   FiEye,
   FiEdit,
   FiPlus,
+  FiGrid,
 } from "react-icons/fi";
 import { useSession } from "next-auth/react";
 
@@ -312,6 +313,17 @@ export default function AdminDashboardClient() {
               <div className="text-sm font-medium text-purple-900">상품 관리</div>
               <div className="text-xs text-purple-600 text-center mt-1">
                 {stats.totalProducts}개 상품
+              </div>
+            </Link>
+
+            <Link
+              href="/account/admin/categories"
+              className="flex flex-col items-center p-4 bg-gradient-to-br from-indigo-50 to-indigo-100 hover:from-indigo-100 hover:to-indigo-200 rounded-lg transition-all group"
+            >
+              <FiGrid className="h-8 w-8 text-indigo-600 mb-2 group-hover:scale-110 transition-transform" />
+              <div className="text-sm font-medium text-indigo-900">카테고리 관리</div>
+              <div className="text-xs text-indigo-600 text-center mt-1">
+                카테고리 설정
               </div>
             </Link>
 
