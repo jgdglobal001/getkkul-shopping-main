@@ -243,6 +243,8 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
     }
   };
 
+
+
   // 상세 이미지 제거
   const removeDetailImage = (imageToRemove: string) => {
     setFormData(prev => ({
@@ -575,6 +577,8 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
             <FiImage className="w-5 h-5 text-purple-600" />
             <h2 className="text-xl font-semibold text-gray-900">이미지 관리</h2>
           </div>
+
+
 
           {/* 썸네일 */}
           <div className="mb-6">
