@@ -19,6 +19,7 @@ export interface ProductType {
   discountPercentage: number;
   id: string | number;
   images: string[];
+  detailImages?: string[];
   meta?: {
     createdAt?: string;
     updatedAt?: string;
@@ -42,6 +43,38 @@ export interface ProductType {
   isActive?: boolean;
   createdAt?: string | Date;
   updatedAt?: string | Date;
+  // ⭐ 필수 표기 정보
+  productName?: string;
+  modelNumber?: string;
+  size?: string;
+  material?: string;
+  releaseDate?: string;
+  manufacturer?: string;
+  madeInCountry?: string;
+  warrantyStandard?: string;
+  asResponsible?: string;
+  kcCertification?: string;
+  color?: string;
+  productComposition?: string;
+  detailedSpecs?: string;
+  // ⭐ 배송 정보
+  shippingMethod?: string;
+  shippingCost?: string;
+  bundleShipping?: string;
+  shippingPeriod?: string;
+  // ⭐ 교환/반품 정보
+  exchangeReturnCost?: string;
+  exchangeReturnDeadline?: string;
+  exchangeReturnLimitations?: string;
+  clothingLimitations?: string;
+  foodLimitations?: string;
+  electronicsLimitations?: string;
+  autoLimitations?: string;
+  mediaLimitations?: string;
+  // ⭐ 판매자 정보
+  sellerName?: string;
+  sellerPhone?: string;
+  sellerLegalNotice?: string;
 }
 
 export interface StateType {
@@ -124,4 +157,34 @@ export interface OrderStatusHistory {
   changedByRole: UserRole;
   timestamp: string;
   notes?: string;
+}
+
+export interface ProductQuestion {
+  id: string;
+  productId: string;
+  userId: string;
+  question: string;
+  isAnswered: boolean;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+  };
+  answers?: ProductAnswer[];
+}
+
+export interface ProductAnswer {
+  id: string;
+  questionId: string;
+  userId: string;
+  answer: string;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+  };
 }

@@ -9,9 +9,10 @@ import { FaRegEye } from "react-icons/fa";
 import { paymentImage } from "@/assets";
 import { MdStar } from "react-icons/md";
 import ProductPrice from "@/components/ProductPrice";
-import ProductFeatures from "@/components/ProductFeatures";
-import ProductSpecifications from "@/components/ProductSpecifications";
+import ProductQA from "@/components/ProductQA";
 import RelatedProducts from "@/components/RelatedProducts";
+import ProductRequiredInfo from "@/components/ProductRequiredInfo";
+import ProductDetailTabs from "@/components/ProductDetailTabs";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 
@@ -61,6 +62,19 @@ const SingleProductPage = async ({ params }: Props) => {
     });
     allProducts = dbRelated;
   }
+
+  // 상품 질문 조회
+  const questions = await prisma.productQuestion.findMany({
+    where: { productId: product.id },
+    include: {
+      user: { select: { name: true } },
+      answers: {
+        include: { user: { select: { name: true } } },
+        orderBy: { createdAt: "asc" }
+      }
+    },
+    orderBy: { createdAt: "desc" }
+  });
 
   const regularPrice = product?.price;
   const discountedPrice = product?.price + product?.discountPercentage / 100;
@@ -155,9 +169,19 @@ const SingleProductPage = async ({ params }: Props) => {
           </div>
         </div>
 
-        {/* Product Specifications */}
+        {/* 필수 표기 정보 */}
         <div className="col-span-2">
-          <ProductSpecifications product={product} />
+          <ProductRequiredInfo product={product} />
+        </div>
+
+        {/* 상세 정보 탭 */}
+        <div className="col-span-2">
+          <ProductDetailTabs product={product} />
+        </div>
+
+        {/* 고객 문의 */}
+        <div className="col-span-2">
+          <ProductQA product={product} questions={questions} />
         </div>
 
         {/* Reviews */}
@@ -189,11 +213,6 @@ const SingleProductPage = async ({ params }: Props) => {
             </div>
           ))}
         </div>
-      </Container>
-
-      {/* Product Features Section */}
-      <Container>
-        <ProductFeatures />
       </Container>
 
       {/* Related Products Section */}

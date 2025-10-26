@@ -14,6 +14,15 @@ const initialState: InitialState = {
   userInfo: null,
 };
 
+// 상품 객체를 직렬화 가능하게 변환
+const serializeProduct = (product: ProductType): ProductType => {
+  return {
+    ...product,
+    createdAt: product.createdAt ? new Date(product.createdAt).toISOString() : undefined,
+    updatedAt: product.updatedAt ? new Date(product.updatedAt).toISOString() : undefined,
+  };
+};
+
 export const shofySlice = createSlice({
   name: "shofy",
   initialState,
@@ -25,7 +34,7 @@ export const shofySlice = createSlice({
       if (existingProduct) {
         existingProduct.quantity! += 1;
       } else {
-        state.cart.push({ ...action.payload, quantity: 1 });
+        state.cart.push({ ...serializeProduct(action.payload), quantity: 1 });
       }
     },
     increaseQuantity: (state, action) => {
@@ -60,7 +69,7 @@ export const shofySlice = createSlice({
           (item) => item?.id !== action.payload.id
         );
       } else {
-        state.favorite.push(action.payload);
+        state.favorite.push(serializeProduct(action.payload));
       }
     },
     resetFavorite: (state) => {

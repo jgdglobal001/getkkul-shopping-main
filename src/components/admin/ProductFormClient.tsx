@@ -15,6 +15,8 @@ import {
   FiDollarSign,
   FiInfo,
   FiSettings,
+  FiTruck,
+  FiUser,
 } from "react-icons/fi";
 import Container from "@/components/Container";
 
@@ -32,18 +34,39 @@ interface ProductFormData {
   detailImages: string[];
   tags: string[];
   sku: string;
-  weight: string;
-  dimensions: {
-    width: string;
-    height: string;
-    depth: string;
-  };
-  warrantyInformation: string;
-  shippingInformation: string;
-  returnPolicy: string;
-  minimumOrderQuantity: string;
-  availabilityStatus: string;
   isActive: boolean;
+  // ⭐ 필수 표기 정보
+  productName: string;
+  modelNumber: string;
+  size: string;
+  material: string;
+  releaseDate: string;
+  manufacturer: string;
+  madeInCountry: string;
+  warrantyStandard: string;
+  asResponsible: string;
+  kcCertification: string;
+  color: string;
+  productComposition: string;
+  detailedSpecs: string;
+  // ⭐ 배송 정보
+  shippingMethod: string;
+  shippingCost: string;
+  bundleShipping: string;
+  shippingPeriod: string;
+  // ⭐ 교환/반품 정보
+  exchangeReturnCost: string;
+  exchangeReturnDeadline: string;
+  exchangeReturnLimitations: string;
+  clothingLimitations: string;
+  foodLimitations: string;
+  electronicsLimitations: string;
+  autoLimitations: string;
+  mediaLimitations: string;
+  // ⭐ 판매자 정보
+  sellerName: string;
+  sellerPhone: string;
+  sellerLegalNotice: string;
 }
 
 interface ProductFormClientProps {
@@ -74,18 +97,39 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
     detailImages: [],
     tags: [],
     sku: "",
-    weight: "",
-    dimensions: {
-      width: "",
-      height: "",
-      depth: "",
-    },
-    warrantyInformation: "",
-    shippingInformation: "",
-    returnPolicy: "",
-    minimumOrderQuantity: "1",
-    availabilityStatus: "In Stock",
     isActive: true,
+    // ⭐ 필수 표기 정보
+    productName: "",
+    modelNumber: "",
+    size: "",
+    material: "",
+    releaseDate: "",
+    manufacturer: "",
+    madeInCountry: "",
+    warrantyStandard: "",
+    asResponsible: "",
+    kcCertification: "",
+    color: "",
+    productComposition: "",
+    detailedSpecs: "",
+    // ⭐ 배송 정보
+    shippingMethod: "",
+    shippingCost: "",
+    bundleShipping: "",
+    shippingPeriod: "",
+    // ⭐ 교환/반품 정보
+    exchangeReturnCost: "",
+    exchangeReturnDeadline: "",
+    exchangeReturnLimitations: "",
+    clothingLimitations: "",
+    foodLimitations: "",
+    electronicsLimitations: "",
+    autoLimitations: "",
+    mediaLimitations: "",
+    // ⭐ 판매자 정보
+    sellerName: "",
+    sellerPhone: "",
+    sellerLegalNotice: "",
   });
 
   // 카테고리 목록
@@ -142,18 +186,39 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
         detailImages: Array.isArray(product.detailImages) ? product.detailImages : [],
         tags: Array.isArray(product.tags) ? product.tags : [],
         sku: product.sku || "",
-        weight: product.weight?.toString() || "",
-        dimensions: {
-          width: product.dimensions?.width?.toString() || "",
-          height: product.dimensions?.height?.toString() || "",
-          depth: product.dimensions?.depth?.toString() || "",
-        },
-        warrantyInformation: product.warrantyInformation || "",
-        shippingInformation: product.shippingInformation || "",
-        returnPolicy: product.returnPolicy || "",
-        minimumOrderQuantity: product.minimumOrderQuantity?.toString() || "1",
-        availabilityStatus: product.availabilityStatus || "In Stock",
         isActive: product.isActive !== undefined ? product.isActive : true,
+        // ⭐ 필수 표기 정보
+        productName: product.productName || "",
+        modelNumber: product.modelNumber || "",
+        size: product.size || "",
+        material: product.material || "",
+        releaseDate: product.releaseDate || "",
+        manufacturer: product.manufacturer || "",
+        madeInCountry: product.madeInCountry || "",
+        warrantyStandard: product.warrantyStandard || "",
+        asResponsible: product.asResponsible || "",
+        kcCertification: product.kcCertification || "",
+        color: product.color || "",
+        productComposition: product.productComposition || "",
+        detailedSpecs: product.detailedSpecs || "",
+        // ⭐ 배송 정보
+        shippingMethod: product.shippingMethod || "",
+        shippingCost: product.shippingCost || "",
+        bundleShipping: product.bundleShipping || "",
+        shippingPeriod: product.shippingPeriod || "",
+        // ⭐ 교환/반품 정보
+        exchangeReturnCost: product.exchangeReturnCost || "",
+        exchangeReturnDeadline: product.exchangeReturnDeadline || "",
+        exchangeReturnLimitations: product.exchangeReturnLimitations || "",
+        clothingLimitations: product.clothingLimitations || "",
+        foodLimitations: product.foodLimitations || "",
+        electronicsLimitations: product.electronicsLimitations || "",
+        autoLimitations: product.autoLimitations || "",
+        mediaLimitations: product.mediaLimitations || "",
+        // ⭐ 판매자 정보
+        sellerName: product.sellerName || "",
+        sellerPhone: product.sellerPhone || "",
+        sellerLegalNotice: product.sellerLegalNotice || "",
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "상품 정보를 불러오는 중 오류가 발생했습니다");
@@ -782,22 +847,6 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* 무게 */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                무게 (kg)
-              </label>
-              <input
-                type="number"
-                step="0.01"
-                min="0"
-                value={formData.weight}
-                onChange={(e) => handleInputChange("weight", e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
-                placeholder="0.00"
-              />
-            </div>
-
             {/* 평점 */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -815,87 +864,433 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
               />
             </div>
 
-            {/* 치수 */}
-            <div className="lg:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                치수 (cm)
-              </label>
-              <div className="grid grid-cols-3 gap-4">
-                <div>
-                  <input
-                    type="number"
-                    step="0.1"
-                    min="0"
-                    value={formData.dimensions.width}
-                    onChange={(e) => handleNestedChange("dimensions", "width", e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
-                    placeholder="너비"
-                  />
-                </div>
-                <div>
-                  <input
-                    type="number"
-                    step="0.1"
-                    min="0"
-                    value={formData.dimensions.height}
-                    onChange={(e) => handleNestedChange("dimensions", "height", e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
-                    placeholder="높이"
-                  />
-                </div>
-                <div>
-                  <input
-                    type="number"
-                    step="0.1"
-                    min="0"
-                    value={formData.dimensions.depth}
-                    onChange={(e) => handleNestedChange("dimensions", "depth", e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
-                    placeholder="깊이"
-                  />
-                </div>
-              </div>
+            {/* ⭐ 필수 표기 정보 섹션 */}
+            <div className="lg:col-span-2 border-t-2 border-theme-color pt-6 mt-6">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <FiInfo className="w-5 h-5 text-theme-color" />
+                필수 표기 정보
+              </h3>
             </div>
 
-            {/* 보증 정보 */}
-            <div className="lg:col-span-2">
+            {/* 품명 및 모델명 */}
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                보증 정보
+                품명 및 모델명
               </label>
-              <textarea
-                value={formData.warrantyInformation}
-                onChange={(e) => handleInputChange("warrantyInformation", e.target.value)}
-                rows={3}
+              <input
+                type="text"
+                value={formData.productName}
+                onChange={(e) => handleInputChange("productName", e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
-                placeholder="보증 기간 및 조건을 입력하세요"
+                placeholder="예: 갤럭시 S24 Ultra"
               />
             </div>
 
-            {/* 배송 정보 */}
+            {/* 모델명 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                모델명
+              </label>
+              <input
+                type="text"
+                value={formData.modelNumber}
+                onChange={(e) => handleInputChange("modelNumber", e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: SM-S921B"
+              />
+            </div>
+
+            {/* 크기 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                크기
+              </label>
+              <input
+                type="text"
+                value={formData.size}
+                onChange={(e) => handleInputChange("size", e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: 162.8 x 77.6 x 8.6mm"
+              />
+            </div>
+
+            {/* 색상 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                색상
+              </label>
+              <input
+                type="text"
+                value={formData.color}
+                onChange={(e) => handleInputChange("color", e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: 블랙, 화이트, 실버"
+              />
+            </div>
+
+            {/* 재질 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                재질
+              </label>
+              <input
+                type="text"
+                value={formData.material}
+                onChange={(e) => handleInputChange("material", e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: 알루미늄, 강화유리"
+              />
+            </div>
+
+            {/* 제품 구성 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                제품 구성
+              </label>
+              <input
+                type="text"
+                value={formData.productComposition}
+                onChange={(e) => handleInputChange("productComposition", e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: 본체, 충전기, 케이블, 설명서"
+              />
+            </div>
+
+            {/* 출시년월 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                출시년월
+              </label>
+              <input
+                type="text"
+                value={formData.releaseDate}
+                onChange={(e) => handleInputChange("releaseDate", e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: 2024년 1월"
+              />
+            </div>
+
+            {/* 제조자(수입자) */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                제조자(수입자)
+              </label>
+              <input
+                type="text"
+                value={formData.manufacturer}
+                onChange={(e) => handleInputChange("manufacturer", e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: 삼성전자"
+              />
+            </div>
+
+            {/* 제조국 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                제조국
+              </label>
+              <input
+                type="text"
+                value={formData.madeInCountry}
+                onChange={(e) => handleInputChange("madeInCountry", e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: 대한민국"
+              />
+            </div>
+
+            {/* 품질보증기준 */}
             <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
+                품질보증기준
+              </label>
+              <textarea
+                value={formData.warrantyStandard}
+                onChange={(e) => handleInputChange("warrantyStandard", e.target.value)}
+                rows={2}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: 1년 무상 보증"
+              />
+            </div>
+
+            {/* A/S 책임자와 전화번호 */}
+            <div className="lg:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                A/S 책임자와 전화번호
+              </label>
+              <textarea
+                value={formData.asResponsible}
+                onChange={(e) => handleInputChange("asResponsible", e.target.value)}
+                rows={2}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: 삼성전자 고객센터 1588-3366"
+              />
+            </div>
+
+            {/* KC 인증정보 */}
+            <div className="lg:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                KC 인증정보
+              </label>
+              <textarea
+                value={formData.kcCertification}
+                onChange={(e) => handleInputChange("kcCertification", e.target.value)}
+                rows={2}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: KC 인증번호, 인증 정보"
+              />
+            </div>
+
+            {/* 상품별 세부 사양 */}
+            <div className="lg:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                상품별 세부 사양
+              </label>
+              <textarea
+                value={formData.detailedSpecs}
+                onChange={(e) => handleInputChange("detailedSpecs", e.target.value)}
+                rows={3}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: CPU, RAM, 저장공간, 카메라 사양 등"
+              />
+            </div>
+
+            {/* ⭐ 배송 정보 섹션 */}
+            <div className="lg:col-span-2 border-t-2 border-theme-color pt-6 mt-6">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <FiTruck className="w-5 h-5 text-theme-color" />
                 배송 정보
+              </h3>
+            </div>
+
+            {/* 배송방법 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                배송방법
               </label>
-              <textarea
-                value={formData.shippingInformation}
-                onChange={(e) => handleInputChange("shippingInformation", e.target.value)}
-                rows={3}
+              <select
+                value={formData.shippingMethod}
+                onChange={(e) => handleInputChange("shippingMethod", e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
-                placeholder="배송 방법 및 소요 시간을 입력하세요"
+              >
+                <option value="">선택하세요</option>
+                <option value="일반배송">일반배송</option>
+                <option value="신선배송">신선배송</option>
+                <option value="냉장배송">냉장배송</option>
+                <option value="냉동배송">냉동배송</option>
+              </select>
+            </div>
+
+            {/* 배송비 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                배송비
+              </label>
+              <input
+                type="text"
+                value={formData.shippingCost}
+                onChange={(e) => handleInputChange("shippingCost", e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: 무료배송, 3,000원"
               />
             </div>
 
-            {/* 반품 정책 */}
+            {/* 묶음배송 여부 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                묶음배송 여부
+              </label>
+              <select
+                value={formData.bundleShipping}
+                onChange={(e) => handleInputChange("bundleShipping", e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+              >
+                <option value="">선택하세요</option>
+                <option value="가능">가능</option>
+                <option value="불가능">불가능</option>
+              </select>
+            </div>
+
+            {/* 배송기간 */}
             <div className="lg:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                반품 정책
+                배송기간
               </label>
               <textarea
-                value={formData.returnPolicy}
-                onChange={(e) => handleInputChange("returnPolicy", e.target.value)}
+                value={formData.shippingPeriod}
+                onChange={(e) => handleInputChange("shippingPeriod", e.target.value)}
                 rows={3}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
-                placeholder="반품 조건 및 절차를 입력하세요"
+                placeholder="예: 주문 후 1-2일 이내 배송"
+              />
+            </div>
+
+            {/* ⭐ 교환/반품 정보 섹션 */}
+            <div className="lg:col-span-2 border-t-2 border-theme-color pt-6 mt-6">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <FiSettings className="w-5 h-5 text-theme-color" />
+                교환/반품 정보
+              </h3>
+            </div>
+
+            {/* 교환/반품 비용 */}
+            <div className="lg:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                교환/반품 비용
+              </label>
+              <textarea
+                value={formData.exchangeReturnCost}
+                onChange={(e) => handleInputChange("exchangeReturnCost", e.target.value)}
+                rows={3}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: 무료 반품/교환 가능"
+              />
+            </div>
+
+            {/* 교환/반품 신청 기준일 */}
+            <div className="lg:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                교환/반품 신청 기준일
+              </label>
+              <textarea
+                value={formData.exchangeReturnDeadline}
+                onChange={(e) => handleInputChange("exchangeReturnDeadline", e.target.value)}
+                rows={3}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: 제품 수령 후 30일 이내"
+              />
+            </div>
+
+            {/* 교환/반품 제한사항 */}
+            <div className="lg:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                교환/반품 제한사항
+              </label>
+              <textarea
+                value={formData.exchangeReturnLimitations}
+                onChange={(e) => handleInputChange("exchangeReturnLimitations", e.target.value)}
+                rows={3}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: 개봉 후 사용한 상품은 반품 불가"
+              />
+            </div>
+
+            {/* 의류/잡화 제한사항 */}
+            <div className="lg:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                의류/잡화 제한사항
+              </label>
+              <textarea
+                value={formData.clothingLimitations}
+                onChange={(e) => handleInputChange("clothingLimitations", e.target.value)}
+                rows={2}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: 태그 제거 시 반품 불가"
+              />
+            </div>
+
+            {/* 식품/화장품 제한사항 */}
+            <div className="lg:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                식품/화장품 제한사항
+              </label>
+              <textarea
+                value={formData.foodLimitations}
+                onChange={(e) => handleInputChange("foodLimitations", e.target.value)}
+                rows={2}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: 신선/냉장/냉동 상품은 단순변심 반품 불가"
+              />
+            </div>
+
+            {/* 전자/가전 제한사항 */}
+            <div className="lg:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                전자/가전 제한사항
+              </label>
+              <textarea
+                value={formData.electronicsLimitations}
+                onChange={(e) => handleInputChange("electronicsLimitations", e.target.value)}
+                rows={2}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: 설치 후 반품 불가"
+              />
+            </div>
+
+            {/* 자동차용품 제한사항 */}
+            <div className="lg:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                자동차용품 제한사항
+              </label>
+              <textarea
+                value={formData.autoLimitations}
+                onChange={(e) => handleInputChange("autoLimitations", e.target.value)}
+                rows={2}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: 장착 후 반품 불가"
+              />
+            </div>
+
+            {/* CD/DVD/GAME/BOOK 제한사항 */}
+            <div className="lg:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                CD/DVD/GAME/BOOK 제한사항
+              </label>
+              <textarea
+                value={formData.mediaLimitations}
+                onChange={(e) => handleInputChange("mediaLimitations", e.target.value)}
+                rows={2}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: 포장 개봉 시 반품 불가"
+              />
+            </div>
+
+            {/* ⭐ 판매자 정보 섹션 */}
+            <div className="lg:col-span-2 border-t-2 border-theme-color pt-6 mt-6">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <FiUser className="w-5 h-5 text-theme-color" />
+                판매자 정보
+              </h3>
+            </div>
+
+            {/* 판매자명 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                판매자명
+              </label>
+              <input
+                type="text"
+                value={formData.sellerName}
+                onChange={(e) => handleInputChange("sellerName", e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: 겟꿀쇼핑"
+              />
+            </div>
+
+            {/* 판매자 전화번호 */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                판매자 전화번호
+              </label>
+              <input
+                type="tel"
+                value={formData.sellerPhone}
+                onChange={(e) => handleInputChange("sellerPhone", e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: 1577-7011"
+              />
+            </div>
+
+            {/* 법적 고지사항 */}
+            <div className="lg:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                법적 고지사항
+              </label>
+              <textarea
+                value={formData.sellerLegalNotice}
+                onChange={(e) => handleInputChange("sellerLegalNotice", e.target.value)}
+                rows={3}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+                placeholder="예: 미성년자가 체결한 계약은 법정대리인이 동의하지 않는 경우 본인 또는 법정대리인이 취소할 수 있습니다."
               />
             </div>
 

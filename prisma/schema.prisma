@@ -67,6 +67,8 @@ model User {
   orders        Order[]
   sessions      Session[]
   wishlist      WishlistItem[]
+  questions     ProductQuestion[]
+  answers       ProductAnswer[]
 
   @@map("users")
 }
@@ -148,10 +150,47 @@ model Product {
   createdAt             DateTime @default(now())
   updatedAt             DateTime @updatedAt
 
+  // ⭐ 필수 표기 정보
+  productName           String?  // 품명 및 모델명
+  modelNumber           String?  // 모델명
+  size                  String?  // 크기
+  material              String?  // 재질
+  releaseDate           String?  // 출시년월
+  manufacturer          String?  // 제조자(수입자)
+  madeInCountry         String?  // 제조국
+  warrantyStandard      String?  // 품질보증기준
+  asResponsible         String?  // A/S 책임자와 전화번호
+  kcCertification       String?  // KC 인증정보
+  color                 String?  // 색상
+  productComposition    String?  // 제품 구성
+  detailedSpecs         String?  // 상품별 세부 사양
+
+  // ⭐ 배송 정보
+  shippingMethod        String?  // 배송방법 (신선/냉장/냉동 등)
+  shippingCost          String?  // 배송비
+  bundleShipping        String?  // 묶음배송 여부
+  shippingPeriod        String?  @db.Text // 배송기간
+
+  // ⭐ 교환/반품 정보
+  exchangeReturnCost    String?  @db.Text // 교환/반품 비용
+  exchangeReturnDeadline String? @db.Text // 교환/반품 신청 기준일
+  exchangeReturnLimitations String? @db.Text // 교환/반품 제한사항
+  clothingLimitations   String?  @db.Text // 의류/잡화 제한사항
+  foodLimitations       String?  @db.Text // 식품/화장품 제한사항
+  electronicsLimitations String? @db.Text // 전자/가전 제한사항
+  autoLimitations       String?  @db.Text // 자동차용품 제한사항
+  mediaLimitations      String?  @db.Text // CD/DVD/GAME/BOOK 제한사항
+
+  // ⭐ 판매자 정보
+  sellerName            String?  // 판매자명
+  sellerPhone           String?  // 판매자 전화번호
+  sellerLegalNotice     String?  @db.Text // 법적 고지사항
+
   // Relations
   cartItems             CartItem[]
   wishlistItems         WishlistItem[]
   orderItems            OrderItem[]
+  questions             ProductQuestion[]
 
   @@map("products")
 }
@@ -191,4 +230,32 @@ model OrderItem {
   product            Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@map("order_items")
+}
+
+model ProductQuestion {
+  id          String   @id @default(cuid())
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  question    String   @db.Text
+  isAnswered  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  answers     ProductAnswer[]
+
+  @@map("product_questions")
+}
+
+model ProductAnswer {
+  id          String   @id @default(cuid())
+  questionId  String
+  question    ProductQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  answer      String   @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("product_answers")
 }
