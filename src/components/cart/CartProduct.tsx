@@ -26,7 +26,7 @@ const CartProduct = ({ product }: { product: ProductType }) => {
         className="h-24 w-24 sm:h-48 sm:w-48 border border-sky-color/30 hover:border-sky-color overflow-hidden flex items-center justify-center rounded-md relative"
       >
         <Image
-          src={product?.images[0]}
+          src={product?.thumbnail || product?.images?.[0] || ""}
           alt="productImage"
           fill
           className="p-2 rounded-md object-contain bg-[#f7f7f7] hover:scale-110 duration-200"

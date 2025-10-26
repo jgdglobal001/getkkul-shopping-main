@@ -10,8 +10,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Get email from query params or session
+    const { searchParams } = new URL(request.url);
+    const emailParam = searchParams.get("email");
+    const email = emailParam || session.user.email;
+
     const user = await prisma.user.findUnique({
-      where: { email: session.user.email },
+      where: { email: email },
       include: {
         addresses: true,
         cartItems: {
@@ -19,7 +24,7 @@ export async function GET(request: NextRequest) {
             product: true,
           },
         },
-        wishlistItems: {
+        wishlist: {
           include: {
             product: true,
           },
@@ -61,7 +66,7 @@ export async function GET(request: NextRequest) {
         notifications: user.notifications,
       },
       cart: user.cartItems || [],
-      wishlist: user.wishlistItems || [],
+      wishlist: user.wishlist || [],
       orders: user.orders || [],
     };
 
