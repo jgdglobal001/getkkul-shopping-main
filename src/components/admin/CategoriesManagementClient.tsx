@@ -447,7 +447,7 @@ export default function CategoriesManagementClient() {
             </h3>
 
             <p className="text-gray-600 text-center mb-6">
-              정말로 <span className="font-semibold text-gray-900">"{deleteConfirm.name}"</span> 카테고리를 삭제하시겠습니까?
+              정말로 <span className="font-semibold text-gray-900">&quot;{deleteConfirm.name}&quot;</span> 카테고리를 삭제하시겠습니까?
             </p>
 
             <div className="bg-red-50 border border-red-200 rounded-lg p-3 mb-6">

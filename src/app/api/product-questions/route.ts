@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
 // GET: 상품의 모든 질문 조회
@@ -41,7 +40,7 @@ export async function GET(request: NextRequest) {
 // POST: 새로운 질문 작성
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
 
     if (!session?.user?.email) {
       return NextResponse.json(
