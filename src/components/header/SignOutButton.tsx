@@ -3,12 +3,15 @@ import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   session: Session | null;
 }
 
 const SignOutButton = ({ session }: Props) => {
+  const { t } = useTranslation();
+
   const handleSignOut = async () => {
     try {
       // Clear localStorage data
@@ -42,22 +45,22 @@ const SignOutButton = ({ session }: Props) => {
         redirect: true,
       });
 
-      toast.success("Logged out successfully!");
+      toast.success(t("auth.logout_success"));
     } catch (error) {
       console.error("Error during sign out:", error);
-      toast.error("Error occurred during logout");
+      toast.error(t("auth.logout_error"));
     }
   };
 
   return (
     <div>
-      {session?.user && <button onClick={handleSignOut}>Sign out</button>}
+      {session?.user && <button onClick={handleSignOut}>{t("auth.sign_out")}</button>}
       {!session?.user && (
         <Link
           href={"/auth/signin"}
           className="hover:text-theme-color duration-300 cursor-pointer"
         >
-          Please login to view your cart
+          {t("common.please_login_to_view_cart")}
         </Link>
       )}
     </div>

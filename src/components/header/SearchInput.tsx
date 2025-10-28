@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { RiCloseLine, RiSearchLine } from "react-icons/ri";
 import { ProductType } from "../../../type";
 import Link from "next/link";
@@ -10,6 +11,7 @@ import { useProductSearch } from "@/hooks/useProductSearch";
 const SearchInput = () => {
   const [isInputFocused, setIsInputFocused] = useState(false);
   const searchContainerRef = useRef(null);
+  const { t } = useTranslation();
 
   const {
     search,
@@ -59,7 +61,7 @@ const SearchInput = () => {
     >
       <input
         type="text"
-        placeholder="Search products here..."
+        placeholder={t("common.search_products_here")}
         className="w-full h-full outline-hidden border-2 border-theme-color px-4"
         value={search}
         onChange={handleSearchChange}
@@ -96,7 +98,7 @@ const SearchInput = () => {
                   </div>
                 </div>
                 <p className="text-sm text-gray-500 mt-3">
-                  Searching for &quot;{search}&quot;...
+                  {t("common.searching_for", { query: search })}
                 </p>
               </div>
             ) : filteredProducts?.length > 0 ? (
@@ -118,7 +120,7 @@ const SearchInput = () => {
                       </p>
                       {item?.category && (
                         <p className="text-xs text-gray-500">
-                          in {item.category}
+                          {t("common.in_category")} {item.category}
                         </p>
                       )}
                     </div>
@@ -133,13 +135,13 @@ const SearchInput = () => {
             ) : hasSearched ? (
               <div className="py-10 px-5">
                 <p className="text-base text-center">
-                  Nothing matched with{" "}
+                  {t("common.nothing_matched_with")}{" "}
                   <span className="font-semibold underline underline-offset-2 decoration-1">
                     &quot;{search}&quot;
                   </span>
                   <br />
                   <span className="text-sm text-gray-500">
-                    Please try again.
+                    {t("common.please_try_again")}
                   </span>
                 </p>
               </div>
@@ -150,7 +152,7 @@ const SearchInput = () => {
               <div className="flex flex-col">
                 <div className="px-3 py-2 bg-gray-50 border-b border-gray-200">
                   <p className="text-xs font-semibold text-gray-600 uppercase tracking-wide">
-                    Trending Products
+                    {t("common.trending_products")}
                   </p>
                 </div>
                 {suggestedProducts?.map((item: ProductType) => (
@@ -172,7 +174,7 @@ const SearchInput = () => {
                       </p>
                       {item?.category && (
                         <p className="text-xs text-gray-500">
-                          in {item.category}
+                          {t("common.in_category")} {item.category}
                         </p>
                       )}
                     </div>

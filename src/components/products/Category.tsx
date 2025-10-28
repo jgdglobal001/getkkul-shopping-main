@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FaChevronDown } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 interface CategoryProps {
   categories?: any[];
@@ -10,6 +11,7 @@ interface CategoryProps {
 }
 
 const Category = ({ categories = [], allProducts = [] }: CategoryProps) => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(true); // Open by default
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -51,9 +53,9 @@ const Category = ({ categories = [], allProducts = [] }: CategoryProps) => {
 
   // Special categories that should appear at the top
   const specialCategories = [
-    { name: "bestsellers", label: "Best Sellers" },
-    { name: "new", label: "New Arrivals" },
-    { name: "offers", label: "Special Offers" },
+    { name: "bestsellers", translationKey: "categories.bestsellers" },
+    { name: "new", translationKey: "categories.new_arrivals" },
+    { name: "offers", translationKey: "categories.special_offers" },
   ];
 
   const handleCategoryClick = (categorySlug: string) => {
@@ -72,7 +74,7 @@ const Category = ({ categories = [], allProducts = [] }: CategoryProps) => {
         className="w-full flex items-center justify-between py-3 px-0 text-left focus:outline-none group"
       >
         <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-          Shop by Category
+          {t("home.shop_by_category")}
         </h3>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
@@ -112,7 +114,7 @@ const Category = ({ categories = [], allProducts = [] }: CategoryProps) => {
                         onClick={() => handleCategoryClick(category.name)}
                         className="ml-2 text-sm font-medium text-gray-900 hover:text-blue-600 transition-colors flex-1 text-left"
                       >
-                        {category.label} ({count})
+                        {t(category.translationKey)} ({count})
                       </button>
                     </div>
                   );

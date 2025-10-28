@@ -1,6 +1,9 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 import { FiArrowRight, FiPackage } from "react-icons/fi";
 
 interface Category {
@@ -167,6 +170,7 @@ const CategoryGrid: React.FC<CategoryGridProps> = ({
   categories,
   totalProducts = 0,
 }) => {
+  const { t } = useTranslation();
   // Take only first 12 categories
   const displayCategories = categories?.slice(0, 12) || [];
   const totalBrands = Math.floor(totalProducts / 20); // Estimate brands based on products
@@ -207,24 +211,23 @@ const CategoryGrid: React.FC<CategoryGridProps> = ({
       {/* Call to Action */}
       <div className="text-center mt-12 bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8">
         <h3 className="text-2xl font-bold text-gray-900 mb-2">
-          Can&apos;t find what you&apos;re looking for?
+          {t("common.cant_find_looking_for")}
         </h3>
         <p className="text-gray-600 mb-6">
-          Browse all our products or use our search feature to find exactly what
-          you need.
+          {t("common.browse_products_use_search")}
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             href="/products"
             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
           >
-            View All Products
+            {t("common.view_all_products")}
           </Link>
           <Link
             href="/products?search="
             className="bg-white hover:bg-gray-50 text-gray-700 px-6 py-3 rounded-lg font-medium border border-gray-300 transition-colors duration-200"
           >
-            Search Products
+            {t("common.search_products")}
           </Link>
         </div>
       </div>

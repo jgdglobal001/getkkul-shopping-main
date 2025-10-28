@@ -7,6 +7,7 @@ import MobileNavigation from "./MobileNavigation";
 import HeaderIcons from "./HeaderIcons";
 import Logo from "../Logo";
 import UserProfileDropdown from "./UserProfileDropdown";
+import GuestProfileSection from "./GuestProfileSection";
 
 const MiddleHeader = async () => {
   const session = await auth();
@@ -21,37 +22,7 @@ const MiddleHeader = async () => {
           {session?.user ? (
             <UserProfileDropdown user={session.user} />
           ) : (
-            <div
-              // href={"/auth/signin"}
-              className="flex items-center gap-2 cursor-pointer"
-            >
-              <div className="border-2 border-gray-700 p-1.5 rounded-full text-xl">
-                <LiaUser />
-              </div>
-              <div>
-                <Link href={"/auth/signin"}>
-                  <p className="text-xs hover:text-sky-color ease-in-out duration-300 cursor-pointer">
-                    Hello, Guests
-                  </p>
-                </Link>
-
-                <div className="text-sm">
-                  <Link
-                    href={"/auth/signin"}
-                    className="hover:text-sky-color ease-in-out duration-300 cursor-pointer"
-                  >
-                    Login{" "}
-                  </Link>
-                  /{" "}
-                  <Link
-                    href={"/auth/register"}
-                    className="hover:text-sky-color ease-in-out duration-300 cursor-pointer"
-                  >
-                    Register
-                  </Link>
-                </div>
-              </div>
-            </div>
+            <GuestProfileSection />
           )}
           {/* Cart & Favorite Icons */}
           <HeaderIcons />

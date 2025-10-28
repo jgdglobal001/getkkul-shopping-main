@@ -63,18 +63,22 @@ const SingleProductPage = async ({ params }: Props) => {
     allProducts = dbRelated;
   }
 
-  // 상품 질문 조회
-  const questions = await prisma.productQuestion.findMany({
-    where: { productId: product.id },
-    include: {
-      user: { select: { name: true } },
-      answers: {
-        include: { user: { select: { name: true } } },
-        orderBy: { createdAt: "asc" }
-      }
-    },
-    orderBy: { createdAt: "desc" }
-  });
+  // 상품 질문 조회 (DB 상품만 - DummyJSON은 질문 미지원)
+  let questions = [];
+  if (product.category !== "smartphones") {
+    // DB 상품만 조회
+    questions = await prisma.productQuestion.findMany({
+      where: { productId: product.id },
+      include: {
+        user: { select: { name: true } },
+        answers: {
+          include: { user: { select: { name: true } } },
+          orderBy: { createdAt: "asc" }
+        }
+      },
+      orderBy: { createdAt: "desc" }
+    });
+  }
 
   const regularPrice = product?.price;
   const discountedPrice = product?.price + product?.discountPercentage / 100;

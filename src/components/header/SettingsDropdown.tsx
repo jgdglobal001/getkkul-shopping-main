@@ -189,9 +189,9 @@ const SettingsDropdown = () => {
             >
               <FiLogOut className="text-red-500 text-sm flex-shrink-0" />
               <div>
-                <div className="text-sm font-medium">Sign Out</div>
+                <div className="text-sm font-medium">{t("auth.sign_out")}</div>
                 <div className="text-xs text-red-400">
-                  Sign out of your account
+                  {t("auth.sign_out_of_account")}
                 </div>
               </div>
             </button>

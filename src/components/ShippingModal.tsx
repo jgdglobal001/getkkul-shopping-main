@@ -1,4 +1,7 @@
+"use client";
+
 import { FiX, FiTruck, FiClock, FiMapPin, FiDollarSign } from "react-icons/fi";
+import { useTranslation } from "react-i18next";
 
 interface ShippingModalProps {
   isOpen: boolean;
@@ -11,7 +14,12 @@ const ShippingModal = ({
   onClose,
   freeShippingThreshold,
 }: ShippingModalProps) => {
+  const { t } = useTranslation();
+
   if (!isOpen) return null;
+
+  // Format threshold with Korean locale (adds comma for thousands)
+  const formattedThreshold = Number(freeShippingThreshold).toLocaleString();
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -31,10 +39,10 @@ const ShippingModal = ({
             </div>
             <div>
               <h3 className="text-lg font-semibold text-gray-900">
-                Free Express Shipping
+                {t("shipping_modal.title")}
               </h3>
               <p className="text-sm text-gray-600">
-                Fast & reliable delivery to your doorstep
+                {t("shipping_modal.subtitle")}
               </p>
             </div>
           </div>
@@ -54,11 +62,10 @@ const ShippingModal = ({
               <FiDollarSign className="w-8 h-8 text-orange-600" />
               <div>
                 <h4 className="text-lg font-semibold text-gray-900">
-                  Free on orders ${freeShippingThreshold}+
+                  {t("shipping_modal.free_on_orders", { amount: formattedThreshold })}
                 </h4>
                 <p className="text-sm text-gray-600">
-                  Enjoy free express shipping on all orders above $
-                  {freeShippingThreshold}
+                  {t("shipping_modal.free_shipping_description", { amount: formattedThreshold })}
                 </p>
               </div>
             </div>
@@ -71,11 +78,9 @@ const ShippingModal = ({
                 <FiClock className="w-5 h-5 text-blue-600" />
               </div>
               <div>
-                <h5 className="font-semibold text-gray-900">Delivery Time</h5>
+                <h5 className="font-semibold text-gray-900">{t("shipping_modal.delivery_time")}</h5>
                 <p className="text-sm text-gray-600 mt-1">
-                  Express shipping typically takes 1-3 business days within the
-                  continental US. International orders may take 5-10 business
-                  days.
+                  {t("shipping_modal.delivery_time_description")}
                 </p>
               </div>
             </div>
@@ -85,10 +90,9 @@ const ShippingModal = ({
                 <FiMapPin className="w-5 h-5 text-green-600" />
               </div>
               <div>
-                <h5 className="font-semibold text-gray-900">Coverage Area</h5>
+                <h5 className="font-semibold text-gray-900">{t("shipping_modal.coverage_area")}</h5>
                 <p className="text-sm text-gray-600 mt-1">
-                  We ship to all 50 US states, Canada, and most international
-                  destinations. Free shipping applies to domestic orders only.
+                  {t("shipping_modal.coverage_area_description")}
                 </p>
               </div>
             </div>
@@ -98,11 +102,9 @@ const ShippingModal = ({
                 <FiTruck className="w-5 h-5 text-purple-600" />
               </div>
               <div>
-                <h5 className="font-semibold text-gray-900">Tracking</h5>
+                <h5 className="font-semibold text-gray-900">{t("shipping_modal.tracking")}</h5>
                 <p className="text-sm text-gray-600 mt-1">
-                  All express shipments include tracking information.
-                  You&apos;ll receive an email with tracking details once your
-                  order ships.
+                  {t("shipping_modal.tracking_description")}
                 </p>
               </div>
             </div>
@@ -111,15 +113,15 @@ const ShippingModal = ({
           {/* Additional Terms */}
           <div className="mt-6 p-4 bg-gray-50 rounded-lg">
             <h5 className="font-semibold text-gray-900 mb-2">
-              Terms & Conditions
+              {t("shipping_modal.terms_and_conditions")}
             </h5>
             <ul className="text-sm text-gray-600 space-y-1">
-              <li>• Free shipping offer applies to standard items only</li>
-              <li>• Oversized or heavy items may incur additional charges</li>
+              <li>• {t("shipping_modal.term_1")}</li>
+              <li>• {t("shipping_modal.term_2")}</li>
               <li>
-                • Orders placed before 2 PM EST ship the same business day
+                • {t("shipping_modal.term_3")}
               </li>
-              <li>• Weekend and holiday orders ship the next business day</li>
+              <li>• {t("shipping_modal.term_4")}</li>
             </ul>
           </div>
         </div>
@@ -131,7 +133,7 @@ const ShippingModal = ({
               onClick={onClose}
               className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition-colors"
             >
-              Close
+              {t("shipping_modal.close_button")}
             </button>
           </div>
         </div>

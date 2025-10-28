@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   FaUser,
   FaBox,
@@ -26,6 +27,7 @@ const UserProfileDropdown = ({ user }: UserProfileDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const { t } = useTranslation();
 
   const fallbackImage =
     "https://res.cloudinary.com/dlbqw7atu/image/upload/v1747734054/userImage_dhytay.png";
@@ -81,22 +83,22 @@ const UserProfileDropdown = ({ user }: UserProfileDropdownProps) => {
     {
       href: "/account",
       icon: FaUser,
-      label: "My Profile",
+      label: t("settings.myProfile"),
     },
     {
       href: "/account/orders",
       icon: FaBox,
-      label: "My Orders",
+      label: t("settings.myOrders"),
     },
     {
       href: "/favorite",
       icon: FaHeart,
-      label: "Wishlist",
+      label: t("settings.wishlist"),
     },
     {
       href: "/account/settings",
       icon: FaCog,
-      label: "Settings",
+      label: t("settings.title"),
     },
   ];
 
@@ -107,7 +109,7 @@ const UserProfileDropdown = ({ user }: UserProfileDropdownProps) => {
           {
             href: "/account/admin",
             icon: FaShieldAlt,
-            label: "Admin Dashboard",
+            label: t("common.admin_dashboard") || "Admin Dashboard",
           },
         ]
       : [];
@@ -144,8 +146,8 @@ const UserProfileDropdown = ({ user }: UserProfileDropdownProps) => {
           }}
           className="text-xs group-hover:text-sky-color cursor-pointer duration-300"
         >
-          <p>Hello, {user?.name}</p>
-          <p>view profile</p>
+          <p>{t("common.hello")}, {user?.name}</p>
+          <p>{t("auth.view_profile")}</p>
         </div>
       </div>
 
@@ -189,7 +191,7 @@ const UserProfileDropdown = ({ user }: UserProfileDropdownProps) => {
               className="flex items-center gap-3 w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors duration-200"
             >
               <FaSignOutAlt className="w-4 h-4" />
-              Sign Out
+              {t("auth.sign_out")}
             </button>
           </div>
         </div>

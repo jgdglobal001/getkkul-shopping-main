@@ -11,6 +11,8 @@ import {
 } from "../helpers/productHelpers";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import koTranslations from "@/locales/ko.json";
+import koExtendedTranslations from "@/locales/ko-extended.json";
 
 // 동적 렌더링 설정 (DB 쿼리 때문에)
 export const dynamic = "force-dynamic";
@@ -30,9 +32,30 @@ interface Props {
   }>;
 }
 
+// Helper function to get translations
+const getT = () => {
+  const merged = { ...koTranslations };
+  Object.keys(koExtendedTranslations).forEach(key => {
+    merged[key as keyof typeof merged] = {
+      ...(merged[key as keyof typeof merged] || {}),
+      ...koExtendedTranslations[key as keyof typeof koExtendedTranslations]
+    };
+  });
+  
+  return (key: string, defaultValue: string = ''): string => {
+    const keys = key.split('.');
+    let value: any = merged;
+    for (const k of keys) {
+      value = value?.[k];
+    }
+    return value || defaultValue;
+  };
+};
+
 const ProductsPage = async ({ searchParams }: Props) => {
   // Await searchParams for Next.js 15 compatibility
   const params = await searchParams;
+  const t = getT();
 
   // DB에서 실제 상품 조회
   const dbProducts = await prisma.product.findMany({
@@ -116,21 +139,22 @@ const ProductsPage = async ({ searchParams }: Props) => {
     if (params.category) {
       switch (params.category) {
         case "bestsellers":
-          return "Best Sellers";
+          return t("categories.bestsellers", "베스트셀러");
         case "new":
-          return "New Arrivals";
+          return t("categories.new_arrivals", "신상품");
         case "offers":
-          return "Special Offers";
+          return t("categories.special_offers", "특별 할인");
         default:
           return `${
             params.category.charAt(0).toUpperCase() + params.category.slice(1)
-          } Products`;
+          } ${t("products.product_header", "상품")}`;
       }
     }
     if (params.search) {
-      return `Search Results for "${params.search}"`;
+      const template = t("products.search_results_for", `"{{query}}" 검색 결과`);
+      return template.replace("{{query}}", params.search);
     }
-    return "All Products";
+    return t("products.all_products", "모든 상품");
   };
 
   return (
@@ -142,8 +166,14 @@ const ProductsPage = async ({ searchParams }: Props) => {
         </h1>
         <p className="text-gray-600 text-lg">
           {params.category || params.search
-            ? `Found ${products.length} products`
-            : `Discover our complete collection of ${products.length} products`}
+            ? (() => {
+                const template = t("products.found_products", "{{count}}개 상품 찾음");
+                return template.replace("{{count}}", String(products.length));
+              })()
+            : (() => {
+                const template = t("products.discover_collection", "{{count}}개 상품의 전체 컬렉션 발견");
+                return template.replace("{{count}}", String(products.length));
+              })()}
         </p>
 
         {/* Breadcrumb */}
@@ -151,18 +181,18 @@ const ProductsPage = async ({ searchParams }: Props) => {
           <ol className="flex items-center space-x-2 text-gray-500">
             <li>
               <Link href="/" className="hover:text-gray-700">
-                Home
+                {t("products.breadcrumb_home", "홈")}
               </Link>
             </li>
-            <li>/</li>
+            <li>{t("products.breadcrumb_separator", "/")}</li>
             <li>
               <Link href="/products" className="hover:text-gray-700">
-                Products
+                {t("products.breadcrumb_products", "상품")}
               </Link>
             </li>
             {params.category && (
               <>
-                <li>/</li>
+                <li>{t("products.breadcrumb_separator", "/")}</li>
                 <li className="text-gray-900 font-medium">{getPageTitle()}</li>
               </>
             )}

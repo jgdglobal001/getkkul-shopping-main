@@ -91,7 +91,7 @@ const AddToCartButton = ({
   const handleDecrease = () => {
     if (existingProduct?.quantity! > 1) {
       dispatch(decreaseQuantity(product?.id));
-      toast.success(`Quantity decreased!`, {
+      toast.success(t('cart.quantity_decreased', '수량이 감소되었습니다!'), {
         duration: 1500,
         style: {
           background: "#F59E0B",
@@ -99,7 +99,7 @@ const AddToCartButton = ({
         },
       });
     } else {
-      toast.error("Minimum quantity is 1", {
+      toast.error(t('common.minimum_quantity', '최소 수량은 1입니다'), {
         style: {
           background: "#EF4444",
           color: "white",
@@ -153,7 +153,7 @@ const AddToCartButton = ({
             <span className="text-sm font-semibold text-gray-800">
               {existingProduct?.quantity}
             </span>
-            <span className="text-xs text-gray-500">in cart</span>
+            <span className="text-xs text-gray-500">{t("common.in_cart")}</span>
           </div>
 
           <button
@@ -183,19 +183,19 @@ const AddToCartButton = ({
           {isAdding ? (
             <>
               <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-              <span>Adding...</span>
+              <span>{t("common.adding")}</span>
             </>
           ) : justAdded ? (
             <>
               <FaCheck className="w-4 h-4" />
-              <span>Added!</span>
+              <span>{t("common.added")}</span>
             </>
           ) : isOutOfStock ? (
-            <span>Out of Stock</span>
+            <span>{t("common.out_of_stock")}</span>
           ) : (
             <>
               <FaShoppingCart className="w-4 h-4" />
-              <span>Add to Cart</span>
+              <span>{t("common.add_to_cart")}</span>
             </>
           )}
 

@@ -1,6 +1,7 @@
 import Container from "@/components/Container";
 import { getData } from "../helpers";
 import OffersHero from "@/components/pages/offers/OffersHero";
+import OffersPageHeader from "@/components/pages/offers/OffersPageHeader";
 import { ProductType } from "../../../../type";
 import OffersList from "@/components/pages/offers/OffersList";
 import Link from "next/link";
@@ -124,28 +125,7 @@ const OffersPage = async ({ searchParams }: OffersPageProps) => {
   return (
     <Container className="py-10">
       {/* Page Header */}
-      <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-          🔥 Special Offers
-        </h1>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
-          Don&apos;t miss out on these incredible deals! Save big on your
-          favorite products with discounts up to {Math.round(maxDiscount)}% off.
-        </p>
-
-        {/* Breadcrumb */}
-        <nav className="text-sm">
-          <ol className="flex items-center justify-center space-x-2 text-gray-500">
-            <li>
-              <Link href="/" className="hover:text-gray-700 transition-colors">
-                Home
-              </Link>
-            </li>
-            <li>/</li>
-            <li className="text-gray-900 font-medium">Special Offers</li>
-          </ol>
-        </nav>
-      </div>
+      <OffersPageHeader maxDiscount={maxDiscount} />
 
       {/* Hero Section with Stats */}
       <OffersHero

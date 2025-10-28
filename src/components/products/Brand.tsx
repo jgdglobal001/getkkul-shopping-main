@@ -3,12 +3,14 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FaChevronDown } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 interface BrandProps {
   brands?: string[];
 }
 
 const Brand = ({ brands = [] }: BrandProps) => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false); // Collapsed by default
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -30,7 +32,7 @@ const Brand = ({ brands = [] }: BrandProps) => {
         className="w-full flex items-center justify-between py-3 px-0 text-left focus:outline-none group"
       >
         <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-          Shop by Brand
+          {t("filters.shop_by_brand")}
         </h3>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}

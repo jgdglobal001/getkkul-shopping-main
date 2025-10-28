@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import EnhancedProductCard from "../../EnhancedProductCard";
 import ProductSkeleton from "../../ProductSkeleton";
 import { FiFilter, FiGrid, FiList, FiChevronDown } from "react-icons/fi";
@@ -22,6 +23,7 @@ const OffersList: React.FC<OffersListProps> = ({
   currentCategory,
   currentMinDiscount,
 }) => {
+  const { t } = useTranslation();
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showFilters, setShowFilters] = useState(false);
   const [itemsToShow, setItemsToShow] = useState(12);
@@ -89,14 +91,14 @@ const OffersList: React.FC<OffersListProps> = ({
           {/* Results Count */}
           <div className="flex items-center gap-4">
             <h3 className="text-lg font-semibold text-gray-900">
-              {products.length} Offers Found
+              {t("offers.offers_found", { count: products.length })}
             </h3>
             {(currentCategory || currentMinDiscount) && (
               <button
                 onClick={clearAllFilters}
                 className="text-sm text-blue-600 hover:text-blue-700 underline"
               >
-                Clear All Filters
+                {t("offers.clear_all_filters")}
               </button>
             )}
           </div>
@@ -109,7 +111,7 @@ const OffersList: React.FC<OffersListProps> = ({
               className="lg:hidden flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
             >
               <FiFilter className="w-4 h-4" />
-              Filters
+              {t("offers.filters")}
             </button>
 
             {/* View Mode Toggle */}
@@ -142,12 +144,12 @@ const OffersList: React.FC<OffersListProps> = ({
               onChange={(e) => handleSortChange(e.target.value)}
               className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
-              <option value="discount-high">Highest Discount</option>
-              <option value="discount-low">Lowest Discount</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-              <option value="name-asc">Name: A to Z</option>
-              <option value="rating">Highest Rated</option>
+              <option value="discount-high">{t("offers.highest_discount")}</option>
+              <option value="discount-low">{t("offers.lowest_discount")}</option>
+              <option value="price-low">{t("offers.price_low_to_high")}</option>
+              <option value="price-high">{t("offers.price_high_to_low")}</option>
+              <option value="name-asc">{t("offers.name_a_to_z")}</option>
+              <option value="rating">{t("offers.highest_rated")}</option>
             </select>
           </div>
         </div>
@@ -162,14 +164,14 @@ const OffersList: React.FC<OffersListProps> = ({
             {/* Category Filter */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Category
+                {t("offers.category")}
               </label>
               <select
                 value={currentCategory || "all"}
                 onChange={(e) => handleCategoryFilter(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="all">All Categories</option>
+                <option value="all">{t("offers.all_categories")}</option>
                 {categories.map((category) => (
                   <option key={category} value={category}>
                     {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -181,19 +183,19 @@ const OffersList: React.FC<OffersListProps> = ({
             {/* Discount Filter */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Minimum Discount
+                {t("offers.minimum_discount")}
               </label>
               <select
                 value={currentMinDiscount || "0"}
                 onChange={(e) => handleDiscountFilter(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="0">Any Discount</option>
-                <option value="10">10% or more</option>
-                <option value="20">20% or more</option>
-                <option value="30">30% or more</option>
-                <option value="40">40% or more</option>
-                <option value="50">50% or more</option>
+                <option value="0">{t("offers.any_discount")}</option>
+                <option value="10">{t("offers.percent_10_or_more")}</option>
+                <option value="20">{t("offers.percent_20_or_more")}</option>
+                <option value="30">{t("offers.percent_30_or_more")}</option>
+                <option value="40">{t("offers.percent_40_or_more")}</option>
+                <option value="50">{t("offers.percent_50_or_more")}</option>
               </select>
             </div>
 
@@ -212,7 +214,7 @@ const OffersList: React.FC<OffersListProps> = ({
               )}
               {currentMinDiscount && (
                 <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">
-                  {currentMinDiscount}%+ off
+                  {currentMinDiscount}{t("offers.percent_off")}
                   <button
                     onClick={() => handleDiscountFilter("0")}
                     className="text-green-600 hover:text-green-800"
@@ -263,7 +265,7 @@ const OffersList: React.FC<OffersListProps> = ({
                 onClick={loadMore}
                 className="mx-auto block px-8 py-3 bg-gradient-to-r from-red-500 to-orange-500 text-white rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300"
               >
-                Load More Offers
+                {t("offers.load_more_offers")}
               </motion.button>
             </div>
           )}
@@ -272,16 +274,16 @@ const OffersList: React.FC<OffersListProps> = ({
         <div className="text-center py-12">
           <div className="text-6xl mb-4">🔍</div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            No offers found
+            {t("offers.no_offers_found")}
           </h3>
           <p className="text-gray-600 mb-4">
-            Try adjusting your filters or check back later for new deals.
+            {t("offers.try_adjusting_filters")}
           </p>
           <button
             onClick={clearAllFilters}
             className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg"
           >
-            Clear Filters
+            {t("offers.clear_filters")}
           </button>
         </div>
       )}

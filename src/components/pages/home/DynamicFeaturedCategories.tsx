@@ -54,32 +54,32 @@ const categoryImages: { [key: string]: string } = {
     "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&h=200&fit=crop&crop=center",
 };
 
-// Category descriptions
+// Category descriptions (Korean translations)
 const categoryDescriptions: { [key: string]: string } = {
-  beauty: "Premium beauty products and cosmetics",
-  fragrances: "Luxurious fragrances and perfumes",
-  furniture: "Stylish furniture for your home",
-  groceries: "Fresh groceries and essentials",
-  "home-decoration": "Beautiful home decor items",
-  "kitchen-accessories": "Essential kitchen tools",
-  laptops: "High-performance laptops",
-  "mens-shirts": "Stylish shirts for men",
-  "mens-shoes": "Comfortable and fashionable footwear",
-  "mens-watches": "Elegant timepieces for men",
-  "mobile-accessories": "Mobile device accessories",
-  motorcycle: "Motorcycle gear and accessories",
-  "skin-care": "Premium skincare products",
-  smartphones: "Latest smartphones and devices",
-  "sports-accessories": "Sports gear and equipment",
-  sunglasses: "Stylish eyewear and sunglasses",
-  tablets: "Tablets and digital accessories",
-  tops: "Trendy tops and casual wear",
-  vehicle: "Automotive accessories and parts",
-  "womens-bags": "Fashionable bags and handbags",
-  "womens-dresses": "Elegant dresses for every occasion",
-  "womens-jewellery": "Beautiful jewelry and accessories",
-  "womens-shoes": "Stylish footwear for women",
-  "womens-watches": "Elegant watches for women",
+  beauty: "프리미엄 뷰티 제품 및 화장품",
+  fragrances: "고급 향수 및 향료",
+  furniture: "집을 위한 스타일리시한 가구",
+  groceries: "신선한 식품 및 필수품",
+  "home-decoration": "아름다운 홈 데코 아이템",
+  "kitchen-accessories": "필수 주방 도구",
+  laptops: "고성능 노트북",
+  "mens-shirts": "남성용 스타일리시한 셔츠",
+  "mens-shoes": "편안하고 유행스러운 신발",
+  "mens-watches": "남성용 우아한 타임피스",
+  "mobile-accessories": "모바일 기기 액세서리",
+  motorcycle: "오토바이 기어 및 액세서리",
+  "skin-care": "프리미엄 스킨케어 제품",
+  smartphones: "최신 스마트폰 및 기기",
+  "sports-accessories": "스포츠 용품 및 장비",
+  sunglasses: "스타일리시한 안경 및 선글라스",
+  tablets: "태블릿 및 디지털 액세서리",
+  tops: "트렌디한 상의 및 캐주얼 의류",
+  vehicle: "자동차 액세서리 및 부품",
+  "womens-bags": "패셔너블한 가방 및 핸드백",
+  "womens-dresses": "모든 경우에 적합한 우아한 드레스",
+  "womens-jewellery": "아름다운 주얼리 및 액세서리",
+  "womens-shoes": "여성용 스타일리시한 신발",
+  "womens-watches": "여성용 우아한 시계",
 };
 
 interface ApiCategory {
@@ -136,10 +136,10 @@ const DynamicFeaturedCategories: React.FC = async () => {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Shop by Category
+            카테고리별 쇼핑
           </h2>
           <p className="text-gray-600">
-            Unable to load categories at the moment. Please try again later.
+            현재 카테고리를 로드할 수 없습니다. 나중에 다시 시도해주세요.
           </p>
         </div>
       </section>

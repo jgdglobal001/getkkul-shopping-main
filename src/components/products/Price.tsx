@@ -3,12 +3,14 @@ import React, { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaChevronDown } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 interface PriceProps {
   allProducts?: any[];
 }
 
 const Price = ({ allProducts = [] }: PriceProps) => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false); // Collapsed by default
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -56,7 +58,7 @@ const Price = ({ allProducts = [] }: PriceProps) => {
         className="w-full flex items-center justify-between py-3 px-0 text-left focus:outline-none group"
       >
         <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-          Shop by Price
+          {t("filters.shop_by_price")}
         </h3>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}

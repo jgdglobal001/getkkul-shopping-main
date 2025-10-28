@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslation } from "react-i18next";
 import { FiArrowRight, FiPackage } from "react-icons/fi";
 
 interface Category {
@@ -84,48 +85,77 @@ const categoryImages: { [key: string]: string } = {
     "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop",
 };
 
-// Category descriptions
-const categoryDescriptions: { [key: string]: string } = {
-  beauty: "Explore premium beauty products and cosmetics",
-  fragrances: "Discover luxurious fragrances and perfumes",
-  furniture: "Transform your space with stylish furniture",
-  groceries: "Fresh groceries and everyday essentials",
-  "home-decoration": "Beautiful decor items for your home",
-  "kitchen-accessories": "Essential tools for your kitchen",
-  laptops: "High-performance laptops and computers",
-  "mens-shirts": "Stylish shirts for the modern man",
-  "mens-shoes": "Comfortable and fashionable footwear",
-  "mens-watches": "Elegant timepieces for men",
-  "mobile-accessories": "Accessories for your mobile devices",
-  motorcycle: "Motorcycle gear and accessories",
-  "skin-care": "Premium skincare products",
-  smartphones: "Latest smartphones and devices",
-  "sports-accessories": "Gear up for your favorite sports",
-  sunglasses: "Stylish eyewear and sunglasses",
-  tablets: "Tablets and digital accessories",
-  tops: "Trendy tops and casual wear",
-  vehicle: "Automotive accessories and parts",
-  "womens-bags": "Fashionable bags and handbags",
-  "womens-dresses": "Elegant dresses for every occasion",
-  "womens-jewellery": "Beautiful jewelry and accessories",
-  "womens-shoes": "Stylish footwear for women",
-  "womens-watches": "Elegant watches for women",
+// Category names mapping for translation keys
+const categoryNameKeys: { [key: string]: string } = {
+  beauty: "beauty",
+  fragrances: "fragrances",
+  furniture: "furniture",
+  groceries: "groceries",
+  "home-decoration": "home_decoration",
+  "kitchen-accessories": "kitchen_accessories",
+  laptops: "laptops",
+  "mens-shirts": "mens_shirts",
+  "mens-shoes": "mens_shoes",
+  "mens-watches": "mens_watches",
+  "mobile-accessories": "mobile_accessories",
+  motorcycle: "motorcycle",
+  "skin-care": "skin_care",
+  smartphones: "smartphones",
+  "sports-accessories": "sports_accessories",
+  sunglasses: "sunglasses",
+  tablets: "tablets",
+  tops: "tops",
+  vehicle: "vehicle",
+  "womens-bags": "womens_bags",
+  "womens-dresses": "womens_dresses",
+  "womens-jewellery": "womens_jewellery",
+  "womens-shoes": "womens_shoes",
+  "womens-watches": "womens_watches",
+};
+
+// Category descriptions mapping for translation keys
+const categoryDescriptionKeys: { [key: string]: string } = {
+  beauty: "beauty_desc",
+  fragrances: "fragrances_desc",
+  furniture: "furniture_desc",
+  groceries: "groceries_desc",
+  "home-decoration": "home_decoration_desc",
+  "kitchen-accessories": "kitchen_desc",
+  laptops: "laptops_desc",
+  "mens-shirts": "mens_shirts_desc",
+  "mens-shoes": "mens_shoes_desc",
+  "mens-watches": "mens_watches_desc",
+  "mobile-accessories": "mobile_accessories_desc",
+  motorcycle: "motorcycle_desc",
+  "skin-care": "skin_care_desc",
+  smartphones: "smartphones_desc",
+  "sports-accessories": "sports_accessories_desc",
+  sunglasses: "sunglasses_desc",
+  tablets: "tablets_desc",
+  tops: "tops_desc",
+  vehicle: "vehicle_desc",
+  "womens-bags": "womens_bags_desc",
+  "womens-dresses": "womens_dresses_desc",
+  "womens-jewellery": "womens_jewellery_desc",
+  "womens-shoes": "womens_shoes_desc",
+  "womens-watches": "womens_watches_desc",
 };
 
 const CategoryCard: React.FC<{ category: Category; index: number }> = ({
   category,
   index,
 }) => {
-  const categoryName = category.name
-    .replace(/([A-Z])/g, " $1")
-    .replace(/^./, (str) => str.toUpperCase());
+  const { t } = useTranslation();
   const categorySlug = category.slug;
+  const nameKey = categoryNameKeys[categorySlug];
+  const categoryName = nameKey ? t(`categories.${nameKey}`) : category.name;
   const image =
     categoryImages[categorySlug] ||
     "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop";
-  const description =
-    categoryDescriptions[categorySlug] ||
-    "Discover amazing products in this category";
+  const descriptionKey = categoryDescriptionKeys[categorySlug];
+  const description = descriptionKey 
+    ? t(`categories.${descriptionKey}`)
+    : t("categories.currently_no_products");
   const productCount = category.count || 0;
   const isDisabled = productCount === 0;
 
@@ -167,7 +197,7 @@ const CategoryCard: React.FC<{ category: Category; index: number }> = ({
               : "bg-gradient-to-r from-blue-600 to-blue-700 transform group-hover:scale-110"
           }`}
         >
-          {productCount} items
+          {productCount} {t("categories.items")}
         </div>
 
         {/* Category Icon with Enhanced Animation - Only for enabled categories */}
@@ -182,7 +212,7 @@ const CategoryCard: React.FC<{ category: Category; index: number }> = ({
           <div className="absolute inset-0 bg-gray-900/30 flex items-center justify-center">
             <div className="bg-white/90 backdrop-blur-sm rounded-full px-4 py-2">
               <span className="text-gray-700 text-sm font-medium">
-                Out of Stock
+                {t("categories.out_of_stock")}
               </span>
             </div>
           </div>
@@ -226,7 +256,7 @@ const CategoryCard: React.FC<{ category: Category; index: number }> = ({
                 : "text-gray-500 group-hover:text-blue-600"
             }`}
           >
-            {isDisabled ? "Not Available" : "View Products"}
+            {isDisabled ? t("categories.not_available") : t("categories.view_products")}
           </span>
           <div
             className={`flex items-center transition-all duration-300 ${
@@ -281,6 +311,7 @@ const InfiniteCategoryGrid: React.FC<InfiniteCategoryGridProps> = ({
   initialCategories,
   totalProducts = 0,
 }) => {
+  const { t } = useTranslation();
   const [categories, setCategories] = useState<Category[]>(
     initialCategories.slice(0, 12)
   );
@@ -341,19 +372,19 @@ const InfiniteCategoryGrid: React.FC<InfiniteCategoryGridProps> = ({
             <div className="text-3xl font-bold text-blue-600">
               {initialCategories.length}
             </div>
-            <div className="text-gray-600">Total Categories</div>
+            <div className="text-gray-600">{t("categories.total_categories")}</div>
           </div>
           <div className="text-center">
             <div className="text-3xl font-bold text-green-600">
               {totalProducts}+
             </div>
-            <div className="text-gray-600">Products</div>
+            <div className="text-gray-600">{t("categories.total_products")}</div>
           </div>
           <div className="text-center">
             <div className="text-3xl font-bold text-purple-600">
               {totalBrands}+
             </div>
-            <div className="text-gray-600">Brands</div>
+            <div className="text-gray-600">{t("categories.total_brands")}</div>
           </div>
         </div>
       </div>
@@ -380,24 +411,23 @@ const InfiniteCategoryGrid: React.FC<InfiniteCategoryGridProps> = ({
         {loading && (
           <div className="flex items-center justify-center gap-2">
             <div className="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-            <span className="text-gray-600">Loading more categories...</span>
+            <span className="text-gray-600">{t("categories.loading_categories")}</span>
           </div>
         )}
 
         {!hasMore && !loading && (
           <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8">
             <div className="text-2xl font-bold text-gray-900 mb-2">
-              🎉 You&apos;ve seen it all!
+              {t("categories.seen_all_categories")}
             </div>
             <p className="text-gray-600 mb-6">
-              You&apos;ve explored all our {initialCategories.length}{" "}
-              categories. Ready to start shopping?
+              {t("categories.explored_all_categories", { count: initialCategories.length })}
             </p>
             <Link
               href="/products"
               className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
             >
-              Browse All Products
+              {t("categories.browse_all_categories")}
               <FiArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -408,24 +438,23 @@ const InfiniteCategoryGrid: React.FC<InfiniteCategoryGridProps> = ({
       {hasMore && !loading && (
         <div className="text-center mt-12 bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-8">
           <h3 className="text-2xl font-bold text-gray-900 mb-2">
-            Can&apos;t find what you&apos;re looking for?
+            {t("common.cant_find_looking_for")}
           </h3>
           <p className="text-gray-600 mb-6">
-            Browse all our products or use our search feature to find exactly
-            what you need.
+            {t("common.browse_products_use_search")}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/products"
               className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200"
             >
-              View All Products
+              {t("common.view_all_products")}
             </Link>
             <Link
               href="/products?search="
               className="bg-white hover:bg-gray-50 text-gray-700 px-6 py-3 rounded-lg font-medium border border-gray-300 transition-colors duration-200"
             >
-              Search Products
+              {t("common.search_products")}
             </Link>
           </div>
         </div>

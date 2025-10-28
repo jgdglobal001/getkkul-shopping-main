@@ -180,7 +180,7 @@ export default function AccountClient() {
             onClick={() => setIsEditProfileOpen(true)}
             className="px-6 py-2 bg-theme-color text-white rounded-lg hover:bg-theme-color/90 transition-colors"
           >
-            Edit Profile
+            {t("account.edit_profile")}
           </button>
         </div>
 
@@ -190,43 +190,43 @@ export default function AccountClient() {
             <div className="text-2xl font-bold text-theme-color mb-2">
               {orderCount}
             </div>
-            <div className="text-gray-600">Total Orders</div>
+            <div className="text-gray-600">{t("account.total_orders")}</div>
           </div>
           <div className="bg-gray-50 rounded-lg p-6 text-center">
             <div className="text-2xl font-bold text-theme-color mb-2">
               {profile?.addresses?.length || 0}
             </div>
-            <div className="text-gray-600">Saved Addresses</div>
+            <div className="text-gray-600">{t("account.saved_addresses")}</div>
           </div>
           <div className="bg-gray-50 rounded-lg p-6 text-center">
             <div className="text-2xl font-bold text-theme-color mb-2">
               {new Date().getFullYear() - 2024 || 1}
             </div>
-            <div className="text-gray-600">Years with Us</div>
+            <div className="text-gray-600">{t("account.years_with_us")}</div>
           </div>
         </div>
 
         {/* User Information from Store */}
         <div className="bg-blue-50 rounded-lg p-6 mb-8">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            Current User Information (From Store)
+            {t("account.current_user_info")}
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
             <div>
               <p>
-                <span className="font-medium">ID:</span>{" "}
-                {user?.id || "Not available"}
+                <span className="font-medium">{t("account.id")}:</span>{" "}
+                {user?.id || t("account.not_available")}
               </p>
               <p>
-                <span className="font-medium">Name:</span>{" "}
-                {user?.name || "Not available"}
+                <span className="font-medium">{t("account.name")}:</span>{" "}
+                {user?.name || t("account.not_available")}
               </p>
               <p>
-                <span className="font-medium">Email:</span>{" "}
-                {user?.email || "Not available"}
+                <span className="font-medium">{t("account.email")}:</span>{" "}
+                {user?.email || t("account.not_available")}
               </p>
               <p>
-                <span className="font-medium">Role:</span>{" "}
+                <span className="font-medium">{t("account.role")}:</span>{" "}
                 <span
                   className={`px-2 py-1 rounded text-xs ${
                     userRole === "admin"
@@ -240,47 +240,47 @@ export default function AccountClient() {
             </div>
             <div>
               <p>
-                <span className="font-medium">Is Admin:</span>{" "}
+                <span className="font-medium">{t("account.is_admin")}:</span>{" "}
                 <span
                   className={
                     isAdmin ? "text-red-600 font-bold" : "text-green-600"
                   }
                 >
-                  {isAdmin ? "Yes" : "No"}
+                  {isAdmin ? t("account.yes") : t("account.no")}
                 </span>
               </p>
               <p>
-                <span className="font-medium">Is Authenticated:</span>{" "}
+                <span className="font-medium">{t("account.is_authenticated")}:</span>{" "}
                 <span
                   className={
                     isAuthenticated ? "text-green-600" : "text-red-600"
                   }
                 >
-                  {isAuthenticated ? "Yes" : "No"}
+                  {isAuthenticated ? t("account.yes") : t("account.no")}
                 </span>
               </p>
               <p>
-                <span className="font-medium">Provider:</span>{" "}
-                {user?.provider || "Not available"}
+                <span className="font-medium">{t("account.provider")}:</span>{" "}
+                {user?.provider || t("account.not_available")}
               </p>
               <p>
-                <span className="font-medium">Created At:</span>{" "}
+                <span className="font-medium">{t("account.created_at")}:</span>{" "}
                 {user?.createdAt
                   ? new Date(user.createdAt).toLocaleDateString()
-                  : "Not available"}
+                  : t("account.not_available")}
               </p>
             </div>
           </div>
           {user?.profile && (
             <div className="mt-4 pt-4 border-t border-blue-200">
               <p>
-                <span className="font-medium">Profile:</span>
+                <span className="font-medium">{t("account.profile")}:</span>
               </p>
               <div className="ml-4 text-xs text-gray-600">
-                <p>First Name: {user.profile.firstName}</p>
-                <p>Last Name: {user.profile.lastName}</p>
-                <p>Phone: {user.profile.phone || "Not provided"}</p>
-                <p>Addresses: {user.profile.addresses?.length || 0} saved</p>
+                <p>{t("account.first_name")}: {user.profile.firstName}</p>
+                <p>{t("account.last_name")}: {user.profile.lastName}</p>
+                <p>{t("account.phone")}: {user.profile.phone || t("account.not_provided")}</p>
+                <p>{t("account.addresses")}: {user.profile.addresses?.length || 0} {t("account.saved")}</p>
               </div>
             </div>
           )}
@@ -289,7 +289,7 @@ export default function AccountClient() {
         {/* Quick Actions */}
         <div className="border-t border-gray-200 pt-8">
           <h3 className="text-lg font-semibold text-gray-900 mb-6">
-            Quick Actions
+            {t("account.quick_actions")}
           </h3>
           <div
             className={`grid grid-cols-1 md:grid-cols-2 ${
@@ -305,9 +305,9 @@ export default function AccountClient() {
                 <div className="mr-3 text-2xl">👑</div>
                 <div>
                   <div className="font-medium text-red-800 group-hover:text-red-900">
-                    Admin Dashboard
+                    {t("account.admin_dashboard")}
                   </div>
-                  <div className="text-sm text-red-600">Super user access</div>
+                  <div className="text-sm text-red-600">{t("account.super_user_access")}</div>
                 </div>
               </Link>
             )}
@@ -373,7 +373,7 @@ export default function AccountClient() {
       <Sidebar
         isOpen={isEditProfileOpen}
         onClose={() => setIsEditProfileOpen(false)}
-        title="Edit Profile"
+        title={t("account.edit_profile")}
       >
         <ProfileEditForm
           profile={{

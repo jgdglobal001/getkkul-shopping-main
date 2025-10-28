@@ -3,6 +3,7 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { useTranslation } from "react-i18next";
 
 interface ProfileEditFormProps {
   profile: {
@@ -22,6 +23,7 @@ export default function ProfileEditForm({
   onCancel,
   loading = false,
 }: ProfileEditFormProps) {
+  const { t } = useTranslation("account");
   const { data: session } = useSession();
   const [formData, setFormData] = useState({
     ...profile,
@@ -88,15 +90,15 @@ export default function ProfileEditForm({
     const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Name is required";
+      newErrors.name = t("name_required");
     }
     if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
+      newErrors.email = t("email_required");
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email";
+      newErrors.email = t("valid_email");
     }
     if (formData.phone && !/^\+?[\d\s\-\(\)]+$/.test(formData.phone)) {
-      newErrors.phone = "Please enter a valid phone number";
+      newErrors.phone = t("valid_phone");
     }
 
     // Password validation (only if trying to update password)
@@ -106,21 +108,21 @@ export default function ProfileEditForm({
       formData.currentPassword
     ) {
       if (!isOAuthUser && !formData.currentPassword.trim()) {
-        newErrors.currentPassword = "Current password is required";
+        newErrors.currentPassword = t("current_password_required");
       }
 
       if (formData.newPassword) {
         if (formData.newPassword.length < 6) {
-          newErrors.newPassword = "New password must be at least 6 characters";
+          newErrors.newPassword = t("password_min_length");
         }
 
         if (formData.newPassword !== formData.confirmPassword) {
-          newErrors.confirmPassword = "Passwords do not match";
+          newErrors.confirmPassword = t("passwords_do_not_match");
         }
       }
 
       if (formData.confirmPassword && !formData.newPassword) {
-        newErrors.newPassword = "New password is required";
+        newErrors.newPassword = t("new_password_required");
       }
     }
 
@@ -152,7 +154,7 @@ export default function ProfileEditForm({
             />
           ) : (
             <div className="w-[120px] h-[120px] bg-gray-300 rounded-full flex items-center justify-center">
-              <span className="text-gray-500 text-sm">No Image</span>
+              <span className="text-gray-500 text-sm">{t("no_image")}</span>
             </div>
           )}
           {imageUploading && (
@@ -194,10 +196,10 @@ export default function ProfileEditForm({
             disabled={imageUploading}
             className="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 disabled:opacity-50 transition-colors"
           >
-            {imageUploading ? "Uploading..." : "Change Picture"}
+            {imageUploading ? t("uploading") : t("change_picture")}
           </button>
           <p className="text-sm text-gray-500 mt-2">
-            JPG, GIF or PNG. Max size 5MB.
+            {t("file_format_note")}
           </p>
           {errors.image && (
             <p className="text-red-500 text-sm mt-1">{errors.image}</p>
@@ -208,7 +210,7 @@ export default function ProfileEditForm({
       {/* Full Name */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Full Name *
+          {t("full_name")} *
         </label>
         <input
           type="text"
@@ -218,7 +220,7 @@ export default function ProfileEditForm({
           className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${
             errors.name ? "border-red-500" : "border-gray-300"
           }`}
-          placeholder="Enter your full name"
+          placeholder={t("enter_full_name")}
         />
         {errors.name && (
           <p className="text-red-500 text-sm mt-1">{errors.name}</p>
@@ -228,7 +230,7 @@ export default function ProfileEditForm({
       {/* Email */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Email Address
+          {t("email_address")}
         </label>
         <input
           type="email"
@@ -238,13 +240,13 @@ export default function ProfileEditForm({
           disabled
           readOnly
         />
-        <p className="text-sm text-gray-500 mt-1">Email cannot be changed</p>
+        <p className="text-sm text-gray-500 mt-1">{t("email_cannot_be_changed")}</p>
       </div>
 
       {/* Phone Number */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Phone Number
+          {t("phone_number")}
         </label>
         <input
           type="tel"
@@ -254,7 +256,7 @@ export default function ProfileEditForm({
           className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${
             errors.phone ? "border-red-500" : "border-gray-300"
           }`}
-          placeholder="Enter your phone number"
+          placeholder={t("enter_phone_number")}
         />
         {errors.phone && (
           <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
@@ -265,14 +267,14 @@ export default function ProfileEditForm({
       <div className="border-t pt-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-medium text-gray-900">
-            Password Settings
+            {t("password_settings")}
           </h3>
           <button
             type="button"
             onClick={() => setShowPasswordSection(!showPasswordSection)}
             className="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors"
           >
-            {showPasswordSection ? "Cancel" : "Change Password"}
+            {showPasswordSection ? t("cancel") : t("change_password")}
           </button>
         </div>
 
@@ -281,9 +283,7 @@ export default function ProfileEditForm({
             {isOAuthUser && (
               <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
                 <p className="text-sm text-blue-800">
-                  <span className="font-medium">OAuth User:</span> You&apos;re
-                  signed in with a social account. You can set a password to
-                  enable email/password login as well.
+                  <span className="font-medium">{t("oauth_user")}</span> {t("oauth_description")}
                 </p>
               </div>
             )}
@@ -291,7 +291,7 @@ export default function ProfileEditForm({
             {!isOAuthUser && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Current Password *
+                  {t("current_password")} *
                 </label>
                 <input
                   type="password"
@@ -303,7 +303,7 @@ export default function ProfileEditForm({
                       ? "border-red-500"
                       : "border-gray-300"
                   }`}
-                  placeholder="Enter your current password"
+                  placeholder={t("enter_current_password")}
                 />
                 {errors.currentPassword && (
                   <p className="text-red-500 text-sm mt-1">
@@ -315,7 +315,7 @@ export default function ProfileEditForm({
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                New Password *
+                {t("new_password")} *
               </label>
               <input
                 type="password"
@@ -325,7 +325,7 @@ export default function ProfileEditForm({
                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${
                   errors.newPassword ? "border-red-500" : "border-gray-300"
                 }`}
-                placeholder="Enter new password (min. 6 characters)"
+                placeholder={t("enter_new_password")}
               />
               {errors.newPassword && (
                 <p className="text-red-500 text-sm mt-1">
@@ -336,7 +336,7 @@ export default function ProfileEditForm({
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Confirm New Password *
+                {t("confirm_new_password")} *
               </label>
               <input
                 type="password"
@@ -346,7 +346,7 @@ export default function ProfileEditForm({
                 className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${
                   errors.confirmPassword ? "border-red-500" : "border-gray-300"
                 }`}
-                placeholder="Confirm your new password"
+                placeholder={t("confirm_new_password_placeholder")}
               />
               {errors.confirmPassword && (
                 <p className="text-red-500 text-sm mt-1">
@@ -365,7 +365,7 @@ export default function ProfileEditForm({
           onClick={onCancel}
           className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
         >
-          Cancel
+          {t("cancel")}
         </button>
         <button
           type="submit"
@@ -393,10 +393,10 @@ export default function ProfileEditForm({
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 ></path>
               </svg>
-              Updating...
+              {t("updating")}
             </span>
           ) : (
-            "Update Profile"
+            t("update_profile")
           )}
         </button>
       </div>

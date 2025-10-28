@@ -4,6 +4,8 @@ import { getData } from "../helpers";
 import { getCategoriesWithCounts } from "../helpers/productHelpers";
 import { Metadata } from "next";
 import Link from "next/link";
+import koTranslations from "@/locales/ko.json";
+import koExtendedTranslations from "@/locales/ko-extended.json";
 
 export const metadata: Metadata = {
   title: "상품 카테고리 | Getkkul-shopping",
@@ -32,7 +34,29 @@ export const metadata: Metadata = {
   },
 };
 
+// Helper function to get translations
+const getT = () => {
+  const merged = { ...koTranslations };
+  Object.keys(koExtendedTranslations).forEach(key => {
+    merged[key as keyof typeof merged] = {
+      ...(merged[key as keyof typeof merged] || {}),
+      ...koExtendedTranslations[key as keyof typeof koExtendedTranslations]
+    };
+  });
+  
+  return (key: string, defaultValue: string = ''): string => {
+    const keys = key.split('.');
+    let value: any = merged;
+    for (const k of keys) {
+      value = value?.[k];
+    }
+    return value || defaultValue;
+  };
+};
+
 export default async function CategoriesPage() {
+  const t = getT();
+
   // Fetch categories and all products data
   const [categoriesData, allProductsData] = await Promise.all([
     getData(`https://dummyjson.com/products/categories`),
@@ -57,11 +81,10 @@ export default async function CategoriesPage() {
       {/* Page Header */}
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-          Shop by Categories
+          {t("categories.page_title")}
         </h1>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Discover our wide range of product categories. Find exactly what
-          you&apos;re looking for with our carefully curated collections.
+          {t("categories.page_description")}
         </p>
 
         {/* Breadcrumb */}
@@ -69,11 +92,11 @@ export default async function CategoriesPage() {
           <ol className="flex items-center justify-center space-x-2 text-gray-500">
             <li>
               <Link href="/" className="hover:text-gray-700 transition-colors">
-                Home
+                {t("categories.breadcrumb_home")}
               </Link>
             </li>
-            <li>/</li>
-            <li className="text-gray-900 font-medium">Categories</li>
+            <li>{t("categories.breadcrumb_categories").substring(0, 1) === "/" ? "/" : " / "}</li>
+            <li className="text-gray-900 font-medium">{t("categories.breadcrumb_categories")}</li>
           </ol>
         </nav>
       </div>

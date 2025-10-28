@@ -3,12 +3,14 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FaChevronDown } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 interface ColorProps {
   allProducts?: any[];
 }
 
 const Color = ({ allProducts = [] }: ColorProps) => {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false); // Collapsed by default
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -78,7 +80,7 @@ const Color = ({ allProducts = [] }: ColorProps) => {
         className="w-full flex items-center justify-between py-3 px-0 text-left focus:outline-none group"
       >
         <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-          Shop by Color
+          {t("filters.shop_by_color")}
         </h3>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
@@ -127,7 +129,7 @@ const Color = ({ allProducts = [] }: ColorProps) => {
                 })}
                 {colors.length === 0 && (
                   <div className="text-gray-400 italic text-sm">
-                    No colors available
+                    {t("filters.no_colors")}
                   </div>
                 )}
               </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
@@ -19,9 +20,66 @@ interface RoundedCategoriesCarouselProps {
   categories: Category[];
 }
 
+// Direct Korean category names mapping (as fallback)
+const koreanCategoryNames: { [key: string]: string } = {
+  beauty: "뷰티",
+  fragrances: "향수",
+  furniture: "가구",
+  groceries: "식품",
+  "home-decoration": "홈 데코",
+  "kitchen-accessories": "주방용품",
+  laptops: "노트북",
+  "mens-shirts": "남성 셔츠",
+  "mens-shoes": "남성 신발",
+  "mens-watches": "남성 시계",
+  "mobile-accessories": "휴대폰 액세서리",
+  motorcycle: "오토바이",
+  "skin-care": "스킨케어",
+  smartphones: "스마트폰",
+  "sports-accessories": "스포츠 액세서리",
+  sunglasses: "선글라스",
+  tablets: "태블릿",
+  tops: "상의",
+  vehicle: "자동차",
+  "womens-bags": "여성 가방",
+  "womens-dresses": "여성 드레스",
+  "womens-jewellery": "여성 주얼리",
+  "womens-shoes": "여성 신발",
+  "womens-watches": "여성 시계",
+};
+
+// Direct Korean category descriptions mapping (as fallback)
+const koreanCategoryDescriptions: { [key: string]: string } = {
+  beauty: "프리미엄 뷰티 제품 및 화장품",
+  fragrances: "고급 향수 및 향료",
+  furniture: "집을 위한 스타일리시한 가구",
+  groceries: "신선한 식품 및 필수품",
+  "home-decoration": "아름다운 홈 데코 아이템",
+  "kitchen-accessories": "필수 주방 도구",
+  laptops: "고성능 노트북",
+  "mens-shirts": "남성용 스타일리시한 셔츠",
+  "mens-shoes": "편안하고 유행스러운 신발",
+  "mens-watches": "남성용 우아한 타임피스",
+  "mobile-accessories": "모바일 기기 액세서리",
+  motorcycle: "오토바이 기어 및 액세서리",
+  "skin-care": "프리미엄 스킨케어 제품",
+  smartphones: "최신 스마트폰 및 기기",
+  "sports-accessories": "스포츠 용품 및 장비",
+  sunglasses: "스타일리시한 안경 및 선글라스",
+  tablets: "태블릿 및 디지털 액세서리",
+  tops: "트렌디한 상의 및 캐주얼 의류",
+  vehicle: "자동차 액세서리 및 부품",
+  "womens-bags": "패셔너블한 가방 및 핸드백",
+  "womens-dresses": "모든 경우에 적합한 우아한 드레스",
+  "womens-jewellery": "아름다운 주얼리 및 액세서리",
+  "womens-shoes": "여성용 스타일리시한 신발",
+  "womens-watches": "여성용 우아한 시계",
+};
+
 const RoundedCategoriesCarousel: React.FC<RoundedCategoriesCarouselProps> = ({
   categories,
 }) => {
+  const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -121,16 +179,61 @@ const RoundedCategoriesCarousel: React.FC<RoundedCategoriesCarouselProps> = ({
     return null;
   }
 
+  // Helper function to get translated category name
+  const getCategoryName = (slug: string, originalName: string) => {
+    // First, try to use the direct mapping (primary source of truth)
+    if (koreanCategoryNames[slug]) {
+      return koreanCategoryNames[slug];
+    }
+    
+    // Then, try i18n translation
+    try {
+      const translationKey = `categories.${slug.replace(/-/g, '_')}_name`;
+      const translated = t(translationKey);
+      // If translation doesn't exist, it returns the key itself
+      if (translated && translated !== translationKey) {
+        return translated;
+      }
+    } catch (error) {
+      console.error(`Error translating category name for slug: ${slug}`, error);
+    }
+    
+    // Fallback to original name
+    return originalName;
+  };
+
+  // Helper function to get translated category description
+  const getCategoryDescription = (slug: string, originalDesc: string) => {
+    // First, try to use the direct mapping (primary source of truth)
+    if (koreanCategoryDescriptions[slug]) {
+      return koreanCategoryDescriptions[slug];
+    }
+    
+    // Then, try i18n translation
+    try {
+      const translationKey = `categories.${slug.replace(/-/g, '_')}_desc`;
+      const translated = t(translationKey);
+      if (translated && translated !== translationKey) {
+        return translated;
+      }
+    } catch (error) {
+      console.error(`Error translating category description for slug: ${slug}`, error);
+    }
+    
+    // Fallback to original description
+    return originalDesc;
+  };
+
   return (
     <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
       <Container className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Shop by Category
+            {t("home.shop_by_category")}
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Discover our diverse range of products across various categories
+            {t("home.discover_diverse_range")}
           </p>
         </div>
 
@@ -236,10 +339,10 @@ const RoundedCategoriesCarousel: React.FC<RoundedCategoriesCarouselProps> = ({
                       {/* Category Info */}
                       <div className="text-center space-y-1">
                         <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-300 text-sm lg:text-base">
-                          {category.name}
+                          {getCategoryName(category.slug, category.name)}
                         </h3>
                         <p className="text-xs text-gray-500 line-clamp-2 px-1">
-                          {category.description}
+                          {getCategoryDescription(category.slug, category.description)}
                         </p>
                       </div>
                     </div>
@@ -276,7 +379,7 @@ const RoundedCategoriesCarousel: React.FC<RoundedCategoriesCarouselProps> = ({
             href="/categories"
             className="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors duration-300 shadow-md hover:shadow-lg"
           >
-            View All Categories
+            {t("common.view_all_categories")}
             <FaArrowRight className="ml-2" />
           </Link>
         </div>

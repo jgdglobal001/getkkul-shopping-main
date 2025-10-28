@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import EnhancedProductCard from "../EnhancedProductCard";
 import ActiveFilters from "./ActiveFilters";
 import { BsGridFill } from "react-icons/bs";
@@ -17,6 +18,7 @@ const InfiniteProductList = ({
   currentSort,
   itemsPerPage = 12,
 }: InfiniteProductListProps) => {
+  const { t } = useTranslation();
   const [displayedProducts, setDisplayedProducts] = useState<any[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
@@ -122,7 +124,7 @@ const InfiniteProductList = ({
       {/* Header with controls */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 p-4 bg-white border border-gray-200 rounded-lg">
         <div className="text-sm text-gray-600">
-          Showing {sortedProducts.length} of {products.length} products
+          {t("products.showing_products", { displayed: sortedProducts.length, total: products.length })}
         </div>
 
         <div className="flex flex-col sm:flex-row gap-4 sm:items-center">
@@ -132,7 +134,7 @@ const InfiniteProductList = ({
               htmlFor="sort"
               className="text-sm text-gray-600 whitespace-nowrap"
             >
-              Sort by:
+              {t("products.sort_by")}
             </label>
             <select
               id="sort"
@@ -157,7 +159,7 @@ const InfiniteProductList = ({
                   ? "bg-blue-500 text-white"
                   : "bg-gray-200 text-gray-600 hover:bg-gray-300"
               }`}
-              title="Grid View"
+              title={t("products.grid_view")}
             >
               <BsGridFill className="w-4 h-4" />
             </button>
@@ -168,7 +170,7 @@ const InfiniteProductList = ({
                   ? "bg-blue-500 text-white"
                   : "bg-gray-200 text-gray-600 hover:bg-gray-300"
               }`}
-              title="List View"
+              title={t("products.list_view")}
             >
               <ImList className="w-4 h-4" />
             </button>
@@ -201,14 +203,14 @@ const InfiniteProductList = ({
       {isLoading && (
         <div className="flex justify-center items-center py-8">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-          <span className="ml-2 text-gray-600">더 많은 상품을 불러오는 중...</span>
+          <span className="ml-2 text-gray-600">{t("products.loading_more")}</span>
         </div>
       )}
 
       {/* No more products message */}
       {!hasMore && products.length > itemsPerPage && (
         <div className="text-center py-8 text-gray-500">
-          You&apos;ve reached the end of the products list.
+          {t("products.end_of_list")}
         </div>
       )}
 
@@ -216,7 +218,7 @@ const InfiniteProductList = ({
       {products.length === 0 && (
         <div className="text-center py-12">
           <p className="text-gray-500 text-lg">
-            No products found matching your criteria.
+            {t("products.no_products_found")}
           </p>
         </div>
       )}

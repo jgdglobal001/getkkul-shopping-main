@@ -4,6 +4,7 @@ import React, { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FiArrowRight, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { useTranslation } from "react-i18next";
 
 interface FeaturedCategory {
   name: string;
@@ -215,10 +216,11 @@ const FeaturedCategories: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Shop by Category
+            {/* @ts-ignore - useTranslation is used in component scope */}
+            {useTranslation().t("home.shop_by_category")}
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover our curated collections across different categories
+            {useTranslation().t("home.discover_collections")}
           </p>
         </div>
 
@@ -326,7 +328,7 @@ const FeaturedCategories: React.FC = () => {
             href="/categories"
             className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           >
-            View All Categories
+            {useTranslation().t("navigation.categories")}
             <FiArrowRight className="w-4 h-4" />
           </Link>
         </div>
