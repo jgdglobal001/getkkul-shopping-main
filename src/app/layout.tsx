@@ -7,6 +7,7 @@ import Head from "next/head";
 import PurchaseWidget from "@/components/PurchaseWidget";
 import StateProvider from "@/components/auth/StateProvider";
 import I18nProvider from "@/components/providers/I18nProvider";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Getkkul-shopping - 대한민국 대표 온라인 쇼핑몰",
@@ -39,6 +40,11 @@ export default function RootLayout({
             </AuthProvider>
           </StateProvider>
         </I18nProvider>
+        {/* Toss Payments SDK */}
+        <Script
+          src="https://js.tosspayments.com/v1/payment"
+          strategy="beforeInteractive"
+        />
       </body>
     </html>
   );

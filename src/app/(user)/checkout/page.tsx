@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -17,6 +17,7 @@ import {
   FiTruck,
 } from "react-icons/fi";
 import Link from "next/link";
+import { loadPaymentWidget } from "@tosspayments/payment-widget-sdk";
 
 const CheckoutPage = () => {
   const { data: session } = useSession();
@@ -25,10 +26,11 @@ const CheckoutPage = () => {
 
   const [loading, setLoading] = useState(true);
   const [existingOrder, setExistingOrder] = useState<any>(null);
-  const [paymentMethod, setPaymentMethod] = useState<"stripe" | "cod" | null>(
+  const [paymentMethod, setPaymentMethod] = useState<"stripe" | "cod" | "toss" | null>(
     null
   );
   const [paymentProcessing, setPaymentProcessing] = useState(false);
+  const paymentWidgetRef = useRef<any>(null);
 
   // Get order ID from URL params
   const existingOrderId = searchParams.get("orderId");
@@ -165,6 +167,75 @@ const CheckoutPage = () => {
       console.error("Error processing payment:", error);
       alert(
         `Payment processing failed: ${
+          error instanceof Error ? error.message : "Please try again."
+        }`
+      );
+    } finally {
+      setPaymentProcessing(false);
+    }
+  };
+
+  const handleTossPayment = async () => {
+    try {
+      setPaymentProcessing(true);
+
+      const tossClientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
+      if (!tossClientKey) {
+        throw new Error("Toss Client Key is not configured");
+      }
+
+      const paymentWidget = await loadPaymentWidget({
+        clientKey: tossClientKey,
+        environment: "test",
+      });
+
+      // Generate order ID and payment key for Toss
+      const orderId = existingOrder.id || `ORD-${Date.now()}`;
+      const amount = Math.round(parseFloat(existingOrder.amount) * 100); // Convert to cents
+
+      const payment = paymentWidget.payment({
+        amount,
+      });
+
+      // Request payment
+      const paymentResult = await payment.request({
+        orderId,
+        orderName:
+          existingOrder?.items?.[0]?.name ||
+          `Order #${orderId.substring(0, 8)}`,
+      });
+
+      // Send to backend for confirmation
+      const confirmResponse = await fetch("/api/orders/toss-confirm", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          orderId,
+          paymentKey: paymentResult.paymentKey,
+          amount,
+          userEmail: session?.user?.email,
+        }),
+      });
+
+      if (!confirmResponse.ok) {
+        const errorData = await confirmResponse.json();
+        throw new Error(errorData.error || "Payment confirmation failed");
+      }
+
+      const confirmData = await confirmResponse.json();
+
+      if (confirmData.success) {
+        // Redirect to success page
+        router.push(`/success?order_id=${orderId}`);
+      } else {
+        throw new Error(confirmData.error || "Payment failed");
+      }
+    } catch (error) {
+      console.error("Toss payment error:", error);
+      alert(
+        `Toss payment failed: ${
           error instanceof Error ? error.message : "Please try again."
         }`
       );
@@ -455,6 +526,39 @@ const CheckoutPage = () => {
                     </div>
                   </div>
                 </div>
+
+                {/* Toss Payment */}
+                <div
+                  className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
+                    paymentMethod === "toss"
+                      ? "border-theme-color bg-blue-50"
+                      : "border-gray-200 hover:border-gray-300"
+                  }`}
+                  onClick={() => setPaymentMethod("toss")}
+                >
+                  <div className="flex items-center">
+                    <FiCreditCard className="w-5 h-5 mr-3 text-gray-600" />
+                    <div className="flex-1">
+                      <h4 className="font-medium text-gray-900">
+                        토스페이먼츠
+                      </h4>
+                      <p className="text-sm text-gray-600">
+                        간편한 결제 (신용카드, 계좌이체, 핸드폰 등)
+                      </p>
+                    </div>
+                    <div
+                      className={`w-4 h-4 rounded-full border-2 ${
+                        paymentMethod === "toss"
+                          ? "border-theme-color bg-theme-color"
+                          : "border-gray-300"
+                      }`}
+                    >
+                      {paymentMethod === "toss" && (
+                        <div className="w-full h-full rounded-full bg-white scale-50"></div>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Action Button */}
@@ -487,6 +591,21 @@ const CheckoutPage = () => {
                       </>
                     ) : (
                       "Pay with Card"
+                    )}
+                  </button>
+                ) : paymentMethod === "toss" ? (
+                  <button
+                    onClick={handleTossPayment}
+                    disabled={paymentProcessing}
+                    className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                  >
+                    {paymentProcessing ? (
+                      <>
+                        <FiLoader className="animate-spin mr-2" />
+                        Processing...
+                      </>
+                    ) : (
+                      "Pay with 토스페이먼츠"
                     )}
                   </button>
                 ) : (

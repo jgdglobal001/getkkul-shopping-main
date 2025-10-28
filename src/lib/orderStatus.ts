@@ -18,6 +18,9 @@ export const PAYMENT_STATUSES = {
 export const PAYMENT_METHODS = {
   ONLINE: "online",
   CASH: "cash",
+  STRIPE: "stripe",
+  TOSS: "toss",
+  CASH_ON_DELIVERY: "cash_on_delivery",
 } as const;
 
 export type OrderStatus = (typeof ORDER_STATUSES)[keyof typeof ORDER_STATUSES];

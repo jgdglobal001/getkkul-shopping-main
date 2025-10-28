@@ -212,6 +212,19 @@ model Order {
   orderItems      OrderItem[]
   user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  // 토스페이먼츠 결제 정보
+  tossOrderId          String?           // 토스페이먼츠 주문 ID
+  tossPaymentId        String?           // 토스페이먼츠 결제 ID (결제 수단)
+  tossPaymentKey       String?           @unique  // 결제 키 (검증용)
+  tossPaymentMethod    String?           // 결제 수단 (CARD, TRANSFER, VIRTUAL_ACCOUNT 등)
+  tossCardCompany      String?           // 카드사 (신용카드만)
+  tossCardNumber       String?           // 마스킹된 카드번호
+  tossApprovalNumber   String?           // 승인번호
+  tossFailureReason    String?           // 결제 실패 사유 (실패시만)
+  tossReceipt          Json?             // 영수증 정보
+  tossPaymentAttempts  Int               @default(0)  // 결제 시도 횟수
+  lastTossAttempt      DateTime?         // 마지막 결제 시도 시간
+
   @@map("orders")
 }
 
