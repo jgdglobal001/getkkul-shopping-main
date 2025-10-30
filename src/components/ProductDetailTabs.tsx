@@ -21,7 +21,7 @@ const ProductDetailTabs = ({ product }: ProductDetailTabsProps) => {
         {product?.detailImages && product.detailImages.length > 0 && (
           <div className="mb-6">
             <div className="flex justify-center">
-              <div className="w-full max-w-2xl space-y-4">
+              <div className={`w-full max-w-2xl space-y-4 ${!expandedDetail ? 'max-h-96 overflow-hidden' : ''}`}>
                 {product.detailImages.map((image, index) => (
                   <div key={index} className="relative w-full rounded-lg overflow-hidden border border-gray-200">
                     <Image
