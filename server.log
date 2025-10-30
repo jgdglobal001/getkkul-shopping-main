@@ -4,9 +4,12 @@
 
    ▲ Next.js 15.4.6
    - Local:        http://localhost:3002
-   - Network:      http://192.168.1.3:3002
+   - Network:      http://192.168.1.7:3002
    - Environments: .env.local
 
  ✓ Starting...
- ✓ Ready in 1491ms
- ○ Compiling / ...
+ ✓ Ready in 1450ms
+ ○ Compiling /api/admin/dashboard/recent-orders ...
+ ✓ Compiled /api/admin/dashboard/recent-orders in 1353ms (286 modules)
+prisma:query SELECT "public"."orders"."id", "public"."orders"."orderId", "public"."orders"."status", "public"."orders"."paymentStatus", "public"."orders"."paymentMethod", "public"."orders"."totalAmount", "public"."orders"."currency", "public"."orders"."shippingAddress", "public"."orders"."billingAddress", "public"."orders"."createdAt", "public"."orders"."updatedAt", "public"."orders"."userId", "public"."orders"."tossOrderId", "public"."orders"."tossPaymentId", "public"."orders"."tossPaymentKey", "public"."orders"."tossPaymentMethod", "public"."orders"."tossCardCompany", "public"."orders"."tossCardNumber", "public"."orders"."tossApprovalNumber", "public"."orders"."tossFailureReason", "public"."orders"."tossReceipt", "public"."orders"."tossPaymentAttempts", "public"."orders"."lastTossAttempt" FROM "public"."orders" WHERE 1=1 ORDER BY "public"."orders"."createdAt" DESC LIMIT $1 OFFSET $2
+ GET /api/admin/dashboard/recent-orders 200 in 2238ms

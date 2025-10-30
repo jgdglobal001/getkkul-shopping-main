@@ -58,8 +58,8 @@ export async function GET(request: NextRequest) {
     const formattedOrders = recentOrders.map((order) => ({
       id: order.id,
       orderId: `ORD-${order.id.slice(-8).toUpperCase()}`,
-      customerName: order.user?.name || order.customerEmail || "알 수 없음",
-      amount: order.total,
+      customerName: order.user?.name || order.user?.email || "알 수 없음",
+      amount: order.totalAmount,
       status: getKoreanStatus(order.status),
       createdAt: order.createdAt.toISOString()
     }));
