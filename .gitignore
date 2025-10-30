@@ -10,3 +10,9 @@ service-account.json
 .env.production.local
 
 /src/generated/prisma
+
+# Test artifacts
+/test-results/
+/playwright-report/
+server.log
+test-results.txt
