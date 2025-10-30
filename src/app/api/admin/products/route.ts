@@ -108,6 +108,8 @@ export async function POST(request: NextRequest) {
         sku: body.sku,
         meta: body.meta || null,
         isActive: body.isActive !== undefined ? body.isActive : true,
+        minimumOrderQuantity: body.minimumOrderQuantity ? parseInt(body.minimumOrderQuantity) : 1,
+        availabilityStatus: body.availabilityStatus || "In Stock",
         // ⭐ 필수 표기 정보
         productName: body.productName || null,
         modelNumber: body.modelNumber || null,

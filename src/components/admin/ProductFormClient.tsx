@@ -38,12 +38,6 @@ interface ProductFormData {
   // ⭐ 추가 필드
   availabilityStatus: string;
   minimumOrderQuantity: string;
-  weight: string;
-  dimensions: {
-    width: string;
-    height: string;
-    depth: string;
-  };
   // ⭐ 필수 표기 정보
   productName: string;
   modelNumber: string;
@@ -110,12 +104,6 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
     // ⭐ 추가 필드
     availabilityStatus: "In Stock",
     minimumOrderQuantity: "1",
-    weight: "",
-    dimensions: {
-      width: "",
-      height: "",
-      depth: "",
-    },
     // ⭐ 필수 표기 정보
     productName: "",
     modelNumber: "",
@@ -208,12 +196,6 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
         // ⭐ 추가 필드
         availabilityStatus: product.availabilityStatus || "In Stock",
         minimumOrderQuantity: product.minimumOrderQuantity?.toString() || "1",
-        weight: product.weight?.toString() || "",
-        dimensions: {
-          width: product.dimensions?.width?.toString() || "",
-          height: product.dimensions?.height?.toString() || "",
-          depth: product.dimensions?.depth?.toString() || "",
-        },
         // ⭐ 필수 표기 정보
         productName: product.productName || "",
         modelNumber: product.modelNumber || "",
@@ -273,16 +255,7 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
     }));
   };
 
-  // Dimensions 변경 핸들러
-  const handleDimensionChange = (field: "width" | "height" | "depth", value: string) => {
-    setFormData(prev => ({
-      ...prev,
-      dimensions: {
-        ...prev.dimensions,
-        [field]: value,
-      },
-    }));
-  };
+
 
   // 태그 추가
   const addTag = () => {
@@ -386,14 +359,8 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
         discountPercentage: parseFloat(formData.discountPercentage),
         rating: parseFloat(formData.rating),
         stock: parseInt(formData.stock),
-        weight: formData.weight ? parseFloat(formData.weight) : null,
-        dimensions: formData.dimensions.width || formData.dimensions.height || formData.dimensions.depth
-          ? {
-              width: parseFloat(formData.dimensions.width) || 0,
-              height: parseFloat(formData.dimensions.height) || 0,
-              depth: parseFloat(formData.dimensions.depth) || 0,
-            }
-          : null,
+        weight: null,
+        dimensions: null,
         minimumOrderQuantity: parseInt(formData.minimumOrderQuantity),
       };
 
@@ -902,69 +869,7 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
               />
             </div>
 
-            {/* 무게 */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                무게 (kg)
-              </label>
-              <input
-                type="number"
-                step="0.01"
-                min="0"
-                value={formData.weight}
-                onChange={(e) => handleInputChange("weight", e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
-                placeholder="예: 0.5"
-              />
-            </div>
 
-            {/* 크기 정보 (가로) */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                가로 (cm)
-              </label>
-              <input
-                type="number"
-                step="0.1"
-                min="0"
-                value={formData.dimensions.width}
-                onChange={(e) => handleDimensionChange("width", e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
-                placeholder="예: 15.2"
-              />
-            </div>
-
-            {/* 크기 정보 (세로) */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                세로 (cm)
-              </label>
-              <input
-                type="number"
-                step="0.1"
-                min="0"
-                value={formData.dimensions.height}
-                onChange={(e) => handleDimensionChange("height", e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
-                placeholder="예: 7.8"
-              />
-            </div>
-
-            {/* 크기 정보 (깊이) */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                깊이 (cm)
-              </label>
-              <input
-                type="number"
-                step="0.1"
-                min="0"
-                value={formData.dimensions.depth}
-                onChange={(e) => handleDimensionChange("depth", e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
-                placeholder="예: 0.9"
-              />
-            </div>
 
             {/* ⭐ 필수 표기 정보 섹션 */}
             <div className="lg:col-span-2 border-t-2 border-theme-color pt-6 mt-6">

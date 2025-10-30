@@ -1,5 +1,5 @@
 import { ProductType } from "../../type";
-import { FiPackage, FiTruck, FiShield, FiInfo } from "react-icons/fi";
+import { FiTruck, FiShield, FiInfo } from "react-icons/fi";
 import Image from "next/image";
 
 interface ProductSpecificationsProps {
@@ -8,11 +8,6 @@ interface ProductSpecificationsProps {
 
 const ProductSpecifications = ({ product }: ProductSpecificationsProps) => {
   const specifications = [
-    {
-      icon: <FiPackage className="w-5 h-5 text-blue-600" />,
-      label: "Weight",
-      value: `${product?.weight || "N/A"} kg`,
-    },
     {
       icon: <FiTruck className="w-5 h-5 text-green-600" />,
       label: "Shipping Info",
@@ -78,32 +73,7 @@ const ProductSpecifications = ({ product }: ProductSpecificationsProps) => {
         </div>
       </div>
 
-      {/* Dimensions if available */}
-      {product?.dimensions && (
-        <div className="mt-6 bg-blue-50 rounded-lg p-6">
-          <h4 className="font-semibold text-gray-900 mb-4">Dimensions</h4>
-          <div className="grid grid-cols-3 gap-4 text-center">
-            <div>
-              <p className="text-sm text-gray-600">Width</p>
-              <p className="font-semibold text-gray-900">
-                {product.dimensions.width}&quot;{" "}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600">Height</p>
-              <p className="font-semibold text-gray-900">
-                {product.dimensions.height}&quot;
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-gray-600">Depth</p>
-              <p className="font-semibold text-gray-900">
-                {product.dimensions.depth}&quot;
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
+
 
       {/* Detail Images if available */}
       {product?.detailImages && product.detailImages.length > 0 && (

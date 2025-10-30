@@ -356,21 +356,7 @@ const ProductDetailClient = ({ productId }: ProductDetailClientProps) => {
           </div>
           
           <div className="space-y-3">
-            {product.weight && (
-              <div className="flex justify-between">
-                <span className="text-gray-600">무게:</span>
-                <span className="font-medium">{product.weight}kg</span>
-              </div>
-            )}
-            
-            {product.dimensions && (
-              <div className="flex justify-between">
-                <span className="text-gray-600">치수:</span>
-                <span className="font-medium">
-                  {product.dimensions.width} × {product.dimensions.height} × {product.dimensions.depth} cm
-                </span>
-              </div>
-            )}
+
             
             <div className="flex justify-between">
               <span className="text-gray-600">최소 주문 수량:</span>

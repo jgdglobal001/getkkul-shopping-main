@@ -98,6 +98,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         sku: body.sku || existingProduct.sku,
         meta: body.meta !== undefined ? body.meta : existingProduct.meta,
         isActive: body.isActive !== undefined ? body.isActive : existingProduct.isActive,
+        minimumOrderQuantity: body.minimumOrderQuantity ? parseInt(body.minimumOrderQuantity) : existingProduct.minimumOrderQuantity,
+        availabilityStatus: body.availabilityStatus || existingProduct.availabilityStatus,
         // ⭐ 필수 표기 정보
         productName: body.productName !== undefined ? body.productName : existingProduct.productName,
         modelNumber: body.modelNumber !== undefined ? body.modelNumber : existingProduct.modelNumber,
@@ -151,45 +153,11 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
 
     const { id } = await params;
 
-    // 상품 존재 확인
-    const existingProduct = await prisma.product.findUnique({
+    await prisma.product.delete({
       where: { id },
     });
 
-    if (!existingProduct) {
-      return NextResponse.json(
-        { error: "상품을 찾을 수 없습니다" },
-        { status: 404 }
-      );
-    }
-
-    // 관련 데이터 확인 (주문에 포함된 상품은 삭제하지 않고 비활성화)
-    const orderItemsCount = await prisma.orderItem.count({
-      where: { productId: id },
-    });
-
-    if (orderItemsCount > 0) {
-      // 주문에 포함된 상품은 비활성화만
-      const deactivatedProduct = await prisma.product.update({
-        where: { id },
-        data: { isActive: false },
-      });
-
-      return NextResponse.json({
-        message: "주문 기록이 있는 상품은 비활성화되었습니다",
-        product: deactivatedProduct,
-      });
-    } else {
-      // 주문 기록이 없는 상품은 완전 삭제
-      await prisma.product.delete({
-        where: { id },
-      });
-
-      return NextResponse.json({
-        message: "상품이 성공적으로 삭제되었습니다",
-      });
-    }
-
+    return NextResponse.json({ message: "상품이 삭제되었습니다" });
   } catch (error) {
     console.error("상품 삭제 오류:", error);
     return NextResponse.json(
