@@ -2,17 +2,18 @@ import Container from "@/components/Container";
 import Image from "next/image";
 import { ProductType } from "../../../../../type";
 import AddToCartButton from "@/components/AddToCartButton";
+import BuyNowButton from "@/components/BuyNowButton";
 import { getData } from "@/app/(user)/helpers";
 import ProductImages from "@/components/ProductImages";
 import PriceFormat from "@/components/PriceFormat";
 import { FaRegEye } from "react-icons/fa";
-import { paymentImage } from "@/assets";
 import { MdStar } from "react-icons/md";
 import ProductPrice from "@/components/ProductPrice";
 import ProductQA from "@/components/ProductQA";
 import RelatedProducts from "@/components/RelatedProducts";
 import ProductRequiredInfo from "@/components/ProductRequiredInfo";
 import ProductDetailTabs from "@/components/ProductDetailTabs";
+import ProductDetailsInfo from "@/components/ProductDetailsInfo";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 
@@ -129,47 +130,18 @@ const SingleProductPage = async ({ params }: Props) => {
             <FaRegEye className="mr-1" />{" "}
             <span className="font-semibold mr-1">250+</span> 명이 지금 이 상품을 보고 있습니다
           </p>
-          <p>
-            You are saving{" "}
-            <span className="text-base font-semibold text-green-500">
-              <PriceFormat amount={product?.discountPercentage / 100} />
-            </span>{" "}
-            upon purchase
-          </p>
-          <div>
-            <p className="text-sm tracking-wide">{product?.description}</p>
-            <p className="text-base">{product?.warrantyInformation}</p>
-          </div>
-          <p>
-            Brand: <span className="font-medium">{product?.brand}</span>
-          </p>
-          <p>
-            Category:{" "}
-            <span className="font-medium capitalize">{product?.category}</span>
-          </p>
-          <p>
-            Tags:{" "}
-            {product?.tags?.map((item, index) => (
-              <span key={index.toString()} className="font-medium capitalize">
-                {item}
-                {index < product?.tags?.length - 1 && ", "}
-              </span>
-            ))}
-          </p>
 
-          <AddToCartButton
-            product={product}
-            className=" rounded-md uppercase font-semibold"
-          />
+          <ProductDetailsInfo product={product} />
 
-          <div className="bg-[#f7f7f7] p-5 rounded-md flex flex-col items-center justify-center gap-2">
-            <Image
-              src={paymentImage}
-              alt="payment"
-              className="w-auto object-cover"
-              unoptimized
+          <div className="flex flex-col gap-3">
+            <AddToCartButton
+              product={product}
+              className="rounded-md uppercase font-semibold"
             />
-            <p className="font-semibold">Guaranteed safe & secure checkout</p>
+            <BuyNowButton
+              product={product}
+              className="rounded-md uppercase font-semibold"
+            />
           </div>
         </div>
 

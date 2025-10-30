@@ -392,7 +392,12 @@
     "customer_service": "고객 서비스",
     "delivery": "배송",
     "packaging": "포장",
-    "overall": "전체적으로"
+    "overall": "전체적으로",
+    "you_are_saving": "절약하는 금액",
+    "upon_purchase": "구매시",
+    "guaranteed_safe_secure_checkout": "안전하고 보안된 결제 보장",
+    "tags": "태그",
+    "max_stock_reached": "재고 수량을 초과할 수 없습니다!"
   },
   "cart": {
     "title": "장바구니",
@@ -425,6 +430,7 @@
     "min_quantity": "최소 수량",
     "quantity_limit": "수량 제한",
     "stock_limit": "재고 한계",
+    "cancel_adding": "담기 취소",
     "price": "가격",
     "unit_price": "단가",
     "total_price": "총 가격",

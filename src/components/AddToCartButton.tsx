@@ -4,6 +4,7 @@ import {
   addToCart,
   decreaseQuantity,
   increaseQuantity,
+  removeFromCart,
 } from "@/redux/shofySlice";
 import { useDispatch, useSelector } from "react-redux";
 import { ProductType, StateType } from "../../type";
@@ -37,6 +38,7 @@ const AddToCartButton = ({
   );
   const [isAdding, setIsAdding] = useState(false);
   const [justAdded, setJustAdded] = useState(false);
+  const [isCanceling, setIsCanceling] = useState(false);
 
   useEffect(() => {
     const availableProduct = cart?.find((item) => item?.id === product?.id);
@@ -50,7 +52,13 @@ const AddToCartButton = ({
   const handleAddToCart = async () => {
     if (product && product.stock > 0) {
       setIsAdding(true);
-      dispatch(addToCart(product));
+      // Serialize product to ensure createdAt/updatedAt are ISO strings, not Date objects
+      const serializedProduct = {
+        ...product,
+        createdAt: product.createdAt ? (typeof product.createdAt === 'string' ? product.createdAt : new Date(product.createdAt).toISOString()) : undefined,
+        updatedAt: product.updatedAt ? (typeof product.updatedAt === 'string' ? product.updatedAt : new Date(product.updatedAt).toISOString()) : undefined,
+      };
+      dispatch(addToCart(serializedProduct));
 
       // Simulate async operation
       setTimeout(() => {
@@ -78,18 +86,30 @@ const AddToCartButton = ({
   };
 
   const handleIncrease = () => {
-    dispatch(increaseQuantity(product?.id));
-    toast.success(t('cart.quantity_increased', '수량이 증가되었습니다!'), {
-      duration: 1500,
-      style: {
-        background: "#10B981",
-        color: "white",
-      },
-    });
+    // 재고 수량을 초과하지 않도록 체크
+    if (existingProduct?.quantity! < (product?.stock || 0)) {
+      dispatch(increaseQuantity(product?.id));
+      toast.success(t('cart.quantity_increased', '수량이 증가되었습니다!'), {
+        duration: 1500,
+        style: {
+          background: "#10B981",
+          color: "white",
+        },
+      });
+    } else {
+      toast.error(t('product.max_stock_reached', '재고 수량을 초과할 수 없습니다!'), {
+        duration: 1500,
+        style: {
+          background: "#EF4444",
+          color: "white",
+        },
+      });
+    }
   };
 
   const handleDecrease = () => {
     if (existingProduct?.quantity! > 1) {
+      // 수량이 2 이상일 때 - 정상 감소
       dispatch(decreaseQuantity(product?.id));
       toast.success(t('cart.quantity_decreased', '수량이 감소되었습니다!'), {
         duration: 1500,
@@ -98,14 +118,22 @@ const AddToCartButton = ({
           color: "white",
         },
       });
-    } else {
-      toast.error(t('common.minimum_quantity', '최소 수량은 1입니다'), {
-        style: {
-          background: "#EF4444",
-          color: "white",
-        },
-      });
+    } else if (existingProduct?.quantity === 1) {
+      // 수량이 정확히 1일 때 - 담기 취소 모드 진입
+      setIsCanceling(true);
     }
+  };
+
+  const handleCancelAdding = () => {
+    dispatch(removeFromCart(product?.id));
+    setIsCanceling(false);
+    toast.success(t('cart.cancel_adding', '담기 취소'), {
+      duration: 1500,
+      style: {
+        background: "#F59E0B",
+        color: "white",
+      },
+    });
   };
 
   // Base styles for different variants
@@ -140,30 +168,40 @@ const AddToCartButton = ({
   return (
     <>
       {existingProduct && showQuantity ? (
-        <div className="flex items-center justify-center gap-2 bg-white rounded-lg border border-gray-200 p-1 shadow-sm">
+        isCanceling ? (
+          // Cancel mode - show cancel button
           <button
-            disabled={existingProduct?.quantity! <= 1}
-            onClick={handleDecrease}
-            className="flex items-center justify-center w-8 h-8 bg-gray-100 hover:bg-red-100 text-gray-600 hover:text-red-600 rounded-md border transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-100 disabled:hover:text-gray-600"
+            onClick={handleCancelAdding}
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-white border border-gray-200 text-gray-800 rounded-lg hover:bg-red-50 hover:border-red-200 transition-all duration-200 text-sm font-medium"
           >
-            <FaMinus className="w-3 h-3" />
+            <span>{t("cart.cancel_adding", "담기 취소")}</span>
           </button>
+        ) : (
+          // Normal quantity controls
+          <div className="flex items-center justify-center gap-2 bg-white rounded-lg border border-gray-200 p-1 shadow-sm">
+            <button
+              onClick={handleDecrease}
+              className="flex items-center justify-center w-8 h-8 bg-gray-100 hover:bg-red-100 text-gray-600 hover:text-red-600 rounded-md border transition-all duration-200"
+            >
+              <FaMinus className="w-3 h-3" />
+            </button>
 
-          <div className="flex flex-col items-center min-w-[40px]">
-            <span className="text-sm font-semibold text-gray-800">
-              {existingProduct?.quantity}
-            </span>
-            <span className="text-xs text-gray-500">{t("common.in_cart")}</span>
+            <div className="flex flex-col items-center min-w-[40px]">
+              <span className="text-sm font-semibold text-gray-800">
+                {existingProduct?.quantity}
+              </span>
+              <span className="text-xs text-gray-500">{t("common.in_cart")}</span>
+            </div>
+
+            <button
+              onClick={handleIncrease}
+              disabled={existingProduct?.quantity! >= (product?.stock || 0)}
+              className="flex items-center justify-center w-8 h-8 bg-gray-100 hover:bg-green-100 text-gray-600 hover:text-green-600 rounded-md border transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <FaPlus className="w-3 h-3" />
+            </button>
           </div>
-
-          <button
-            onClick={handleIncrease}
-            disabled={existingProduct?.quantity! >= (product?.stock || 0)}
-            className="flex items-center justify-center w-8 h-8 bg-gray-100 hover:bg-green-100 text-gray-600 hover:text-green-600 rounded-md border transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <FaPlus className="w-3 h-3" />
-          </button>
-        </div>
+        )
       ) : (
         <button
           onClick={handleAddToCart}

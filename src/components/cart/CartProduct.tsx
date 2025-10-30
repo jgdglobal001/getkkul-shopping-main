@@ -9,8 +9,10 @@ import { useDispatch } from "react-redux";
 import { removeFromCart } from "@/redux/shofySlice";
 import toast from "react-hot-toast";
 import { FaCheck } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 const CartProduct = ({ product }: { product: ProductType }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const handleRemoveProduct = () => {
     dispatch(removeFromCart(product?.id));
@@ -41,10 +43,10 @@ const CartProduct = ({ product }: { product: ProductType }) => {
               {product?.title.substring(0, 80)}
             </h3>
             <p className="text-xs">
-              Brand: <span className="font-medium">{product?.brand}</span>
+              {t("common.brand")}: <span className="font-medium">{product?.brand}</span>
             </p>
             <p className="text-xs">
-              Category: <span className="font-medium">{product?.category}</span>
+              {t("common.category")}: <span className="font-medium">{product?.category}</span>
             </p>
             <div className="flex items-center gap-6 mt-2">
               <PriceFormat
@@ -69,11 +71,11 @@ const CartProduct = ({ product }: { product: ProductType }) => {
           {product?.availabilityStatus && (
             <p className="mt-4 flex space-x-2 text-sm text-gray-700">
               <FaCheck className="text-lg text-green-500" />{" "}
-              <span>In Stock</span>
+              <span>{t("product.in_stock")}</span>
             </p>
           )}
           <p className="text-sm">
-            You are saving{" "}
+            {t("product.you_are_saving")}{" "}
             <PriceFormat
               className="text-semibold text-green-500"
               amount={
@@ -82,7 +84,7 @@ const CartProduct = ({ product }: { product: ProductType }) => {
                 product.quantity!
               }
             />{" "}
-            upon purchase
+            {t("product.upon_purchase")}
           </p>
         </div>
       </div>
