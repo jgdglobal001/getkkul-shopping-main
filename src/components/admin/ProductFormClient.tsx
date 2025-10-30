@@ -72,10 +72,178 @@ interface ProductFormData {
   sellerLegalNotice: string;
 }
 
+interface TemplateData {
+  name: string;
+  productName?: string;
+  modelNumber?: string;
+  size?: string;
+  material?: string;
+  releaseDate?: string;
+  manufacturer?: string;
+  madeInCountry?: string;
+  warrantyStandard?: string;
+  asResponsible?: string;
+  kcCertification?: string;
+  color?: string;
+  productComposition?: string;
+  detailedSpecs?: string;
+  shippingMethod: string;
+  shippingCost: string;
+  bundleShipping: string;
+  shippingPeriod: string;
+  exchangeReturnCost: string;
+  exchangeReturnDeadline: string;
+  exchangeReturnLimitations: string;
+  clothingLimitations?: string;
+  foodLimitations?: string;
+  electronicsLimitations?: string;
+  autoLimitations?: string;
+  mediaLimitations?: string;
+  sellerName: string;
+  sellerPhone: string;
+  sellerLegalNotice: string;
+}
+
 interface ProductFormClientProps {
   mode: "create" | "edit";
   productId?: string;
 }
+
+// ⭐ 카테고리별 템플릿 데이터 (하드코딩)
+const CATEGORY_TEMPLATES: { [key: string]: TemplateData[] } = {
+  "스마트폰": [
+    {
+      name: "기본 스마트폰",
+      modelNumber: "SM-XXXX",
+      warrantyStandard: "제조사 정책에 따른 AS 제공",
+      asResponsible: "삼성전자 고객센터 1588-3366",
+      kcCertification: "KC 인증 필요",
+      shippingMethod: "일반배송",
+      shippingCost: "무료배송",
+      bundleShipping: "가능",
+      shippingPeriod: "주문 후 1-2일 이내 배송",
+      exchangeReturnCost: "제조사 하자로 인한 경우 무료",
+      exchangeReturnDeadline: "제품 수령 후 30일 이내",
+      exchangeReturnLimitations: "개봉 후 사용한 상품은 반품 불가",
+      electronicsLimitations: "설치 후 반품 불가, 사용 흔적이 있으면 반품 불가",
+      sellerName: "겟꿀쇼핑",
+      sellerPhone: "1577-7011",
+      sellerLegalNotice: "미성년자가 체결한 계약은 법정대리인이 동의하지 않는 경우 본인 또는 법정대리인이 취소할 수 있습니다.",
+    },
+    {
+      name: "프리미엄 스마트폰",
+      modelNumber: "SM-XXXX-PRO",
+      warrantyStandard: "제조사 1년 무상 보증 + 부가서비스",
+      asResponsible: "삼성전자 프리미엄 센터",
+      kcCertification: "KC 인증 완료",
+      shippingMethod: "일반배송",
+      shippingCost: "무료배송",
+      bundleShipping: "불가능",
+      shippingPeriod: "주문 후 1-3일 이내 배송",
+      exchangeReturnCost: "제조사 하자로 인한 경우 무료, 고객 변심 시 왕복배송비 청구",
+      exchangeReturnDeadline: "제품 수령 후 14일 이내",
+      exchangeReturnLimitations: "개봉 후 반품 불가",
+      electronicsLimitations: "설치 후 반품 불가, 외형 손상 시 반품 불가",
+      sellerName: "겟꿀쇼핑 프리미엄",
+      sellerPhone: "1577-7011",
+      sellerLegalNotice: "프리미엄 상품은 취소/반품이 제한될 수 있습니다.",
+    },
+  ],
+  "의류": [
+    {
+      name: "기본 의류",
+      size: "XS, S, M, L, XL, XXL",
+      color: "블랙, 화이트, 그레이, 네이비, 베이지",
+      material: "면 100%",
+      productComposition: "의류",
+      shippingMethod: "일반배송",
+      shippingCost: "무료배송",
+      bundleShipping: "가능",
+      shippingPeriod: "주문 후 2-3일 이내 배송",
+      exchangeReturnCost: "단순 변심 반품 시 배송료 5,000원 청구",
+      exchangeReturnDeadline: "제품 수령 후 30일 이내",
+      exchangeReturnLimitations: "태그 제거 후 반품 불가, 세탁하지 않은 상품만 가능",
+      clothingLimitations: "태그 제거 시 반품 불가, 착용 흔적이 있으면 반품 불가",
+      sellerName: "겟꿀쇼핑",
+      sellerPhone: "1577-7011",
+      sellerLegalNotice: "의류는 사이즈 정보를 확인하고 신중하게 선택해주세요.",
+    },
+    {
+      name: "프리미염 의류",
+      size: "XS, S, M, L, XL, XXL",
+      color: "다양한 색상 보유",
+      material: "고급 소재 (코튼, 실크 혼방 등)",
+      productComposition: "의류",
+      shippingMethod: "일반배송",
+      shippingCost: "무료배송",
+      bundleShipping: "불가능",
+      shippingPeriod: "주문 후 1-2일 이내 배송",
+      exchangeReturnCost: "무료 반품/교환 가능 (왕복배송 포함)",
+      exchangeReturnDeadline: "제품 수령 후 14일 이내",
+      exchangeReturnLimitations: "태그 제거하지 않은 상품만 가능",
+      clothingLimitations: "한 번도 입지 않은 상품만 가능, 세탁하지 않은 상품",
+      sellerName: "겟꿀쇼핑 프리미엄",
+      sellerPhone: "1577-7011",
+      sellerLegalNotice: "프리미엄 의류는 고급 소재로 별도의 세탁 권고사항이 있습니다.",
+    },
+  ],
+  "식품": [
+    {
+      name: "일반 식품",
+      releaseDate: "상품 정보 참조",
+      material: "식품",
+      productComposition: "원재료 참고",
+      shippingMethod: "냉장배송",
+      shippingCost: "5,000원 (일정 금액 이상 무료)",
+      bundleShipping: "불가능",
+      shippingPeriod: "주문 후 1-2일 이내 배송",
+      exchangeReturnCost: "신선/냉장/냉동 상품은 단순변심 반품 불가",
+      exchangeReturnDeadline: "제품 수령 후 3일 이내",
+      exchangeReturnLimitations: "상품 훼손, 포장 개봉 시 반품 불가",
+      foodLimitations: "신선/냉장/냉동 상품은 단순변심 반품 불가, 품질 하자 시에만 반품 가능",
+      sellerName: "겟꿀쇼핑",
+      sellerPhone: "1577-7011",
+      sellerLegalNotice: "식품은 신선도가 중요하므로 빠른 수령 부탁드립니다.",
+    },
+  ],
+  "전자제품": [
+    {
+      name: "일반 전자제품",
+      warrantyStandard: "제조사 1년 무상 보증",
+      asResponsible: "제조사 고객센터 참조",
+      kcCertification: "KC 인증 완료",
+      shippingMethod: "일반배송",
+      shippingCost: "무료배송",
+      bundleShipping: "가능",
+      shippingPeriod: "주문 후 2-3일 이내 배송",
+      exchangeReturnCost: "제조사 하자로 인한 경우 무료",
+      exchangeReturnDeadline: "제품 수령 후 30일 이내",
+      exchangeReturnLimitations: "개봉 후 반품 불가, 외형 손상 시 반품 불가",
+      electronicsLimitations: "설치 후 반품 불가, 사용 흔적이 있으면 반품 불가",
+      sellerName: "겟꿀쇼핑",
+      sellerPhone: "1577-7011",
+      sellerLegalNotice: "전자제품은 설치 및 사용 설명서를 확인해주세요.",
+    },
+  ],
+  "도서": [
+    {
+      name: "도서",
+      material: "도서",
+      productComposition: "도서",
+      shippingMethod: "일반배송",
+      shippingCost: "무료배송",
+      bundleShipping: "가능",
+      shippingPeriod: "주문 후 1-2일 이내 배송",
+      exchangeReturnCost: "훼손된 상품만 교환 가능",
+      exchangeReturnDeadline: "제품 수령 후 7일 이내",
+      exchangeReturnLimitations: "개봉 후 반품 불가, 포장 훼손 시 반품 불가",
+      mediaLimitations: "포장 개봉 시 반품 불가, 읽기 흔적이 있으면 반품 불가",
+      sellerName: "겟꿀쇼핑",
+      sellerPhone: "1577-7011",
+      sellerLegalNotice: "도서는 구독 취소/환불 정책이 별도로 적용될 수 있습니다.",
+    },
+  ],
+};
 
 const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
   const router = useRouter();
@@ -85,6 +253,7 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
   const [newTag, setNewTag] = useState("");
   const [newImage, setNewImage] = useState("");
   const [newDetailImage, setNewDetailImage] = useState("");
+  const [selectedTemplate, setSelectedTemplate] = useState<string>("");
 
   const [formData, setFormData] = useState<ProductFormData>({
     title: "",
@@ -234,6 +403,55 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // ⭐ 카테고리 변경 핸들러 (템플릿 초기화)
+  const handleCategoryChange = (categoryValue: string) => {
+    handleInputChange("category", categoryValue);
+    setSelectedTemplate(""); // 카테고리 변경 시 선택된 템플릿 초기화
+  };
+
+  // ⭐ 템플릿 적용 함수
+  const applyTemplate = (templateName: string) => {
+    const templates = CATEGORY_TEMPLATES[formData.category];
+    if (!templates) return;
+
+    const selectedTemplateData = templates.find(t => t.name === templateName);
+    if (!selectedTemplateData) return;
+
+    // 템플릿의 모든 필드를 폼 데이터에 적용
+    setFormData(prev => ({
+      ...prev,
+      productName: selectedTemplateData.productName || prev.productName,
+      modelNumber: selectedTemplateData.modelNumber || prev.modelNumber,
+      size: selectedTemplateData.size || prev.size,
+      material: selectedTemplateData.material || prev.material,
+      releaseDate: selectedTemplateData.releaseDate || prev.releaseDate,
+      manufacturer: selectedTemplateData.manufacturer || prev.manufacturer,
+      madeInCountry: selectedTemplateData.madeInCountry || prev.madeInCountry,
+      warrantyStandard: selectedTemplateData.warrantyStandard || prev.warrantyStandard,
+      asResponsible: selectedTemplateData.asResponsible || prev.asResponsible,
+      kcCertification: selectedTemplateData.kcCertification || prev.kcCertification,
+      color: selectedTemplateData.color || prev.color,
+      productComposition: selectedTemplateData.productComposition || prev.productComposition,
+      detailedSpecs: selectedTemplateData.detailedSpecs || prev.detailedSpecs,
+      shippingMethod: selectedTemplateData.shippingMethod,
+      shippingCost: selectedTemplateData.shippingCost,
+      bundleShipping: selectedTemplateData.bundleShipping,
+      shippingPeriod: selectedTemplateData.shippingPeriod,
+      exchangeReturnCost: selectedTemplateData.exchangeReturnCost,
+      exchangeReturnDeadline: selectedTemplateData.exchangeReturnDeadline,
+      exchangeReturnLimitations: selectedTemplateData.exchangeReturnLimitations,
+      clothingLimitations: selectedTemplateData.clothingLimitations || prev.clothingLimitations,
+      foodLimitations: selectedTemplateData.foodLimitations || prev.foodLimitations,
+      electronicsLimitations: selectedTemplateData.electronicsLimitations || prev.electronicsLimitations,
+      autoLimitations: selectedTemplateData.autoLimitations || prev.autoLimitations,
+      mediaLimitations: selectedTemplateData.mediaLimitations || prev.mediaLimitations,
+      sellerName: selectedTemplateData.sellerName,
+      sellerPhone: selectedTemplateData.sellerPhone,
+      sellerLegalNotice: selectedTemplateData.sellerLegalNotice,
+    }));
+    setSelectedTemplate(templateName);
   };
 
   // 폼 데이터 변경 핸들러
@@ -494,7 +712,7 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
               </label>
               <select
                 value={formData.category}
-                onChange={(e) => handleInputChange("category", e.target.value)}
+                onChange={(e) => handleCategoryChange(e.target.value)}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
                 required
               >
@@ -878,7 +1096,26 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
               />
             </div>
 
-
+            {/* ⭐ 카테고리별 템플릿 선택 드롭다운 */}
+            {formData.category && CATEGORY_TEMPLATES[formData.category] && (
+              <div className="lg:col-span-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  📋 정보 템플릿 <span className="text-blue-600 text-xs">(선택하면 필드가 자동 채워집니다)</span>
+                </label>
+                <select
+                  value={selectedTemplate}
+                  onChange={(e) => applyTemplate(e.target.value)}
+                  className="w-full px-4 py-2 border border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-blue-50"
+                >
+                  <option value="">템플릿을 선택하세요</option>
+                  {CATEGORY_TEMPLATES[formData.category].map((template) => (
+                    <option key={template.name} value={template.name}>
+                      {template.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
 
             {/* ⭐ 필수 표기 정보 섹션 */}
             <div className="lg:col-span-2 border-t-2 border-theme-color pt-6 mt-6">
