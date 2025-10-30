@@ -257,12 +257,21 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
 
 
 
-  // 태그 추가
+  // 태그 추가 (# 기준으로 자동 분리)
   const addTag = () => {
-    if (newTag.trim() && !formData.tags.includes(newTag.trim())) {
+    if (!newTag.trim()) return;
+
+    // #으로 구분된 태그들을 분리
+    const tags = newTag
+      .split('#')
+      .map(tag => tag.trim())
+      .filter(tag => tag.length > 0)
+      .filter(tag => !formData.tags.includes(tag)); // 중복 제거
+
+    if (tags.length > 0) {
       setFormData(prev => ({
         ...prev,
-        tags: [...prev.tags, newTag.trim()],
+        tags: [...prev.tags, ...tags],
       }));
       setNewTag("");
     }
@@ -809,7 +818,7 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
               value={newTag}
               onChange={(e) => setNewTag(e.target.value)}
               className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
-              placeholder="태그를 입력하세요"
+              placeholder="태그를 입력하세요 (예: #키워드#키워드#키워드 또는 키워드)"
               onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
             />
             <button
