@@ -13,7 +13,7 @@ export type UserRole = (typeof USER_ROLES)[keyof typeof USER_ROLES];
 export function getDefaultPageForRole(role: UserRole): string {
   switch (role) {
     case USER_ROLES.ADMIN:
-      return "/admin";
+      return "/account/admin";
     case USER_ROLES.ACCOUNT:
       return "/account-dashboard";
     case USER_ROLES.PACKER:
@@ -305,7 +305,7 @@ export function getAvailableStatusUpdates(
 export function getDashboardRoute(userRole: UserRole): string {
   switch (userRole) {
     case USER_ROLES.ADMIN:
-      return "/admin";
+      return "/account/admin";
     case USER_ROLES.ACCOUNT:
       return "/account-dashboard";
     case USER_ROLES.PACKER:

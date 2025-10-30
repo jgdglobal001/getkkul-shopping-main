@@ -13,3 +13,78 @@
  ✓ Compiled /api/admin/dashboard/recent-orders in 1353ms (286 modules)
 prisma:query SELECT "public"."orders"."id", "public"."orders"."orderId", "public"."orders"."status", "public"."orders"."paymentStatus", "public"."orders"."paymentMethod", "public"."orders"."totalAmount", "public"."orders"."currency", "public"."orders"."shippingAddress", "public"."orders"."billingAddress", "public"."orders"."createdAt", "public"."orders"."updatedAt", "public"."orders"."userId", "public"."orders"."tossOrderId", "public"."orders"."tossPaymentId", "public"."orders"."tossPaymentKey", "public"."orders"."tossPaymentMethod", "public"."orders"."tossCardCompany", "public"."orders"."tossCardNumber", "public"."orders"."tossApprovalNumber", "public"."orders"."tossFailureReason", "public"."orders"."tossReceipt", "public"."orders"."tossPaymentAttempts", "public"."orders"."lastTossAttempt" FROM "public"."orders" WHERE 1=1 ORDER BY "public"."orders"."createdAt" DESC LIMIT $1 OFFSET $2
  GET /api/admin/dashboard/recent-orders 200 in 2238ms
+ ✓ Compiled in 73ms (187 modules)
+ ✓ Compiled in 33ms (187 modules)
+ ✓ Compiled in 33ms (187 modules)
+ ✓ Compiled in 37ms (187 modules)
+ ✓ Compiled in 45ms (187 modules)
+Warning: You're using `next/head` inside the `app` directory, please migrate to the Metadata API. See https://nextjs.org/docs/app/building-your-application/upgrading/app-router-migration#step-3-migrating-nexthead for more details.
+ ○ Compiling / ...
+ ✓ Compiled / in 7.1s (1283 modules)
+i18next: languageChanged ko
+i18next: initialized {
+  debug: true,
+  initAsync: true,
+  ns: [ 'translation' ],
+  defaultNS: [ 'translation' ],
+  fallbackLng: [ 'ko' ],
+  fallbackNS: false,
+  supportedLngs: false,
+  nonExplicitSupportedLngs: false,
+  load: 'all',
+  preload: false,
+  simplifyPluralSuffix: true,
+  keySeparator: '.',
+  nsSeparator: ':',
+  pluralSeparator: '_',
+  contextSeparator: '_',
+  partialBundledLanguages: false,
+  saveMissing: false,
+  updateMissing: false,
+  saveMissingTo: 'fallback',
+  saveMissingPlurals: true,
+  missingKeyHandler: false,
+  missingInterpolationHandler: false,
+  postProcess: false,
+  postProcessPassResolved: false,
+  returnNull: false,
+  returnEmptyString: true,
+  returnObjects: false,
+  joinArrays: false,
+  returnedObjectHandler: false,
+  parseMissingKeyHandler: false,
+  appendNamespaceToMissingKey: false,
+  appendNamespaceToCIMode: false,
+  overloadTranslationOptionHandler: [Function: overloadTranslationOptionHandler],
+  interpolation: {
+    escapeValue: false,
+    format: [Function: bound format],
+    prefix: '{{',
+    suffix: '}}',
+    formatSeparator: ',',
+    unescapePrefix: '-',
+    nestingPrefix: '$t(',
+    nestingSuffix: ')',
+    nestingOptionsSeparator: ',',
+    maxReplaces: 1000,
+    skipOnVariables: true
+  },
+  cacheInBuiltFormats: true,
+  resources: { ko: { translation: [Object] } },
+  lng: 'ko',
+  detection: {
+    order: [ 'localStorage', 'navigator', 'htmlTag' ],
+    caches: [ 'localStorage' ],
+    lookupLocalStorage: 'i18nextLng',
+    lookupQuerystring: 'lng',
+    lookupCookie: 'i18next',
+    lookupSessionStorage: 'i18nextLng',
+    excludeCacheFor: [ 'cimode' ],
+    convertDetectedLanguage: [Function: convertDetectedLanguage]
+  },
+  react: { useSuspense: false },
+  ignoreJSONStructure: true
+}
+[33m[auth][warn][debug-enabled][0m Read more: https://warnings.authjs.dev
+ ✓ Compiled in 713ms (464 modules)
+ ✓ Compiled in 330ms (464 modules)

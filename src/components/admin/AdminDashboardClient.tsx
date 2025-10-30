@@ -19,6 +19,7 @@ import {
   FiEdit,
   FiPlus,
   FiGrid,
+  FiMessageCircle,
 } from "react-icons/fi";
 import { useSession } from "next-auth/react";
 
@@ -335,6 +336,17 @@ export default function AdminDashboardClient() {
               <div className="text-sm font-medium text-orange-900">분석 보고서</div>
               <div className="text-xs text-orange-600 text-center mt-1">
                 실시간 데이터
+              </div>
+            </Link>
+
+            <Link
+              href="/account/admin/inquiries"
+              className="flex flex-col items-center p-4 bg-gradient-to-br from-red-50 to-red-100 hover:from-red-100 hover:to-red-200 rounded-lg transition-all group"
+            >
+              <FiMessageCircle className="h-8 w-8 text-red-600 mb-2 group-hover:scale-110 transition-transform" />
+              <div className="text-sm font-medium text-red-900">고객 상담</div>
+              <div className="text-xs text-red-600 text-center mt-1">
+                제품 문의 관리
               </div>
             </Link>
           </div>
