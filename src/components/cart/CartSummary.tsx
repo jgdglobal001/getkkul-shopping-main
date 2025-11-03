@@ -83,11 +83,11 @@ const CartSummary = ({ cart }: Props) => {
           name: item.title,
           price: item.price * (1 - item.discountPercentage / 100),
           quantity: item.quantity,
-          images: item.images,
+          image: item.thumbnail || item.images?.[0] || "",
           total:
             item.price * (1 - item.discountPercentage / 100) * item.quantity!,
         })),
-        amount: finalTotal.toString(),
+        totalAmount: finalTotal.toString(),
         currency: "USD",
         status: "confirmed",
         paymentStatus: "pending",

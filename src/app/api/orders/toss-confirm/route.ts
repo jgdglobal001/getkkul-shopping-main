@@ -21,10 +21,22 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify payment with Toss API
-    const clientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
+    // Use API individual integration keys (not widget keys)
+    const clientKey = process.env.TOSS_CLIENT_KEY;
     const secretKey = process.env.TOSS_SECRET_KEY;
 
+    console.log("=== Toss Payment Verification ===");
+    console.log("Client Key exists:", !!clientKey);
+    console.log("Secret Key exists:", !!secretKey);
+    console.log("Client Key (first 20 chars):", clientKey?.substring(0, 20));
+    console.log("Secret Key (first 20 chars):", secretKey?.substring(0, 20));
+    console.log("Request data:", { orderId, paymentKey: paymentKey?.substring(0, 20) + "...", amount });
+
     if (!clientKey || !secretKey) {
+      console.error("Toss API keys not configured:", {
+        clientKey: !!clientKey,
+        secretKey: !!secretKey,
+      });
       return NextResponse.json(
         { success: false, error: "Toss API keys not configured" },
         { status: 500 }
@@ -51,9 +63,14 @@ export async function POST(request: NextRequest) {
 
     if (!tossResponse.ok) {
       const errorData = await tossResponse.json();
-      console.error("Toss payment verification failed:", errorData);
+      console.error("Toss payment verification failed:", {
+        status: tossResponse.status,
+        error: errorData,
+        clientKey: clientKey?.substring(0, 20) + "...",
+        secretKey: secretKey?.substring(0, 20) + "...",
+      });
       return NextResponse.json(
-        { success: false, error: "Payment verification failed" },
+        { success: false, error: errorData.message || "Payment verification failed", details: errorData },
         { status: 400 }
       );
     }

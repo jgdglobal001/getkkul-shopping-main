@@ -138,18 +138,19 @@ test.describe('Toss Payments Integration', () => {
   });
 
   test.describe('Toss Payment Handler Functions', () => {
-    test('should handle payment amount conversion correctly', async ({ page }) => {
-      // Test that amount conversion (KRW to cents) works
-      // 29000 KRW should become 2900000 cents
+    test('should handle payment amount conversion correctly (KRW whole numbers only)', async ({ page }) => {
+      // Test that amount is formatted correctly as KRW whole numbers
+      // Toss Payments uses KRW currency which does NOT require cents conversion
+      // 29000 KRW should remain 29000 (not multiplied by 100)
       await page.goto('/');
       
       const conversionResult = await page.evaluate(() => {
-        const amount = 29000;
-        const convertedAmount = Math.round(amount * 100); // to cents
+        const amount = '29000'; // Amount from order as string
+        const convertedAmount = Math.round(parseFloat(amount)); // Direct conversion without * 100
         return convertedAmount;
       });
       
-      expect(conversionResult).toBe(2900000);
+      expect(conversionResult).toBe(29000);
     });
 
     test('should validate Toss Client Key requirement', async ({ page }) => {
@@ -328,17 +329,17 @@ test.describe('Toss Payments Integration', () => {
       await page.goto('/');
       
       const widgetConfig = await page.evaluate(() => {
-        // Mock widget configuration
+        // Mock widget configuration for KRW currency
         return {
           currency: 'KRW',
           clientKeyRequired: true,
-          amountInCents: true, // Toss expects amount in cents
+          amountInWholeNumbers: true, // Toss expects amount in whole KRW units (NOT cents)
         };
       });
       
       expect(widgetConfig.currency).toBe('KRW');
       expect(widgetConfig.clientKeyRequired).toBeTruthy();
-      expect(widgetConfig.amountInCents).toBeTruthy();
+      expect(widgetConfig.amountInWholeNumbers).toBeTruthy();
     });
   });
 

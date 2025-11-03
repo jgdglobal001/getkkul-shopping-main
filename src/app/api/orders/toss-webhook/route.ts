@@ -21,10 +21,15 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify payment with Toss API
-    const clientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
+    // Use API individual integration keys (not widget keys)
+    const clientKey = process.env.TOSS_CLIENT_KEY;
     const secretKey = process.env.TOSS_SECRET_KEY;
 
     if (!clientKey || !secretKey) {
+      console.error("Toss API keys not configured:", {
+        clientKey: !!clientKey,
+        secretKey: !!secretKey,
+      });
       return NextResponse.json(
         { success: false, error: "Toss API keys not configured" },
         { status: 500 }

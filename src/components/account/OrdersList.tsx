@@ -90,9 +90,9 @@ export default function OrdersList({
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
+    return new Date(dateString).toLocaleDateString("ko-KR", {
       year: "numeric",
-      month: "short",
+      month: "long",
       day: "numeric",
     });
   };
@@ -209,7 +209,7 @@ export default function OrdersList({
                       selectedOrder.status
                     )}`}
                   >
-                    {selectedOrder.status}
+                    {t(`orders.status_${selectedOrder.status.toLowerCase()}`)}
                   </span>
                 </div>
               </div>
@@ -233,7 +233,7 @@ export default function OrdersList({
                 <div>
                   <p className="text-sm text-gray-600">{t("account.payment_status")}</p>
                   <p className="font-medium text-gray-900 capitalize">
-                    {selectedOrder.paymentStatus}
+                    {t(`orders.payment_status_${selectedOrder.paymentStatus.toLowerCase()}`)}
                   </p>
                 </div>
               </div>
@@ -242,10 +242,10 @@ export default function OrdersList({
             {/* Order Items */}
             <div>
               <h4 className="text-lg font-semibold text-gray-900 mb-4">
-                {t("account.items")} ({selectedOrder.items.length})
+                {t("account.items")} ({(selectedOrder.items || []).length})
               </h4>
               <div className="space-y-4">
-                {selectedOrder.items.map((item, index) => (
+                {(selectedOrder.items || []).map((item, index) => (
                   <div
                     key={`${item.id}-${index}`}
                     className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg"
@@ -273,9 +273,9 @@ export default function OrdersList({
                         {item.name}
                       </h5>
                       <div className="flex items-center space-x-4 text-sm text-gray-600">
-                        <span>Quantity: {item.quantity}</span>
+                        <span>{t("common.quantity")}: {item.quantity}</span>
                         <span>
-                          Unit Price: <PriceFormat amount={item.price} />
+                          {t("common.unit_price")}: <PriceFormat amount={item.price} />
                         </span>
                       </div>
                     </div>
@@ -495,7 +495,7 @@ export default function OrdersList({
                   <td className="px-3 py-4 whitespace-nowrap">
                     <div className="flex items-center space-x-2">
                       <div className="flex -space-x-1 overflow-hidden flex-shrink-0">
-                        {order.items.slice(0, 2).map((item, index) => (
+                        {(order.items || []).slice(0, 2).map((item, index) => (
                           <div
                             key={index}
                             className="inline-block h-6 w-6 rounded-full ring-2 ring-white overflow-hidden flex-shrink-0"
@@ -520,7 +520,7 @@ export default function OrdersList({
                         ))}
                       </div>
                       <span className="text-xs text-gray-600 truncate">
-                        {order.items.length}
+                        {(order.items || []).length}
                       </span>
                     </div>
                   </td>
@@ -530,10 +530,10 @@ export default function OrdersList({
                         order.status
                       )}`}
                     >
-                      {order.status}
+                      {t(`orders.status_${order.status.toLowerCase()}`)}
                     </span>
                     <div className="text-xs text-gray-500 mt-1 truncate">
-                      {order.paymentStatus}
+                      {t(`orders.payment_status_${order.paymentStatus.toLowerCase()}`)}
                     </div>
                   </td>
                   <td className="px-3 py-4 whitespace-nowrap">
@@ -618,7 +618,7 @@ export default function OrdersList({
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center space-x-2">
                 <div className="flex -space-x-1 overflow-hidden">
-                  {order.items.slice(0, 2).map((item, index) => (
+                  {(order.items || []).slice(0, 2).map((item, index) => (
                     <div
                       key={index}
                       className="inline-block h-6 w-6 rounded-full ring-1 ring-white overflow-hidden"
@@ -643,7 +643,7 @@ export default function OrdersList({
                   ))}
                 </div>
                 <span className="text-xs text-gray-600">
-                  {order.items.length} item{order.items.length !== 1 ? "s" : ""}
+                  {(order.items || []).length} item{(order.items || []).length !== 1 ? "s" : ""}
                 </span>
               </div>
               <div className="text-right">

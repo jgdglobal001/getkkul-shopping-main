@@ -40,9 +40,9 @@ export default function RootLayout({
             </AuthProvider>
           </StateProvider>
         </I18nProvider>
-        {/* Toss Payments SDK */}
+        {/* Toss Payments SDK V2 */}
         <Script
-          src="https://js.tosspayments.com/v1/payment"
+          src="https://js.tosspayments.com/v2/standard"
           strategy="beforeInteractive"
         />
       </body>

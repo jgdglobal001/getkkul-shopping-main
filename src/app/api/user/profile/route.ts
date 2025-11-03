@@ -84,6 +84,27 @@ export async function GET(request: NextRequest) {
     }
 
     // Transform data to match expected format
+    const transformedOrders = (user.orders || []).map((order: any) => ({
+      id: order.id,
+      orderId: order.orderId,
+      amount: order.totalAmount.toString(),
+      currency: order.currency,
+      status: order.status,
+      paymentStatus: order.paymentStatus,
+      createdAt: order.createdAt.toISOString(),
+      customerEmail: user.email,
+      customerName: user.name,
+      // Transform orderItems to items for frontend compatibility
+      items: (order.orderItems || []).map((item: any) => ({
+        id: item.id,
+        name: item.title,
+        price: item.price,
+        quantity: item.quantity,
+        total: item.total,
+        images: item.image ? [item.image] : [],
+      })),
+    }));
+
     const userData = {
       id: user.id,
       name: user.name,
@@ -105,7 +126,7 @@ export async function GET(request: NextRequest) {
       },
       cart: user.cartItems || [],
       wishlist: user.wishlist || [],
-      orders: user.orders || [],
+      orders: transformedOrders,
     };
 
     return NextResponse.json(userData);

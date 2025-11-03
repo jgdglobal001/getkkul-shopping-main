@@ -16,6 +16,7 @@
     "price": "가격",
     "quantity": "수량",
     "total": "총액",
+    "unit_price": "단가",
     "subtotal": "소계",
     "shipping": "배송비",
     "tax": "세금",

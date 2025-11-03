@@ -33,11 +33,10 @@ export async function POST(request: NextRequest) {
       data: {
         orderId: orderId,
         userId: user.id,
-        userEmail: customerEmail,
         status: status,
         paymentStatus: "pending",
         paymentMethod: "online",
-        totalAmount: totalAmount || 0,
+        totalAmount: parseFloat(totalAmount) || 0,
         shippingAddress: shippingAddress ? JSON.stringify(shippingAddress) : null,
         orderItems: {
           create: items?.map((item: any) => ({
@@ -45,6 +44,7 @@ export async function POST(request: NextRequest) {
             title: item.title || item.name || "",
             quantity: item.quantity || 1,
             price: item.price || 0,
+            total: (item.total || item.price * item.quantity) || 0,
             image: item.image || "",
           })) || []
         }

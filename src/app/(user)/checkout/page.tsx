@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import Container from "@/components/Container";
 import PriceFormat from "@/components/PriceFormat";
 import { loadStripe } from "@stripe/stripe-js";
@@ -17,20 +18,21 @@ import {
   FiTruck,
 } from "react-icons/fi";
 import Link from "next/link";
-import { loadPaymentWidget } from "@tosspayments/payment-widget-sdk";
 
 const CheckoutPage = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { t } = useTranslation();
 
   const [loading, setLoading] = useState(true);
   const [existingOrder, setExistingOrder] = useState<any>(null);
-  const [paymentMethod, setPaymentMethod] = useState<"stripe" | "cod" | "toss" | null>(
-    null
-  );
   const [paymentProcessing, setPaymentProcessing] = useState(false);
+  const [widgetReady, setWidgetReady] = useState(false);
+  const [widgetError, setWidgetError] = useState<string | null>(null);
   const paymentWidgetRef = useRef<any>(null);
+  const paymentMethodWidgetRef = useRef<any>(null);
+
 
   // Get order ID from URL params
   const existingOrderId = searchParams.get("orderId");
@@ -45,6 +47,101 @@ const CheckoutPage = () => {
       router.push("/cart");
     }
   }, [existingOrderId, router]);
+
+  // Initialize Toss Payment Widget when order is loaded
+  useEffect(() => {
+    if (!existingOrder || widgetReady) return;
+
+    const initializeWidget = async () => {
+      try {
+        const tossClientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
+        if (!tossClientKey) {
+          const errorMsg = "Toss Client Key is not configured. Please set NEXT_PUBLIC_TOSS_CLIENT_KEY in your environment variables.";
+          console.error(errorMsg);
+          setWidgetError(errorMsg);
+          return;
+        }
+
+        // Access global TossPayments from SDK V2
+        const TossPayments = (window as any).TossPayments;
+        if (!TossPayments) {
+          const errorMsg = "Toss Payments SDK not loaded. Please check if the SDK script is properly loaded.";
+          console.error(errorMsg);
+          setWidgetError(errorMsg);
+          return;
+        }
+
+        // Generate unique customer key
+        const customerKey = `customer_${session?.user?.id || session?.user?.email?.replace(/[@.]/g, "_") || Date.now()}`;
+
+        // Parse amount
+        let amount: number;
+        if (typeof existingOrder.amount === 'string') {
+          amount = Math.round(parseFloat(existingOrder.amount));
+        } else if (typeof existingOrder.amount === 'number') {
+          amount = Math.round(existingOrder.amount);
+        } else if (existingOrder.totalAmount) {
+          amount = Math.round(parseFloat(existingOrder.totalAmount.toString()));
+        } else {
+          const errorMsg = "Order amount not found";
+          console.error(errorMsg);
+          setWidgetError(errorMsg);
+          return;
+        }
+
+        if (isNaN(amount) || amount <= 0) {
+          const errorMsg = `Invalid order amount: ${amount}`;
+          console.error(errorMsg);
+          setWidgetError(errorMsg);
+          return;
+        }
+
+        console.log("Initializing Toss Payment Widget:", { amount, customerKey, clientKey: tossClientKey.substring(0, 10) + "..." });
+
+        // Initialize Payment Widget (v2 API) - Correct SDK V2 way
+        const tossPayments = TossPayments(tossClientKey);
+
+        // Create payment widget with customer key
+        const paymentWidget = tossPayments.widgets({
+          customerKey: customerKey,
+        });
+
+        // Set amount BEFORE rendering
+        await paymentWidget.setAmount({
+          value: amount,
+          currency: "KRW",
+        });
+
+        // Render payment methods UI with variantKey
+        // Make sure this variantKey matches the one configured in your Toss dashboard
+        await paymentWidget.renderPaymentMethods({
+          selector: "#payment-widget",
+          variantKey: "getkkul-toss-widget",  // Configured in Toss dashboard
+        });
+
+        // Store widget reference for later use
+        paymentWidgetRef.current = paymentWidget;
+        setWidgetReady(true);
+        setWidgetError(null);
+
+        console.log("Toss Payment Widget initialized successfully");
+      } catch (error) {
+        const errorMsg = error instanceof Error ? error.message : "Failed to initialize Toss Payment Widget";
+        console.error("Failed to initialize Toss Payment Widget:", error);
+        setWidgetError(errorMsg);
+      }
+    };
+
+    initializeWidget();
+    return () => {
+      try {
+        paymentMethodWidgetRef.current?.destroy?.();
+        paymentMethodWidgetRef.current = null;
+      } catch (e) {
+        console.warn("Failed to cleanup Toss Payment Widget:", e);
+      }
+    };
+  }, [existingOrder, session]);
 
   // Clean up cancelled parameter from URL after showing notification
   useEffect(() => {
@@ -179,66 +276,61 @@ const CheckoutPage = () => {
     try {
       setPaymentProcessing(true);
 
-      const tossClientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
-      if (!tossClientKey) {
-        throw new Error("Toss Client Key is not configured");
+      // Check if widget is ready
+      if (!paymentWidgetRef.current) {
+        throw new Error("결제 위젯이 아직 준비되지 않았습니다. 잠시 후 다시 시도해주세요.");
       }
 
-      const paymentWidget = await loadPaymentWidget({
-        clientKey: tossClientKey,
-        environment: "test",
+      // Validate order data
+      if (!existingOrder) {
+        throw new Error("주문 정보를 찾을 수 없습니다.");
+      }
+
+      // Generate order ID
+      const orderId = existingOrder.orderId || existingOrder.id || `ORD-${Date.now()}`;
+
+      // Debug: Log session information
+      console.log("Session User Info:", {
+        id: session?.user?.id,
+        email: session?.user?.email,
+        name: session?.user?.name,
+        role: session?.user?.role,
       });
 
-      // Generate order ID and payment key for Toss
-      const orderId = existingOrder.id || `ORD-${Date.now()}`;
-      const amount = Math.round(parseFloat(existingOrder.amount) * 100); // Convert to cents
-
-      const payment = paymentWidget.payment({
-        amount,
-      });
-
-      // Request payment
-      const paymentResult = await payment.request({
+      console.log("Requesting Toss Payment:", {
         orderId,
+        orderName: existingOrder?.items?.[0]?.name || `Order #${orderId.substring(0, 8)}`,
+      });
+
+      // Get customer name from session or email
+      const customerName = session?.user?.name ||
+                          session?.user?.email?.split('@')[0] ||
+                          "고객";
+
+      // Request payment using the already-rendered widget
+      await paymentWidgetRef.current.requestPayment({
+        orderId: orderId,
         orderName:
           existingOrder?.items?.[0]?.name ||
           `Order #${orderId.substring(0, 8)}`,
+        successUrl: `${window.location.origin}/payment/success`,
+        failUrl: `${window.location.origin}/payment/fail`,
+        customerEmail: session?.user?.email || "",
+        customerName: customerName,
       });
-
-      // Send to backend for confirmation
-      const confirmResponse = await fetch("/api/orders/toss-confirm", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          orderId,
-          paymentKey: paymentResult.paymentKey,
-          amount,
-          userEmail: session?.user?.email,
-        }),
-      });
-
-      if (!confirmResponse.ok) {
-        const errorData = await confirmResponse.json();
-        throw new Error(errorData.error || "Payment confirmation failed");
-      }
-
-      const confirmData = await confirmResponse.json();
-
-      if (confirmData.success) {
-        // Redirect to success page
-        router.push(`/success?order_id=${orderId}`);
-      } else {
-        throw new Error(confirmData.error || "Payment failed");
-      }
     } catch (error) {
       console.error("Toss payment error:", error);
-      alert(
-        `Toss payment failed: ${
-          error instanceof Error ? error.message : "Please try again."
-        }`
-      );
+
+      // Handle cancellation gracefully
+      const errorMessage = error instanceof Error ? error.message : "다시 시도해주세요.";
+
+      if (errorMessage.includes("취소")) {
+        // User cancelled the payment - no alert needed
+        console.log("Payment cancelled by user");
+      } else {
+        // Other errors - show alert
+        alert(`결제 실패: ${errorMessage}`);
+      }
     } finally {
       setPaymentProcessing(false);
     }
@@ -356,7 +448,7 @@ const CheckoutPage = () => {
             <div className="bg-white rounded-lg shadow p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <FiPackage className="w-5 h-5 mr-2" />
-                Order Items ({existingOrder?.items?.length || 0})
+                {t("common.items")} ({existingOrder?.items?.length || 0})
               </h3>
 
               <div className="space-y-4">
@@ -391,7 +483,7 @@ const CheckoutPage = () => {
                         {item.name || item.title}
                       </h4>
                       <div className="flex items-center space-x-4 text-sm text-gray-600">
-                        <span>Qty: {item.quantity}</span>
+                        <span>{t("common.quantity")}: {item.quantity}</span>
                         <span>
                           <PriceFormat amount={item.price} />
                         </span>
@@ -412,7 +504,7 @@ const CheckoutPage = () => {
             <div className="bg-white rounded-lg shadow p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <FiMapPin className="w-5 h-5 mr-2" />
-                Shipping Address
+                {t("checkout.shipping_address")}
               </h3>
 
               <div className="p-4 bg-gray-50 rounded-lg">
@@ -440,12 +532,12 @@ const CheckoutPage = () => {
             <div className="bg-white rounded-lg shadow p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
                 <FiCreditCard className="w-5 h-5 mr-2" />
-                Order Summary
+                {t("checkout.order_summary")}
               </h3>
 
               <div className="space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Total Amount</span>
+                  <span className="text-gray-600">{t("checkout.total_amount")}</span>
                   <PriceFormat
                     amount={parseFloat(existingOrder?.amount || "0")}
                     className="font-semibold text-theme-color"
@@ -454,169 +546,69 @@ const CheckoutPage = () => {
               </div>
             </div>
 
-            {/* Payment Method Selection */}
+            {/* Payment Widget Container */}
             <div className="bg-white rounded-lg shadow p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Choose Payment Method
+                {t("checkout.payment_method")}
               </h3>
 
-              <div className="space-y-3">
-                {/* Cash on Delivery */}
-                <div
-                  className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
-                    paymentMethod === "cod"
-                      ? "border-theme-color bg-blue-50"
-                      : "border-gray-200 hover:border-gray-300"
-                  }`}
-                  onClick={() => setPaymentMethod("cod")}
-                >
-                  <div className="flex items-center">
-                    <FiTruck className="w-5 h-5 mr-3 text-gray-600" />
-                    <div className="flex-1">
-                      <h4 className="font-medium text-gray-900">
-                        Cash on Delivery
-                      </h4>
-                      <p className="text-sm text-gray-600">
-                        Pay when your order is delivered
-                      </p>
+              {/* Error Display */}
+              {widgetError && (
+                <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <div className="flex items-start">
+                    <div className="flex-shrink-0">
+                      <svg
+                        className="h-5 w-5 text-red-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
                     </div>
-                    <div
-                      className={`w-4 h-4 rounded-full border-2 ${
-                        paymentMethod === "cod"
-                          ? "border-theme-color bg-theme-color"
-                          : "border-gray-300"
-                      }`}
-                    >
-                      {paymentMethod === "cod" && (
-                        <div className="w-full h-full rounded-full bg-white scale-50"></div>
-                      )}
+                    <div className="ml-3">
+                      <h3 className="text-sm font-medium text-red-800">
+                        결제 위젯 로드 실패
+                      </h3>
+                      <div className="mt-2 text-sm text-red-700">
+                        <p>{widgetError}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
+              )}
 
-                {/* Stripe Payment */}
-                <div
-                  className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
-                    paymentMethod === "stripe"
-                      ? "border-theme-color bg-blue-50"
-                      : "border-gray-200 hover:border-gray-300"
-                  }`}
-                  onClick={() => setPaymentMethod("stripe")}
-                >
-                  <div className="flex items-center">
-                    <FiCreditCard className="w-5 h-5 mr-3 text-gray-600" />
-                    <div className="flex-1">
-                      <h4 className="font-medium text-gray-900">
-                        Pay with Card
-                      </h4>
-                      <p className="text-sm text-gray-600">
-                        Secure payment via Stripe
-                      </p>
-                    </div>
-                    <div
-                      className={`w-4 h-4 rounded-full border-2 ${
-                        paymentMethod === "stripe"
-                          ? "border-theme-color bg-theme-color"
-                          : "border-gray-300"
-                      }`}
-                    >
-                      {paymentMethod === "stripe" && (
-                        <div className="w-full h-full rounded-full bg-white scale-50"></div>
-                      )}
-                    </div>
+              {/* Toss Payments Widget will be rendered here */}
+              <div id="payment-widget" className="mb-4 min-h-[200px]">
+                {!widgetReady && !widgetError && (
+                  <div className="flex items-center justify-center h-[200px]">
+                    <FiLoader className="animate-spin text-blue-600 text-3xl" />
                   </div>
-                </div>
-
-                {/* Toss Payment */}
-                <div
-                  className={`border-2 rounded-lg p-4 cursor-pointer transition-colors ${
-                    paymentMethod === "toss"
-                      ? "border-theme-color bg-blue-50"
-                      : "border-gray-200 hover:border-gray-300"
-                  }`}
-                  onClick={() => setPaymentMethod("toss")}
-                >
-                  <div className="flex items-center">
-                    <FiCreditCard className="w-5 h-5 mr-3 text-gray-600" />
-                    <div className="flex-1">
-                      <h4 className="font-medium text-gray-900">
-                        토스페이먼츠
-                      </h4>
-                      <p className="text-sm text-gray-600">
-                        간편한 결제 (신용카드, 계좌이체, 핸드폰 등)
-                      </p>
-                    </div>
-                    <div
-                      className={`w-4 h-4 rounded-full border-2 ${
-                        paymentMethod === "toss"
-                          ? "border-theme-color bg-theme-color"
-                          : "border-gray-300"
-                      }`}
-                    >
-                      {paymentMethod === "toss" && (
-                        <div className="w-full h-full rounded-full bg-white scale-50"></div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Action Button */}
-              <div className="mt-6">
-                {paymentMethod === "cod" ? (
-                  <button
-                    onClick={handleCashOnDelivery}
-                    disabled={paymentProcessing}
-                    className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-                  >
-                    {paymentProcessing ? (
-                      <>
-                        <FiLoader className="animate-spin mr-2" />
-                        Processing...
-                      </>
-                    ) : (
-                      "Confirm Cash on Delivery"
-                    )}
-                  </button>
-                ) : paymentMethod === "stripe" ? (
-                  <button
-                    onClick={handleStripePayment}
-                    disabled={paymentProcessing}
-                    className="w-full bg-theme-color text-white py-3 px-4 rounded-lg hover:bg-theme-color/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-                  >
-                    {paymentProcessing ? (
-                      <>
-                        <FiLoader className="animate-spin mr-2" />
-                        Processing...
-                      </>
-                    ) : (
-                      "Pay with Card"
-                    )}
-                  </button>
-                ) : paymentMethod === "toss" ? (
-                  <button
-                    onClick={handleTossPayment}
-                    disabled={paymentProcessing}
-                    className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
-                  >
-                    {paymentProcessing ? (
-                      <>
-                        <FiLoader className="animate-spin mr-2" />
-                        Processing...
-                      </>
-                    ) : (
-                      "Pay with 토스페이먼츠"
-                    )}
-                  </button>
-                ) : (
-                  <button
-                    disabled
-                    className="w-full bg-gray-300 text-gray-500 py-3 px-4 rounded-lg cursor-not-allowed"
-                  >
-                    Select Payment Method
-                  </button>
                 )}
               </div>
+
+              <button
+                onClick={handleTossPayment}
+                disabled={paymentProcessing || !widgetReady}
+                className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center font-semibold text-lg"
+              >
+                {paymentProcessing ? (
+                  <>
+                    <FiLoader className="animate-spin mr-2" />
+                    {t("checkout.processing")}
+                  </>
+                ) : !widgetReady ? (
+                  <>
+                    <FiLoader className="animate-spin mr-2" />
+                    결제 준비 중...
+                  </>
+                ) : (
+                  "결제하기"
+                )}
+              </button>
             </div>
           </div>
         </div>
