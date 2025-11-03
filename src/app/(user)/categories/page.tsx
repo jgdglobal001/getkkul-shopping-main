@@ -60,7 +60,7 @@ export default async function CategoriesPage() {
   // Fetch categories from our database API
   const baseUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3000";
+    : "http://localhost:3002";
   
   let categoriesData = [];
   
