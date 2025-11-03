@@ -57,11 +57,16 @@ const getT = () => {
 export default async function CategoriesPage() {
   const t = getT();
 
-  // Fetch categories and all products data
-  const [categoriesData, allProductsData] = await Promise.all([
-    getData(`https://dummyjson.com/products/categories`),
+  // Fetch categories from our database API
+  const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
+  const [categoriesResponse, allProductsData] = await Promise.all([
+    fetch(`${baseUrl}/api/categories`, { 
+      next: { revalidate: 60 } // Cache for 60 seconds
+    }),
     getData(`https://dummyjson.com/products?limit=0`), // Fetch all products
   ]);
+
+  const categoriesData = await categoriesResponse.json();
 
   // Get categories with product counts
   const categoriesWithCounts = getCategoriesWithCounts(

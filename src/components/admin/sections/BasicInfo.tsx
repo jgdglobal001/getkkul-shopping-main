@@ -1,8 +1,14 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { ProductFormData } from "../utils/product-types";
-import { PRODUCT_CATEGORIES } from "../utils/templates";
 import { FiInfo, FiDollarSign, FiPackage } from "react-icons/fi";
+
+interface Category {
+  id: string;
+  name: string;
+  slug: string;
+}
 
 interface BasicInfoProps {
   formData: ProductFormData;
@@ -17,6 +23,30 @@ export const BasicInfo = ({
   onCategoryChange,
   onGenerateSKU,
 }: BasicInfoProps) => {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+  const [categoryError, setCategoryError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setIsLoadingCategories(true);
+        setCategoryError(null);
+        const response = await fetch("/api/categories");
+        if (!response.ok) throw new Error("카테고리 로드 실패");
+        const data = await response.json();
+        setCategories(data);
+      } catch (error) {
+        setCategoryError(error instanceof Error ? error.message : "오류 발생");
+        console.error("카테고리 로드 오류:", error);
+      } finally {
+        setIsLoadingCategories(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   return (
     <div className="bg-white p-6 rounded-lg shadow-sm border">
       <div className="flex items-center gap-2 mb-6">
@@ -136,19 +166,35 @@ export const BasicInfo = ({
           <label className="block text-sm font-medium text-gray-700 mb-2">
             카테고리 <span className="text-red-500">*</span>
           </label>
+          {categoryError && (
+            <p className="mb-2 text-sm text-red-600">
+              ⚠️ 카테고리 로드 실패: {categoryError}
+            </p>
+          )}
           <select
             value={formData.category}
             onChange={(e) => onCategoryChange(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
             required
+            disabled={isLoadingCategories || categoryError !== null}
           >
-            <option value="">카테고리 선택</option>
-            {PRODUCT_CATEGORIES.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
+            <option value="">
+              {isLoadingCategories ? "카테고리 로드 중..." : "카테고리 선택"}
+            </option>
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.name}>
+                {cat.name}
               </option>
             ))}
           </select>
+          {isLoadingCategories && (
+            <p className="mt-1 text-xs text-gray-500">
+              데이터베이스에서 카테고리를 로드하고 있습니다...
+            </p>
+          )}
+          <p className="mt-1 text-xs text-gray-500">
+            총 {categories.length}개 카테고리 (데이터베이스 연동)
+          </p>
         </div>
 
         {/* SKU */}
