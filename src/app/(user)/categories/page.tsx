@@ -58,8 +58,8 @@ export default async function CategoriesPage() {
   const t = getT();
 
   // Fetch categories from our database API
-  const baseUrl = process.env.NEXTAUTH_URL || process.env.VERCEL_URL 
-    ? `https://${process.env.VERCEL_URL}` 
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
     : "http://localhost:3000";
   
   let categoriesData = [];
