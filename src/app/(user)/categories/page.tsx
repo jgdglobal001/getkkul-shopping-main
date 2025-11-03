@@ -58,14 +58,10 @@ export default async function CategoriesPage() {
   const t = getT();
 
   // Fetch categories from our database API
-  const baseUrl = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3002";
-  
   let categoriesData = [];
   
   try {
-    const categoriesResponse = await fetch(`${baseUrl}/api/categories`, { 
+    const categoriesResponse = await fetch(`/api/categories`, { 
       next: { revalidate: 60 }, // Cache for 60 seconds
       headers: { 'Content-Type': 'application/json' }
     });
