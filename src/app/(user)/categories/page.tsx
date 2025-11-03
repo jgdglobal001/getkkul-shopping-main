@@ -58,15 +58,30 @@ export default async function CategoriesPage() {
   const t = getT();
 
   // Fetch categories from our database API
-  const baseUrl = process.env.NEXTAUTH_URL || "http://localhost:3000";
-  const [categoriesResponse, allProductsData] = await Promise.all([
-    fetch(`${baseUrl}/api/categories`, { 
-      next: { revalidate: 60 } // Cache for 60 seconds
-    }),
-    getData(`https://dummyjson.com/products?limit=0`), // Fetch all products
-  ]);
+  const baseUrl = process.env.NEXTAUTH_URL || process.env.VERCEL_URL 
+    ? `https://${process.env.VERCEL_URL}` 
+    : "http://localhost:3000";
+  
+  let categoriesData = [];
+  
+  try {
+    const categoriesResponse = await fetch(`${baseUrl}/api/categories`, { 
+      next: { revalidate: 60 }, // Cache for 60 seconds
+      headers: { 'Content-Type': 'application/json' }
+    });
 
-  const categoriesData = await categoriesResponse.json();
+    if (!categoriesResponse.ok) {
+      console.error(`카테고리 API 오류: ${categoriesResponse.status}`);
+      categoriesData = [];
+    } else {
+      categoriesData = await categoriesResponse.json();
+    }
+  } catch (error) {
+    console.error("카테고리 페칭 실패:", error);
+    categoriesData = [];
+  }
+
+  const allProductsData = await getData(`https://dummyjson.com/products?limit=0`); // Fetch all products
 
   // Get categories with product counts
   const categoriesWithCounts = getCategoriesWithCounts(
