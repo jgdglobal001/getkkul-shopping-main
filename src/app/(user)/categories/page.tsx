@@ -61,7 +61,11 @@ export default async function CategoriesPage() {
   let categoriesData = [];
   
   try {
-    const categoriesResponse = await fetch(`/api/categories`, { 
+    // Server Components require absolute URL
+    const baseUrl = process.env.NEXTAUTH_URL || 
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3002");
+    
+    const categoriesResponse = await fetch(`${baseUrl}/api/categories`, { 
       next: { revalidate: 60 }, // Cache for 60 seconds
       headers: { 'Content-Type': 'application/json' }
     });
