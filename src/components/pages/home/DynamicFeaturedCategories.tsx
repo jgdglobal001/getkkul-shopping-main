@@ -54,33 +54,9 @@ const categoryImages: { [key: string]: string } = {
     "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&h=200&fit=crop&crop=center",
 };
 
-// Category descriptions (Korean translations)
-const categoryDescriptions: { [key: string]: string } = {
-  beauty: "프리미엄 뷰티 제품 및 화장품",
-  fragrances: "고급 향수 및 향료",
-  furniture: "집을 위한 스타일리시한 가구",
-  groceries: "신선한 식품 및 필수품",
-  "home-decoration": "아름다운 홈 데코 아이템",
-  "kitchen-accessories": "필수 주방 도구",
-  laptops: "고성능 노트북",
-  "mens-shirts": "남성용 스타일리시한 셔츠",
-  "mens-shoes": "편안하고 유행스러운 신발",
-  "mens-watches": "남성용 우아한 타임피스",
-  "mobile-accessories": "모바일 기기 액세서리",
-  motorcycle: "오토바이 기어 및 액세서리",
-  "skin-care": "프리미엄 스킨케어 제품",
-  smartphones: "최신 스마트폰 및 기기",
-  "sports-accessories": "스포츠 용품 및 장비",
-  sunglasses: "스타일리시한 안경 및 선글라스",
-  tablets: "태블릿 및 디지털 액세서리",
-  tops: "트렌디한 상의 및 캐주얼 의류",
-  vehicle: "자동차 액세서리 및 부품",
-  "womens-bags": "패셔너블한 가방 및 핸드백",
-  "womens-dresses": "모든 경우에 적합한 우아한 드레스",
-  "womens-jewellery": "아름다운 주얼리 및 액세서리",
-  "womens-shoes": "여성용 스타일리시한 신발",
-  "womens-watches": "여성용 우아한 시계",
-};
+// NOTE: Category descriptions now come directly from the database (Korean primary)
+// No hardcoded mappings - database values are source of truth
+// i18n translations will be added later for multi-language support (English, Chinese, etc.)
 
 interface ApiCategory {
   slug: string;
@@ -124,8 +100,8 @@ const DynamicFeaturedCategories: React.FC = async () => {
               "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=200&h=200&fit=crop&crop=center",
             itemCount: categoryCount,
             description:
-              categoryDescriptions[categorySlug] ||
-              `Discover amazing ${category.name} products`,
+              category.description ||
+              `${category.name} 카테고리의 상품들을 발견하세요.`,
           };
         }) || [];
 

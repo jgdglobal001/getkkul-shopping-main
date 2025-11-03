@@ -11,6 +11,7 @@ interface Category {
   name: string;
   url: string;
   count?: number;
+  description?: string; // Database value (Korean primary)
 }
 
 interface InfiniteCategoryGridProps {
@@ -85,61 +86,9 @@ const categoryImages: { [key: string]: string } = {
     "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop",
 };
 
-// Category names mapping for translation keys
-const categoryNameKeys: { [key: string]: string } = {
-  beauty: "beauty",
-  fragrances: "fragrances",
-  furniture: "furniture",
-  groceries: "groceries",
-  "home-decoration": "home_decoration",
-  "kitchen-accessories": "kitchen_accessories",
-  laptops: "laptops",
-  "mens-shirts": "mens_shirts",
-  "mens-shoes": "mens_shoes",
-  "mens-watches": "mens_watches",
-  "mobile-accessories": "mobile_accessories",
-  motorcycle: "motorcycle",
-  "skin-care": "skin_care",
-  smartphones: "smartphones",
-  "sports-accessories": "sports_accessories",
-  sunglasses: "sunglasses",
-  tablets: "tablets",
-  tops: "tops",
-  vehicle: "vehicle",
-  "womens-bags": "womens_bags",
-  "womens-dresses": "womens_dresses",
-  "womens-jewellery": "womens_jewellery",
-  "womens-shoes": "womens_shoes",
-  "womens-watches": "womens_watches",
-};
-
-// Category descriptions mapping for translation keys
-const categoryDescriptionKeys: { [key: string]: string } = {
-  beauty: "beauty_desc",
-  fragrances: "fragrances_desc",
-  furniture: "furniture_desc",
-  groceries: "groceries_desc",
-  "home-decoration": "home_decoration_desc",
-  "kitchen-accessories": "kitchen_desc",
-  laptops: "laptops_desc",
-  "mens-shirts": "mens_shirts_desc",
-  "mens-shoes": "mens_shoes_desc",
-  "mens-watches": "mens_watches_desc",
-  "mobile-accessories": "mobile_accessories_desc",
-  motorcycle: "motorcycle_desc",
-  "skin-care": "skin_care_desc",
-  smartphones: "smartphones_desc",
-  "sports-accessories": "sports_accessories_desc",
-  sunglasses: "sunglasses_desc",
-  tablets: "tablets_desc",
-  tops: "tops_desc",
-  vehicle: "vehicle_desc",
-  "womens-bags": "womens_bags_desc",
-  "womens-dresses": "womens_dresses_desc",
-  "womens-jewellery": "womens_jewellery_desc",
-  "womens-shoes": "womens_shoes_desc",
-  "womens-watches": "womens_watches_desc",
-};
+// NOTE: Category names and descriptions now come directly from the database (Korean primary)
+// No hardcoded mappings or translation keys - database values are source of truth
+// i18n translations will be added later for multi-language support (English, Chinese, etc.)
 
 const CategoryCard: React.FC<{ category: Category; index: number }> = ({
   category,
@@ -147,15 +96,13 @@ const CategoryCard: React.FC<{ category: Category; index: number }> = ({
 }) => {
   const { t } = useTranslation();
   const categorySlug = category.slug;
-  const nameKey = categoryNameKeys[categorySlug];
-  const categoryName = nameKey ? t(`categories.${nameKey}`) : category.name;
+  // Use database values (Korean) as primary source of truth
+  const categoryName = category.name;
   const image =
     categoryImages[categorySlug] ||
     "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop";
-  const descriptionKey = categoryDescriptionKeys[categorySlug];
-  const description = descriptionKey 
-    ? t(`categories.${descriptionKey}`)
-    : t("categories.currently_no_products");
+  // Use database description if available, otherwise provide Korean default
+  const description = category.description || `${category.name} 카테고리의 상품들을 발견하세요.`;
   const productCount = category.count || 0;
   const isDisabled = productCount === 0;
 

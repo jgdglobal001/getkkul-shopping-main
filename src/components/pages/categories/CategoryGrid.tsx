@@ -11,6 +11,7 @@ interface Category {
   name: string;
   url: string;
   count?: number;
+  description?: string; // Database value (Korean primary)
 }
 
 interface CategoryGridProps {
@@ -69,48 +70,24 @@ const categoryImages: { [key: string]: string } = {
     "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=300&fit=crop",
 };
 
-// Category descriptions
-const categoryDescriptions: { [key: string]: string } = {
-  beauty: "Explore premium beauty products and cosmetics",
-  fragrances: "Discover luxurious fragrances and perfumes",
-  furniture: "Transform your space with stylish furniture",
-  groceries: "Fresh groceries and everyday essentials",
-  "home-decoration": "Beautiful decor items for your home",
-  "kitchen-accessories": "Essential tools for your kitchen",
-  laptops: "High-performance laptops and computers",
-  "mens-shirts": "Stylish shirts for the modern man",
-  "mens-shoes": "Comfortable and fashionable footwear",
-  "mens-watches": "Elegant timepieces for men",
-  "mobile-accessories": "Accessories for your mobile devices",
-  motorcycle: "Motorcycle gear and accessories",
-  "skin-care": "Premium skincare products",
-  smartphones: "Latest smartphones and devices",
-  "sports-accessories": "Gear up for your favorite sports",
-  sunglasses: "Stylish eyewear and sunglasses",
-  tablets: "Tablets and digital accessories",
-  tops: "Trendy tops and casual wear",
-  vehicle: "Automotive accessories and parts",
-  "womens-bags": "Fashionable bags and handbags",
-  "womens-dresses": "Elegant dresses for every occasion",
-  "womens-jewellery": "Beautiful jewelry and accessories",
-  "womens-shoes": "Stylish footwear for women",
-  "womens-watches": "Elegant watches for women",
-};
+// NOTE: Category descriptions now come directly from the database (Korean primary)
+// No hardcoded mappings - database values are source of truth
+// i18n translations will be added later for multi-language support (English, Chinese, etc.)
 
 const CategoryCard: React.FC<{ category: Category; index: number }> = ({
   category,
   index,
 }) => {
-  const categoryName = category.name
-    .replace(/([A-Z])/g, " $1")
-    .replace(/^./, (str) => str.toUpperCase());
+  // Use database values (Korean) as primary source of truth
+  const categoryName = category.name;
   const categorySlug = category.slug;
   const image =
     categoryImages[categorySlug] ||
     "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop";
+  // Use database description if available, otherwise provide Korean default
   const description =
-    categoryDescriptions[categorySlug] ||
-    "Discover amazing products in this category";
+    category.description ||
+    `${category.name} 카테고리의 상품들을 발견하세요.`;
   const productCount = category.count || 0;
 
   return (

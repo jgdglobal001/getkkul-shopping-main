@@ -1,0 +1,13 @@
+﻿[dotenv@17.2.3] injecting env (16) from .env.local -- tip: ?숋툘  load multiple .env files with { path: ['.env.local', '.env'] }
+node.exe : Loaded Prisma config from prisma.config.ts.
+위치 줄:1 문자:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Loaded Prisma c...isma.config.ts.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+Prisma config detected, skipping environment variable loading.
+Prisma schema loaded from prisma\schema.prisma
+Prisma Studio is up on http://localhost:5555
+Prisma schema loaded from prisma\schema.prisma

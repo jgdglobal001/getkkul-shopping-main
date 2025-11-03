@@ -66,7 +66,7 @@ export default async function CategoriesPage() {
       (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3002");
     
     const categoriesResponse = await fetch(`${baseUrl}/api/categories`, { 
-      next: { revalidate: 60 }, // Cache for 60 seconds
+      next: { revalidate: 0 }, // No caching - always fetch fresh data
       headers: { 'Content-Type': 'application/json' }
     });
 

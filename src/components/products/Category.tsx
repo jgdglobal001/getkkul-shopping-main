@@ -124,6 +124,7 @@ const Category = ({ categories = [], allProducts = [] }: CategoryProps) => {
                 {categories.map((category, index) => {
                   // Handle both string and object formats
                   const categorySlug = typeof category === 'string' ? category : category.slug;
+                  // Use database value (Korean) as primary source
                   const categoryName = typeof category === 'string' ? category : category.name;
                   const isActive = currentCategory === categorySlug;
                   const count = getProductCountForCategory(categorySlug);
