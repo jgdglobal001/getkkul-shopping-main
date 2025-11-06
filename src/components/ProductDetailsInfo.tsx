@@ -2,6 +2,7 @@
 
 import { useTranslation } from "react-i18next";
 import { ProductType } from "@/type";
+import PriceFormat from "./PriceFormat";
 
 interface ProductDetailsInfoProps {
   product: ProductType;
@@ -12,12 +13,12 @@ export default function ProductDetailsInfo({ product }: ProductDetailsInfoProps)
 
   return (
     <div className="flex flex-col gap-2">
-      <p>
-        {t("product.you_are_saving")}{" "}
-        <span className="text-base font-semibold text-green-500">
-          ₩{Math.round(product?.price * (product?.discountPercentage / 100))}
-        </span>{" "}
-        {t("product.upon_purchase")}
+      <p className="text-green-600 font-semibold">
+        <PriceFormat
+          amount={Math.round(product?.price * (product?.discountPercentage / 100))}
+          className="text-base text-green-500"
+        />
+        {t("product.discount_message")}
       </p>
       <div>
         <p className="text-sm tracking-wide">{product?.description}</p>

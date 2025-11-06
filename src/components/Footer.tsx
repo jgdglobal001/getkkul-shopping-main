@@ -23,39 +23,67 @@ const Footer = () => {
           <Link href={"/"}>
             <Image src={logo} alt="겟꿀쇼핑 로고" width={224} height={80} unoptimized />
           </Link>
-          <p>
+          <p className="text-sm text-gray-700">
             {t("footer.about_us")}
           </p>
-          <SocialLink />
-        </div>
-        <div>
-          <Title>{t("footer.my_account")}</Title>
-          <div className="mt-3 flex flex-col gap-y-2">
-            {navigation?.map((item) => (
-              <Link
-                key={item?.title}
-                href={item?.href}
-                className="flex items-center gap-x-2 text-gray-700 hover:text-theme-color duration-200 font-medium"
-              >
-                <GoDotFill size={10} />
-                {item?.title}
-              </Link>
-            ))}
+          <div className="text-xs text-gray-600 space-y-1">
+            <p><span className="font-semibold">{t("footer.business_registration")}:</span> {t("footer.business_number")}</p>
+            <p><span className="font-semibold">{t("footer.telecom_sales")}:</span> {t("footer.telecom_number")}</p>
+            <p><span className="font-semibold">{t("footer.representative")}:</span> {t("footer.representative_name")}</p>
+            <p><span className="font-semibold">{t("footer.privacy_officer")}:</span> {t("footer.privacy_officer_name")}</p>
           </div>
+          <SocialLink />
         </div>
         <div>
           <Title>{t("footer.information")}</Title>
           <div className="mt-3 flex flex-col gap-y-2">
-            {InfoNavigation?.map((item) => (
-              <Link
-                key={item?.title}
-                href={item?.href}
-                className="flex items-center gap-x-2 text-gray-700 hover:text-theme-color duration-200 font-medium"
-              >
-                <GoDotFill size={10} />
-                {item?.title}
-              </Link>
-            ))}
+            <Link
+              href="/about"
+              className="flex items-center gap-x-2 text-gray-700 hover:text-theme-color duration-200 font-medium"
+            >
+              <GoDotFill size={10} />
+              {t("footer.about_us_page")}
+            </Link>
+            <Link
+              href="/inquiry"
+              className="flex items-center gap-x-2 text-gray-700 hover:text-theme-color duration-200 font-medium"
+            >
+              <GoDotFill size={10} />
+              {t("footer.inquiry")}
+            </Link>
+            <Link
+              href="/customer-service"
+              className="flex items-center gap-x-2 text-gray-700 hover:text-theme-color duration-200 font-medium"
+            >
+              <GoDotFill size={10} />
+              {t("footer.customer_service")}
+            </Link>
+            <Link
+              href="/faqs"
+              className="flex items-center gap-x-2 text-gray-700 hover:text-theme-color duration-200 font-medium"
+            >
+              <GoDotFill size={10} />
+              {t("footer.faq")}
+            </Link>
+          </div>
+        </div>
+        <div>
+          <Title>법적 정보</Title>
+          <div className="mt-3 flex flex-col gap-y-2">
+            <Link
+              href="/terms-of-service"
+              className="flex items-center gap-x-2 text-gray-700 hover:text-theme-color duration-200 font-medium"
+            >
+              <GoDotFill size={10} />
+              {t("footer.terms_of_service")}
+            </Link>
+            <Link
+              href="/privacy-policy"
+              className="flex items-center gap-x-2 text-gray-700 hover:text-theme-color duration-200 font-medium"
+            >
+              <GoDotFill size={10} />
+              {t("footer.privacy_policy")}
+            </Link>
           </div>
         </div>
         <div>
@@ -63,19 +91,28 @@ const Footer = () => {
           <div className="mt-3">
             <div>
               <p className="text-sm">{t("footer.got_questions")} {t("footer.call_us")}</p>
-              <Title>+670 413 90 762</Title>
+              <Title>{t("footer.phone")}</Title>
             </div>
             <div className="mt-3">
               <p className="text-base flex items-center gap-x-3 text-gray-600">
-                <BsEnvelopeAt /> shofy@suppert.com
+                <BsEnvelopeAt /> {t("footer.email")}
               </p>
               <p className="text-base flex items-center gap-x-3 text-gray-600">
-                <GrLocation /> Dhaka, Bangladesh
+                <GrLocation /> {t("footer.address")}
               </p>
             </div>
           </div>
         </div>
       </Container>
+
+      {/* Copyright Section */}
+      <div className="border-t border-gray-300 mt-10 pt-6">
+        <Container>
+          <p className="text-center text-xs text-gray-500">
+            {t("footer.copyright")}
+          </p>
+        </Container>
+      </div>
     </div>
   );
 };

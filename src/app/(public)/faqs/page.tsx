@@ -19,109 +19,109 @@ import {
 const faqCategories = [
   {
     id: "orders",
-    title: "Orders & Shipping",
+    title: "주문 및 배송",
     icon: "📦",
     faqs: [
       {
-        question: "How long does shipping take?",
+        question: "배송은 얼마나 걸리나요?",
         answer:
-          "Standard shipping typically takes 3-7 business days. Express shipping is available for 1-2 business days delivery. Shipping times may vary based on your location and product availability.",
+          "일반 배송은 보통 3-7 영업일이 소요됩니다. 빠른 배송은 1-2 영업일 내에 배송됩니다. 배송 시간은 지역과 상품 재고에 따라 달라질 수 있습니다.",
       },
       {
-        question: "Can I track my order?",
+        question: "주문을 추적할 수 있나요?",
         answer:
-          "Yes! Once your order ships, you'll receive a tracking number via email. You can also track your order status by logging into your account and visiting the 'Orders' section.",
+          "네! 주문이 배송되면 이메일로 추적 번호를 받게 됩니다. 계정에 로그인하여 '주문 내역' 섹션에서 주문 상태를 확인할 수도 있습니다.",
       },
       {
-        question: "What are the shipping costs?",
+        question: "배송료는 얼마인가요?",
         answer:
-          "Shipping costs vary based on your location, order size, and shipping method. Free standard shipping is available on orders over $50. Exact shipping costs will be calculated at checkout.",
+          "배송료는 지역, 주문 규모, 배송 방법에 따라 다릅니다. 50,000원 이상 주문 시 무료 배송이 제공됩니다. 정확한 배송료는 결제 시 계산됩니다.",
       },
       {
-        question: "Can I change or cancel my order?",
+        question: "주문을 변경하거나 취소할 수 있나요?",
         answer:
-          "You can cancel or modify your order within 1 hour of placement. After that, please contact our customer service team immediately, and we'll do our best to accommodate your request if the order hasn't shipped yet.",
+          "주문 후 1시간 이내에 주문을 취소하거나 수정할 수 있습니다. 그 이후에는 고객센터에 즉시 연락해주세요. 배송되지 않은 주문이라면 최선을 다해 도와드리겠습니다.",
       },
     ],
   },
   {
     id: "returns",
-    title: "Returns & Refunds",
+    title: "반품 및 환불",
     icon: "↩️",
     faqs: [
       {
-        question: "What is your return policy?",
+        question: "반품 정책은 무엇인가요?",
         answer:
-          "We offer a 30-day return policy for most items. Products must be unused, in original packaging, and in the same condition as received. Some items like personalized products may not be eligible for return.",
+          "대부분의 상품에 대해 30일 반품 정책을 제공합니다. 상품은 미사용 상태이고 원래 포장 상태여야 하며 받은 상태와 동일해야 합니다. 맞춤형 상품 등 일부 상품은 반품이 불가능할 수 있습니다.",
       },
       {
-        question: "How do I initiate a return?",
+        question: "반품을 어떻게 시작하나요?",
         answer:
-          "To start a return, log into your account, go to 'Order History', and click 'Return Item' next to the product. Follow the instructions to print a return label and drop off the package at any authorized shipping location.",
+          "반품을 시작하려면 계정에 로그인하여 '주문 내역'으로 이동한 후 상품 옆의 '반품하기'를 클릭하세요. 지시에 따라 반품 송장을 인쇄하고 인정된 배송 위치에 패키지를 제출하세요.",
       },
       {
-        question: "When will I receive my refund?",
+        question: "환불은 언제 받나요?",
         answer:
-          "Refunds are processed within 3-5 business days after we receive your returned item. The refund will be credited to your original payment method. Credit card refunds may take an additional 1-2 billing cycles to appear.",
+          "반품 상품을 받은 후 3-5 영업일 이내에 환불이 처리됩니다. 환불은 원래 결제 방법으로 입금됩니다. 신용카드 환불의 경우 추가로 1-2 청구 주기가 소요될 수 있습니다.",
       },
       {
-        question: "Who pays for return shipping?",
+        question: "반품 배송료는 누가 내나요?",
         answer:
-          "For defective or incorrect items, we provide a prepaid return label. For other returns, customers are responsible for return shipping costs unless the order qualifies for free returns.",
+          "불량품이나 잘못된 상품의 경우 선불 반품 송장을 제공합니다. 기타 반품의 경우 고객이 반품 배송료를 부담하며, 무료 반품 대상 주문은 예외입니다.",
       },
     ],
   },
   {
     id: "account",
-    title: "Account & Payment",
+    title: "계정 및 결제",
     icon: "👤",
     faqs: [
       {
-        question: "How do I create an account?",
+        question: "계정을 어떻게 만드나요?",
         answer:
-          "Click 'Sign Up' at the top of any page, provide your email address and create a password. You can also sign up during checkout. Having an account lets you track orders, save addresses, and access exclusive deals.",
+          "페이지 상단의 '회원가입'을 클릭하고 이메일 주소를 입력한 후 비밀번호를 설정하세요. 결제 시에도 가입할 수 있습니다. 계정이 있으면 주문을 추적하고, 주소를 저장하고, 특별한 혜택을 받을 수 있습니다.",
       },
       {
-        question: "What payment methods do you accept?",
+        question: "어떤 결제 방법을 사용할 수 있나요?",
         answer:
-          "We accept all major credit cards (Visa, MasterCard, American Express), PayPal, Apple Pay, and Google Pay. All payments are processed securely through encrypted connections.",
+          "모든 주요 신용카드(Visa, MasterCard, American Express), PayPal, Apple Pay, Google Pay를 사용할 수 있습니다. 모든 결제는 암호화된 안전한 연결을 통해 처리됩니다.",
       },
       {
-        question: "Is my payment information secure?",
+        question: "결제 정보는 안전한가요?",
         answer:
-          "Absolutely! We use industry-standard SSL encryption and do not store your payment information on our servers. All transactions are processed through secure, PCI-compliant payment processors.",
+          "네! 업계 표준 SSL 암호화를 사용하며 결제 정보를 서버에 저장하지 않습니다. 모든 거래는 안전한 PCI 준수 결제 처리업체를 통해 처리됩니다.",
       },
       {
-        question: "Can I save multiple addresses?",
+        question: "여러 주소를 저장할 수 있나요?",
         answer:
-          "Yes! You can save multiple shipping and billing addresses in your account. This makes checkout faster and easier for future orders. You can add, edit, or delete addresses anytime in your account settings.",
+          "네! 계정에 여러 배송 및 청구 주소를 저장할 수 있습니다. 이렇게 하면 향후 주문 시 결제가 더 빠르고 쉬워집니다. 계정 설정에서 언제든지 주소를 추가, 수정 또는 삭제할 수 있습니다.",
       },
     ],
   },
   {
     id: "products",
-    title: "Products & Inventory",
+    title: "상품 및 재고",
     icon: "🛍️",
     faqs: [
       {
-        question: "Are your products authentic?",
+        question: "상품은 정품인가요?",
         answer:
-          "Yes, we only sell authentic products sourced directly from authorized distributors and manufacturers. Every product comes with a guarantee of authenticity and quality.",
+          "네! 저희는 인정된 유통업체 및 제조업체에서 직접 공급받은 정품만 판매합니다. 모든 상품은 정품성과 품질을 보장합니다.",
       },
       {
-        question: "How do I know if an item is in stock?",
+        question: "상품이 재고가 있는지 어떻게 알 수 있나요?",
         answer:
-          "Stock availability is shown on each product page. If an item is out of stock, you can sign up for notifications to be alerted when it's available again. We update inventory in real-time.",
+          "각 상품 페이지에 재고 가용성이 표시됩니다. 상품이 품절된 경우 알림을 신청하여 다시 입고될 때 알림을 받을 수 있습니다. 저희는 실시간으로 재고를 업데이트합니다.",
       },
       {
-        question: "Do you offer product warranties?",
+        question: "상품 보증이 있나요?",
         answer:
-          "Many of our products come with manufacturer warranties. Warranty information is listed on individual product pages. We also offer our own satisfaction guarantee on all purchases.",
+          "많은 상품에 제조사 보증이 포함되어 있습니다. 보증 정보는 각 상품 페이지에 표시됩니다. 또한 모든 구매에 대해 저희의 만족도 보장을 제공합니다.",
       },
       {
-        question: "Can I get notified when items go on sale?",
+        question: "상품이 할인될 때 알림을 받을 수 있나요?",
         answer:
-          "Yes! You can add items to your wishlist and enable notifications for price drops. You can also subscribe to our newsletter for updates on sales and special promotions.",
+          "네! 상품을 위시리스트에 추가하고 가격 인하 알림을 활성화할 수 있습니다. 또한 뉴스레터를 구독하여 판매 및 특별 프로모션 업데이트를 받을 수 있습니다.",
       },
     ],
   },
@@ -334,10 +334,10 @@ export default function FAQsPage() {
               고객지원 문의
             </a>
             <a
-              href="mailto:support@shofy.com"
+              href="mailto:jgdglobal@kakao.com"
               className="inline-block bg-theme-white text-theme-color border-2 border-theme-color px-6 py-3 rounded-lg hover:bg-theme-color hover:text-theme-white transition-colors duration-200 font-medium"
             >
-              Email Us
+              이메일 문의
             </a>
           </div>
         </div>

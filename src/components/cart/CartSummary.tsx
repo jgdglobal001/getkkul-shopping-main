@@ -192,21 +192,16 @@ const CartSummary = ({ cart }: Props) => {
             <CiDeliveryTruck className="text-blue-600 text-xl mr-2" />
             <div className="text-sm">
               <div className="font-medium">
-                {t("cart.add_more_for_free_shipping", {
-                  amount: (
-                    <PriceFormat
-                      amount={freeShippingThreshold - (totalAmt - discountAmt)}
-                      className="font-bold"
-                    />
-                  ),
-                })}
+                {t("cart.add_more_for_free_shipping")}
+                <PriceFormat
+                  amount={freeShippingThreshold - (totalAmt - discountAmt)}
+                  className="font-bold"
+                />
+                {" "}{t("cart.add_more_for_free_shipping_suffix")}
               </div>
               <div className="text-xs text-blue-600 mt-1">
-                {t("cart.free_shipping_on_orders_over", {
-                  amount: (
-                    <PriceFormat amount={freeShippingThreshold} />
-                  ),
-                })}
+                <PriceFormat amount={freeShippingThreshold} />
+                {" "}{t("cart.free_shipping_on_orders_over")}
               </div>
             </div>
           </div>

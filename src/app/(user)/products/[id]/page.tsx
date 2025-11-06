@@ -82,7 +82,7 @@ const SingleProductPage = async ({ params }: Props) => {
   }
 
   const regularPrice = product?.price;
-  const discountedPrice = product?.price + product?.discountPercentage / 100;
+  const discountedPrice = product?.price - (product?.price * product?.discountPercentage) / 100;
 
   return (
     <div>
