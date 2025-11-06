@@ -3,9 +3,11 @@
 import Link from "next/link";
 import Container from "../../Container";
 import { ProductType } from "../../../../type";
-import ProductCard from "../../ProductCard";
+import EnhancedProductCard from "../../EnhancedProductCard";
 import Button from "../../ui/Button";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
+import { FiGrid, FiList } from "react-icons/fi";
 
 interface Props {
   title: string;
@@ -16,6 +18,7 @@ interface Props {
 
 const ProductSection = ({ title, products, viewMoreLink, subtitle }: Props) => {
   const { t } = useTranslation();
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   // Limit to 8 products for homepage display
   const displayProducts = products?.slice(0, 8) || [];
 
@@ -30,21 +33,54 @@ const ProductSection = ({ title, products, viewMoreLink, subtitle }: Props) => {
             <p className="text-gray-600 text-sm md:text-base">{subtitle}</p>
           )}
         </div>
-        <Link href={viewMoreLink}>
-          <Button
-            variant="outline"
-            size="md"
-            className="transition-all duration-300"
-          >
-            {t("common.view_more")}
-          </Button>
-        </Link>
+        <div className="flex items-center gap-4">
+          {/* View Mode Toggle */}
+          <div className="flex items-center border border-gray-300 rounded-md overflow-hidden">
+            <button
+              onClick={() => setViewMode("grid")}
+              className={`p-2 transition-colors ${
+                viewMode === "grid"
+                  ? "bg-theme-color text-white"
+                  : "bg-white text-gray-600 hover:bg-gray-50"
+              }`}
+              title="Grid View"
+            >
+              <FiGrid className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => setViewMode("list")}
+              className={`p-2 transition-colors ${
+                viewMode === "list"
+                  ? "bg-theme-color text-white"
+                  : "bg-white text-gray-600 hover:bg-gray-50"
+              }`}
+              title="List View"
+            >
+              <FiList className="w-4 h-4" />
+            </button>
+          </div>
+          <Link href={viewMoreLink}>
+            <Button
+              variant="outline"
+              size="md"
+              className="transition-all duration-300"
+            >
+              {t("common.view_more")}
+            </Button>
+          </Link>
+        </div>
       </div>
 
       {displayProducts.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        <div
+          className={`${
+            viewMode === "grid"
+              ? "grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5"
+              : "space-y-4"
+          }`}
+        >
           {displayProducts.map((product: ProductType) => (
-            <ProductCard key={product.id} product={product} />
+            <EnhancedProductCard key={product.id} product={product} view={viewMode} />
           ))}
         </div>
       ) : (
