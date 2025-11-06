@@ -19,9 +19,9 @@ const EnhancedProductCard = ({ product, view = "grid" }: Props) => {
   if (view === "list") {
     return (
       <div className="bg-white border border-gray-200 rounded-xl hover:shadow-xl hover:shadow-black/5 transition-all duration-300 overflow-hidden group">
-        <div className="flex">
+        <div className="flex flex-col md:flex-row">
           {/* Image Section */}
-          <div className="w-48 h-48 flex-shrink-0 relative group/image">
+          <div className="w-full md:w-48 h-40 md:h-48 flex-shrink-0 relative group/image">
             <Link
               href={{
                 pathname: `/products/${product?.id}`,
@@ -63,8 +63,8 @@ const EnhancedProductCard = ({ product, view = "grid" }: Props) => {
           </div>
 
           {/* Content Section */}
-          <div className="flex-1 p-6">
-            <div className="flex justify-between h-full">
+          <div className="flex-1 p-4 md:p-6">
+            <div className="flex flex-col md:flex-row md:justify-between md:h-full gap-4 md:gap-0">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   <p className="text-sm text-gray-500 uppercase tracking-wide">
@@ -118,8 +118,8 @@ const EnhancedProductCard = ({ product, view = "grid" }: Props) => {
                 />
               </div>
 
-              <div className="flex flex-col justify-between items-end ml-6 min-w-[140px]">
-                <div className="text-right">
+              <div className="flex flex-col justify-between items-start md:items-end md:ml-6 w-full md:w-auto md:min-w-[140px]">
+                <div className="text-left md:text-right w-full md:w-auto">
                   <p className="text-sm text-gray-500 mb-1">Availability</p>
                   <div className="flex items-center gap-2">
                     <div
@@ -151,7 +151,7 @@ const EnhancedProductCard = ({ product, view = "grid" }: Props) => {
                   product={product}
                   variant="primary"
                   size="md"
-                  className="min-w-[120px] shadow-md"
+                  className="w-full md:w-auto md:min-w-[120px] shadow-md mt-4 md:mt-0"
                 />
               </div>
             </div>
