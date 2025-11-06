@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { useTranslation } from "react-i18next";
 import { AdminTableSkeleton } from "./AdminSkeletons";
 import { toast } from "react-hot-toast";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
@@ -97,6 +98,7 @@ const paymentStatusColors = {
 
 export default function AdminOrdersClient() {
   const { data: session } = useSession();
+  const { t } = useTranslation();
   const { user, isAdmin } = useCurrentUser();
   const [orders, setOrders] = useState<Order[]>([]);
   const [filteredOrders, setFilteredOrders] = useState<Order[]>([]);
@@ -230,8 +232,9 @@ export default function AdminOrdersClient() {
       });
 
       if (response.ok) {
+        const statusInfo = getStatusDisplayInfo(newStatus);
         toast.success(
-          `Order status updated to ${getStatusDisplayInfo(newStatus).label}`
+          `Order status updated to ${t('account.' + statusInfo.label)}`
         );
         await fetchOrders();
         setDeliveryNote("");

@@ -1,0 +1,1 @@
+SELECT id, orderId, status, paymentStatus, paymentMethod, totalAmount FROM "Order" WHERE orderId = 'ORD-1762145855893-WTEU3X66X';

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { Prisma, prisma } from "@/lib/prisma";
 import {
   ORDER_STATUSES,
   PAYMENT_STATUSES,
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Basic ${Buffer.from(`${clientKey}:${secretKey}`).toString(
+          Authorization: `Basic ${Buffer.from(`${secretKey}:`).toString(
             "base64"
           )}`,
         },
@@ -108,6 +108,7 @@ export async function POST(request: NextRequest) {
         paymentStatus: PAYMENT_STATUSES.PAID,
         paymentMethod: PAYMENT_METHODS.TOSS,
         totalAmount: amount / 100, // Toss sends amount in cents
+        shippingAddress: Prisma.JsonNull,
       },
     });
 

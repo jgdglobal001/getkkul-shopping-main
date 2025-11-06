@@ -18,10 +18,10 @@ export default function PaymentSuccess() {
 
   useEffect(() => {
     // Verify payment on the backend
-    if (paymentKey && orderId && amount && session?.user?.email) {
+    if (paymentKey && orderId && amount && session?.status === "authenticated" && session?.user?.email) {
       verifyPayment();
     }
-  }, [paymentKey, orderId, amount, session?.user?.email]);
+  }, [paymentKey, orderId, amount, session?.status, session?.user?.email]);
 
   const verifyPayment = async () => {
     try {

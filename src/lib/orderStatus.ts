@@ -144,49 +144,49 @@ export const getStatusDisplayInfo = (status: OrderStatus) => {
   switch (status) {
     case ORDER_STATUSES.PENDING:
       return {
-        label: "Pending",
+        label: "status.pending",
         color: "bg-yellow-100 text-yellow-800",
         icon: "⏳",
         description: "Order placed, awaiting confirmation",
       };
     case ORDER_STATUSES.CONFIRMED:
       return {
-        label: "Confirmed",
+        label: "status.confirmed",
         color: "bg-blue-100 text-blue-800",
         icon: "✅",
         description: "Order confirmed, ready for packing",
       };
     case ORDER_STATUSES.PACKED:
       return {
-        label: "Packed",
+        label: "status.packed",
         color: "bg-purple-100 text-purple-800",
         icon: "📦",
         description: "Order packed, ready for delivery",
       };
     case ORDER_STATUSES.OUT_FOR_DELIVERY:
       return {
-        label: "Out for Delivery",
+        label: "status.out_for_delivery",
         color: "bg-indigo-100 text-indigo-800",
         icon: "🚚",
         description: "Order out for delivery",
       };
     case ORDER_STATUSES.DELIVERED:
       return {
-        label: "Delivered",
+        label: "status.delivered",
         color: "bg-green-100 text-green-800",
         icon: "✅",
         description: "Order successfully delivered",
       };
     case ORDER_STATUSES.CANCELLED:
       return {
-        label: "Cancelled",
+        label: "status.cancelled",
         color: "bg-red-100 text-red-800",
         icon: "❌",
         description: "Order cancelled",
       };
     default:
       return {
-        label: "Unknown",
+        label: "status.unknown",
         color: "bg-gray-100 text-gray-800",
         icon: "❓",
         description: "Unknown status",
@@ -204,32 +204,32 @@ export const getPaymentStatusDisplayInfo = (
       return {
         label:
           method === PAYMENT_METHODS.CASH
-            ? "Cash on Delivery"
-            : "Payment Pending",
+            ? "payment_method.cash_on_delivery"
+            : "payment_status.pending",
         color: "bg-yellow-100 text-yellow-800",
         icon: method === PAYMENT_METHODS.CASH ? "💵" : "⏳",
       };
     case PAYMENT_STATUSES.PAID:
       return {
-        label: "Paid",
+        label: "payment_status.paid",
         color: "bg-green-100 text-green-800",
         icon: "✅",
       };
     case PAYMENT_STATUSES.FAILED:
       return {
-        label: "Payment Failed",
+        label: "payment_status.failed",
         color: "bg-red-100 text-red-800",
         icon: "❌",
       };
     case PAYMENT_STATUSES.REFUNDED:
       return {
-        label: "Refunded",
+        label: "payment_status.refunded",
         color: "bg-gray-100 text-gray-800",
         icon: "↩️",
       };
     default:
       return {
-        label: "Unknown",
+        label: "status.unknown",
         color: "bg-gray-100 text-gray-800",
         icon: "❓",
       };

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import Container from "@/components/Container";
@@ -55,6 +56,7 @@ interface Order {
 }
 
 const OrderTrackingPage = () => {
+  const { t } = useTranslation();
   const params = useParams();
   const router = useRouter();
   const { data: session } = useSession();
@@ -107,7 +109,7 @@ const OrderTrackingPage = () => {
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
+    return new Date(dateString).toLocaleDateString("ko-KR", {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -136,10 +138,10 @@ const OrderTrackingPage = () => {
 
   const getTrackingSteps = () => {
     const steps = [
-      { id: "confirmed", label: "Order Confirmed", icon: FiCheckCircle },
-      { id: "processing", label: "Processing", icon: FiClock },
-      { id: "shipped", label: "Shipped", icon: FiTruck },
-      { id: "delivered", label: "Delivered", icon: FiPackage },
+      { id: "confirmed", label: t('account.status.confirmed'), icon: FiCheckCircle },
+      { id: "processing", label: t('account.processing'), icon: FiClock },
+      { id: "shipped", label: t('account.shipped'), icon: FiTruck },
+      { id: "delivered", label: t('account.delivered'), icon: FiPackage },
     ];
 
     const currentStatus = order?.status.toLowerCase();
@@ -155,7 +157,7 @@ const OrderTrackingPage = () => {
 
   if (loading) {
     return (
-      <ProtectedRoute loadingMessage="Loading order details...">
+      <ProtectedRoute loadingMessage={t('loading_order_details')}>
         <Container className="py-8">
           <div className="animate-pulse">
             <div className="bg-gray-200 rounded h-8 w-64 mb-8"></div>
@@ -174,12 +176,12 @@ const OrderTrackingPage = () => {
 
   if (error || !order) {
     return (
-      <ProtectedRoute loadingMessage="Loading order details...">
+      <ProtectedRoute loadingMessage={t('account.loading_order_details')}>
         <Container className="py-8">
           <div className="text-center">
             <div className="text-6xl mb-4">📦</div>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
-              Order Not Found
+              {t('account.order_not_found')}
             </h1>
             <p className="text-gray-600 mb-6">
               {error ||
@@ -190,7 +192,7 @@ const OrderTrackingPage = () => {
               className="inline-flex items-center px-4 py-2 bg-theme-color text-white rounded-lg hover:bg-theme-color/90 transition-colors"
             >
               <FiArrowLeft className="w-4 h-4 mr-2" />
-              Back to Account
+              {t('account.back_to_account')}
             </Link>
           </div>
         </Container>
@@ -201,9 +203,10 @@ const OrderTrackingPage = () => {
   const trackingSteps = getTrackingSteps();
 
   return (
-    <ProtectedRoute loadingMessage="Loading order details...">
+    <ProtectedRoute loadingMessage={t('account.loading_order_details')}>
       <Container className="py-8">
         {/* Header */}
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">{t('account.order_tracking')}</h1>
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center space-x-4">
             <Link
@@ -214,10 +217,10 @@ const OrderTrackingPage = () => {
             </Link>
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
-                Order #{order.orderId}
+                {t('account.order_number')} {order.orderId}
               </h1>
               <p className="text-gray-600">
-                Placed on {formatDate(order.createdAt)}
+                {t('account.placed_on', { date: formatDate(order.createdAt) })}
               </p>
             </div>
           </div>
@@ -225,14 +228,14 @@ const OrderTrackingPage = () => {
           <div className="flex items-center space-x-3">
             <button className="flex items-center px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
               <FiDownload className="w-4 h-4 mr-2" />
-              Download Receipt
+              {t('account.download_receipt')}
             </button>
             <span
               className={`px-4 py-2 text-sm font-medium rounded-lg border capitalize ${getStatusColor(
                 order.status
               )}`}
             >
-              {order.status}
+              {t('account.status.' + order.status)}
             </span>
           </div>
         </div>
@@ -243,7 +246,7 @@ const OrderTrackingPage = () => {
             {/* Order Tracking */}
             <div className="bg-white rounded-lg shadow p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-6">
-                Order Tracking
+                {t('account.order_tracking')}
               </h3>
 
               <div className="relative">
@@ -285,12 +288,12 @@ const OrderTrackingPage = () => {
                               : "text-gray-500"
                           }`}
                         >
-                          {step.label}
+                          {t(step.label)}
                         </h4>
                         {step.active && (
                           <p className="text-sm text-gray-600 mt-1">
-                            Your order is currently being{" "}
-                            {step.label.toLowerCase()}
+                            {t('account.your_order_is_currently_being')}{" "}
+                            {t(step.label)}
                           </p>
                         )}
                         {step.completed && index === 0 && (
@@ -307,7 +310,7 @@ const OrderTrackingPage = () => {
               {order.trackingNumber && (
                 <div className="mt-6 p-4 bg-blue-50 rounded-lg">
                   <h4 className="font-medium text-blue-900 mb-2">
-                    Tracking Number
+                    {t('account.tracking_number')}
                   </h4>
                   <p className="text-blue-700 font-mono text-sm">
                     {order.trackingNumber}
@@ -318,7 +321,7 @@ const OrderTrackingPage = () => {
               {order.estimatedDelivery && (
                 <div className="mt-4 p-4 bg-green-50 rounded-lg">
                   <h4 className="font-medium text-green-900 mb-2">
-                    Estimated Delivery
+                    {t('account.estimated_delivery')}
                   </h4>
                   <p className="text-green-700 text-sm">
                     {formatDate(order.estimatedDelivery)}
@@ -330,7 +333,7 @@ const OrderTrackingPage = () => {
             {/* Order Items */}
             <div className="bg-white rounded-lg shadow p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Items ({order.items.length})
+                {t('account.items', { count: order.items.length })}
               </h3>
 
               <div className="space-y-4">
@@ -363,7 +366,7 @@ const OrderTrackingPage = () => {
                         {item.name}
                       </h4>
                       <div className="flex items-center space-x-4 text-sm text-gray-600">
-                        <span>Qty: {item.quantity}</span>
+                        <span>{t('account.qty')}: {item.quantity}</span>
                         <span>
                           <PriceFormat amount={item.price} />
                         </span>
@@ -386,14 +389,14 @@ const OrderTrackingPage = () => {
             {/* Order Summary */}
             <div className="bg-white rounded-lg shadow p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Order Summary
+                {t('account.order_summary')}
               </h3>
 
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
                   <FiCreditCard className="w-5 h-5 text-gray-400" />
                   <div>
-                    <p className="text-sm text-gray-600">Total Amount</p>
+                    <p className="text-sm text-gray-600">{t('account.total_amount')}</p>
                     <p className="font-semibold">
                       <PriceFormat amount={parseFloat(order.amount)} />
                     </p>
@@ -403,9 +406,9 @@ const OrderTrackingPage = () => {
                 <div className="flex items-center space-x-3">
                   <FiCheckCircle className="w-5 h-5 text-gray-400" />
                   <div>
-                    <p className="text-sm text-gray-600">Payment Status</p>
+                    <p className="text-sm text-gray-600">{t('account.payment_status_label')}</p>
                     <p className="font-medium capitalize text-green-600">
-                      {order.paymentStatus}
+                      {t('account.payment_status.' + order.paymentStatus)}
                     </p>
                   </div>
                 </div>
@@ -413,9 +416,9 @@ const OrderTrackingPage = () => {
                 <div className="flex items-center space-x-3">
                   <FiCalendar className="w-5 h-5 text-gray-400" />
                   <div>
-                    <p className="text-sm text-gray-600">Order Date</p>
+                    <p className="text-sm text-gray-600">{t('account.order_date')}</p>
                     <p className="font-medium">
-                      {new Date(order.createdAt).toLocaleDateString()}
+                      {new Date(order.createdAt).toLocaleDateString("ko-KR")}
                     </p>
                   </div>
                 </div>
@@ -426,7 +429,7 @@ const OrderTrackingPage = () => {
             {order.shippingAddress && (
               <div className="bg-white rounded-lg shadow p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  Shipping Address
+                  {t('account.shipping_address')}
                 </h3>
 
                 <div className="flex items-start space-x-3">
@@ -454,14 +457,14 @@ const OrderTrackingPage = () => {
             {/* Contact Support */}
             <div className="bg-white rounded-lg shadow p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Need Help?
+                {t('account.need_help')}
               </h3>
 
               <div className="space-y-3">
                 <button className="flex items-center space-x-3 w-full p-3 text-left bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                   <FiPhone className="w-5 h-5 text-blue-600" />
                   <div>
-                    <p className="font-medium text-gray-900">Call Support</p>
+                    <p className="font-medium text-gray-900">{t('account.call_support')}</p>
                     <p className="text-sm text-gray-600">1-800-SHOFY-HELP</p>
                   </div>
                 </button>
@@ -469,7 +472,7 @@ const OrderTrackingPage = () => {
                 <button className="flex items-center space-x-3 w-full p-3 text-left bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
                   <FiMail className="w-5 h-5 text-blue-600" />
                   <div>
-                    <p className="font-medium text-gray-900">Email Support</p>
+                    <p className="font-medium text-gray-900">{t('account.email_support')}</p>
                     <p className="text-sm text-gray-600">support@shofy.com</p>
                   </div>
                 </button>
