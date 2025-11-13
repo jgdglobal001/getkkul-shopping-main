@@ -29,7 +29,7 @@ export default function TermsOfServicePage() {
               제1조 목적
             </h2>
             <p className="text-light-text leading-relaxed">
-              본 약관은 겟꿀쇼핑(이하 "회사")이 제공하는 전자상거래 서비스(이하 "서비스")를 이용함에 있어 회사와 이용자의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.
+              본 약관은 겟꿀쇼핑(이하 &quot;회사&quot;)이 제공하는 전자상거래 서비스(이하 &quot;서비스&quot;)를 이용함에 있어 회사와 이용자의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.
             </p>
           </section>
 
@@ -40,19 +40,19 @@ export default function TermsOfServicePage() {
             </h2>
             <div className="space-y-3">
               <div>
-                <p className="font-semibold text-gray-800 mb-1">1. "회사"</p>
+                <p className="font-semibold text-gray-800 mb-1">1. &quot;회사&quot;</p>
                 <p className="text-light-text">
                   전자상거래 사업을 영위하는 겟꿀쇼핑을 의미합니다.
                 </p>
               </div>
               <div>
-                <p className="font-semibold text-gray-800 mb-1">2. "이용자"</p>
+                <p className="font-semibold text-gray-800 mb-1">2. &quot;이용자&quot;</p>
                 <p className="text-light-text">
                   본 약관에 동의하여 회사가 제공하는 서비스를 이용하는 고객을 의미합니다.
                 </p>
               </div>
               <div>
-                <p className="font-semibold text-gray-800 mb-1">3. "상품"</p>
+                <p className="font-semibold text-gray-800 mb-1">3. &quot;상품&quot;</p>
                 <p className="text-light-text">
                   회사가 제공하는 모든 물품 및 용역을 의미합니다.
                 </p>
