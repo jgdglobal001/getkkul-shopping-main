@@ -27,6 +27,7 @@ const Footer = () => {
             {t("footer.about_us")}
           </p>
           <div className="text-xs text-gray-600 space-y-1">
+            <p>{t("footer.company_name")}</p>
             <p><span className="font-semibold">{t("footer.business_registration")}:</span> {t("footer.business_number")}</p>
             <p><span className="font-semibold">{t("footer.telecom_sales")}:</span> {t("footer.telecom_number")}</p>
             <p><span className="font-semibold">{t("footer.representative")}:</span> {t("footer.representative_name")}</p>
