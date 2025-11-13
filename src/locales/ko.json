@@ -569,7 +569,9 @@
     "login_required_to_place_order": "주문을 완료하려면 로그인이 필요합니다",
     "you_can_browse_and_add": "상품을 둘러보고 장바구니에 담을 수 있지만, 구매를 완료하고 결제하려면 로그인해야 합니다",
     "sign_in_to_continue": "로그인하여 계속하기",
-    "please_sign_in_to_manage": "배송 주소를 관리하려면 로그인하세요"
+    "please_sign_in_to_manage": "배송 주소를 관리하려면 로그인하세요",
+    "empty_cart_message": "장바구니가 비어있습니다. 지금 바로 상품을 둘러보고 원하는 상품을 장바구니에 담아보세요!",
+    "go_to_shopping": "쇼핑하러 가기"
   },
   "account": {
     "my_account": "내 계정",

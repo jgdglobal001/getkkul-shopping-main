@@ -7,8 +7,10 @@ import CartProduct from "./CartProduct";
 import CartSummary from "./CartSummary";
 import CartSkeleton from "./CartSkeleton";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 const CartProducts = () => {
+  const { t } = useTranslation();
   const { cart } = useSelector((state: StateType) => state?.shopy);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -50,19 +52,16 @@ const CartProducts = () => {
       ) : (
         <div className="bg-white h-96 my-10 flex flex-col gap-4 items-center justify-center py-5 rounded-lg border border-gray-200 drop-shadow-2xl">
           <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            Shopping Cart
+            {t("cart.title")}
           </h1>
           <p className="text-base max-w-[700px] text-center text-gray-600 tracking-wide leading-6">
-            Your cart is empty. Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Voluptate in ab blanditiis officiis deleniti, amet
-            omnis esse quisquam voluptates, eveniet, illo magnam error odit modi
-            cumque minima a fugit aut.
+            {t("cart.empty_cart_message")}
           </p>
           <Link
             className="bg-sky-color/90 text-gray-100 px-8 py-4 rounded-md hover:bg-sky-color duration-200 uppercase text-sm font-semibold tracking-wide"
             href="/"
           >
-            go to shopping
+            {t("cart.go_to_shopping")}
           </Link>
         </div>
       )}
