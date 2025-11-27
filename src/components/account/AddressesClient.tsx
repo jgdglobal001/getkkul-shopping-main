@@ -1,7 +1,7 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import AddressManagement from "@/components/account/AddressManagement";
 
@@ -22,13 +22,7 @@ export default function AddressesClient() {
   const [loading, setLoading] = useState(true);
 
   // Fetch addresses
-  useEffect(() => {
-    if (session?.user?.email) {
-      fetchAddresses();
-    }
-  }, [session?.user?.email]);
-
-  const fetchAddresses = async () => {
+  const fetchAddresses = useCallback(async () => {
     try {
       const response = await fetch(
         `/api/user/profile?email=${encodeURIComponent(
@@ -44,7 +38,13 @@ export default function AddressesClient() {
       console.error("Error fetching addresses:", err);
       setLoading(false);
     }
-  };
+  }, [session?.user?.email]);
+
+  useEffect(() => {
+    if (session?.user?.email) {
+      fetchAddresses();
+    }
+  }, [session?.user?.email, fetchAddresses]);
 
   const handleAddressesChange = (newAddresses: Address[]) => {
     setAddresses(newAddresses);

@@ -7,7 +7,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import { resetCart } from "@/redux/shofySlice";
 import Link from "next/link";
 import { redirect, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useSession } from "next-auth/react";
@@ -23,14 +23,7 @@ const SuccessPage = () => {
 
   !sessionId && redirect("/");
 
-  useEffect(() => {
-    if (sessionId && session?.user?.email && !orderProcessed) {
-      // Process the order and save to user's orders
-      processOrder();
-    }
-  }, [sessionId, session?.user?.email, orderProcessed]);
-
-  const processOrder = async () => {
+  const processOrder = useCallback(async () => {
     try {
       // If we have an order ID, update the payment status
       if (orderId) {
@@ -78,7 +71,14 @@ const SuccessPage = () => {
       console.error("Error processing order:", error);
       toast.error("Error processing order");
     }
-  };
+  }, [sessionId, orderId, session?.user?.email, dispatch]);
+
+  useEffect(() => {
+    if (sessionId && session?.user?.email && !orderProcessed) {
+      // Process the order and save to user's orders
+      processOrder();
+    }
+  }, [sessionId, session?.user?.email, orderProcessed, processOrder]);
 
   return (
     <ProtectedRoute loadingMessage="Processing your order...">

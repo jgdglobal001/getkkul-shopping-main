@@ -26,7 +26,7 @@ const ProductImages = ({ thumbnail, images = [] }: Props) => {
     } else if (images && images.length > 0) {
       setCurrentImage(images[0]);
     }
-  }, [thumbnail]);
+  }, [thumbnail, images]);
 
   if (!currentImage) {
     return (

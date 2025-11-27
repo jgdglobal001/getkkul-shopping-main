@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
@@ -57,13 +57,7 @@ export default function OrdersList({
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
-  useEffect(() => {
-    if (session?.user?.email) {
-      fetchOrders();
-    }
-  }, [session?.user?.email]);
-
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(
@@ -87,7 +81,13 @@ export default function OrdersList({
     } finally {
       setLoading(false);
     }
-  };
+  }, [session?.user?.email, onOrdersChange]);
+
+  useEffect(() => {
+    if (session?.user?.email) {
+      fetchOrders();
+    }
+  }, [session?.user?.email, fetchOrders]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("ko-KR", {

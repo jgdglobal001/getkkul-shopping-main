@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -63,7 +63,7 @@ const ProductsManagementClient = () => {
   const itemsPerPage = 12;
 
   // 상품 데이터 가져오기
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams({
@@ -86,11 +86,11 @@ const ProductsManagementClient = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, searchTerm, selectedCategory]);
 
   useEffect(() => {
     fetchProducts();
-  }, [currentPage, searchTerm, selectedCategory]);
+  }, [currentPage, searchTerm, selectedCategory, fetchProducts]);
 
   // 상품 삭제
   const handleDeleteProduct = async (productId: string) => {

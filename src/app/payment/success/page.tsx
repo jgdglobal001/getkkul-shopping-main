@@ -2,7 +2,7 @@
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { FiCheckCircle } from "react-icons/fi";
 
@@ -16,14 +16,7 @@ export default function PaymentSuccess() {
   const orderId = searchParams.get("orderId");
   const amount = searchParams.get("amount");
 
-  useEffect(() => {
-    // Verify payment on the backend
-    if (paymentKey && orderId && amount && session?.status === "authenticated" && session?.user?.email) {
-      verifyPayment();
-    }
-  }, [paymentKey, orderId, amount, session?.status, session?.user?.email]);
-
-  const verifyPayment = async () => {
+  const verifyPayment = useCallback(async () => {
     try {
       const response = await fetch("/api/orders/toss-confirm", {
         method: "POST",
@@ -55,7 +48,14 @@ export default function PaymentSuccess() {
       });
       setLoading(false);
     }
-  };
+  }, [orderId, paymentKey, amount, session?.user?.email]);
+
+  useEffect(() => {
+    // Verify payment on the backend
+    if (paymentKey && orderId && amount && session?.user?.email) {
+      verifyPayment();
+    }
+  }, [paymentKey, orderId, amount, session?.user?.email, verifyPayment]);
 
   if (loading) {
     return (

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { useTranslation } from "react-i18next";
 import Button from "../ui/Button";
@@ -26,15 +26,7 @@ export default function ShippingAddressSelector({
   const [editingAddress, setEditingAddress] = useState<Address | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  useEffect(() => {
-    if (session?.user?.email) {
-      fetchAddresses();
-    } else {
-      setLoading(false);
-    }
-  }, [session?.user?.email]);
-
-  const fetchAddresses = async () => {
+  const fetchAddresses = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -76,7 +68,15 @@ export default function ShippingAddressSelector({
     } finally {
       setLoading(false);
     }
-  };
+  }, [session?.user?.email, selectedAddress, onAddressSelect]);
+
+  useEffect(() => {
+    if (session?.user?.email) {
+      fetchAddresses();
+    } else {
+      setLoading(false);
+    }
+  }, [session?.user?.email, fetchAddresses]);
 
   const handleAddressSelect = (address: Address) => {
     onAddressSelect(address);

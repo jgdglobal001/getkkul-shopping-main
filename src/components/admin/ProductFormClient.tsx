@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FiSave, FiArrowLeft, FiPackage } from "react-icons/fi";
@@ -77,13 +77,7 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
   });
 
   // ⭐ 기존 데이터 로드 (수정 모드)
-  useEffect(() => {
-    if (mode === "edit" && productId) {
-      fetchProduct();
-    }
-  }, [mode, productId]);
-
-  const fetchProduct = async () => {
+  const fetchProduct = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(`/api/admin/products/${productId}`);
@@ -143,7 +137,13 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [productId]);
+
+  useEffect(() => {
+    if (mode === "edit" && productId) {
+      fetchProduct();
+    }
+  }, [mode, productId, fetchProduct]);
 
   // ⭐ 카테고리 변경 핸들러
   const handleCategoryChange = (categoryValue: string) => {

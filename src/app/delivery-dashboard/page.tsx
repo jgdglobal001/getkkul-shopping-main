@@ -81,7 +81,7 @@ function DeliveryDashboardContent() {
     }
 
     fetchOrders();
-  }, [session, status]);
+  }, [session, status, router]);
 
   const fetchOrders = async () => {
     try {

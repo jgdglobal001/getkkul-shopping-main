@@ -2,7 +2,7 @@
 
 import Container from "@/components/Container";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
@@ -94,13 +94,7 @@ export default function AccountLayout({ children }: AccountLayoutProps) {
   const tabs = isAdmin ? adminTabs : regularTabs;
 
   // Fetch order count
-  useEffect(() => {
-    if (session?.user?.email) {
-      fetchOrderCount();
-    }
-  }, [session?.user?.email]);
-
-  const fetchOrderCount = async () => {
+  const fetchOrderCount = useCallback(async () => {
     try {
       const response = await fetch(
         `/api/user/profile?email=${encodeURIComponent(
@@ -114,7 +108,13 @@ export default function AccountLayout({ children }: AccountLayoutProps) {
     } catch (err) {
       console.error("Error fetching order count:", err);
     }
-  };
+  }, [session?.user?.email]);
+
+  useEffect(() => {
+    if (session?.user?.email) {
+      fetchOrderCount();
+    }
+  }, [session?.user?.email, fetchOrderCount]);
 
   return (
     <Container className="py-10">

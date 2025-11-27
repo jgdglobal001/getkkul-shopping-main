@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Container from "@/components/Container";
 import { FiPlus, FiEdit, FiTrash2, FiX, FiCheck, FiDownload, FiAlertTriangle } from "react-icons/fi";
 import Link from "next/link";
@@ -36,7 +36,7 @@ export default function CategoriesManagementClient() {
   });
 
   // 자동 마이그레이션
-  const handleAutoMigrate = async () => {
+  const handleAutoMigrate = useCallback(async () => {
     try {
       setMigrating(true);
       const response = await fetch("/api/admin/categories/migrate", {
@@ -52,14 +52,10 @@ export default function CategoriesManagementClient() {
     } finally {
       setMigrating(false);
     }
-  };
-
-  // 카테고리 목록 조회
-  useEffect(() => {
-    fetchCategories();
   }, []);
 
-  const fetchCategories = async () => {
+  // 카테고리 목록 조회
+  const fetchCategories = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch("/api/admin/categories");
@@ -77,7 +73,11 @@ export default function CategoriesManagementClient() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [handleAutoMigrate]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
 
   // 폼 초기화
   const resetForm = () => {

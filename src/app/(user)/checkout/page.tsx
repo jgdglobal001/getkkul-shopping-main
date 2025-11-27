@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -46,7 +46,7 @@ const CheckoutPage = () => {
       // Redirect to cart if no order ID
       router.push("/cart");
     }
-  }, [existingOrderId, router]);
+  }, [existingOrderId, router, fetchExistingOrder]);
 
   // Initialize Toss Payment Widget when order is loaded
   useEffect(() => {
@@ -141,6 +141,7 @@ const CheckoutPage = () => {
         console.warn("Failed to cleanup Toss Payment Widget:", e);
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- widgetReady is intentionally excluded to prevent infinite loop
   }, [existingOrder, session]);
 
   // Clean up cancelled parameter from URL after showing notification
@@ -157,7 +158,7 @@ const CheckoutPage = () => {
     }
   }, [paymentCancelled, existingOrderId, searchParams, router]);
 
-  const fetchExistingOrder = async () => {
+  const fetchExistingOrder = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(
@@ -186,7 +187,7 @@ const CheckoutPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [session?.user?.email, existingOrderId, router]);
 
   const handleCashOnDelivery = async () => {
     try {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FiArrowRight, FiChevronLeft, FiChevronRight } from "react-icons/fi";
@@ -137,7 +137,7 @@ const FeaturedCategories: React.FC = () => {
   const totalCategories = featuredCategories.length;
   const maxIndex = Math.max(0, totalCategories - itemsToShow);
 
-  const scrollToIndex = (index: number) => {
+  const scrollToIndex = useCallback((index: number) => {
     if (carouselRef.current) {
       const container = carouselRef.current;
       const itemWidth = container.scrollWidth / totalCategories;
@@ -149,17 +149,17 @@ const FeaturedCategories: React.FC = () => {
       });
     }
     setCurrentIndex(index);
-  };
+  }, [totalCategories]);
 
-  const goToPrevious = () => {
+  const goToPrevious = useCallback(() => {
     const newIndex = Math.max(0, currentIndex - 1);
     scrollToIndex(newIndex);
-  };
+  }, [currentIndex, scrollToIndex]);
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     const newIndex = Math.min(maxIndex, currentIndex + 1);
     scrollToIndex(newIndex);
-  };
+  }, [maxIndex, currentIndex, scrollToIndex]);
 
   // Auto-scroll functionality (optional)
   const [isHovered, setIsHovered] = useState(false);
@@ -176,7 +176,7 @@ const FeaturedCategories: React.FC = () => {
     }, 5000); // Auto-scroll every 5 seconds
 
     return () => clearInterval(interval);
-  }, [currentIndex, maxIndex, isHovered]);
+  }, [currentIndex, maxIndex, isHovered, scrollToIndex, goToNext]);
 
   const canGoPrevious = currentIndex > 0;
   const canGoNext = currentIndex < maxIndex;

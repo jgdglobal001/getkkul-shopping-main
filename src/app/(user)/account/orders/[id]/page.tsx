@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
@@ -66,13 +66,7 @@ const OrderTrackingPage = () => {
 
   const orderId = params.id as string;
 
-  useEffect(() => {
-    if (session?.user?.email && orderId) {
-      fetchOrderDetails();
-    }
-  }, [session?.user?.email, orderId]);
-
-  const fetchOrderDetails = async () => {
+  const fetchOrderDetails = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(
@@ -106,7 +100,13 @@ const OrderTrackingPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [session?.user?.email, orderId]);
+
+  useEffect(() => {
+    if (session?.user?.email && orderId) {
+      fetchOrderDetails();
+    }
+  }, [session?.user?.email, orderId, fetchOrderDetails]);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("ko-KR", {

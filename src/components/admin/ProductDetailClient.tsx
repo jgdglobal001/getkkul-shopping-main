@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -66,11 +66,7 @@ const ProductDetailClient = ({ productId }: ProductDetailClientProps) => {
   const [error, setError] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<string>("");
 
-  useEffect(() => {
-    fetchProduct();
-  }, [productId]);
-
-  const fetchProduct = async () => {
+  const fetchProduct = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch(`/api/admin/products/${productId}`);
@@ -88,7 +84,11 @@ const ProductDetailClient = ({ productId }: ProductDetailClientProps) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [productId]);
+
+  useEffect(() => {
+    fetchProduct();
+  }, [productId, fetchProduct]);
 
   const handleDeleteProduct = async () => {
     if (!confirm("정말로 이 상품을 삭제하시겠습니까?")) return;

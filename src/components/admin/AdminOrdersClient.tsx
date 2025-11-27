@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useTranslation } from "react-i18next";
@@ -129,20 +129,7 @@ export default function AdminOrdersClient() {
   const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
   const [selectAll, setSelectAll] = useState(false);
 
-  useEffect(() => {
-    if (session?.user?.email) {
-      fetchUserRole();
-    }
-  }, [session]);
-
-  // Separate effect to fetch orders after role is set
-  useEffect(() => {
-    if (userRole && userRole !== "" && session?.user?.email) {
-      fetchOrders();
-    }
-  }, [userRole, session?.user?.email]);
-
-  const fetchUserRole = async () => {
+  const fetchUserRole = useCallback(async () => {
     try {
       const response = await fetch(
         `/api/user/profile?email=${encodeURIComponent(
@@ -157,9 +144,9 @@ export default function AdminOrdersClient() {
     } catch (error) {
       console.error("Error fetching user role:", error);
     }
-  };
+  }, [session?.user?.email]);
 
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     try {
       setLoading(true);
 
@@ -203,7 +190,20 @@ export default function AdminOrdersClient() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [userRole]);
+
+  useEffect(() => {
+    if (session?.user?.email) {
+      fetchUserRole();
+    }
+  }, [session, fetchUserRole]);
+
+  // Separate effect to fetch orders after role is set
+  useEffect(() => {
+    if (userRole && userRole !== "" && session?.user?.email) {
+      fetchOrders();
+    }
+  }, [userRole, session?.user?.email, fetchOrders]);
   const updateOrderStatus = async (
     orderId: string,
     newStatus: OrderStatus,

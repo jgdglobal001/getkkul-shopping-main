@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { FiCheck, FiX } from "react-icons/fi";
 
 interface CurrencyNotificationProps {
@@ -19,6 +19,13 @@ const CurrencyNotification = ({
 }: CurrencyNotificationProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [progress, setProgress] = useState(100);
+
+  const handleClose = useCallback(() => {
+    setIsVisible(false);
+    setTimeout(() => {
+      onClose();
+    }, 300); // Wait for animation to complete
+  }, [onClose]);
 
   useEffect(() => {
     if (isOpen) {
@@ -46,14 +53,7 @@ const CurrencyNotification = ({
         clearInterval(progressInterval);
       };
     }
-  }, [isOpen]);
-
-  const handleClose = () => {
-    setIsVisible(false);
-    setTimeout(() => {
-      onClose();
-    }, 300); // Wait for animation to complete
-  };
+  }, [isOpen, handleClose]);
 
   if (!isOpen) return null;
 

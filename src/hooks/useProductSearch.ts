@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { getData } from "@/app/(user)/helpers";
 import { ProductType } from "../../type";
 
@@ -49,7 +49,7 @@ export const useProductSearch = ({
   }, []);
 
   // Search function using DB API endpoint only
-  const performSearch = async (searchTerm: string) => {
+  const performSearch = useCallback(async (searchTerm: string) => {
     if (!searchTerm.trim()) {
       setFilteredProducts([]);
       setIsLoading(false);
@@ -89,7 +89,7 @@ export const useProductSearch = ({
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [products]);
 
   // Effect to handle search with debouncing
   useEffect(() => {
@@ -109,7 +109,7 @@ export const useProductSearch = ({
         clearTimeout(debounceTimerRef.current);
       }
     };
-  }, [search, products, API_BASE_URL, debounceDelay]);
+  }, [search, debounceDelay, performSearch]);
 
   const clearSearch = () => {
     setSearch("");

@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import ProfileEditForm from "@/components/account/ProfileEditForm";
@@ -41,13 +41,7 @@ export default function AccountClient() {
   const [isEditProfileOpen, setIsEditProfileOpen] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
 
-  useEffect(() => {
-    if (session?.user?.email) {
-      fetchProfile();
-    }
-  }, [session?.user?.email]);
-
-  const fetchProfile = async () => {
+  const fetchProfile = useCallback(async () => {
     try {
       const response = await fetch(
         `/api/user/profile?email=${encodeURIComponent(
@@ -71,7 +65,13 @@ export default function AccountClient() {
       console.error("Error fetching profile:", err);
       setLoading(false);
     }
-  };
+  }, [session?.user?.email]);
+
+  useEffect(() => {
+    if (session?.user?.email) {
+      fetchProfile();
+    }
+  }, [session?.user?.email, fetchProfile]);
 
   const handleProfileUpdate = async (updatedProfile: any) => {
     setUpdateLoading(true);

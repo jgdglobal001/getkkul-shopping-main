@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { FiTrash2, FiSend } from "react-icons/fi";
 import toast from "react-hot-toast";
 
@@ -40,11 +40,7 @@ const InquiriesManagement = () => {
   const [answerText, setAnswerText] = useState<{ [key: string]: string }>({});
   const [submitting, setSubmitting] = useState<{ [key: string]: boolean }>({});
 
-  useEffect(() => {
-    fetchInquiries();
-  }, [filter]);
-
-  const fetchInquiries = async () => {
+  const fetchInquiries = useCallback(async () => {
     try {
       setLoading(true);
       const url = new URL("/api/admin/inquiries", window.location.origin);
@@ -62,7 +58,11 @@ const InquiriesManagement = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filter]);
+
+  useEffect(() => {
+    fetchInquiries();
+  }, [filter, fetchInquiries]);
 
   const handleSubmitAnswer = async (questionId: string) => {
     const answer = answerText[questionId];

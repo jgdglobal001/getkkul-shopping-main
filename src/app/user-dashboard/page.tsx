@@ -69,7 +69,7 @@ export default function UserDashboard() {
     }
 
     fetchOrders();
-  }, [session, status]);
+  }, [session, status, router]);
 
   const fetchOrders = async () => {
     try {
