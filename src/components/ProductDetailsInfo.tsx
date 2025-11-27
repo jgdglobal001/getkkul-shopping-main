@@ -31,15 +31,11 @@ export default function ProductDetailsInfo({ product }: ProductDetailsInfoProps)
         {t("common.category")}:{" "}
         <span className="font-medium capitalize">{product?.category}</span>
       </p>
-      <p>
-        {t("product.tags")}:{" "}
-        {product?.tags?.map((item, index) => (
-          <span key={index.toString()} className="font-medium capitalize">
-            {item}
-            {index < product?.tags?.length - 1 && ", "}
-          </span>
-        ))}
-      </p>
+      {/*
+        태그는 소비자에게 숨김 처리
+        추후 파트너(판매자) 전용 페이지에서만 표시 예정
+        TODO: 파트너스 시스템 구축 시 파트너 권한 체크 후 표시
+      */}
     </div>
   );
 }
