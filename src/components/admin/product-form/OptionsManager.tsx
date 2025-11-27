@@ -28,10 +28,11 @@ const OptionsManager: React.FC<OptionsManagerProps> = ({
   const [optionValuesInputs, setOptionValuesInputs] = useState<string[]>([]);
 
   // formData.options가 변경되면 입력값 동기화
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- options 개수 변경시에만 동기화 (무한 루프 방지)
   useEffect(() => {
     const inputs = formData.options.map((opt) => opt.values.join(", "));
     setOptionValuesInputs(inputs);
-  }, [formData.options.length]); // options 개수가 변경될 때만
+  }, [formData.options.length]);
 
   // 상품 유형 변경
   const handleProductTypeChange = (hasOptions: boolean) => {
