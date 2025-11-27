@@ -1,8 +1,6 @@
 import Container from "@/components/Container";
 import Image from "next/image";
 import { ProductType } from "../../../../../type";
-import AddToCartButton from "@/components/AddToCartButton";
-import BuyNowButton from "@/components/BuyNowButton";
 import { getData } from "@/app/(user)/helpers";
 import ProductImages from "@/components/ProductImages";
 import PriceFormat from "@/components/PriceFormat";
@@ -14,6 +12,7 @@ import RelatedProducts from "@/components/RelatedProducts";
 import ProductRequiredInfo from "@/components/ProductRequiredInfo";
 import ProductDetailTabs from "@/components/ProductDetailTabs";
 import ProductDetailsInfo from "@/components/ProductDetailsInfo";
+import ProductPurchaseSection from "@/components/ProductPurchaseSection";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 
@@ -29,9 +28,18 @@ interface Props {
 const SingleProductPage = async ({ params }: Props) => {
   const { id } = await params;
 
-  // DB에서 먼저 상품 찾기
+  // DB에서 먼저 상품 찾기 (옵션 포함)
   let product: any = await prisma.product.findUnique({
     where: { id },
+    include: {
+      options: {
+        orderBy: { order: 'asc' },
+      },
+      variants: {
+        where: { isActive: true },
+        orderBy: { createdAt: 'asc' },
+      },
+    },
   });
 
   // DB에 없으면 DummyJSON에서 찾기 (모바일 카테고리만)
@@ -133,16 +141,12 @@ const SingleProductPage = async ({ params }: Props) => {
 
           <ProductDetailsInfo product={product} />
 
-          <div className="flex flex-col gap-3">
-            <AddToCartButton
-              product={product}
-              className="rounded-md uppercase font-semibold"
-            />
-            <BuyNowButton
-              product={product}
-              className="rounded-md uppercase font-semibold"
-            />
-          </div>
+          {/* 옵션 선택 및 구매 버튼 */}
+          <ProductPurchaseSection
+            product={product}
+            options={product.options || []}
+            variants={product.variants || []}
+          />
         </div>
 
         {/* 필수 표기 정보 */}

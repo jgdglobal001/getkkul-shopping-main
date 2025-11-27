@@ -15,6 +15,14 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     const product = await prisma.product.findUnique({
       where: { id },
       include: {
+        // ⭐ 옵션 시스템
+        options: {
+          orderBy: { order: 'asc' },
+        },
+        variants: {
+          where: { isActive: true },
+          orderBy: { createdAt: 'asc' },
+        },
         cartItems: {
           select: { id: true, quantity: true, userId: true },
         },
@@ -79,63 +87,115 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       }
     }
 
-    // 상품 업데이트
-    const updatedProduct = await prisma.product.update({
+    // 옵션 시스템 업데이트를 위해 트랜잭션 사용
+    const updatedProduct = await prisma.$transaction(async (tx) => {
+      // 기존 옵션과 variants 삭제 (hasOptions가 변경되었거나 옵션이 있는 경우)
+      if (body.hasOptions !== undefined) {
+        await tx.productOption.deleteMany({ where: { productId: id } });
+        await tx.productVariant.deleteMany({ where: { productId: id } });
+      }
+
+      // 상품 업데이트
+      const product = await tx.product.update({
+        where: { id },
+        data: {
+          title: body.title || existingProduct.title,
+          description: body.description || existingProduct.description,
+          price: body.price !== undefined ? parseFloat(body.price) : existingProduct.price,
+          discountPercentage: body.discountPercentage !== undefined ? parseFloat(body.discountPercentage) : existingProduct.discountPercentage,
+          rating: body.rating !== undefined ? parseFloat(body.rating) : existingProduct.rating,
+          stock: body.stock !== undefined ? parseInt(body.stock) : existingProduct.stock,
+          brand: body.brand !== undefined ? body.brand : existingProduct.brand,
+          category: body.category || existingProduct.category,
+          thumbnail: body.thumbnail || existingProduct.thumbnail,
+          images: body.images || existingProduct.images,
+          detailImages: body.detailImages || existingProduct.detailImages,
+          tags: body.tags || existingProduct.tags,
+          sku: body.sku || existingProduct.sku,
+          meta: body.meta !== undefined ? body.meta : existingProduct.meta,
+          isActive: body.isActive !== undefined ? body.isActive : existingProduct.isActive,
+          minimumOrderQuantity: body.minimumOrderQuantity ? parseInt(body.minimumOrderQuantity) : existingProduct.minimumOrderQuantity,
+          availabilityStatus: body.availabilityStatus || existingProduct.availabilityStatus,
+          // ⭐ 옵션 시스템
+          hasOptions: body.hasOptions !== undefined ? body.hasOptions : existingProduct.hasOptions,
+          // ⭐ 필수 표기 정보
+          productName: body.productName !== undefined ? body.productName : existingProduct.productName,
+          modelNumber: body.modelNumber !== undefined ? body.modelNumber : existingProduct.modelNumber,
+          size: body.size !== undefined ? body.size : existingProduct.size,
+          material: body.material !== undefined ? body.material : existingProduct.material,
+          releaseDate: body.releaseDate !== undefined ? body.releaseDate : existingProduct.releaseDate,
+          manufacturer: body.manufacturer !== undefined ? body.manufacturer : existingProduct.manufacturer,
+          madeInCountry: body.madeInCountry !== undefined ? body.madeInCountry : existingProduct.madeInCountry,
+          warrantyStandard: body.warrantyStandard !== undefined ? body.warrantyStandard : existingProduct.warrantyStandard,
+          asResponsible: body.asResponsible !== undefined ? body.asResponsible : existingProduct.asResponsible,
+          kcCertification: body.kcCertification !== undefined ? body.kcCertification : existingProduct.kcCertification,
+          color: body.color !== undefined ? body.color : existingProduct.color,
+          productComposition: body.productComposition !== undefined ? body.productComposition : existingProduct.productComposition,
+          detailedSpecs: body.detailedSpecs !== undefined ? body.detailedSpecs : existingProduct.detailedSpecs,
+          // ⭐ 배송 정보
+          shippingMethod: body.shippingMethod !== undefined ? body.shippingMethod : existingProduct.shippingMethod,
+          shippingCost: body.shippingCost !== undefined ? body.shippingCost : existingProduct.shippingCost,
+          bundleShipping: body.bundleShipping !== undefined ? body.bundleShipping : existingProduct.bundleShipping,
+          shippingPeriod: body.shippingPeriod !== undefined ? body.shippingPeriod : existingProduct.shippingPeriod,
+          // ⭐ 교환/반품 정보
+          exchangeReturnCost: body.exchangeReturnCost !== undefined ? body.exchangeReturnCost : existingProduct.exchangeReturnCost,
+          exchangeReturnDeadline: body.exchangeReturnDeadline !== undefined ? body.exchangeReturnDeadline : existingProduct.exchangeReturnDeadline,
+          exchangeReturnLimitations: body.exchangeReturnLimitations !== undefined ? body.exchangeReturnLimitations : existingProduct.exchangeReturnLimitations,
+          clothingLimitations: body.clothingLimitations !== undefined ? body.clothingLimitations : existingProduct.clothingLimitations,
+          foodLimitations: body.foodLimitations !== undefined ? body.foodLimitations : existingProduct.foodLimitations,
+          electronicsLimitations: body.electronicsLimitations !== undefined ? body.electronicsLimitations : existingProduct.electronicsLimitations,
+          autoLimitations: body.autoLimitations !== undefined ? body.autoLimitations : existingProduct.autoLimitations,
+          mediaLimitations: body.mediaLimitations !== undefined ? body.mediaLimitations : existingProduct.mediaLimitations,
+          // ⭐ 판매자 정보
+          sellerName: body.sellerName !== undefined ? body.sellerName : existingProduct.sellerName,
+          sellerPhone: body.sellerPhone !== undefined ? body.sellerPhone : existingProduct.sellerPhone,
+          sellerLegalNotice: body.sellerLegalNotice !== undefined ? body.sellerLegalNotice : existingProduct.sellerLegalNotice,
+        },
+      });
+
+      // 새 옵션 생성
+      if (body.hasOptions && body.options?.length > 0) {
+        await tx.productOption.createMany({
+          data: body.options.map((opt: any, index: number) => ({
+            productId: id,
+            name: opt.name,
+            values: opt.values || [],
+            order: index,
+          })),
+        });
+      }
+
+      // 새 variants 생성
+      if (body.hasOptions && body.variants?.length > 0) {
+        await tx.productVariant.createMany({
+          data: body.variants.map((v: any) => ({
+            productId: id,
+            optionCombination: v.optionCombination,
+            sku: v.sku || null,
+            price: parseFloat(v.price),
+            originalPrice: v.originalPrice ? parseFloat(v.originalPrice) : null,
+            stock: parseInt(v.stock) || 0,
+            isActive: v.isActive !== undefined ? v.isActive : true,
+            image: v.image || null,
+            barcode: v.barcode || null,
+            modelNumber: v.modelNumber || null,
+          })),
+        });
+      }
+
+      return product;
+    });
+
+    // 업데이트된 상품 조회 (옵션 포함)
+    const productWithOptions = await prisma.product.findUnique({
       where: { id },
-      data: {
-        title: body.title || existingProduct.title,
-        description: body.description || existingProduct.description,
-        price: body.price !== undefined ? parseFloat(body.price) : existingProduct.price,
-        discountPercentage: body.discountPercentage !== undefined ? parseFloat(body.discountPercentage) : existingProduct.discountPercentage,
-        rating: body.rating !== undefined ? parseFloat(body.rating) : existingProduct.rating,
-        stock: body.stock !== undefined ? parseInt(body.stock) : existingProduct.stock,
-        brand: body.brand !== undefined ? body.brand : existingProduct.brand,
-        category: body.category || existingProduct.category,
-        thumbnail: body.thumbnail || existingProduct.thumbnail,
-        images: body.images || existingProduct.images,
-        detailImages: body.detailImages || existingProduct.detailImages,
-        tags: body.tags || existingProduct.tags,
-        sku: body.sku || existingProduct.sku,
-        meta: body.meta !== undefined ? body.meta : existingProduct.meta,
-        isActive: body.isActive !== undefined ? body.isActive : existingProduct.isActive,
-        minimumOrderQuantity: body.minimumOrderQuantity ? parseInt(body.minimumOrderQuantity) : existingProduct.minimumOrderQuantity,
-        availabilityStatus: body.availabilityStatus || existingProduct.availabilityStatus,
-        // ⭐ 필수 표기 정보
-        productName: body.productName !== undefined ? body.productName : existingProduct.productName,
-        modelNumber: body.modelNumber !== undefined ? body.modelNumber : existingProduct.modelNumber,
-        size: body.size !== undefined ? body.size : existingProduct.size,
-        material: body.material !== undefined ? body.material : existingProduct.material,
-        releaseDate: body.releaseDate !== undefined ? body.releaseDate : existingProduct.releaseDate,
-        manufacturer: body.manufacturer !== undefined ? body.manufacturer : existingProduct.manufacturer,
-        madeInCountry: body.madeInCountry !== undefined ? body.madeInCountry : existingProduct.madeInCountry,
-        warrantyStandard: body.warrantyStandard !== undefined ? body.warrantyStandard : existingProduct.warrantyStandard,
-        asResponsible: body.asResponsible !== undefined ? body.asResponsible : existingProduct.asResponsible,
-        kcCertification: body.kcCertification !== undefined ? body.kcCertification : existingProduct.kcCertification,
-        color: body.color !== undefined ? body.color : existingProduct.color,
-        productComposition: body.productComposition !== undefined ? body.productComposition : existingProduct.productComposition,
-        detailedSpecs: body.detailedSpecs !== undefined ? body.detailedSpecs : existingProduct.detailedSpecs,
-        // ⭐ 배송 정보
-        shippingMethod: body.shippingMethod !== undefined ? body.shippingMethod : existingProduct.shippingMethod,
-        shippingCost: body.shippingCost !== undefined ? body.shippingCost : existingProduct.shippingCost,
-        bundleShipping: body.bundleShipping !== undefined ? body.bundleShipping : existingProduct.bundleShipping,
-        shippingPeriod: body.shippingPeriod !== undefined ? body.shippingPeriod : existingProduct.shippingPeriod,
-        // ⭐ 교환/반품 정보
-        exchangeReturnCost: body.exchangeReturnCost !== undefined ? body.exchangeReturnCost : existingProduct.exchangeReturnCost,
-        exchangeReturnDeadline: body.exchangeReturnDeadline !== undefined ? body.exchangeReturnDeadline : existingProduct.exchangeReturnDeadline,
-        exchangeReturnLimitations: body.exchangeReturnLimitations !== undefined ? body.exchangeReturnLimitations : existingProduct.exchangeReturnLimitations,
-        clothingLimitations: body.clothingLimitations !== undefined ? body.clothingLimitations : existingProduct.clothingLimitations,
-        foodLimitations: body.foodLimitations !== undefined ? body.foodLimitations : existingProduct.foodLimitations,
-        electronicsLimitations: body.electronicsLimitations !== undefined ? body.electronicsLimitations : existingProduct.electronicsLimitations,
-        autoLimitations: body.autoLimitations !== undefined ? body.autoLimitations : existingProduct.autoLimitations,
-        mediaLimitations: body.mediaLimitations !== undefined ? body.mediaLimitations : existingProduct.mediaLimitations,
-        // ⭐ 판매자 정보
-        sellerName: body.sellerName !== undefined ? body.sellerName : existingProduct.sellerName,
-        sellerPhone: body.sellerPhone !== undefined ? body.sellerPhone : existingProduct.sellerPhone,
-        sellerLegalNotice: body.sellerLegalNotice !== undefined ? body.sellerLegalNotice : existingProduct.sellerLegalNotice,
+      include: {
+        options: { orderBy: { order: 'asc' } },
+        variants: { where: { isActive: true } },
       },
     });
 
-    return NextResponse.json(updatedProduct);
+    return NextResponse.json(productWithOptions);
 
   } catch (error) {
     console.error("상품 수정 오류:", error);

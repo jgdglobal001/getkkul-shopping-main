@@ -75,6 +75,34 @@ export interface ProductType {
   sellerName?: string;
   sellerPhone?: string;
   sellerLegalNotice?: string;
+  // ⭐ 옵션 시스템
+  hasOptions?: boolean;
+  options?: ProductOption[];
+  variants?: ProductVariant[];
+}
+
+// ⭐ 상품 옵션 타입 (색상, 사이즈 등)
+export interface ProductOption {
+  id?: string;
+  productId?: string;
+  name: string;        // 옵션명 (색상, 사이즈 등)
+  values: string[];    // 옵션값 배열 (블랙, 화이트 등)
+  order?: number;      // 옵션 순서
+}
+
+// ⭐ 상품 변형 타입 (옵션 조합별)
+export interface ProductVariant {
+  id?: string;
+  productId?: string;
+  optionCombination: Record<string, string>; // {color: "블랙", size: "265"}
+  sku?: string;           // 판매자상품코드
+  price: number;          // 판매가
+  originalPrice?: number; // 정상가
+  stock: number;          // 재고
+  isActive?: boolean;
+  image?: string;         // 옵션별 이미지 (색상 썸네일)
+  barcode?: string;
+  modelNumber?: string;
 }
 
 export interface StateType {

@@ -2,7 +2,7 @@
 
 import { addToCart } from "@/redux/shofySlice";
 import { useDispatch, useSelector } from "react-redux";
-import { ProductType, StateType } from "../../type";
+import { ProductType, StateType, ProductVariant } from "../../type";
 import toast from "react-hot-toast";
 import { FaCheck } from "react-icons/fa6";
 import { useEffect, useState } from "react";
@@ -14,12 +14,18 @@ interface BuyNowButtonProps {
   product?: ProductType;
   className?: string;
   size?: "sm" | "md" | "lg";
+  disabled?: boolean;
+  quantity?: number;
+  variant?: ProductVariant | null;
 }
 
 const BuyNowButton = ({
   product,
   className,
   size = "md",
+  disabled = false,
+  quantity: initialQuantity,
+  variant: selectedVariant,
 }: BuyNowButtonProps) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -40,16 +46,34 @@ const BuyNowButton = ({
     }
   };
 
-  // Check if product is out of stock
-  const isOutOfStock = !product?.stock || product.stock <= 0;
+  // Check if product is out of stock (옵션 상품인 경우 variant 재고 확인)
+  const stockToCheck = selectedVariant?.stock ?? product?.stock ?? 0;
+  const isOutOfStock = stockToCheck <= 0;
 
   const handleBuyNow = async () => {
-    if (product && product.stock > 0) {
+    // 옵션 상품인데 옵션이 선택되지 않은 경우
+    if (disabled) {
+      toast.error(t('product.select_option', '옵션을 선택해주세요!'), {
+        style: {
+          background: "#EF4444",
+          color: "white",
+        },
+      });
+      return;
+    }
+
+    if (product && stockToCheck > 0) {
       setIsProcessing(true);
-      
+
       // Serialize product to ensure createdAt/updatedAt are ISO strings, not Date objects
       const serializedProduct = {
         ...product,
+        // 옵션 상품인 경우 variant 정보 추가
+        price: selectedVariant?.price ?? product.price,
+        stock: stockToCheck,
+        quantity: initialQuantity || 1,
+        selectedVariant: selectedVariant || undefined,
+        selectedOptions: selectedVariant?.optionCombination || undefined,
         createdAt: product.createdAt ? (typeof product.createdAt === 'string' ? product.createdAt : new Date(product.createdAt).toISOString()) : undefined,
         updatedAt: product.updatedAt ? (typeof product.updatedAt === 'string' ? product.updatedAt : new Date(product.updatedAt).toISOString()) : undefined,
       };
@@ -59,7 +83,10 @@ const BuyNowButton = ({
       setTimeout(() => {
         setIsProcessing(false);
         setJustCompleted(true);
-        toast.success(`${product?.title.substring(0, 15)}... ${t('cart.add_success', '장바구니에 추가되었습니다!')}`, {
+        const optionText = selectedVariant
+          ? ` (${Object.values(selectedVariant.optionCombination as Record<string, string>).join(', ')})`
+          : '';
+        toast.success(`${product?.title.substring(0, 15)}...${optionText} ${t('cart.add_success', '장바구니에 추가되었습니다!')}`, {
           duration: 2000,
           style: {
             background: "#10B981",
@@ -86,7 +113,7 @@ const BuyNowButton = ({
   return (
     <button
       onClick={handleBuyNow}
-      disabled={isOutOfStock || isProcessing}
+      disabled={isOutOfStock || isProcessing || disabled}
       className={twMerge(
         "relative flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-300 transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none overflow-hidden",
         "bg-pink-400 hover:bg-pink-500 text-white border border-pink-400 hover:border-pink-500",

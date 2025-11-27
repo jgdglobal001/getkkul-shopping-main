@@ -100,10 +100,13 @@ model CartItem {
   brand              String?
   discountPercentage Float?
   userId             String
+  variantId          String? // 옵션상품인 경우 선택한 옵션 조합
+  selectedOptions    Json?   // 선택된 옵션 정보 {color: "블랙", size: "265"}
   user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   product            Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variant            ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
 
-  @@unique([userId, productId])
+  @@unique([userId, productId, variantId])
   @@map("cart_items")
 }
 
@@ -187,13 +190,56 @@ model Product {
   sellerPhone           String?  // 판매자 전화번호
   sellerLegalNotice     String?  @db.Text // 법적 고지사항
 
+  // ⭐ 옵션 시스템
+  hasOptions            Boolean  @default(false) // 옵션 상품 여부 (false: 단일상품, true: 옵션상품)
+
   // Relations
   cartItems             CartItem[]
   wishlistItems         WishlistItem[]
   orderItems            OrderItem[]
   questions             ProductQuestion[]
+  options               ProductOption[]   // 옵션 정의 (색상, 사이즈 등)
+  variants              ProductVariant[]  // 옵션 조합별 상품
 
   @@map("products")
+}
+
+// ⭐ 상품 옵션 (색상, 사이즈 등의 옵션 타입 정의)
+model ProductOption {
+  id          String   @id @default(cuid())
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  name        String   // 옵션명 (색상, 사이즈, 적용모델 등)
+  values      String[] // 옵션값 배열 (블랙, 화이트, 네이비 등)
+  order       Int      @default(0) // 옵션 순서 (1번 옵션, 2번 옵션...)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("product_options")
+}
+
+// ⭐ 상품 변형 (옵션 조합별 가격/재고)
+model ProductVariant {
+  id                String   @id @default(cuid())
+  productId         String
+  product           Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  optionCombination Json     // 옵션 조합 {color: "블랙", size: "265"}
+  sku               String?  // 판매자상품코드
+  price             Float    // 판매가
+  originalPrice     Float?   // 정상가 (할인 전)
+  stock             Int      @default(0) // 재고
+  isActive          Boolean  @default(true)
+  image             String?  // 옵션별 이미지 (색상 썸네일용)
+  barcode           String?  // 상품 바코드
+  modelNumber       String?  // 모델번호
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  cartItems         CartItem[]
+  orderItems        OrderItem[]
+
+  @@map("product_variants")
 }
 
 model Order {
@@ -240,8 +286,11 @@ model OrderItem {
   originalPrice      Float?
   discountPercentage Float?
   orderId            String
+  variantId          String? // 옵션상품인 경우 선택한 옵션 조합
+  selectedOptions    Json?   // 선택된 옵션 정보 {color: "블랙", size: "265"}
   order              Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   product            Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variant            ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
 
   @@map("order_items")
 }

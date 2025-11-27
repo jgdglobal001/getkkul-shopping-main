@@ -7,7 +7,7 @@ import {
   removeFromCart,
 } from "@/redux/shofySlice";
 import { useDispatch, useSelector } from "react-redux";
-import { ProductType, StateType } from "../../type";
+import { ProductType, StateType, ProductVariant } from "../../type";
 import toast from "react-hot-toast";
 import { FaPlus, FaCheck } from "react-icons/fa6";
 import { FaMinus, FaShoppingCart } from "react-icons/fa";
@@ -21,6 +21,9 @@ interface PropsType {
   variant?: "default" | "primary" | "outline" | "minimal";
   size?: "sm" | "md" | "lg";
   showQuantity?: boolean;
+  disabled?: boolean;
+  quantity?: number;
+  selectedVariant?: ProductVariant | null;
 }
 
 const AddToCartButton = ({
@@ -29,6 +32,9 @@ const AddToCartButton = ({
   variant = "default",
   size = "md",
   showQuantity = true,
+  disabled = false,
+  quantity: initialQuantity,
+  selectedVariant,
 }: PropsType) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -50,11 +56,30 @@ const AddToCartButton = ({
   }, [cart, product]);
 
   const handleAddToCart = async () => {
-    if (product && product.stock > 0) {
+    // 옵션 상품인데 옵션이 선택되지 않은 경우
+    if (disabled) {
+      toast.error(t('product.select_option', '옵션을 선택해주세요!'), {
+        style: {
+          background: "#EF4444",
+          color: "white",
+        },
+      });
+      return;
+    }
+
+    const stockToCheck = selectedVariant?.stock ?? product?.stock ?? 0;
+
+    if (product && stockToCheck > 0) {
       setIsAdding(true);
       // Serialize product to ensure createdAt/updatedAt are ISO strings, not Date objects
       const serializedProduct = {
         ...product,
+        // 옵션 상품인 경우 variant 정보 추가
+        price: selectedVariant?.price ?? product.price,
+        stock: stockToCheck,
+        quantity: initialQuantity || 1,
+        selectedVariant: selectedVariant || undefined,
+        selectedOptions: selectedVariant?.optionCombination || undefined,
         createdAt: product.createdAt ? (typeof product.createdAt === 'string' ? product.createdAt : new Date(product.createdAt).toISOString()) : undefined,
         updatedAt: product.updatedAt ? (typeof product.updatedAt === 'string' ? product.updatedAt : new Date(product.updatedAt).toISOString()) : undefined,
       };
@@ -64,7 +89,10 @@ const AddToCartButton = ({
       setTimeout(() => {
         setIsAdding(false);
         setJustAdded(true);
-        toast.success(`${product?.title.substring(0, 15)}... ${t('cart.add_success', '장바구니에 추가되었습니다!')}`, {
+        const optionText = selectedVariant
+          ? ` (${Object.values(selectedVariant.optionCombination as Record<string, string>).join(', ')})`
+          : '';
+        toast.success(`${product?.title.substring(0, 15)}...${optionText} ${t('cart.add_success', '장바구니에 추가되었습니다!')}`, {
           duration: 2000,
           style: {
             background: "#10B981",
@@ -162,8 +190,9 @@ const AddToCartButton = ({
     }
   };
 
-  // Check if product is out of stock
-  const isOutOfStock = !product?.stock || product.stock <= 0;
+  // Check if product is out of stock (옵션 상품인 경우 variant 재고 확인)
+  const stockToCheck = selectedVariant?.stock ?? product?.stock ?? 0;
+  const isOutOfStock = stockToCheck <= 0;
 
   return (
     <>
@@ -205,7 +234,7 @@ const AddToCartButton = ({
       ) : (
         <button
           onClick={handleAddToCart}
-          disabled={isOutOfStock || isAdding}
+          disabled={isOutOfStock || isAdding || disabled}
           className={twMerge(
             "relative flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-300 transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none overflow-hidden",
             getVariantStyles(),

@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 상품 생성
+    // 상품 생성 (옵션 및 variants 포함)
     const product = await prisma.product.create({
       data: {
         title: body.title,
@@ -110,6 +110,30 @@ export async function POST(request: NextRequest) {
         isActive: body.isActive !== undefined ? body.isActive : true,
         minimumOrderQuantity: body.minimumOrderQuantity ? parseInt(body.minimumOrderQuantity) : 1,
         availabilityStatus: body.availabilityStatus || "In Stock",
+        // ⭐ 옵션 시스템
+        hasOptions: body.hasOptions || false,
+        // 옵션 정의 생성
+        options: body.hasOptions && body.options?.length > 0 ? {
+          create: body.options.map((opt: any, index: number) => ({
+            name: opt.name,
+            values: opt.values || [],
+            order: index,
+          })),
+        } : undefined,
+        // 옵션 조합(variants) 생성
+        variants: body.hasOptions && body.variants?.length > 0 ? {
+          create: body.variants.map((v: any) => ({
+            optionCombination: v.optionCombination,
+            sku: v.sku || null,
+            price: parseFloat(v.price),
+            originalPrice: v.originalPrice ? parseFloat(v.originalPrice) : null,
+            stock: parseInt(v.stock) || 0,
+            isActive: v.isActive !== undefined ? v.isActive : true,
+            image: v.image || null,
+            barcode: v.barcode || null,
+            modelNumber: v.modelNumber || null,
+          })),
+        } : undefined,
         // ⭐ 필수 표기 정보
         productName: body.productName || null,
         modelNumber: body.modelNumber || null,
@@ -142,6 +166,10 @@ export async function POST(request: NextRequest) {
         sellerName: body.sellerName || null,
         sellerPhone: body.sellerPhone || null,
         sellerLegalNotice: body.sellerLegalNotice || null,
+      },
+      include: {
+        options: true,
+        variants: true,
       },
     });
 

@@ -18,6 +18,7 @@ import { DisclosureInfo } from "./sections/DisclosureInfo";
 import { ShippingInfo } from "./sections/ShippingInfo";
 import { ExchangeReturnInfo } from "./sections/ExchangeReturnInfo";
 import { SellerInfo } from "./sections/SellerInfo";
+import OptionsManager from "./product-form/OptionsManager";
 
 const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
   const router = useRouter();
@@ -46,6 +47,12 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
     isActive: true,
     availabilityStatus: "In Stock",
     minimumOrderQuantity: "1",
+    // ⭐ 옵션 시스템 초기값
+    hasOptions: false,
+    optionCount: 1,
+    options: [],
+    variants: [],
+    // 필수 표기 정보
     productName: "",
     modelNumber: "",
     size: "상세페이지 참조",
@@ -86,6 +93,26 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
       }
 
       const product = await response.json();
+
+      // 옵션 데이터 변환
+      const options = Array.isArray(product.options)
+        ? product.options.map((opt: any) => ({ name: opt.name, values: opt.values || [] }))
+        : [];
+      const variants = Array.isArray(product.variants)
+        ? product.variants.map((v: any) => ({
+            id: v.id,
+            optionCombination: v.optionCombination || {},
+            sku: v.sku || "",
+            originalPrice: v.originalPrice?.toString() || v.price?.toString() || "0",
+            price: v.price?.toString() || "0",
+            stock: v.stock?.toString() || "0",
+            image: v.image || "",
+            barcode: v.barcode || "",
+            modelNumber: v.modelNumber || "",
+            isActive: v.isActive !== undefined ? v.isActive : true,
+          }))
+        : [];
+
       setFormData({
         title: product.title || "",
         description: product.description || "",
@@ -103,6 +130,12 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
         isActive: product.isActive !== undefined ? product.isActive : true,
         availabilityStatus: product.availabilityStatus || "In Stock",
         minimumOrderQuantity: product.minimumOrderQuantity?.toString() || "1",
+        // ⭐ 옵션 시스템
+        hasOptions: product.hasOptions || false,
+        optionCount: options.length || 1,
+        options: options,
+        variants: variants,
+        // 필수 표기 정보
         productName: product.productName || "",
         modelNumber: product.modelNumber || "",
         size: product.size || "",
@@ -288,24 +321,69 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.title || !formData.description || !formData.price || !formData.category || !formData.sku) {
+    // 기본 필수 필드 검증
+    if (!formData.title || !formData.description || !formData.category || !formData.sku) {
       setError("필수 필드를 모두 입력해주세요");
       return;
+    }
+
+    // 옵션 상품인 경우 variants 검증
+    if (formData.hasOptions) {
+      if (formData.variants.length === 0) {
+        setError("옵션 상품은 최소 1개 이상의 옵션 조합이 필요합니다. '옵션목록으로 적용' 버튼을 클릭해주세요.");
+        return;
+      }
+      // 모든 variant에 가격과 재고가 있는지 확인
+      const invalidVariant = formData.variants.find(v => !v.price || parseFloat(v.price) <= 0);
+      if (invalidVariant) {
+        setError("모든 옵션 조합에 판매가를 입력해주세요.");
+        return;
+      }
+    } else {
+      // 단일 상품인 경우 가격 필수
+      if (!formData.price) {
+        setError("판매가를 입력해주세요");
+        return;
+      }
     }
 
     try {
       setSaving(true);
       setError(null);
 
+      // 옵션 데이터 변환
+      const variantsData = formData.hasOptions
+        ? formData.variants.map(v => ({
+            id: v.id,
+            optionCombination: v.optionCombination,
+            sku: v.sku || null,
+            price: parseFloat(v.price),
+            originalPrice: v.originalPrice ? parseFloat(v.originalPrice) : null,
+            stock: parseInt(v.stock) || 0,
+            image: v.image || null,
+            barcode: v.barcode || null,
+            modelNumber: v.modelNumber || null,
+            isActive: v.isActive,
+          }))
+        : [];
+
       const submitData = {
         ...formData,
-        price: parseFloat(formData.price),
+        price: formData.hasOptions
+          ? Math.min(...formData.variants.map(v => parseFloat(v.price))) // 옵션 상품은 최저가
+          : parseFloat(formData.price),
         discountPercentage: parseFloat(formData.discountPercentage),
         rating: parseFloat(formData.rating),
-        stock: parseInt(formData.stock),
+        stock: formData.hasOptions
+          ? formData.variants.reduce((sum, v) => sum + (parseInt(v.stock) || 0), 0) // 옵션 상품은 총 재고
+          : parseInt(formData.stock),
         weight: null,
         dimensions: null,
         minimumOrderQuantity: parseInt(formData.minimumOrderQuantity),
+        // 옵션 데이터
+        hasOptions: formData.hasOptions,
+        options: formData.hasOptions ? formData.options : [],
+        variants: variantsData,
       };
 
       const url = mode === "create"
@@ -411,6 +489,12 @@ const ProductFormClient = ({ mode, productId }: ProductFormClientProps) => {
           onNewTagChange={setNewTag}
           onAddTag={addTag}
           onRemoveTag={removeTag}
+        />
+
+        {/* ⭐ 옵션 관리 */}
+        <OptionsManager
+          formData={formData}
+          onFormDataChange={(data) => setFormData(prev => ({ ...prev, ...data }))}
         />
 
         {/* 필수 표기 정보 */}
