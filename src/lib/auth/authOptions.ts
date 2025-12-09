@@ -2,7 +2,7 @@ import { type NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google";
 import Kakao from "./providers/kakao";
 import Naver from "./providers/naver";
-import { findUserByEmail, createUser } from "../prisma/userService";
+import { findUserByEmail, createUser } from "../services/userService";
 
 export const authConfig: NextAuthConfig = {
   trustHost: true,

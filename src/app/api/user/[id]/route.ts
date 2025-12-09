@@ -2,7 +2,7 @@ export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "../../../../../auth";
-import { fetchUserFromPrisma } from "@/lib/prisma/userService";
+import { fetchUserById } from "@/lib/services/userService";
 
 export async function GET(
   request: NextRequest,
@@ -22,7 +22,7 @@ export async function GET(
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    const user = await fetchUserFromPrisma(id);
+    const user = await fetchUserById(id);
     
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });

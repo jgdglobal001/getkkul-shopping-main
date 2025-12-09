@@ -2,7 +2,12 @@ export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma";
+import { db, users, productAnswers, productQuestions } from "@/lib/db";
+import { eq } from "drizzle-orm";
+
+function generateId() {
+  return `${Date.now().toString(36)}${Math.random().toString(36).substr(2, 9)}`;
+}
 
 // POST: 질문에 답변 작성
 export async function POST(
@@ -31,9 +36,13 @@ export async function POST(
     }
 
     // 관리자 사용자 조회
-    const adminUser = await prisma.user.findUnique({
-      where: { email: session.user.email }
-    });
+    const adminUserResult = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, session.user.email))
+      .limit(1);
+
+    const adminUser = adminUserResult[0];
 
     if (!adminUser) {
       return NextResponse.json(
@@ -43,24 +52,30 @@ export async function POST(
     }
 
     // 답변 생성
-    const newAnswer = await prisma.productAnswer.create({
-      data: {
+    const newAnswerResult = await db
+      .insert(productAnswers)
+      .values({
+        id: generateId(),
         questionId,
         userId: adminUser.id,
-        answer
-      },
-      include: {
-        user: { select: { id: true, name: true, email: true } }
-      }
-    });
+        answer,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .returning();
+
+    const newAnswer = newAnswerResult[0];
 
     // 질문의 isAnswered 상태 업데이트
-    await prisma.productQuestion.update({
-      where: { id: questionId },
-      data: { isAnswered: true }
-    });
+    await db
+      .update(productQuestions)
+      .set({ isAnswered: true, updatedAt: new Date() })
+      .where(eq(productQuestions.id, questionId));
 
-    return NextResponse.json(newAnswer, { status: 201 });
+    return NextResponse.json({
+      ...newAnswer,
+      user: { id: adminUser.id, name: adminUser.name, email: adminUser.email }
+    }, { status: 201 });
   } catch (error) {
     console.error("답변 작성 오류:", error);
     return NextResponse.json(
@@ -88,9 +103,9 @@ export async function DELETE(
     const answerId = await Promise.resolve(params.id);
 
     // 답변 삭제
-    await prisma.productAnswer.delete({
-      where: { id: answerId }
-    });
+    await db
+      .delete(productAnswers)
+      .where(eq(productAnswers.id, answerId));
 
     return NextResponse.json({ message: "답변이 삭제되었습니다" });
   } catch (error) {

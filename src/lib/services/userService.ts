@@ -1,11 +1,11 @@
-import { db, users, addresses, cartItems, wishlistItems, orders, orderItems } from "../db";
+import { db, users, addresses, cartItems, wishlistItems, orders } from "../db";
 import { eq } from "drizzle-orm";
 
 function generateId() {
   return `${Date.now().toString(36)}${Math.random().toString(36).substr(2, 9)}`;
 }
 
-export interface PrismaUser {
+export interface UserData {
   id: string;
   name: string | null;
   email: string;
@@ -26,9 +26,9 @@ export interface PrismaUser {
   orders: any[];
 }
 
-export async function fetchUserFromPrisma(
+export async function fetchUserById(
   userId: string
-): Promise<PrismaUser | null> {
+): Promise<UserData | null> {
   try {
     const userResult = await db
       .select()
@@ -75,12 +75,12 @@ export async function fetchUserFromPrisma(
 
 export async function getCurrentUserData(
   session: any
-): Promise<PrismaUser | null> {
+): Promise<UserData | null> {
   if (!session?.user?.id) {
     return null;
   }
 
-  return await fetchUserFromPrisma(session.user.id);
+  return await fetchUserById(session.user.id);
 }
 
 export async function createUser(userData: {
@@ -148,3 +148,4 @@ export async function findUserByEmail(email: string) {
     return null;
   }
 }
+

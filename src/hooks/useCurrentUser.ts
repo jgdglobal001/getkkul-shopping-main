@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { PrismaUser } from "@/lib/prisma/userService";
+import { UserData } from "@/lib/services/userService";
 
 export function useCurrentUser(): {
-  user: PrismaUser | null;
+  user: UserData | null;
   isAdmin: boolean;
   isAuthenticated: boolean;
   userId: string | null;

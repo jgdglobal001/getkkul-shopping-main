@@ -27,28 +27,28 @@ export function getDefaultPageForRole(role: UserRole): string {
 }
 
 // Additional utility functions for user role checking
-import { PrismaUser } from "@/lib/prisma/userService";
+import { UserData } from "@/lib/services/userService";
 
-export function hasRole(user: PrismaUser | null, role: string): boolean {
+export function hasRole(user: UserData | null, role: string): boolean {
   return user?.role === role;
 }
 
 export function hasAnyRole(
-  user: PrismaUser | null,
+  user: UserData | null,
   roles: string[]
 ): boolean {
-  return user ? roles.includes(user.role) : false;
+  return user ? roles.includes(user.role || "") : false;
 }
 
-export function isAdminUser(user: PrismaUser | null): boolean {
+export function isAdminUser(user: UserData | null): boolean {
   return hasRole(user, USER_ROLES.ADMIN);
 }
 
-export function canAccessAdminPanel(user: PrismaUser | null): boolean {
+export function canAccessAdminPanel(user: UserData | null): boolean {
   return hasAnyRole(user, [USER_ROLES.ADMIN, USER_ROLES.ACCOUNT]);
 }
 
-export function canManageOrders(user: PrismaUser | null): boolean {
+export function canManageOrders(user: UserData | null): boolean {
   return hasAnyRole(user, [
     USER_ROLES.ADMIN,
     USER_ROLES.ACCOUNT,
@@ -56,7 +56,7 @@ export function canManageOrders(user: PrismaUser | null): boolean {
   ]);
 }
 
-export function canAccessDelivery(user: PrismaUser | null): boolean {
+export function canAccessDelivery(user: UserData | null): boolean {
   return hasAnyRole(user, [
     USER_ROLES.ADMIN,
     USER_ROLES.DELIVERYMAN,
@@ -64,7 +64,7 @@ export function canAccessDelivery(user: PrismaUser | null): boolean {
   ]);
 }
 
-export function getUserDisplayRole(user: PrismaUser | null): string {
+export function getUserDisplayRole(user: UserData | null): string {
   if (!user) return "Guest";
 
   const roleDisplayMap: Record<string, string> = {

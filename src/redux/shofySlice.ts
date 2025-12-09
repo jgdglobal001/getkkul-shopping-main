@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ProductType } from "../../type";
-import { PrismaUser } from "@/lib/prisma/userService";
+import { UserData } from "@/lib/services/userService";
 
 interface InitialState {
   cart: ProductType[];
   favorite: ProductType[];
-  userInfo: PrismaUser | null;
+  userInfo: UserData | null;
 }
 
 const initialState: InitialState = {

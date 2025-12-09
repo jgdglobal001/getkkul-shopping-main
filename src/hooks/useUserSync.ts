@@ -19,11 +19,11 @@ export function useUserSync() {
           try {
             // API 라우트를 통해 사용자 데이터 가져오기
             const response = await fetch(`/api/user/${session.user.id}`);
-            const prismaUser = response.ok ? await response.json() : null;
-            if (prismaUser) {
-              dispatch(addUser(prismaUser));
+            const userData = response.ok ? await response.json() : null;
+            if (userData) {
+              dispatch(addUser(userData));
             } else {
-              // If no Prisma data, create minimal user from session
+              // If no user data, create minimal user from session
               const sessionUser = {
                 id: session.user.id,
                 name: session.user.name || "",

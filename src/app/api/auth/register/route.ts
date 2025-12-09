@@ -2,7 +2,7 @@ export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { findUserByEmail, createUser } from "@/lib/prisma/userService";
+import { findUserByEmail, createUser } from "@/lib/services/userService";
 
 export async function POST(request: NextRequest) {
   try {
