@@ -1,0 +1,244 @@
+2025-12-09T02:35:20.166169699Z	Cloning repository...
+2025-12-09T02:35:21.075051545Z	From https://github.com/jgdglobal001/getkkul-shopping-main
+2025-12-09T02:35:21.075325642Z	 * branch            f3ef69b4ba1ed2ecac0631f6906c405a04719629 -> FETCH_HEAD
+2025-12-09T02:35:21.075341479Z	
+2025-12-09T02:35:21.152263093Z	HEAD is now at f3ef69b Fix: @opennextjs/cloudflare를 dependencies로 이동
+2025-12-09T02:35:21.15229281Z	
+2025-12-09T02:35:21.230674448Z	
+2025-12-09T02:35:21.230963493Z	Using v2 root directory strategy
+2025-12-09T02:35:21.251582656Z	Success: Finished cloning repository files
+2025-12-09T02:35:23.417188559Z	Checking for configuration in a Wrangler configuration file (BETA)
+2025-12-09T02:35:29.488150612Z	npm warn deprecated @types/bcryptjs@3.0.0: This is a stub types definition. bcryptjs provides its own type definitions, so you do not need this installed.
+2025-12-09T02:35:29.488150612Z	npm warn deprecated @types/bcryptjs@3.0.0: This is a stub types definition. bcryptjs provides its own type definitions, so you do not need this installed.
+2025-12-09T02:35:51.687172491Z	
+2025-12-09T02:35:51.687514517Z	added 1054 packages, and audited 1055 packages in 27s
+2025-12-09T02:35:51.687546221Z	
+2025-12-09T02:35:51.687655645Z	113 packages are looking for funding
+2025-12-09T02:35:51.687873242Z	  run `npm fund` for details
+2025-12-09T02:35:51.694772259Z	
+2025-12-09T02:35:51.694990582Z	1 moderate severity vulnerability
+2025-12-09T02:35:51.695036496Z	
+2025-12-09T02:35:51.69526634Z	To address all issues, run:
+2025-12-09T02:35:51.695282659Z	  npm audit fix --force
+2025-12-09T02:35:51.695427393Z	
+2025-12-09T02:35:51.695627572Z	Run `npm audit` for details.
+2025-12-09T02:35:51.733758356Z	Executing user command: npm run cf:build
+2025-12-09T02:35:52.097934971Z	
+2025-12-09T02:35:52.098151702Z	> shofy@0.1.0 cf:build
+2025-12-09T02:35:52.098301134Z	> npx @opennextjs/cloudflare build
+2025-12-09T02:35:52.098395129Z	
+2025-12-09T02:35:54.278996684Z	
+2025-12-09T02:35:54.279299138Z	┌─────────────────────────────┐
+2025-12-09T02:35:54.279431944Z	│ OpenNext — Cloudflare build │
+2025-12-09T02:35:54.279640525Z	└─────────────────────────────┘
+2025-12-09T02:35:54.280062774Z	
+2025-12-09T02:35:54.409037054Z	App directory: /opt/buildhome/repo
+2025-12-09T02:35:54.409615854Z	Next.js version : 15.4.8
+2025-12-09T02:35:54.410275441Z	@opennextjs/cloudflare version: 1.14.4
+2025-12-09T02:35:54.41052057Z	@opennextjs/aws version: 3.9.4
+2025-12-09T02:35:54.412590763Z	
+2025-12-09T02:35:54.412847616Z	┌─────────────────────────────────┐
+2025-12-09T02:35:54.412862493Z	│ OpenNext — Building Next.js app │
+2025-12-09T02:35:54.41309868Z	└─────────────────────────────────┘
+2025-12-09T02:35:54.413163343Z	
+2025-12-09T02:35:54.596005278Z	
+2025-12-09T02:35:54.59623012Z	> shofy@0.1.0 prebuild
+2025-12-09T02:35:54.596464867Z	> prisma generate
+2025-12-09T02:35:54.59647866Z	
+2025-12-09T02:35:55.85430941Z	[dotenv@17.2.3] injecting env (0) from .env.local -- tip: ⚙️  specify custom .env file path with { path: '/custom/path/.env' }
+2025-12-09T02:35:55.858557186Z	Loaded Prisma config from prisma.config.ts.
+2025-12-09T02:35:55.858801237Z	
+2025-12-09T02:35:56.046587194Z	Prisma config detected, skipping environment variable loading.
+2025-12-09T02:35:56.047016179Z	Prisma schema loaded from prisma/schema.prisma
+2025-12-09T02:35:56.444430667Z	
+2025-12-09T02:35:56.444623416Z	✔ Generated Prisma Client (v6.18.0) to ./node_modules/@prisma/client in 209ms
+2025-12-09T02:35:56.444705086Z	
+2025-12-09T02:35:56.444924605Z	Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+2025-12-09T02:35:56.445098013Z	
+2025-12-09T02:35:56.445109128Z	Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
+2025-12-09T02:35:56.445292242Z	
+2025-12-09T02:35:56.445310687Z	┌─────────────────────────────────────────────────────────┐
+2025-12-09T02:35:56.445440827Z	│  Update available 6.18.0 -> 7.1.0                       │
+2025-12-09T02:35:56.445449659Z	│                                                         │
+2025-12-09T02:35:56.445652653Z	│  This is a major update - please follow the guide at    │
+2025-12-09T02:35:56.445737334Z	│  https://pris.ly/d/major-version-upgrade                │
+2025-12-09T02:35:56.446262907Z	│                                                         │
+2025-12-09T02:35:56.446642259Z	│  Run the following to update                            │
+2025-12-09T02:35:56.446919184Z	│    npm i --save-dev prisma@latest                       │
+2025-12-09T02:35:56.447214617Z	│    npm i @prisma/client@latest                          │
+2025-12-09T02:35:56.447388381Z	└─────────────────────────────────────────────────────────┘
+2025-12-09T02:35:56.465038477Z	
+2025-12-09T02:35:56.465210876Z	> shofy@0.1.0 build
+2025-12-09T02:35:56.465323477Z	> next build
+2025-12-09T02:35:56.465454935Z	
+2025-12-09T02:35:57.144858406Z	Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2025-12-09T02:35:57.1450617Z	This information is used to shape Next.js' roadmap and prioritize features.
+2025-12-09T02:35:57.145219152Z	You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2025-12-09T02:35:57.145338359Z	https://nextjs.org/telemetry
+2025-12-09T02:35:57.145576098Z	
+2025-12-09T02:35:57.207282875Z	   ▲ Next.js 15.4.8
+2025-12-09T02:35:57.207587027Z	
+2025-12-09T02:35:57.273768718Z	   Creating an optimized production build ...
+2025-12-09T02:35:57.144858406Z	Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2025-12-09T02:35:57.1450617Z	This information is used to shape Next.js' roadmap and prioritize features.
+2025-12-09T02:35:57.145219152Z	You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2025-12-09T02:35:57.145338359Z	https://nextjs.org/telemetry
+2025-12-09T02:35:57.145576098Z	
+2025-12-09T02:35:57.207282875Z	   ▲ Next.js 15.4.8
+2025-12-09T02:35:57.207587027Z	
+2025-12-09T02:35:57.273768718Z	   Creating an optimized production build ...
+2025-12-09T02:36:23.754909761Z	./src/app/globals.css.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[3]!./src/app/globals.css
+2025-12-09T02:36:23.754939972Z	Error: Cannot find module '@tailwindcss/postcss'
+2025-12-09T02:36:23.755075398Z	Require stack:
+2025-12-09T02:36:23.755203074Z	- /opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/plugins.js
+2025-12-09T02:36:23.755319585Z	- /opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/index.js
+2025-12-09T02:36:23.755570377Z	- /opt/buildhome/repo/node_modules/next/dist/build/webpack/config/index.js
+2025-12-09T02:36:23.75567002Z	- /opt/buildhome/repo/node_modules/next/dist/build/webpack-config.js
+2025-12-09T02:36:23.755797269Z	- /opt/buildhome/repo/node_modules/next/dist/build/webpack-build/impl.js
+2025-12-09T02:36:23.755889611Z	- /opt/buildhome/repo/node_modules/next/dist/compiled/jest-worker/processChild.js
+2025-12-09T02:36:23.755948328Z	    at Function.<anonymous> (node:internal/modules/cjs/loader:1401:15)
+2025-12-09T02:36:23.756165219Z	    at /opt/buildhome/repo/node_modules/next/dist/server/require-hook.js:57:36
+2025-12-09T02:36:23.75623809Z	    at Function.resolve (node:internal/modules/helpers:145:19)
+2025-12-09T02:36:23.756358884Z	    at loadPlugin (/opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/plugins.js:53:32)
+2025-12-09T02:36:23.756458938Z	    at /opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/plugins.js:185:56
+2025-12-09T02:36:23.756560389Z	    at Array.map (<anonymous>)
+2025-12-09T02:36:23.756694808Z	    at getPostCssPlugins (/opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/plugins.js:185:47)
+2025-12-09T02:36:23.756902738Z	    at async /opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/index.js:125:36
+2025-12-09T02:36:23.756970754Z	    at async /opt/buildhome/repo/node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js:52:40
+2025-12-09T02:36:23.75714258Z	    at async Span.traceAsyncFn (/opt/buildhome/repo/node_modules/next/dist/trace/trace.js:157:20)
+2025-12-09T02:36:23.757357809Z	
+2025-12-09T02:36:23.757370186Z	Import trace for requested module:
+2025-12-09T02:36:23.75756212Z	./src/app/globals.css.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[3]!./src/app/globals.css
+2025-12-09T02:36:23.757609628Z	./src/app/globals.css
+2025-12-09T02:36:23.757711736Z	
+2025-12-09T02:36:23.757820873Z	./src/app/globals.css
+2025-12-09T02:36:23.757925979Z	Error: Cannot find module '@tailwindcss/postcss'
+2025-12-09T02:36:23.754909761Z	./src/app/globals.css.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[3]!./src/app/globals.css
+2025-12-09T02:36:23.754939972Z	Error: Cannot find module '@tailwindcss/postcss'
+2025-12-09T02:36:23.755075398Z	Require stack:
+2025-12-09T02:36:23.755203074Z	- /opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/plugins.js
+2025-12-09T02:36:23.755319585Z	- /opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/index.js
+2025-12-09T02:36:23.755570377Z	- /opt/buildhome/repo/node_modules/next/dist/build/webpack/config/index.js
+2025-12-09T02:36:23.75567002Z	- /opt/buildhome/repo/node_modules/next/dist/build/webpack-config.js
+2025-12-09T02:36:23.755797269Z	- /opt/buildhome/repo/node_modules/next/dist/build/webpack-build/impl.js
+2025-12-09T02:36:23.755889611Z	- /opt/buildhome/repo/node_modules/next/dist/compiled/jest-worker/processChild.js
+2025-12-09T02:36:23.755948328Z	    at Function.<anonymous> (node:internal/modules/cjs/loader:1401:15)
+2025-12-09T02:36:23.756165219Z	    at /opt/buildhome/repo/node_modules/next/dist/server/require-hook.js:57:36
+2025-12-09T02:36:23.75623809Z	    at Function.resolve (node:internal/modules/helpers:145:19)
+2025-12-09T02:36:23.756358884Z	    at loadPlugin (/opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/plugins.js:53:32)
+2025-12-09T02:36:23.756458938Z	    at /opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/plugins.js:185:56
+2025-12-09T02:36:23.756560389Z	    at Array.map (<anonymous>)
+2025-12-09T02:36:23.756694808Z	    at getPostCssPlugins (/opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/plugins.js:185:47)
+2025-12-09T02:36:23.756902738Z	    at async /opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/index.js:125:36
+2025-12-09T02:36:23.756970754Z	    at async /opt/buildhome/repo/node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js:52:40
+2025-12-09T02:36:23.75714258Z	    at async Span.traceAsyncFn (/opt/buildhome/repo/node_modules/next/dist/trace/trace.js:157:20)
+2025-12-09T02:36:23.757357809Z	
+2025-12-09T02:36:23.757370186Z	Import trace for requested module:
+2025-12-09T02:36:23.75756212Z	./src/app/globals.css.webpack[javascript/auto]!=!./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[3]!./src/app/globals.css
+2025-12-09T02:36:23.757609628Z	./src/app/globals.css
+2025-12-09T02:36:23.757711736Z	
+2025-12-09T02:36:23.757820873Z	./src/app/globals.css
+2025-12-09T02:36:23.757925979Z	Error: Cannot find module '@tailwindcss/postcss'
+2025-12-09T02:36:23.758036122Z	Require stack:
+2025-12-09T02:36:23.758372917Z	- /opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/plugins.js
+2025-12-09T02:36:23.75838661Z	- /opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/index.js
+2025-12-09T02:36:23.758698351Z	- /opt/buildhome/repo/node_modules/next/dist/build/webpack/config/index.js
+2025-12-09T02:36:23.758755122Z	- /opt/buildhome/repo/node_modules/next/dist/build/webpack-config.js
+2025-12-09T02:36:23.759153734Z	- /opt/buildhome/repo/node_modules/next/dist/build/webpack-build/impl.js
+2025-12-09T02:36:23.759179712Z	- /opt/buildhome/repo/node_modules/next/dist/compiled/jest-worker/processChild.js
+2025-12-09T02:36:23.759314127Z	    at Function.<anonymous> (node:internal/modules/cjs/loader:1401:15)
+2025-12-09T02:36:23.759337864Z	    at /opt/buildhome/repo/node_modules/next/dist/server/require-hook.js:57:36
+2025-12-09T02:36:23.759431864Z	    at Function.resolve (node:internal/modules/helpers:145:19)
+2025-12-09T02:36:23.759605324Z	    at loadPlugin (/opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/plugins.js:53:32)
+2025-12-09T02:36:23.759800674Z	    at /opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/plugins.js:185:56
+2025-12-09T02:36:23.759979944Z	    at Array.map (<anonymous>)
+2025-12-09T02:36:23.760125704Z	    at getPostCssPlugins (/opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/plugins.js:185:47)
+2025-12-09T02:36:23.760244784Z	    at async /opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/index.js:125:36
+2025-12-09T02:36:23.760410809Z	    at async /opt/buildhome/repo/node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js:52:40
+2025-12-09T02:36:23.76049512Z	    at async Span.traceAsyncFn (/opt/buildhome/repo/node_modules/next/dist/trace/trace.js:157:20)
+2025-12-09T02:36:23.760597981Z	    at tryRunOrWebpackError (/opt/buildhome/repo/node_modules/next/dist/compiled/webpack/bundle5.js:29:316119)
+2025-12-09T02:36:23.760765529Z	    at __webpack_require_module__ (/opt/buildhome/repo/node_modules/next/dist/compiled/webpack/bundle5.js:29:131532)
+2025-12-09T02:36:23.760832468Z	    at __nested_webpack_require_161494__ (/opt/buildhome/repo/node_modules/next/dist/compiled/webpack/bundle5.js:29:130967)
+2025-12-09T02:36:23.760929804Z	    at /opt/buildhome/repo/node_modules/next/dist/compiled/webpack/bundle5.js:29:131824
+2025-12-09T02:36:23.76103994Z	    at symbolIterator (/opt/buildhome/repo/node_modules/next/dist/compiled/neo-async/async.js:1:14444)
+2025-12-09T02:36:23.761180007Z	    at done (/opt/buildhome/repo/node_modules/next/dist/compiled/neo-async/async.js:1:14824)
+2025-12-09T02:36:23.761302486Z	    at Hook.eval [as callAsync] (eval at create (/opt/buildhome/repo/node_modules/next/dist/compiled/webpack/bundle5.js:14:9224), <anonymous>:15:1)
+2025-12-09T02:36:23.761503106Z	    at Hook.CALL_ASYNC_DELEGATE [as _callAsync] (/opt/buildhome/repo/node_modules/next/dist/compiled/webpack/bundle5.js:14:6378)
+2025-12-09T02:36:23.76157869Z	    at /opt/buildhome/repo/node_modules/next/dist/compiled/webpack/bundle5.js:29:130687
+2025-12-09T02:36:23.761712446Z	    at symbolIterator (/opt/buildhome/repo/node_modules/next/dist/compiled/neo-async/async.js:1:14402)
+2025-12-09T02:36:23.761808111Z	-- inner error --
+2025-12-09T02:36:23.761941901Z	Error: Cannot find module '@tailwindcss/postcss'
+2025-12-09T02:36:23.76207448Z	Require stack:
+2025-12-09T02:36:23.762170093Z	- /opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/plugins.js
+2025-12-09T02:36:23.762300407Z	- /opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/index.js
+2025-12-09T02:36:23.762482856Z	- /opt/buildhome/repo/node_modules/next/dist/build/webpack/config/index.js
+2025-12-09T02:36:23.762561046Z	- /opt/buildhome/repo/node_modules/next/dist/build/webpack-config.js
+2025-12-09T02:36:23.762620783Z	- /opt/buildhome/repo/node_modules/next/dist/build/webpack-build/impl.js
+2025-12-09T02:36:23.76271863Z	- /opt/buildhome/repo/node_modules/next/dist/compiled/jest-worker/processChild.js
+2025-12-09T02:36:23.762862907Z	    at Function.<anonymous> (node:internal/modules/cjs/loader:1401:15)
+2025-12-09T02:36:23.763033383Z	    at /opt/buildhome/repo/node_modules/next/dist/server/require-hook.js:57:36
+2025-12-09T02:36:23.763044206Z	    at Function.resolve (node:internal/modules/helpers:145:19)
+2025-12-09T02:36:23.763158085Z	    at loadPlugin (/opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/plugins.js:53:32)
+2025-12-09T02:36:23.763297566Z	    at /opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/plugins.js:185:56
+2025-12-09T02:36:23.76335677Z	    at Array.map (<anonymous>)
+2025-12-09T02:36:23.763478303Z	    at getPostCssPlugins (/opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/plugins.js:185:47)
+2025-12-09T02:36:23.763622971Z	    at async /opt/buildhome/repo/node_modules/next/dist/build/webpack/config/blocks/css/index.js:125:36
+2025-12-09T02:36:23.763697052Z	    at async /opt/buildhome/repo/node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js:52:40
+2025-12-09T02:36:23.763806792Z	    at async Span.traceAsyncFn (/opt/buildhome/repo/node_modules/next/dist/trace/trace.js:157:20)
+2025-12-09T02:36:23.763947161Z	    at Object.<anonymous> (/opt/buildhome/repo/node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[2]!/opt/buildhome/repo/node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[3]!/opt/buildhome/repo/src/app/globals.css:1:7)
+2025-12-09T02:36:23.764147603Z	    at /opt/buildhome/repo/node_modules/next/dist/compiled/webpack/bundle5.js:29:962717
+2025-12-09T02:36:23.764173149Z	    at Hook.eval [as call] (eval at create (/opt/buildhome/repo/node_modules/next/dist/compiled/webpack/bundle5.js:14:9002), <anonymous>:7:1)
+2025-12-09T02:36:23.764319904Z	    at Hook.CALL_DELEGATE [as _call] (/opt/buildhome/repo/node_modules/next/dist/compiled/webpack/bundle5.js:14:6272)
+2025-12-09T02:36:23.764460783Z	    at /opt/buildhome/repo/node_modules/next/dist/compiled/webpack/bundle5.js:29:131565
+2025-12-09T02:36:23.764522956Z	    at tryRunOrWebpackError (/opt/buildhome/repo/node_modules/next/dist/compiled/webpack/bundle5.js:29:316073)
+2025-12-09T02:36:23.764697289Z	    at __webpack_require_module__ (/opt/buildhome/repo/node_modules/next/dist/compiled/webpack/bundle5.js:29:131532)
+2025-12-09T02:36:23.764754365Z	    at __nested_webpack_require_161494__ (/opt/buildhome/repo/node_modules/next/dist/compiled/webpack/bundle5.js:29:130967)
+2025-12-09T02:36:23.764873901Z	    at /opt/buildhome/repo/node_modules/next/dist/compiled/webpack/bundle5.js:29:131824
+2025-12-09T02:36:23.765005846Z	    at symbolIterator (/opt/buildhome/repo/node_modules/next/dist/compiled/neo-async/async.js:1:14444)
+2025-12-09T02:36:23.765121902Z	
+2025-12-09T02:36:23.765273163Z	Generated code for /opt/buildhome/repo/node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[2]!/opt/buildhome/repo/node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[13].oneOf[10].use[3]!/opt/buildhome/repo/src/app/globals.css
+2025-12-09T02:36:23.765353183Z	
+2025-12-09T02:36:23.765471636Z	Import trace for requested module:
+2025-12-09T02:36:23.76559104Z	./src/app/globals.css
+2025-12-09T02:36:23.765696478Z	
+2025-12-09T02:36:23.78334534Z	
+2025-12-09T02:36:23.783575188Z	> Build failed because of webpack errors
+2025-12-09T02:36:23.841007447Z	opennextjs-cloudflare build
+2025-12-09T02:36:23.841176288Z	
+2025-12-09T02:36:23.841278104Z	Build an OpenNext Cloudflare worker
+2025-12-09T02:36:23.841422541Z	
+2025-12-09T02:36:23.84151002Z	Options:
+2025-12-09T02:36:23.841616024Z	      --help                        Show help                          [boolean]
+2025-12-09T02:36:23.841735507Z	      --version                     Show version number                [boolean]
+2025-12-09T02:36:23.841825419Z	  -c, --config                      Path to Wrangler configuration file [string]
+2025-12-09T02:36:23.842033279Z	      --configPath                  Path to Wrangler configuration file
+2025-12-09T02:36:23.842045029Z	                                                           [deprecated] [string]
+2025-12-09T02:36:23.842164204Z	  -e, --env                         Wrangler environment to use for operations
+2025-12-09T02:36:23.84235315Z	                                                                        [string]
+2025-12-09T02:36:23.842443353Z	  -s, --skipNextBuild, --skipBuild  Skip building the Next.js app
+2025-12-09T02:36:23.842637034Z	                                                      [boolean] [default: false]
+2025-12-09T02:36:23.84272914Z	      --noMinify                    Disable worker minification
+2025-12-09T02:36:23.842872183Z	                                                      [boolean] [default: false]
+2025-12-09T02:36:23.842929588Z	      --skipWranglerConfigCheck     Skip checking for a Wrangler config
+2025-12-09T02:36:23.843043561Z	                                                      [boolean] [default: false]
+2025-12-09T02:36:23.843232074Z	      --openNextConfigPath          Path to the OpenNext configuration file
+2025-12-09T02:36:23.843520072Z	                                                                        [string]
+2025-12-09T02:36:23.843552359Z	
+2025-12-09T02:36:23.845032459Z	Error: Command failed: npm run build
+2025-12-09T02:36:23.845134184Z	    at genericNodeError (node:internal/errors:983:15)
+2025-12-09T02:36:23.845371396Z	    at wrappedFn (node:internal/errors:537:14)
+2025-12-09T02:36:23.845384439Z	    at checkExecSyncError (node:child_process:882:11)
+2025-12-09T02:36:23.845623962Z	    at Object.execSync (node:child_process:954:15)
+2025-12-09T02:36:23.845637049Z	    at buildNextjsApp (file:///opt/buildhome/repo/node_modules/@opennextjs/aws/dist/build/buildNextApp.js:15:8)
+2025-12-09T02:36:23.845719074Z	    at build (file:///opt/buildhome/repo/node_modules/@opennextjs/cloudflare/dist/cli/build/build.js:47:9)
+2025-12-09T02:36:23.845814055Z	    at buildCommand (file:///opt/buildhome/repo/node_modules/@opennextjs/cloudflare/dist/cli/commands/build.js:21:11) {
+2025-12-09T02:36:23.845904359Z	  status: 1,
+2025-12-09T02:36:23.845912122Z	  signal: null,
+2025-12-09T02:36:23.845996257Z	  output: [ null, null, null ],
+2025-12-09T02:36:23.846094175Z	  pid: 872,
+2025-12-09T02:36:23.846344056Z	  stdout: null,
+2025-12-09T02:36:23.84636006Z	  stderr: null
+2025-12-09T02:36:23.84636457Z	}
+2025-12-09T02:36:23.880234686Z	Failed: Error while executing user command. Exited with error code: 1
+2025-12-09T02:36:23.891524984Z	Failed: build command exited with code: 1
+2025-12-09T02:36:25.083025Z	Failed: error occurred while running build command

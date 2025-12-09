@@ -51,18 +51,18 @@
     "redux-persist": "^6.0.0",
     "stripe": "^18.4.0",
     "tailwind-merge": "^3.3.1",
-    "ws": "^8.18.3"
+    "ws": "^8.18.3",
+    "@tailwindcss/postcss": "^4.1.11",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.11"
   },
   "devDependencies": {
     "@playwright/test": "^1.56.1",
-    "@tailwindcss/postcss": "^4.1.11",
     "@types/node": "^24.2.1",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "eslint": "^9.33.0",
     "eslint-config-next": "15.4.6",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.11",
     "typescript": "^5.9.2",
     "wrangler": "^4.53.0"
   }
