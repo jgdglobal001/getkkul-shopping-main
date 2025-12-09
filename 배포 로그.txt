@@ -1,836 +1,284 @@
-2025-12-09T06:27:58.313452Z	Cloning repository...
-2025-12-09T06:27:59.078244Z	From https://github.com/jgdglobal001/getkkul-shopping-main
-2025-12-09T06:27:59.078699Z	 * branch            be761479124ed68eaf990ce2f3df8a2b7714946e -> FETCH_HEAD
-2025-12-09T06:27:59.078798Z	
-2025-12-09T06:27:59.15578Z	HEAD is now at be76147 Add GitHub Actions CI/CD for Cloudflare Pages deployment
-2025-12-09T06:27:59.156225Z	
-2025-12-09T06:27:59.235293Z	
-2025-12-09T06:27:59.235767Z	Using v2 root directory strategy
-2025-12-09T06:27:59.259195Z	Success: Finished cloning repository files
-2025-12-09T06:28:01.038894Z	Checking for configuration in a Wrangler configuration file (BETA)
-2025-12-09T06:28:01.039614Z	
-2025-12-09T06:28:01.041009Z	Found wrangler.toml file. Reading build configuration...
-2025-12-09T06:28:01.047503Z	pages_build_output_dir: .vercel/output/static
-2025-12-09T06:28:01.04772Z	Build environment variables: 
-2025-12-09T06:28:01.047804Z	  - NODE_ENV: production
-2025-12-09T06:28:02.14293Z	Successfully read wrangler.toml file.
-2025-12-09T06:28:02.20934Z	Detected the following tools from environment: npm@10.9.2, nodejs@22.16.0
-2025-12-09T06:28:02.209937Z	Installing project dependencies: npm clean-install --progress=false
-2025-12-09T06:28:11.477335Z	npm error code EUSAGE
-2025-12-09T06:28:11.478039Z	npm error
-2025-12-09T06:28:11.478196Z	npm error `npm ci` can only install packages when your package.json and package-lock.json or npm-shrinkwrap.json are in sync. Please update your lock file with `npm install` before continuing.
-2025-12-09T06:28:11.478724Z	npm error
-2025-12-09T06:28:11.478848Z	npm error Missing: @opennextjs/cloudflare@1.14.4 from lock file
-2025-12-09T06:28:11.478919Z	npm error Missing: @ast-grep/napi@0.40.0 from lock file
-2025-12-09T06:28:11.47905Z	npm error Missing: @dotenvx/dotenvx@1.31.0 from lock file
-2025-12-09T06:28:11.479167Z	npm error Missing: @opennextjs/aws@3.9.4 from lock file
-2025-12-09T06:28:11.479283Z	npm error Missing: cloudflare@4.5.0 from lock file
-2025-12-09T06:28:11.479396Z	npm error Missing: enquirer@2.4.1 from lock file
-2025-12-09T06:28:11.479503Z	npm error Missing: glob@12.0.0 from lock file
-2025-12-09T06:28:11.479615Z	npm error Missing: ts-tqdm@0.8.6 from lock file
-2025-12-09T06:28:11.479728Z	npm error Missing: yargs@18.0.0 from lock file
-2025-12-09T06:28:11.479835Z	npm error Missing: @ast-grep/napi-darwin-arm64@0.40.0 from lock file
-2025-12-09T06:28:11.479952Z	npm error Missing: @ast-grep/napi-darwin-x64@0.40.0 from lock file
-2025-12-09T06:28:11.480146Z	npm error Missing: @ast-grep/napi-linux-arm64-gnu@0.40.0 from lock file
-2025-12-09T06:28:11.480259Z	npm error Missing: @ast-grep/napi-linux-arm64-musl@0.40.0 from lock file
-2025-12-09T06:28:11.480325Z	npm error Missing: @ast-grep/napi-linux-x64-gnu@0.40.0 from lock file
-2025-12-09T06:28:11.480402Z	npm error Missing: @ast-grep/napi-linux-x64-musl@0.40.0 from lock file
-2025-12-09T06:28:11.480472Z	npm error Missing: @ast-grep/napi-win32-arm64-msvc@0.40.0 from lock file
-2025-12-09T06:28:11.480948Z	npm error Missing: @ast-grep/napi-win32-ia32-msvc@0.40.0 from lock file
-2025-12-09T06:28:11.481131Z	npm error Missing: @ast-grep/napi-win32-x64-msvc@0.40.0 from lock file
-2025-12-09T06:28:11.481217Z	npm error Missing: dotenv@16.6.1 from lock file
-2025-12-09T06:28:11.481318Z	npm error Missing: eciesjs@0.4.16 from lock file
-2025-12-09T06:28:11.481462Z	npm error Missing: execa@5.1.1 from lock file
-2025-12-09T06:28:11.481576Z	npm error Missing: fdir@6.5.0 from lock file
-2025-12-09T06:28:11.481785Z	npm error Missing: picomatch@4.0.3 from lock file
-2025-12-09T06:28:11.481882Z	npm error Missing: object-treeify@1.1.33 from lock file
-2025-12-09T06:28:11.481993Z	npm error Missing: which@4.0.0 from lock file
-2025-12-09T06:28:11.482081Z	npm error Missing: @aws-sdk/client-cloudfront@3.398.0 from lock file
-2025-12-09T06:28:11.482147Z	npm error Missing: @aws-sdk/client-dynamodb@3.947.0 from lock file
-2025-12-09T06:28:11.482211Z	npm error Missing: @aws-sdk/client-lambda@3.947.0 from lock file
-2025-12-09T06:28:11.482275Z	npm error Missing: @aws-sdk/client-s3@3.947.0 from lock file
-2025-12-09T06:28:11.482445Z	npm error Missing: @aws-sdk/client-sqs@3.947.0 from lock file
-2025-12-09T06:28:11.482535Z	npm error Missing: @node-minify/core@8.0.6 from lock file
-2025-12-09T06:28:11.482604Z	npm error Missing: @node-minify/terser@8.0.6 from lock file
-2025-12-09T06:28:11.482804Z	npm error Missing: @tsconfig/node18@1.0.3 from lock file
-2025-12-09T06:28:11.48289Z	npm error Missing: aws4fetch@1.0.20 from lock file
-2025-12-09T06:28:11.482953Z	npm error Missing: chalk@5.6.2 from lock file
-2025-12-09T06:28:11.48304Z	npm error Missing: esbuild@0.25.4 from lock file
-2025-12-09T06:28:11.483113Z	npm error Missing: express@5.2.1 from lock file
-2025-12-09T06:28:11.483234Z	npm error Missing: urlpattern-polyfill@10.1.0 from lock file
-2025-12-09T06:28:11.483294Z	npm error Missing: yaml@2.8.2 from lock file
-2025-12-09T06:28:11.483354Z	npm error Missing: @aws-crypto/sha256-browser@3.0.0 from lock file
-2025-12-09T06:28:11.483413Z	npm error Missing: @aws-crypto/sha256-js@3.0.0 from lock file
-2025-12-09T06:28:11.48347Z	npm error Missing: @aws-sdk/client-sts@3.398.0 from lock file
-2025-12-09T06:28:11.483527Z	npm error Missing: @aws-sdk/credential-provider-node@3.398.0 from lock file
-2025-12-09T06:28:11.483591Z	npm error Missing: @aws-sdk/middleware-host-header@3.398.0 from lock file
-2025-12-09T06:28:11.483656Z	npm error Missing: @aws-sdk/middleware-logger@3.398.0 from lock file
-2025-12-09T06:28:11.483725Z	npm error Missing: @aws-sdk/middleware-recursion-detection@3.398.0 from lock file
-2025-12-09T06:28:11.483784Z	npm error Missing: @aws-sdk/middleware-signing@3.398.0 from lock file
-2025-12-09T06:28:11.483841Z	npm error Missing: @aws-sdk/middleware-user-agent@3.398.0 from lock file
-2025-12-09T06:28:11.483896Z	npm error Missing: @aws-sdk/types@3.398.0 from lock file
-2025-12-09T06:28:11.483958Z	npm error Missing: @aws-sdk/util-endpoints@3.398.0 from lock file
-2025-12-09T06:28:11.484104Z	npm error Missing: @aws-sdk/util-user-agent-browser@3.398.0 from lock file
-2025-12-09T06:28:11.484185Z	npm error Missing: @aws-sdk/util-user-agent-node@3.398.0 from lock file
-2025-12-09T06:28:11.484251Z	npm error Missing: @aws-sdk/xml-builder@3.310.0 from lock file
-2025-12-09T06:28:11.484309Z	npm error Missing: @smithy/config-resolver@2.2.0 from lock file
-2025-12-09T06:28:11.484375Z	npm error Missing: @smithy/fetch-http-handler@2.5.0 from lock file
-2025-12-09T06:28:11.484439Z	npm error Missing: @smithy/hash-node@2.2.0 from lock file
-2025-12-09T06:28:11.484497Z	npm error Missing: @smithy/invalid-dependency@2.2.0 from lock file
-2025-12-09T06:28:11.484566Z	npm error Missing: @smithy/middleware-content-length@2.2.0 from lock file
-2025-12-09T06:28:11.484636Z	npm error Missing: @smithy/middleware-endpoint@2.5.1 from lock file
-2025-12-09T06:28:11.484701Z	npm error Missing: @smithy/middleware-retry@2.3.1 from lock file
-2025-12-09T06:28:11.484758Z	npm error Missing: @smithy/middleware-serde@2.3.0 from lock file
-2025-12-09T06:28:11.484814Z	npm error Missing: @smithy/middleware-stack@2.2.0 from lock file
-2025-12-09T06:28:11.48487Z	npm error Missing: @smithy/node-config-provider@2.3.0 from lock file
-2025-12-09T06:28:11.485064Z	npm error Missing: @smithy/node-http-handler@2.5.0 from lock file
-2025-12-09T06:28:11.48516Z	npm error Missing: @smithy/protocol-http@2.0.5 from lock file
-2025-12-09T06:28:11.485572Z	npm error Missing: @smithy/smithy-client@2.5.1 from lock file
-2025-12-09T06:28:11.485664Z	npm error Missing: @smithy/types@2.12.0 from lock file
-2025-12-09T06:28:11.485789Z	npm error Missing: @smithy/url-parser@2.2.0 from lock file
-2025-12-09T06:28:11.485859Z	npm error Missing: @smithy/util-base64@2.3.0 from lock file
-2025-12-09T06:28:11.485922Z	npm error Missing: @smithy/util-body-length-browser@2.2.0 from lock file
-2025-12-09T06:28:11.485979Z	npm error Missing: @smithy/util-body-length-node@2.3.0 from lock file
-2025-12-09T06:28:11.486106Z	npm error Missing: @smithy/util-defaults-mode-browser@2.2.1 from lock file
-2025-12-09T06:28:11.486182Z	npm error Missing: @smithy/util-defaults-mode-node@2.3.1 from lock file
-2025-12-09T06:28:11.486241Z	npm error Missing: @smithy/util-retry@2.2.0 from lock file
-2025-12-09T06:28:11.486309Z	npm error Missing: @smithy/util-stream@2.2.0 from lock file
-2025-12-09T06:28:11.486377Z	npm error Missing: @smithy/util-utf8@2.3.0 from lock file
-2025-12-09T06:28:11.486487Z	npm error Missing: @smithy/util-waiter@2.2.0 from lock file
-2025-12-09T06:28:11.486554Z	npm error Missing: fast-xml-parser@4.2.5 from lock file
-2025-12-09T06:28:11.486622Z	npm error Missing: @aws-crypto/ie11-detection@3.0.0 from lock file
-2025-12-09T06:28:11.486686Z	npm error Missing: @aws-crypto/supports-web-crypto@3.0.0 from lock file
-2025-12-09T06:28:11.486861Z	npm error Missing: @aws-crypto/util@3.0.0 from lock file
-2025-12-09T06:28:11.487134Z	npm error Missing: @aws-sdk/util-locate-window@3.893.0 from lock file
-2025-12-09T06:28:11.487261Z	npm error Missing: @aws-sdk/util-utf8-browser@3.259.0 from lock file
-2025-12-09T06:28:11.487363Z	npm error Missing: tslib@1.14.1 from lock file
-2025-12-09T06:28:11.487461Z	npm error Missing: tslib@1.14.1 from lock file
-2025-12-09T06:28:11.487633Z	npm error Missing: tslib@1.14.1 from lock file
-2025-12-09T06:28:11.487757Z	npm error Missing: tslib@1.14.1 from lock file
-2025-12-09T06:28:11.487873Z	npm error Missing: tslib@1.14.1 from lock file
-2025-12-09T06:28:11.487997Z	npm error Missing: @aws-crypto/sha256-browser@5.2.0 from lock file
-2025-12-09T06:28:11.488107Z	npm error Missing: @aws-crypto/sha256-js@5.2.0 from lock file
-2025-12-09T06:28:11.488214Z	npm error Missing: @aws-sdk/core@3.947.0 from lock file
-2025-12-09T06:28:11.488329Z	npm error Missing: @aws-sdk/credential-provider-node@3.947.0 from lock file
-2025-12-09T06:28:11.488438Z	npm error Missing: @aws-sdk/dynamodb-codec@3.947.0 from lock file
-2025-12-09T06:28:11.488552Z	npm error Missing: @aws-sdk/middleware-endpoint-discovery@3.936.0 from lock file
-2025-12-09T06:28:11.488664Z	npm error Missing: @aws-sdk/middleware-host-header@3.936.0 from lock file
-2025-12-09T06:28:11.488769Z	npm error Missing: @aws-sdk/middleware-logger@3.936.0 from lock file
-2025-12-09T06:28:11.488874Z	npm error Missing: @aws-sdk/middleware-recursion-detection@3.936.0 from lock file
-2025-12-09T06:28:11.488978Z	npm error Missing: @aws-sdk/middleware-user-agent@3.947.0 from lock file
-2025-12-09T06:28:11.489094Z	npm error Missing: @aws-sdk/region-config-resolver@3.936.0 from lock file
-2025-12-09T06:28:11.489192Z	npm error Missing: @aws-sdk/types@3.936.0 from lock file
-2025-12-09T06:28:11.489347Z	npm error Missing: @aws-sdk/util-endpoints@3.936.0 from lock file
-2025-12-09T06:28:11.489456Z	npm error Missing: @aws-sdk/util-user-agent-browser@3.936.0 from lock file
-2025-12-09T06:28:11.489564Z	npm error Missing: @aws-sdk/util-user-agent-node@3.947.0 from lock file
-2025-12-09T06:28:11.489674Z	npm error Missing: @smithy/config-resolver@4.4.3 from lock file
-2025-12-09T06:28:11.489778Z	npm error Missing: @smithy/core@3.18.7 from lock file
-2025-12-09T06:28:11.489881Z	npm error Missing: @smithy/fetch-http-handler@5.3.6 from lock file
-2025-12-09T06:28:11.489976Z	npm error Missing: @smithy/hash-node@4.2.5 from lock file
-2025-12-09T06:28:11.490102Z	npm error Missing: @smithy/invalid-dependency@4.2.5 from lock file
-2025-12-09T06:28:11.490202Z	npm error Missing: @smithy/middleware-content-length@4.2.5 from lock file
-2025-12-09T06:28:11.490299Z	npm error Missing: @smithy/middleware-endpoint@4.3.14 from lock file
-2025-12-09T06:28:11.490406Z	npm error Missing: @smithy/middleware-retry@4.4.14 from lock file
-2025-12-09T06:28:11.490556Z	npm error Missing: @smithy/middleware-serde@4.2.6 from lock file
-2025-12-09T06:28:11.490675Z	npm error Missing: @smithy/middleware-stack@4.2.5 from lock file
-2025-12-09T06:28:11.49079Z	npm error Missing: @smithy/node-config-provider@4.3.5 from lock file
-2025-12-09T06:28:11.4909Z	npm error Missing: @smithy/node-http-handler@4.4.5 from lock file
-2025-12-09T06:28:11.491018Z	npm error Missing: @smithy/protocol-http@5.3.5 from lock file
-2025-12-09T06:28:11.491128Z	npm error Missing: @smithy/smithy-client@4.9.10 from lock file
-2025-12-09T06:28:11.491222Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.491392Z	npm error Missing: @smithy/url-parser@4.2.5 from lock file
-2025-12-09T06:28:11.491519Z	npm error Missing: @smithy/util-base64@4.3.0 from lock file
-2025-12-09T06:28:11.491625Z	npm error Missing: @smithy/util-body-length-browser@4.2.0 from lock file
-2025-12-09T06:28:11.491728Z	npm error Missing: @smithy/util-body-length-node@4.2.1 from lock file
-2025-12-09T06:28:11.491828Z	npm error Missing: @smithy/util-defaults-mode-browser@4.3.13 from lock file
-2025-12-09T06:28:11.49201Z	npm error Missing: @smithy/util-defaults-mode-node@4.2.16 from lock file
-2025-12-09T06:28:11.492175Z	npm error Missing: @smithy/util-endpoints@3.2.5 from lock file
-2025-12-09T06:28:11.492255Z	npm error Missing: @smithy/util-middleware@4.2.5 from lock file
-2025-12-09T06:28:11.492328Z	npm error Missing: @smithy/util-retry@4.2.5 from lock file
-2025-12-09T06:28:11.492402Z	npm error Missing: @smithy/util-utf8@4.2.0 from lock file
-2025-12-09T06:28:11.492466Z	npm error Missing: @smithy/util-waiter@4.2.5 from lock file
-2025-12-09T06:28:11.492535Z	npm error Missing: @aws-crypto/sha256-browser@5.2.0 from lock file
-2025-12-09T06:28:11.4926Z	npm error Missing: @aws-crypto/sha256-js@5.2.0 from lock file
-2025-12-09T06:28:11.492665Z	npm error Missing: @aws-sdk/credential-provider-node@3.947.0 from lock file
-2025-12-09T06:28:11.492728Z	npm error Missing: @aws-sdk/middleware-host-header@3.936.0 from lock file
-2025-12-09T06:28:11.492784Z	npm error Missing: @aws-sdk/middleware-logger@3.936.0 from lock file
-2025-12-09T06:28:11.49284Z	npm error Missing: @aws-sdk/middleware-recursion-detection@3.936.0 from lock file
-2025-12-09T06:28:11.49295Z	npm error Missing: @aws-sdk/middleware-user-agent@3.947.0 from lock file
-2025-12-09T06:28:11.493066Z	npm error Missing: @aws-sdk/types@3.936.0 from lock file
-2025-12-09T06:28:11.493175Z	npm error Missing: @aws-sdk/util-endpoints@3.936.0 from lock file
-2025-12-09T06:28:11.493275Z	npm error Missing: @aws-sdk/util-user-agent-browser@3.936.0 from lock file
-2025-12-09T06:28:11.49335Z	npm error Missing: @aws-sdk/util-user-agent-node@3.947.0 from lock file
-2025-12-09T06:28:11.493409Z	npm error Missing: @smithy/config-resolver@4.4.3 from lock file
-2025-12-09T06:28:11.493469Z	npm error Missing: @smithy/eventstream-serde-browser@4.2.5 from lock file
-2025-12-09T06:28:11.493531Z	npm error Missing: @smithy/eventstream-serde-config-resolver@4.3.5 from lock file
-2025-12-09T06:28:11.493612Z	npm error Missing: @smithy/eventstream-serde-node@4.2.5 from lock file
-2025-12-09T06:28:11.493704Z	npm error Missing: @smithy/fetch-http-handler@5.3.6 from lock file
-2025-12-09T06:28:11.493846Z	npm error Missing: @smithy/hash-node@4.2.5 from lock file
-2025-12-09T06:28:11.493971Z	npm error Missing: @smithy/invalid-dependency@4.2.5 from lock file
-2025-12-09T06:28:11.494105Z	npm error Missing: @smithy/middleware-content-length@4.2.5 from lock file
-2025-12-09T06:28:11.494207Z	npm error Missing: @smithy/middleware-endpoint@4.3.14 from lock file
-2025-12-09T06:28:11.49431Z	npm error Missing: @smithy/middleware-retry@4.4.14 from lock file
-2025-12-09T06:28:11.494421Z	npm error Missing: @smithy/middleware-serde@4.2.6 from lock file
-2025-12-09T06:28:11.494528Z	npm error Missing: @smithy/middleware-stack@4.2.5 from lock file
-2025-12-09T06:28:11.494631Z	npm error Missing: @smithy/node-config-provider@4.3.5 from lock file
-2025-12-09T06:28:11.494739Z	npm error Missing: @smithy/node-http-handler@4.4.5 from lock file
-2025-12-09T06:28:11.494844Z	npm error Missing: @smithy/protocol-http@5.3.5 from lock file
-2025-12-09T06:28:11.494943Z	npm error Missing: @smithy/smithy-client@4.9.10 from lock file
-2025-12-09T06:28:11.49513Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.495207Z	npm error Missing: @smithy/url-parser@4.2.5 from lock file
-2025-12-09T06:28:11.495402Z	npm error Missing: @smithy/util-base64@4.3.0 from lock file
-2025-12-09T06:28:11.49548Z	npm error Missing: @smithy/util-body-length-browser@4.2.0 from lock file
-2025-12-09T06:28:11.495558Z	npm error Missing: @smithy/util-body-length-node@4.2.1 from lock file
-2025-12-09T06:28:11.495818Z	npm error Missing: @smithy/util-defaults-mode-browser@4.3.13 from lock file
-2025-12-09T06:28:11.495933Z	npm error Missing: @smithy/util-defaults-mode-node@4.2.16 from lock file
-2025-12-09T06:28:11.49607Z	npm error Missing: @smithy/util-retry@4.2.5 from lock file
-2025-12-09T06:28:11.496195Z	npm error Missing: @smithy/util-stream@4.5.6 from lock file
-2025-12-09T06:28:11.496302Z	npm error Missing: @smithy/util-utf8@4.2.0 from lock file
-2025-12-09T06:28:11.496411Z	npm error Missing: @smithy/util-waiter@4.2.5 from lock file
-2025-12-09T06:28:11.496579Z	npm error Missing: @aws-crypto/sha1-browser@5.2.0 from lock file
-2025-12-09T06:28:11.496784Z	npm error Missing: @aws-crypto/sha256-browser@5.2.0 from lock file
-2025-12-09T06:28:11.49686Z	npm error Missing: @aws-crypto/sha256-js@5.2.0 from lock file
-2025-12-09T06:28:11.496922Z	npm error Missing: @aws-sdk/credential-provider-node@3.947.0 from lock file
-2025-12-09T06:28:11.496991Z	npm error Missing: @aws-sdk/middleware-bucket-endpoint@3.936.0 from lock file
-2025-12-09T06:28:11.497067Z	npm error Missing: @aws-sdk/middleware-expect-continue@3.936.0 from lock file
-2025-12-09T06:28:11.497128Z	npm error Missing: @aws-sdk/middleware-flexible-checksums@3.947.0 from lock file
-2025-12-09T06:28:11.497186Z	npm error Missing: @aws-sdk/middleware-host-header@3.936.0 from lock file
-2025-12-09T06:28:11.497243Z	npm error Missing: @aws-sdk/middleware-location-constraint@3.936.0 from lock file
-2025-12-09T06:28:11.497301Z	npm error Missing: @aws-sdk/middleware-logger@3.936.0 from lock file
-2025-12-09T06:28:11.497363Z	npm error Missing: @aws-sdk/middleware-recursion-detection@3.936.0 from lock file
-2025-12-09T06:28:11.497421Z	npm error Missing: @aws-sdk/middleware-sdk-s3@3.947.0 from lock file
-2025-12-09T06:28:11.497488Z	npm error Missing: @aws-sdk/middleware-ssec@3.936.0 from lock file
-2025-12-09T06:28:11.497553Z	npm error Missing: @aws-sdk/middleware-user-agent@3.947.0 from lock file
-2025-12-09T06:28:11.497616Z	npm error Missing: @aws-sdk/signature-v4-multi-region@3.947.0 from lock file
-2025-12-09T06:28:11.497678Z	npm error Missing: @aws-sdk/types@3.936.0 from lock file
-2025-12-09T06:28:11.497819Z	npm error Missing: @aws-sdk/util-endpoints@3.936.0 from lock file
-2025-12-09T06:28:11.498046Z	npm error Missing: @aws-sdk/util-user-agent-browser@3.936.0 from lock file
-2025-12-09T06:28:11.498251Z	npm error Missing: @aws-sdk/util-user-agent-node@3.947.0 from lock file
-2025-12-09T06:28:11.498394Z	npm error Missing: @smithy/config-resolver@4.4.3 from lock file
-2025-12-09T06:28:11.498511Z	npm error Missing: @smithy/fetch-http-handler@5.3.6 from lock file
-2025-12-09T06:28:11.49861Z	npm error Missing: @smithy/hash-blob-browser@4.2.6 from lock file
-2025-12-09T06:28:11.498707Z	npm error Missing: @smithy/hash-node@4.2.5 from lock file
-2025-12-09T06:28:11.498805Z	npm error Missing: @smithy/hash-stream-node@4.2.5 from lock file
-2025-12-09T06:28:11.498902Z	npm error Missing: @smithy/invalid-dependency@4.2.5 from lock file
-2025-12-09T06:28:11.499026Z	npm error Missing: @smithy/md5-js@4.2.5 from lock file
-2025-12-09T06:28:11.499124Z	npm error Missing: @smithy/middleware-content-length@4.2.5 from lock file
-2025-12-09T06:28:11.49922Z	npm error Missing: @smithy/middleware-endpoint@4.3.14 from lock file
-2025-12-09T06:28:11.499317Z	npm error Missing: @smithy/middleware-retry@4.4.14 from lock file
-2025-12-09T06:28:11.499429Z	npm error Missing: @smithy/middleware-serde@4.2.6 from lock file
-2025-12-09T06:28:11.499623Z	npm error Missing: @smithy/middleware-stack@4.2.5 from lock file
-2025-12-09T06:28:11.499749Z	npm error Missing: @smithy/node-config-provider@4.3.5 from lock file
-2025-12-09T06:28:11.500003Z	npm error Missing: @smithy/node-http-handler@4.4.5 from lock file
-2025-12-09T06:28:11.500128Z	npm error Missing: @smithy/protocol-http@5.3.5 from lock file
-2025-12-09T06:28:11.500279Z	npm error Missing: @smithy/smithy-client@4.9.10 from lock file
-2025-12-09T06:28:11.500411Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.500496Z	npm error Missing: @smithy/url-parser@4.2.5 from lock file
-2025-12-09T06:28:11.500555Z	npm error Missing: @smithy/util-base64@4.3.0 from lock file
-2025-12-09T06:28:11.500717Z	npm error Missing: @smithy/util-body-length-browser@4.2.0 from lock file
-2025-12-09T06:28:11.500818Z	npm error Missing: @smithy/util-body-length-node@4.2.1 from lock file
-2025-12-09T06:28:11.500907Z	npm error Missing: @smithy/util-defaults-mode-browser@4.3.13 from lock file
-2025-12-09T06:28:11.501017Z	npm error Missing: @smithy/util-defaults-mode-node@4.2.16 from lock file
-2025-12-09T06:28:11.501112Z	npm error Missing: @smithy/util-retry@4.2.5 from lock file
-2025-12-09T06:28:11.501204Z	npm error Missing: @smithy/util-stream@4.5.6 from lock file
-2025-12-09T06:28:11.501313Z	npm error Missing: @smithy/util-utf8@4.2.0 from lock file
-2025-12-09T06:28:11.501432Z	npm error Missing: @smithy/util-waiter@4.2.5 from lock file
-2025-12-09T06:28:11.50153Z	npm error Missing: @aws-crypto/supports-web-crypto@5.2.0 from lock file
-2025-12-09T06:28:11.501622Z	npm error Missing: @aws-crypto/util@5.2.0 from lock file
-2025-12-09T06:28:11.501706Z	npm error Missing: @aws-crypto/sha256-browser@5.2.0 from lock file
-2025-12-09T06:28:11.501794Z	npm error Missing: @aws-crypto/sha256-js@5.2.0 from lock file
-2025-12-09T06:28:11.501879Z	npm error Missing: @aws-sdk/credential-provider-node@3.947.0 from lock file
-2025-12-09T06:28:11.501955Z	npm error Missing: @aws-sdk/middleware-host-header@3.936.0 from lock file
-2025-12-09T06:28:11.502053Z	npm error Missing: @aws-sdk/middleware-logger@3.936.0 from lock file
-2025-12-09T06:28:11.502143Z	npm error Missing: @aws-sdk/middleware-recursion-detection@3.936.0 from lock file
-2025-12-09T06:28:11.502231Z	npm error Missing: @aws-sdk/middleware-sdk-sqs@3.946.0 from lock file
-2025-12-09T06:28:11.502313Z	npm error Missing: @aws-sdk/middleware-user-agent@3.947.0 from lock file
-2025-12-09T06:28:11.502396Z	npm error Missing: @aws-sdk/types@3.936.0 from lock file
-2025-12-09T06:28:11.502477Z	npm error Missing: @aws-sdk/util-endpoints@3.936.0 from lock file
-2025-12-09T06:28:11.502558Z	npm error Missing: @aws-sdk/util-user-agent-browser@3.936.0 from lock file
-2025-12-09T06:28:11.502648Z	npm error Missing: @aws-sdk/util-user-agent-node@3.947.0 from lock file
-2025-12-09T06:28:11.50273Z	npm error Missing: @smithy/config-resolver@4.4.3 from lock file
-2025-12-09T06:28:11.502804Z	npm error Missing: @smithy/fetch-http-handler@5.3.6 from lock file
-2025-12-09T06:28:11.50288Z	npm error Missing: @smithy/hash-node@4.2.5 from lock file
-2025-12-09T06:28:11.502952Z	npm error Missing: @smithy/invalid-dependency@4.2.5 from lock file
-2025-12-09T06:28:11.503045Z	npm error Missing: @smithy/middleware-content-length@4.2.5 from lock file
-2025-12-09T06:28:11.503123Z	npm error Missing: @smithy/middleware-endpoint@4.3.14 from lock file
-2025-12-09T06:28:11.503196Z	npm error Missing: @smithy/middleware-retry@4.4.14 from lock file
-2025-12-09T06:28:11.503285Z	npm error Missing: @smithy/middleware-serde@4.2.6 from lock file
-2025-12-09T06:28:11.503364Z	npm error Missing: @smithy/middleware-stack@4.2.5 from lock file
-2025-12-09T06:28:11.503439Z	npm error Missing: @smithy/node-config-provider@4.3.5 from lock file
-2025-12-09T06:28:11.503513Z	npm error Missing: @smithy/node-http-handler@4.4.5 from lock file
-2025-12-09T06:28:11.503593Z	npm error Missing: @smithy/protocol-http@5.3.5 from lock file
-2025-12-09T06:28:11.503679Z	npm error Missing: @smithy/smithy-client@4.9.10 from lock file
-2025-12-09T06:28:11.503761Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.503845Z	npm error Missing: @smithy/url-parser@4.2.5 from lock file
-2025-12-09T06:28:11.503926Z	npm error Missing: @smithy/util-base64@4.3.0 from lock file
-2025-12-09T06:28:11.504026Z	npm error Missing: @smithy/util-body-length-browser@4.2.0 from lock file
-2025-12-09T06:28:11.504113Z	npm error Missing: @smithy/util-body-length-node@4.2.1 from lock file
-2025-12-09T06:28:11.504198Z	npm error Missing: @smithy/util-defaults-mode-browser@4.3.13 from lock file
-2025-12-09T06:28:11.504275Z	npm error Missing: @smithy/util-defaults-mode-node@4.2.16 from lock file
-2025-12-09T06:28:11.504357Z	npm error Missing: @smithy/util-retry@4.2.5 from lock file
-2025-12-09T06:28:11.504449Z	npm error Missing: @smithy/util-utf8@4.2.0 from lock file
-2025-12-09T06:28:11.504522Z	npm error Missing: @aws-sdk/middleware-sdk-sts@3.398.0 from lock file
-2025-12-09T06:28:11.504606Z	npm error Missing: @aws-sdk/types@3.936.0 from lock file
-2025-12-09T06:28:11.504693Z	npm error Missing: @aws-sdk/xml-builder@3.930.0 from lock file
-2025-12-09T06:28:11.504776Z	npm error Missing: @smithy/node-config-provider@4.3.5 from lock file
-2025-12-09T06:28:11.504869Z	npm error Missing: @smithy/property-provider@4.2.5 from lock file
-2025-12-09T06:28:11.504952Z	npm error Missing: @smithy/protocol-http@5.3.5 from lock file
-2025-12-09T06:28:11.505054Z	npm error Missing: @smithy/signature-v4@5.3.5 from lock file
-2025-12-09T06:28:11.505139Z	npm error Missing: @smithy/smithy-client@4.9.10 from lock file
-2025-12-09T06:28:11.505218Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.505295Z	npm error Missing: @smithy/util-base64@4.3.0 from lock file
-2025-12-09T06:28:11.505385Z	npm error Missing: @smithy/util-utf8@4.2.0 from lock file
-2025-12-09T06:28:11.505466Z	npm error Missing: @aws-sdk/credential-provider-env@3.398.0 from lock file
-2025-12-09T06:28:11.505552Z	npm error Missing: @aws-sdk/credential-provider-ini@3.398.0 from lock file
-2025-12-09T06:28:11.505644Z	npm error Missing: @aws-sdk/credential-provider-process@3.398.0 from lock file
-2025-12-09T06:28:11.505732Z	npm error Missing: @aws-sdk/credential-provider-sso@3.398.0 from lock file
-2025-12-09T06:28:11.505817Z	npm error Missing: @aws-sdk/credential-provider-web-identity@3.398.0 from lock file
-2025-12-09T06:28:11.505899Z	npm error Missing: @smithy/credential-provider-imds@2.3.0 from lock file
-2025-12-09T06:28:11.505995Z	npm error Missing: @smithy/property-provider@2.2.0 from lock file
-2025-12-09T06:28:11.506079Z	npm error Missing: @smithy/shared-ini-file-loader@2.4.0 from lock file
-2025-12-09T06:28:11.506164Z	npm error Missing: @smithy/property-provider@2.2.0 from lock file
-2025-12-09T06:28:11.506267Z	npm error Missing: @smithy/property-provider@2.2.0 from lock file
-2025-12-09T06:28:11.50635Z	npm error Missing: @smithy/property-provider@2.2.0 from lock file
-2025-12-09T06:28:11.506436Z	npm error Missing: @aws-sdk/client-sso@3.398.0 from lock file
-2025-12-09T06:28:11.50652Z	npm error Missing: @aws-sdk/token-providers@3.398.0 from lock file
-2025-12-09T06:28:11.506611Z	npm error Missing: @smithy/property-provider@2.2.0 from lock file
-2025-12-09T06:28:11.506699Z	npm error Missing: @smithy/property-provider@2.2.0 from lock file
-2025-12-09T06:28:11.506784Z	npm error Missing: @smithy/smithy-client@4.9.10 from lock file
-2025-12-09T06:28:11.506871Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.506953Z	npm error Missing: @smithy/util-base64@4.3.0 from lock file
-2025-12-09T06:28:11.507046Z	npm error Missing: @aws-sdk/types@3.936.0 from lock file
-2025-12-09T06:28:11.507132Z	npm error Missing: @aws-sdk/util-arn-parser@3.893.0 from lock file
-2025-12-09T06:28:11.507217Z	npm error Missing: @smithy/node-config-provider@4.3.5 from lock file
-2025-12-09T06:28:11.507298Z	npm error Missing: @smithy/protocol-http@5.3.5 from lock file
-2025-12-09T06:28:11.507379Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.507464Z	npm error Missing: @smithy/util-config-provider@4.2.0 from lock file
-2025-12-09T06:28:11.507545Z	npm error Missing: @aws-sdk/endpoint-cache@3.893.0 from lock file
-2025-12-09T06:28:11.507639Z	npm error Missing: @aws-sdk/types@3.936.0 from lock file
-2025-12-09T06:28:11.507727Z	npm error Missing: @smithy/node-config-provider@4.3.5 from lock file
-2025-12-09T06:28:11.507806Z	npm error Missing: @smithy/protocol-http@5.3.5 from lock file
-2025-12-09T06:28:11.507889Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.507977Z	npm error Missing: mnemonist@0.38.3 from lock file
-2025-12-09T06:28:11.508076Z	npm error Missing: @aws-sdk/types@3.936.0 from lock file
-2025-12-09T06:28:11.508162Z	npm error Missing: @smithy/protocol-http@5.3.5 from lock file
-2025-12-09T06:28:11.508245Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.508334Z	npm error Missing: @aws-crypto/crc32@5.2.0 from lock file
-2025-12-09T06:28:11.50842Z	npm error Missing: @aws-crypto/crc32c@5.2.0 from lock file
-2025-12-09T06:28:11.508504Z	npm error Missing: @aws-crypto/util@5.2.0 from lock file
-2025-12-09T06:28:11.50859Z	npm error Missing: @aws-sdk/types@3.936.0 from lock file
-2025-12-09T06:28:11.508674Z	npm error Missing: @smithy/is-array-buffer@4.2.0 from lock file
-2025-12-09T06:28:11.508759Z	npm error Missing: @smithy/node-config-provider@4.3.5 from lock file
-2025-12-09T06:28:11.508847Z	npm error Missing: @smithy/protocol-http@5.3.5 from lock file
-2025-12-09T06:28:11.508947Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.50905Z	npm error Missing: @smithy/util-stream@4.5.6 from lock file
-2025-12-09T06:28:11.50913Z	npm error Missing: @smithy/util-utf8@4.2.0 from lock file
-2025-12-09T06:28:11.509207Z	npm error Missing: @aws-crypto/util@5.2.0 from lock file
-2025-12-09T06:28:11.509285Z	npm error Missing: @aws-crypto/util@5.2.0 from lock file
-2025-12-09T06:28:11.50937Z	npm error Missing: @aws-sdk/types@3.936.0 from lock file
-2025-12-09T06:28:11.50945Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.50954Z	npm error Missing: @aws-sdk/types@3.936.0 from lock file
-2025-12-09T06:28:11.509633Z	npm error Missing: @smithy/node-config-provider@4.3.5 from lock file
-2025-12-09T06:28:11.509729Z	npm error Missing: @smithy/protocol-http@5.3.5 from lock file
-2025-12-09T06:28:11.509821Z	npm error Missing: @smithy/smithy-client@4.9.10 from lock file
-2025-12-09T06:28:11.509905Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.510001Z	npm error Missing: @smithy/util-stream@4.5.6 from lock file
-2025-12-09T06:28:11.510093Z	npm error Missing: @smithy/util-utf8@4.2.0 from lock file
-2025-12-09T06:28:11.510179Z	npm error Missing: @aws-sdk/types@3.936.0 from lock file
-2025-12-09T06:28:11.510264Z	npm error Missing: @smithy/smithy-client@4.9.10 from lock file
-2025-12-09T06:28:11.510347Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.510429Z	npm error Missing: @smithy/util-hex-encoding@4.2.0 from lock file
-2025-12-09T06:28:11.510512Z	npm error Missing: @smithy/util-utf8@4.2.0 from lock file
-2025-12-09T06:28:11.510603Z	npm error Missing: @smithy/property-provider@2.2.0 from lock file
-2025-12-09T06:28:11.51069Z	npm error Missing: @smithy/signature-v4@2.3.0 from lock file
-2025-12-09T06:28:11.510779Z	npm error Missing: @smithy/util-middleware@2.2.0 from lock file
-2025-12-09T06:28:11.510901Z	npm error Missing: @aws-sdk/types@3.936.0 from lock file
-2025-12-09T06:28:11.511003Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.511096Z	npm error Missing: @aws-sdk/types@3.936.0 from lock file
-2025-12-09T06:28:11.511184Z	npm error Missing: @smithy/config-resolver@4.4.3 from lock file
-2025-12-09T06:28:11.511267Z	npm error Missing: @smithy/node-config-provider@4.3.5 from lock file
-2025-12-09T06:28:11.511351Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.511436Z	npm error Missing: @aws-sdk/types@3.936.0 from lock file
-2025-12-09T06:28:11.511514Z	npm error Missing: @smithy/protocol-http@5.3.5 from lock file
-2025-12-09T06:28:11.511598Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.51168Z	npm error Missing: @smithy/property-provider@2.2.0 from lock file
-2025-12-09T06:28:11.511767Z	npm error Missing: bowser@2.13.1 from lock file
-2025-12-09T06:28:11.51191Z	npm error Missing: @node-minify/utils@8.0.6 from lock file
-2025-12-09T06:28:11.512024Z	npm error Missing: glob@9.3.5 from lock file
-2025-12-09T06:28:11.512115Z	npm error Missing: mkdirp@1.0.4 from lock file
-2025-12-09T06:28:11.512201Z	npm error Missing: terser@5.16.9 from lock file
-2025-12-09T06:28:11.512292Z	npm error Missing: gzip-size@6.0.0 from lock file
-2025-12-09T06:28:11.512382Z	npm error Missing: @smithy/util-config-provider@2.3.0 from lock file
-2025-12-09T06:28:11.512467Z	npm error Missing: @smithy/util-middleware@2.2.0 from lock file
-2025-12-09T06:28:11.512546Z	npm error Missing: @smithy/middleware-serde@4.2.6 from lock file
-2025-12-09T06:28:11.512631Z	npm error Missing: @smithy/protocol-http@5.3.5 from lock file
-2025-12-09T06:28:11.51271Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.512801Z	npm error Missing: @smithy/util-base64@4.3.0 from lock file
-2025-12-09T06:28:11.512886Z	npm error Missing: @smithy/util-body-length-browser@4.2.0 from lock file
-2025-12-09T06:28:11.512977Z	npm error Missing: @smithy/util-stream@4.5.6 from lock file
-2025-12-09T06:28:11.513085Z	npm error Missing: @smithy/util-utf8@4.2.0 from lock file
-2025-12-09T06:28:11.513173Z	npm error Missing: @smithy/uuid@1.1.0 from lock file
-2025-12-09T06:28:11.513266Z	npm error Missing: @smithy/property-provider@2.2.0 from lock file
-2025-12-09T06:28:11.513351Z	npm error Missing: @smithy/eventstream-serde-universal@4.2.5 from lock file
-2025-12-09T06:28:11.513444Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.513529Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.513617Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.513704Z	npm error Missing: @smithy/eventstream-codec@4.2.5 from lock file
-2025-12-09T06:28:11.51379Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.513877Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.513955Z	npm error Missing: @smithy/protocol-http@3.3.0 from lock file
-2025-12-09T06:28:11.514059Z	npm error Missing: @smithy/querystring-builder@2.2.0 from lock file
-2025-12-09T06:28:11.51414Z	npm error Missing: @smithy/chunked-blob-reader@5.2.0 from lock file
-2025-12-09T06:28:11.514227Z	npm error Missing: @smithy/chunked-blob-reader-native@4.2.1 from lock file
-2025-12-09T06:28:11.514304Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.514387Z	npm error Missing: @smithy/util-base64@4.3.0 from lock file
-2025-12-09T06:28:11.514467Z	npm error Missing: @smithy/util-buffer-from@2.2.0 from lock file
-2025-12-09T06:28:11.514548Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.514642Z	npm error Missing: @smithy/util-utf8@4.2.0 from lock file
-2025-12-09T06:28:11.514728Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.51481Z	npm error Missing: @smithy/util-utf8@4.2.0 from lock file
-2025-12-09T06:28:11.514896Z	npm error Missing: @smithy/protocol-http@3.3.0 from lock file
-2025-12-09T06:28:11.514979Z	npm error Missing: @smithy/util-middleware@2.2.0 from lock file
-2025-12-09T06:28:11.515089Z	npm error Missing: @smithy/protocol-http@3.3.0 from lock file
-2025-12-09T06:28:11.515175Z	npm error Missing: @smithy/service-error-classification@2.1.5 from lock file
-2025-12-09T06:28:11.515257Z	npm error Missing: @smithy/util-middleware@2.2.0 from lock file
-2025-12-09T06:28:11.515344Z	npm error Missing: uuid@9.0.1 from lock file
-2025-12-09T06:28:11.515433Z	npm error Missing: @smithy/property-provider@2.2.0 from lock file
-2025-12-09T06:28:11.515526Z	npm error Missing: @smithy/abort-controller@2.2.0 from lock file
-2025-12-09T06:28:11.515625Z	npm error Missing: @smithy/protocol-http@3.3.0 from lock file
-2025-12-09T06:28:11.515714Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.515796Z	npm error Missing: @smithy/util-uri-escape@2.2.0 from lock file
-2025-12-09T06:28:11.515888Z	npm error Missing: @smithy/protocol-http@5.3.5 from lock file
-2025-12-09T06:28:11.51599Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.516081Z	npm error Missing: @smithy/util-uri-escape@4.2.0 from lock file
-2025-12-09T06:28:11.516162Z	npm error Missing: @smithy/util-utf8@4.2.0 from lock file
-2025-12-09T06:28:11.516274Z	npm error Missing: @smithy/protocol-http@3.3.0 from lock file
-2025-12-09T06:28:11.51636Z	npm error Missing: @smithy/querystring-parser@2.2.0 from lock file
-2025-12-09T06:28:11.516471Z	npm error Missing: @smithy/is-array-buffer@2.2.0 from lock file
-2025-12-09T06:28:11.516558Z	npm error Missing: @smithy/property-provider@2.2.0 from lock file
-2025-12-09T06:28:11.516647Z	npm error Missing: @smithy/property-provider@2.2.0 from lock file
-2025-12-09T06:28:11.516738Z	npm error Missing: @smithy/node-config-provider@4.3.5 from lock file
-2025-12-09T06:28:11.516822Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.516907Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.517003Z	npm error Missing: @smithy/util-hex-encoding@2.2.0 from lock file
-2025-12-09T06:28:11.517097Z	npm error Missing: @types/node@18.19.130 from lock file
-2025-12-09T06:28:11.517181Z	npm error Missing: @types/node-fetch@2.6.13 from lock file
-2025-12-09T06:28:11.517264Z	npm error Missing: abort-controller@3.0.0 from lock file
-2025-12-09T06:28:11.517347Z	npm error Missing: agentkeepalive@4.6.0 from lock file
-2025-12-09T06:28:11.517434Z	npm error Missing: form-data-encoder@1.7.2 from lock file
-2025-12-09T06:28:11.517524Z	npm error Missing: formdata-node@4.4.1 from lock file
-2025-12-09T06:28:11.517623Z	npm error Missing: form-data@4.0.5 from lock file
-2025-12-09T06:28:11.517717Z	npm error Missing: event-target-shim@5.0.1 from lock file
-2025-12-09T06:28:11.517808Z	npm error Missing: humanize-ms@1.2.1 from lock file
-2025-12-09T06:28:11.517896Z	npm error Missing: @ecies/ciphers@0.2.5 from lock file
-2025-12-09T06:28:11.518Z	npm error Missing: @noble/ciphers@1.3.0 from lock file
-2025-12-09T06:28:11.518102Z	npm error Missing: @noble/curves@1.9.7 from lock file
-2025-12-09T06:28:11.518194Z	npm error Missing: @noble/hashes@1.8.0 from lock file
-2025-12-09T06:28:11.518277Z	npm error Missing: ansi-colors@4.1.3 from lock file
-2025-12-09T06:28:11.518366Z	npm error Missing: strip-ansi@6.0.1 from lock file
-2025-12-09T06:28:11.518452Z	npm error Missing: get-stream@6.0.1 from lock file
-2025-12-09T06:28:11.518544Z	npm error Missing: human-signals@2.1.0 from lock file
-2025-12-09T06:28:11.518654Z	npm error Missing: is-stream@2.0.1 from lock file
-2025-12-09T06:28:11.518769Z	npm error Missing: merge-stream@2.0.0 from lock file
-2025-12-09T06:28:11.518876Z	npm error Missing: npm-run-path@4.0.1 from lock file
-2025-12-09T06:28:11.518978Z	npm error Missing: onetime@5.1.2 from lock file
-2025-12-09T06:28:11.51909Z	npm error Missing: signal-exit@3.0.7 from lock file
-2025-12-09T06:28:11.519183Z	npm error Missing: strip-final-newline@2.0.0 from lock file
-2025-12-09T06:28:11.519278Z	npm error Missing: accepts@2.0.0 from lock file
-2025-12-09T06:28:11.519369Z	npm error Missing: body-parser@2.2.1 from lock file
-2025-12-09T06:28:11.519476Z	npm error Missing: content-disposition@1.0.1 from lock file
-2025-12-09T06:28:11.519565Z	npm error Missing: content-type@1.0.5 from lock file
-2025-12-09T06:28:11.519661Z	npm error Missing: cookie@0.7.2 from lock file
-2025-12-09T06:28:11.519902Z	npm error Missing: cookie-signature@1.2.2 from lock file
-2025-12-09T06:28:11.520076Z	npm error Missing: depd@2.0.0 from lock file
-2025-12-09T06:28:11.520206Z	npm error Missing: encodeurl@2.0.0 from lock file
-2025-12-09T06:28:11.520428Z	npm error Missing: escape-html@1.0.3 from lock file
-2025-12-09T06:28:11.520815Z	npm error Missing: finalhandler@2.1.1 from lock file
-2025-12-09T06:28:11.520945Z	npm error Missing: fresh@2.0.0 from lock file
-2025-12-09T06:28:11.521097Z	npm error Missing: http-errors@2.0.1 from lock file
-2025-12-09T06:28:11.521202Z	npm error Missing: merge-descriptors@2.0.0 from lock file
-2025-12-09T06:28:11.521319Z	npm error Missing: mime-types@3.0.2 from lock file
-2025-12-09T06:28:11.521636Z	npm error Missing: on-finished@2.4.1 from lock file
-2025-12-09T06:28:11.521806Z	npm error Missing: once@1.4.0 from lock file
-2025-12-09T06:28:11.521931Z	npm error Missing: parseurl@1.3.3 from lock file
-2025-12-09T06:28:11.522144Z	npm error Missing: proxy-addr@2.0.7 from lock file
-2025-12-09T06:28:11.522299Z	npm error Missing: range-parser@1.2.1 from lock file
-2025-12-09T06:28:11.522491Z	npm error Missing: router@2.2.0 from lock file
-2025-12-09T06:28:11.522626Z	npm error Missing: send@1.2.0 from lock file
-2025-12-09T06:28:11.52273Z	npm error Missing: serve-static@2.2.0 from lock file
-2025-12-09T06:28:11.522823Z	npm error Missing: statuses@2.0.2 from lock file
-2025-12-09T06:28:11.522909Z	npm error Missing: type-is@2.0.1 from lock file
-2025-12-09T06:28:11.523022Z	npm error Missing: vary@1.1.2 from lock file
-2025-12-09T06:28:11.523118Z	npm error Missing: negotiator@1.0.0 from lock file
-2025-12-09T06:28:11.523211Z	npm error Missing: bytes@3.1.2 from lock file
-2025-12-09T06:28:11.523302Z	npm error Missing: content-type@1.0.5 from lock file
-2025-12-09T06:28:11.523398Z	npm error Missing: http-errors@2.0.1 from lock file
-2025-12-09T06:28:11.523574Z	npm error Missing: iconv-lite@0.7.0 from lock file
-2025-12-09T06:28:11.523675Z	npm error Missing: raw-body@3.0.2 from lock file
-2025-12-09T06:28:11.523752Z	npm error Missing: strnum@1.1.2 from lock file
-2025-12-09T06:28:11.52384Z	npm error Missing: statuses@2.0.2 from lock file
-2025-12-09T06:28:11.523927Z	npm error Missing: asynckit@0.4.0 from lock file
-2025-12-09T06:28:11.52403Z	npm error Missing: combined-stream@1.0.8 from lock file
-2025-12-09T06:28:11.524128Z	npm error Missing: mime-types@2.1.35 from lock file
-2025-12-09T06:28:11.524226Z	npm error Missing: delayed-stream@1.0.0 from lock file
-2025-12-09T06:28:11.524323Z	npm error Missing: node-domexception@1.0.0 from lock file
-2025-12-09T06:28:11.524414Z	npm error Missing: web-streams-polyfill@4.0.0-beta.3 from lock file
-2025-12-09T06:28:11.524512Z	npm error Missing: duplexer@0.1.2 from lock file
-2025-12-09T06:28:11.524605Z	npm error Missing: mime-db@1.54.0 from lock file
-2025-12-09T06:28:11.524695Z	npm error Missing: obliterator@1.6.1 from lock file
-2025-12-09T06:28:11.52478Z	npm error Missing: ee-first@1.1.1 from lock file
-2025-12-09T06:28:11.524863Z	npm error Missing: mimic-fn@2.1.0 from lock file
-2025-12-09T06:28:11.524949Z	npm error Missing: forwarded@0.2.0 from lock file
-2025-12-09T06:28:11.525056Z	npm error Missing: ipaddr.js@1.9.1 from lock file
-2025-12-09T06:28:11.525142Z	npm error Missing: depd@2.0.0 from lock file
-2025-12-09T06:28:11.525228Z	npm error Missing: is-promise@4.0.0 from lock file
-2025-12-09T06:28:11.525347Z	npm error Missing: path-to-regexp@8.3.0 from lock file
-2025-12-09T06:28:11.525438Z	npm error Missing: http-errors@2.0.1 from lock file
-2025-12-09T06:28:11.525524Z	npm error Missing: statuses@2.0.2 from lock file
-2025-12-09T06:28:11.525607Z	npm error Missing: @jridgewell/source-map@0.3.11 from lock file
-2025-12-09T06:28:11.525694Z	npm error Missing: commander@2.20.3 from lock file
-2025-12-09T06:28:11.525792Z	npm error Missing: source-map-support@0.5.21 from lock file
-2025-12-09T06:28:11.52588Z	npm error Missing: buffer-from@1.1.2 from lock file
-2025-12-09T06:28:11.525968Z	npm error Missing: content-type@1.0.5 from lock file
-2025-12-09T06:28:11.526075Z	npm error Missing: media-typer@1.1.0 from lock file
-2025-12-09T06:28:11.526166Z	npm error Missing: cliui@9.0.1 from lock file
-2025-12-09T06:28:11.526276Z	npm error Missing: escalade@3.2.0 from lock file
-2025-12-09T06:28:11.526378Z	npm error Missing: get-caller-file@2.0.5 from lock file
-2025-12-09T06:28:11.526474Z	npm error Missing: string-width@7.2.0 from lock file
-2025-12-09T06:28:11.526556Z	npm error Missing: y18n@5.0.8 from lock file
-2025-12-09T06:28:11.526641Z	npm error Missing: yargs-parser@22.0.0 from lock file
-2025-12-09T06:28:11.526733Z	npm error Missing: string-width@7.2.0 from lock file
-2025-12-09T06:28:11.526818Z	npm error Missing: wrap-ansi@9.0.2 from lock file
-2025-12-09T06:28:11.526901Z	npm error Missing: @aws-crypto/supports-web-crypto@5.2.0 from lock file
-2025-12-09T06:28:11.526996Z	npm error Missing: @aws-crypto/util@5.2.0 from lock file
-2025-12-09T06:28:11.527143Z	npm error Missing: @smithy/util-utf8@2.3.0 from lock file
-2025-12-09T06:28:11.527245Z	npm error Missing: @smithy/util-utf8@2.3.0 from lock file
-2025-12-09T06:28:11.52734Z	npm error Missing: @aws-sdk/credential-provider-env@3.947.0 from lock file
-2025-12-09T06:28:11.527443Z	npm error Missing: @aws-sdk/credential-provider-http@3.947.0 from lock file
-2025-12-09T06:28:11.527535Z	npm error Missing: @aws-sdk/credential-provider-ini@3.947.0 from lock file
-2025-12-09T06:28:11.527643Z	npm error Missing: @aws-sdk/credential-provider-process@3.947.0 from lock file
-2025-12-09T06:28:11.52773Z	npm error Missing: @aws-sdk/credential-provider-sso@3.947.0 from lock file
-2025-12-09T06:28:11.52782Z	npm error Missing: @aws-sdk/credential-provider-web-identity@3.947.0 from lock file
-2025-12-09T06:28:11.527909Z	npm error Missing: @smithy/credential-provider-imds@4.2.5 from lock file
-2025-12-09T06:28:11.528009Z	npm error Missing: @smithy/shared-ini-file-loader@4.4.0 from lock file
-2025-12-09T06:28:11.528107Z	npm error Missing: @aws-sdk/types@3.936.0 from lock file
-2025-12-09T06:28:11.528196Z	npm error Missing: @smithy/fetch-http-handler@5.3.6 from lock file
-2025-12-09T06:28:11.528286Z	npm error Missing: @smithy/node-http-handler@4.4.5 from lock file
-2025-12-09T06:28:11.528393Z	npm error Missing: @smithy/protocol-http@5.3.5 from lock file
-2025-12-09T06:28:11.528524Z	npm error Missing: @smithy/smithy-client@4.9.10 from lock file
-2025-12-09T06:28:11.528647Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.528739Z	npm error Missing: @smithy/util-stream@4.5.6 from lock file
-2025-12-09T06:28:11.528825Z	npm error Missing: @aws-sdk/credential-provider-login@3.947.0 from lock file
-2025-12-09T06:28:11.528913Z	npm error Missing: @aws-sdk/nested-clients@3.947.0 from lock file
-2025-12-09T06:28:11.529039Z	npm error Missing: @aws-sdk/types@3.936.0 from lock file
-2025-12-09T06:28:11.52913Z	npm error Missing: @smithy/protocol-http@5.3.5 from lock file
-2025-12-09T06:28:11.529216Z	npm error Missing: @smithy/shared-ini-file-loader@4.4.0 from lock file
-2025-12-09T06:28:11.529308Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.529423Z	npm error Missing: @aws-crypto/sha256-browser@5.2.0 from lock file
-2025-12-09T06:28:11.529525Z	npm error Missing: @aws-crypto/sha256-js@5.2.0 from lock file
-2025-12-09T06:28:11.529609Z	npm error Missing: @aws-sdk/middleware-host-header@3.936.0 from lock file
-2025-12-09T06:28:11.529699Z	npm error Missing: @aws-sdk/middleware-logger@3.936.0 from lock file
-2025-12-09T06:28:11.529791Z	npm error Missing: @aws-sdk/middleware-recursion-detection@3.936.0 from lock file
-2025-12-09T06:28:11.529914Z	npm error Missing: @aws-sdk/middleware-user-agent@3.947.0 from lock file
-2025-12-09T06:28:11.530024Z	npm error Missing: @aws-sdk/types@3.936.0 from lock file
-2025-12-09T06:28:11.530125Z	npm error Missing: @aws-sdk/util-endpoints@3.936.0 from lock file
-2025-12-09T06:28:11.530225Z	npm error Missing: @aws-sdk/util-user-agent-browser@3.936.0 from lock file
-2025-12-09T06:28:11.530317Z	npm error Missing: @aws-sdk/util-user-agent-node@3.947.0 from lock file
-2025-12-09T06:28:11.530434Z	npm error Missing: @smithy/config-resolver@4.4.3 from lock file
-2025-12-09T06:28:11.530533Z	npm error Missing: @smithy/fetch-http-handler@5.3.6 from lock file
-2025-12-09T06:28:11.530864Z	npm error Missing: @smithy/hash-node@4.2.5 from lock file
-2025-12-09T06:28:11.530963Z	npm error Missing: @smithy/invalid-dependency@4.2.5 from lock file
-2025-12-09T06:28:11.531094Z	npm error Missing: @smithy/middleware-content-length@4.2.5 from lock file
-2025-12-09T06:28:11.5312Z	npm error Missing: @smithy/middleware-endpoint@4.3.14 from lock file
-2025-12-09T06:28:11.531301Z	npm error Missing: @smithy/middleware-retry@4.4.14 from lock file
-2025-12-09T06:28:11.531415Z	npm error Missing: @smithy/middleware-serde@4.2.6 from lock file
-2025-12-09T06:28:11.531658Z	npm error Missing: @smithy/middleware-stack@4.2.5 from lock file
-2025-12-09T06:28:11.531935Z	npm error Missing: @smithy/node-config-provider@4.3.5 from lock file
-2025-12-09T06:28:11.532285Z	npm error Missing: @smithy/node-http-handler@4.4.5 from lock file
-2025-12-09T06:28:11.532451Z	npm error Missing: @smithy/protocol-http@5.3.5 from lock file
-2025-12-09T06:28:11.532894Z	npm error Missing: @smithy/smithy-client@4.9.10 from lock file
-2025-12-09T06:28:11.533325Z	npm error Missing: @smithy/types@4.9.0 from lock file
-2025-12-09T06:28:11.534475Z	npm error Missing: @smithy/url-parser@4.2.5 from lock file
-2025-12-09T06:28:11.534604Z	npm error Missing: @smithy/util-base64@4.3.0 from lock file
-2025-12-09T06:28:11.535414Z	npm error Missing: @smithy/util-body-length-browser@4.2.0 from lock file
-2025-12-09T06:28:11.535935Z	npm error Missing: @smithy/util-body-length-node@4.2.1 from lock file
-2025-12-09T06:28:11.536362Z	npm error Missing: @smithy/util-defaults-mode-browser@4.3.13 from lock file
-2025-12-09T06:28:11.536702Z	npm error Missing: @smithy/util-defaults-mode-node@4.2.16 from lock file
-2025-12-09T06:28:11.537017Z	npm error Missing: @smithy/util-retry@4.2.5 from lock file
-2025-12-09T06:28:11.537132Z	npm error Missing: @smithy/util-utf8@4.2.0 from lock file
-2025-12-09T06:28:11.537636Z	npm error Missing: @aws-sdk/client-sso@3.947.0 from lock file
-2025-12-09T06:28:11.538001Z	npm error Missing: @aws-sdk/token-providers@3.947.0 from lock file
-2025-12-09T06:28:11.538134Z	npm error Missing: @aws/lambda-invoke-store@0.2.2 from lock file
-2025-12-09T06:28:11.538237Z	npm error Missing: @smithy/querystring-builder@4.2.5 from lock file
-2025-12-09T06:28:11.538344Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.53845Z	npm error Missing: @smithy/service-error-classification@4.2.5 from lock file
-2025-12-09T06:28:11.53855Z	npm error Missing: @smithy/abort-controller@4.2.5 from lock file
-2025-12-09T06:28:11.538656Z	npm error Missing: @smithy/util-uri-escape@4.2.0 from lock file
-2025-12-09T06:28:11.538753Z	npm error Missing: @smithy/util-stream@4.5.6 from lock file
-2025-12-09T06:28:11.538842Z	npm error Missing: @smithy/querystring-parser@4.2.5 from lock file
-2025-12-09T06:28:11.538943Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.53907Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.539175Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.53928Z	npm error Missing: @aws-crypto/supports-web-crypto@5.2.0 from lock file
-2025-12-09T06:28:11.539391Z	npm error Missing: @aws-crypto/util@5.2.0 from lock file
-2025-12-09T06:28:11.54069Z	npm error Missing: @smithy/util-utf8@2.3.0 from lock file
-2025-12-09T06:28:11.540819Z	npm error Missing: @smithy/util-utf8@2.3.0 from lock file
-2025-12-09T06:28:11.5409Z	npm error Missing: @aws-sdk/credential-provider-env@3.947.0 from lock file
-2025-12-09T06:28:11.541005Z	npm error Missing: @aws-sdk/credential-provider-ini@3.947.0 from lock file
-2025-12-09T06:28:11.541101Z	npm error Missing: @aws-sdk/credential-provider-process@3.947.0 from lock file
-2025-12-09T06:28:11.541193Z	npm error Missing: @aws-sdk/credential-provider-sso@3.947.0 from lock file
-2025-12-09T06:28:11.541278Z	npm error Missing: @aws-sdk/credential-provider-web-identity@3.947.0 from lock file
-2025-12-09T06:28:11.541368Z	npm error Missing: @smithy/credential-provider-imds@4.2.5 from lock file
-2025-12-09T06:28:11.541458Z	npm error Missing: @smithy/shared-ini-file-loader@4.4.0 from lock file
-2025-12-09T06:28:11.541539Z	npm error Missing: @aws-sdk/client-sso@3.947.0 from lock file
-2025-12-09T06:28:11.541635Z	npm error Missing: @aws-sdk/token-providers@3.947.0 from lock file
-2025-12-09T06:28:11.541735Z	npm error Missing: @smithy/querystring-builder@4.2.5 from lock file
-2025-12-09T06:28:11.541841Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.541944Z	npm error Missing: @smithy/service-error-classification@4.2.5 from lock file
-2025-12-09T06:28:11.542043Z	npm error Missing: @smithy/abort-controller@4.2.5 from lock file
-2025-12-09T06:28:11.542135Z	npm error Missing: @smithy/util-uri-escape@4.2.0 from lock file
-2025-12-09T06:28:11.542223Z	npm error Missing: @smithy/querystring-parser@4.2.5 from lock file
-2025-12-09T06:28:11.54231Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.542402Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.542508Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.542606Z	npm error Missing: @aws-crypto/supports-web-crypto@5.2.0 from lock file
-2025-12-09T06:28:11.542698Z	npm error Missing: @aws-crypto/util@5.2.0 from lock file
-2025-12-09T06:28:11.54279Z	npm error Missing: @smithy/util-utf8@2.3.0 from lock file
-2025-12-09T06:28:11.542894Z	npm error Missing: @smithy/util-utf8@2.3.0 from lock file
-2025-12-09T06:28:11.54301Z	npm error Missing: @aws-sdk/credential-provider-env@3.947.0 from lock file
-2025-12-09T06:28:11.543098Z	npm error Missing: @aws-sdk/credential-provider-ini@3.947.0 from lock file
-2025-12-09T06:28:11.543212Z	npm error Missing: @aws-sdk/credential-provider-process@3.947.0 from lock file
-2025-12-09T06:28:11.543309Z	npm error Missing: @aws-sdk/credential-provider-sso@3.947.0 from lock file
-2025-12-09T06:28:11.543406Z	npm error Missing: @aws-sdk/credential-provider-web-identity@3.947.0 from lock file
-2025-12-09T06:28:11.543506Z	npm error Missing: @smithy/credential-provider-imds@4.2.5 from lock file
-2025-12-09T06:28:11.543599Z	npm error Missing: @smithy/shared-ini-file-loader@4.4.0 from lock file
-2025-12-09T06:28:11.543696Z	npm error Missing: @aws-sdk/client-sso@3.947.0 from lock file
-2025-12-09T06:28:11.543787Z	npm error Missing: @aws-sdk/token-providers@3.947.0 from lock file
-2025-12-09T06:28:11.54388Z	npm error Missing: @smithy/querystring-builder@4.2.5 from lock file
-2025-12-09T06:28:11.543977Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.544084Z	npm error Missing: @smithy/service-error-classification@4.2.5 from lock file
-2025-12-09T06:28:11.544175Z	npm error Missing: @smithy/abort-controller@4.2.5 from lock file
-2025-12-09T06:28:11.544263Z	npm error Missing: @smithy/util-uri-escape@4.2.0 from lock file
-2025-12-09T06:28:11.544352Z	npm error Missing: @smithy/querystring-parser@4.2.5 from lock file
-2025-12-09T06:28:11.544427Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.544507Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.544591Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.544685Z	npm error Missing: @aws-crypto/supports-web-crypto@5.2.0 from lock file
-2025-12-09T06:28:11.544822Z	npm error Missing: @aws-crypto/util@5.2.0 from lock file
-2025-12-09T06:28:11.544942Z	npm error Missing: @smithy/util-utf8@2.3.0 from lock file
-2025-12-09T06:28:11.545065Z	npm error Missing: @smithy/util-utf8@2.3.0 from lock file
-2025-12-09T06:28:11.545146Z	npm error Missing: @aws-sdk/credential-provider-env@3.947.0 from lock file
-2025-12-09T06:28:11.545364Z	npm error Missing: @aws-sdk/credential-provider-ini@3.947.0 from lock file
-2025-12-09T06:28:11.545597Z	npm error Missing: @aws-sdk/credential-provider-process@3.947.0 from lock file
-2025-12-09T06:28:11.545739Z	npm error Missing: @aws-sdk/credential-provider-sso@3.947.0 from lock file
-2025-12-09T06:28:11.545839Z	npm error Missing: @aws-sdk/credential-provider-web-identity@3.947.0 from lock file
-2025-12-09T06:28:11.545938Z	npm error Missing: @smithy/credential-provider-imds@4.2.5 from lock file
-2025-12-09T06:28:11.546075Z	npm error Missing: @smithy/shared-ini-file-loader@4.4.0 from lock file
-2025-12-09T06:28:11.546173Z	npm error Missing: @aws-sdk/client-sso@3.947.0 from lock file
-2025-12-09T06:28:11.546276Z	npm error Missing: @aws-sdk/token-providers@3.947.0 from lock file
-2025-12-09T06:28:11.54638Z	npm error Missing: @smithy/querystring-builder@4.2.5 from lock file
-2025-12-09T06:28:11.546464Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.546553Z	npm error Missing: @smithy/service-error-classification@4.2.5 from lock file
-2025-12-09T06:28:11.546642Z	npm error Missing: @smithy/abort-controller@4.2.5 from lock file
-2025-12-09T06:28:11.546731Z	npm error Missing: @smithy/util-uri-escape@4.2.0 from lock file
-2025-12-09T06:28:11.546831Z	npm error Missing: @smithy/util-stream@4.5.6 from lock file
-2025-12-09T06:28:11.546923Z	npm error Missing: @smithy/querystring-parser@4.2.5 from lock file
-2025-12-09T06:28:11.547024Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.547118Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.547207Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.547297Z	npm error Missing: fast-xml-parser@5.2.5 from lock file
-2025-12-09T06:28:11.547396Z	npm error Missing: @smithy/shared-ini-file-loader@4.4.0 from lock file
-2025-12-09T06:28:11.547479Z	npm error Missing: @smithy/middleware-endpoint@4.3.14 from lock file
-2025-12-09T06:28:11.547572Z	npm error Missing: @smithy/middleware-stack@4.2.5 from lock file
-2025-12-09T06:28:11.547661Z	npm error Missing: @smithy/util-stream@4.5.6 from lock file
-2025-12-09T06:28:11.54775Z	npm error Missing: @smithy/middleware-serde@4.2.6 from lock file
-2025-12-09T06:28:11.547844Z	npm error Missing: @smithy/url-parser@4.2.5 from lock file
-2025-12-09T06:28:11.547927Z	npm error Missing: @smithy/querystring-parser@4.2.5 from lock file
-2025-12-09T06:28:11.548039Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.548134Z	npm error Missing: @smithy/fetch-http-handler@5.3.6 from lock file
-2025-12-09T06:28:11.548221Z	npm error Missing: @smithy/node-http-handler@4.4.5 from lock file
-2025-12-09T06:28:11.54832Z	npm error Missing: @smithy/querystring-builder@4.2.5 from lock file
-2025-12-09T06:28:11.548417Z	npm error Missing: @smithy/abort-controller@4.2.5 from lock file
-2025-12-09T06:28:11.548508Z	npm error Missing: @smithy/util-uri-escape@4.2.0 from lock file
-2025-12-09T06:28:11.548593Z	npm error Missing: strnum@2.1.1 from lock file
-2025-12-09T06:28:11.548679Z	npm error Missing: @smithy/querystring-builder@4.2.5 from lock file
-2025-12-09T06:28:11.548771Z	npm error Missing: @smithy/util-base64@4.3.0 from lock file
-2025-12-09T06:28:11.548857Z	npm error Missing: @smithy/abort-controller@4.2.5 from lock file
-2025-12-09T06:28:11.548947Z	npm error Missing: @smithy/util-uri-escape@4.2.0 from lock file
-2025-12-09T06:28:11.549053Z	npm error Missing: @smithy/middleware-endpoint@4.3.14 from lock file
-2025-12-09T06:28:11.549141Z	npm error Missing: @smithy/middleware-stack@4.2.5 from lock file
-2025-12-09T06:28:11.549231Z	npm error Missing: @smithy/middleware-serde@4.2.6 from lock file
-2025-12-09T06:28:11.549322Z	npm error Missing: @smithy/node-config-provider@4.3.5 from lock file
-2025-12-09T06:28:11.549418Z	npm error Missing: @smithy/shared-ini-file-loader@4.4.0 from lock file
-2025-12-09T06:28:11.549518Z	npm error Missing: @smithy/url-parser@4.2.5 from lock file
-2025-12-09T06:28:11.549611Z	npm error Missing: @smithy/querystring-parser@4.2.5 from lock file
-2025-12-09T06:28:11.549697Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.549789Z	npm error Missing: @smithy/util-utf8@4.2.0 from lock file
-2025-12-09T06:28:11.549888Z	npm error Missing: @smithy/middleware-endpoint@4.3.14 from lock file
-2025-12-09T06:28:11.549969Z	npm error Missing: @smithy/middleware-stack@4.2.5 from lock file
-2025-12-09T06:28:11.550067Z	npm error Missing: @smithy/protocol-http@5.3.5 from lock file
-2025-12-09T06:28:11.550161Z	npm error Missing: @smithy/util-stream@4.5.6 from lock file
-2025-12-09T06:28:11.550253Z	npm error Missing: @smithy/middleware-serde@4.2.6 from lock file
-2025-12-09T06:28:11.550348Z	npm error Missing: @smithy/node-config-provider@4.3.5 from lock file
-2025-12-09T06:28:11.550437Z	npm error Missing: @smithy/shared-ini-file-loader@4.4.0 from lock file
-2025-12-09T06:28:11.55053Z	npm error Missing: @smithy/url-parser@4.2.5 from lock file
-2025-12-09T06:28:11.550625Z	npm error Missing: @smithy/querystring-parser@4.2.5 from lock file
-2025-12-09T06:28:11.550706Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.550784Z	npm error Missing: @smithy/util-utf8@4.2.0 from lock file
-2025-12-09T06:28:11.550863Z	npm error Missing: @smithy/fetch-http-handler@5.3.6 from lock file
-2025-12-09T06:28:11.550949Z	npm error Missing: @smithy/node-http-handler@4.4.5 from lock file
-2025-12-09T06:28:11.55105Z	npm error Missing: @smithy/querystring-builder@4.2.5 from lock file
-2025-12-09T06:28:11.551198Z	npm error Missing: @smithy/abort-controller@4.2.5 from lock file
-2025-12-09T06:28:11.551293Z	npm error Missing: @smithy/util-uri-escape@4.2.0 from lock file
-2025-12-09T06:28:11.55139Z	npm error Missing: @smithy/shared-ini-file-loader@4.4.0 from lock file
-2025-12-09T06:28:11.551474Z	npm error Missing: @smithy/shared-ini-file-loader@4.4.0 from lock file
-2025-12-09T06:28:11.551562Z	npm error Missing: @smithy/util-utf8@2.3.0 from lock file
-2025-12-09T06:28:11.551648Z	npm error Missing: @smithy/shared-ini-file-loader@4.4.0 from lock file
-2025-12-09T06:28:11.551743Z	npm error Missing: @smithy/fetch-http-handler@5.3.6 from lock file
-2025-12-09T06:28:11.551837Z	npm error Missing: @smithy/node-http-handler@4.4.5 from lock file
-2025-12-09T06:28:11.551931Z	npm error Missing: @smithy/util-base64@4.3.0 from lock file
-2025-12-09T06:28:11.552068Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.552157Z	npm error Missing: @smithy/querystring-builder@4.2.5 from lock file
-2025-12-09T06:28:11.552237Z	npm error Missing: @smithy/abort-controller@4.2.5 from lock file
-2025-12-09T06:28:11.55232Z	npm error Missing: @smithy/util-uri-escape@4.2.0 from lock file
-2025-12-09T06:28:11.552452Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.552555Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.552652Z	npm error Missing: @smithy/shared-ini-file-loader@4.4.0 from lock file
-2025-12-09T06:28:11.552745Z	npm error Missing: @smithy/middleware-endpoint@4.3.14 from lock file
-2025-12-09T06:28:11.55284Z	npm error Missing: @smithy/middleware-stack@4.2.5 from lock file
-2025-12-09T06:28:11.552939Z	npm error Missing: @smithy/middleware-serde@4.2.6 from lock file
-2025-12-09T06:28:11.553057Z	npm error Missing: @smithy/url-parser@4.2.5 from lock file
-2025-12-09T06:28:11.553154Z	npm error Missing: @smithy/querystring-parser@4.2.5 from lock file
-2025-12-09T06:28:11.553238Z	npm error Missing: @smithy/fetch-http-handler@5.3.6 from lock file
-2025-12-09T06:28:11.553335Z	npm error Missing: @smithy/node-http-handler@4.4.5 from lock file
-2025-12-09T06:28:11.553429Z	npm error Missing: @smithy/util-base64@4.3.0 from lock file
-2025-12-09T06:28:11.553519Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.553604Z	npm error Missing: @smithy/querystring-builder@4.2.5 from lock file
-2025-12-09T06:28:11.553702Z	npm error Missing: @smithy/abort-controller@4.2.5 from lock file
-2025-12-09T06:28:11.553796Z	npm error Missing: @smithy/util-uri-escape@4.2.0 from lock file
-2025-12-09T06:28:11.553907Z	npm error Missing: @smithy/middleware-endpoint@4.3.14 from lock file
-2025-12-09T06:28:11.554014Z	npm error Missing: @smithy/middleware-stack@4.2.5 from lock file
-2025-12-09T06:28:11.554125Z	npm error Missing: @smithy/protocol-http@5.3.5 from lock file
-2025-12-09T06:28:11.554211Z	npm error Missing: @smithy/util-stream@4.5.6 from lock file
-2025-12-09T06:28:11.554308Z	npm error Missing: @smithy/middleware-serde@4.2.6 from lock file
-2025-12-09T06:28:11.554408Z	npm error Missing: @smithy/node-config-provider@4.3.5 from lock file
-2025-12-09T06:28:11.554507Z	npm error Missing: @smithy/shared-ini-file-loader@4.4.0 from lock file
-2025-12-09T06:28:11.554592Z	npm error Missing: @smithy/url-parser@4.2.5 from lock file
-2025-12-09T06:28:11.554687Z	npm error Missing: @smithy/querystring-parser@4.2.5 from lock file
-2025-12-09T06:28:11.554775Z	npm error Missing: @smithy/fetch-http-handler@5.3.6 from lock file
-2025-12-09T06:28:11.554869Z	npm error Missing: @smithy/node-http-handler@4.4.5 from lock file
-2025-12-09T06:28:11.554956Z	npm error Missing: @smithy/util-base64@4.3.0 from lock file
-2025-12-09T06:28:11.55506Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.555157Z	npm error Missing: @smithy/querystring-builder@4.2.5 from lock file
-2025-12-09T06:28:11.555257Z	npm error Missing: @smithy/abort-controller@4.2.5 from lock file
-2025-12-09T06:28:11.555356Z	npm error Missing: @smithy/util-uri-escape@4.2.0 from lock file
-2025-12-09T06:28:11.555447Z	npm error Missing: @smithy/is-array-buffer@2.2.0 from lock file
-2025-12-09T06:28:11.555536Z	npm error Missing: @smithy/util-hex-encoding@2.2.0 from lock file
-2025-12-09T06:28:11.555621Z	npm error Missing: @aws-crypto/supports-web-crypto@5.2.0 from lock file
-2025-12-09T06:28:11.555694Z	npm error Missing: @aws-crypto/util@5.2.0 from lock file
-2025-12-09T06:28:11.555769Z	npm error Missing: @smithy/util-utf8@2.3.0 from lock file
-2025-12-09T06:28:11.555855Z	npm error Missing: @smithy/util-utf8@2.3.0 from lock file
-2025-12-09T06:28:11.555948Z	npm error Missing: @smithy/querystring-builder@4.2.5 from lock file
-2025-12-09T06:28:11.55606Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.556168Z	npm error Missing: @smithy/shared-ini-file-loader@4.4.0 from lock file
-2025-12-09T06:28:11.556269Z	npm error Missing: @smithy/service-error-classification@4.2.5 from lock file
-2025-12-09T06:28:11.556376Z	npm error Missing: @smithy/abort-controller@4.2.5 from lock file
-2025-12-09T06:28:11.556481Z	npm error Missing: @smithy/util-uri-escape@4.2.0 from lock file
-2025-12-09T06:28:11.556572Z	npm error Missing: @smithy/util-stream@4.5.6 from lock file
-2025-12-09T06:28:11.556661Z	npm error Missing: @smithy/querystring-parser@4.2.5 from lock file
-2025-12-09T06:28:11.556754Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.556843Z	npm error Missing: @smithy/credential-provider-imds@4.2.5 from lock file
-2025-12-09T06:28:11.556935Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.557037Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.557125Z	npm error Missing: @smithy/shared-ini-file-loader@4.4.0 from lock file
-2025-12-09T06:28:11.557198Z	npm error Missing: isexe@3.1.1 from lock file
-2025-12-09T06:28:11.55727Z	npm error Missing: fs.realpath@1.0.0 from lock file
-2025-12-09T06:28:11.557358Z	npm error Missing: minimatch@8.0.4 from lock file
-2025-12-09T06:28:11.557441Z	npm error Missing: minipass@4.2.8 from lock file
-2025-12-09T06:28:11.557531Z	npm error Missing: brace-expansion@2.0.2 from lock file
-2025-12-09T06:28:11.557621Z	npm error Missing: @esbuild/aix-ppc64@0.25.4 from lock file
-2025-12-09T06:28:11.557721Z	npm error Missing: @esbuild/android-arm@0.25.4 from lock file
-2025-12-09T06:28:11.557812Z	npm error Missing: @esbuild/android-arm64@0.25.4 from lock file
-2025-12-09T06:28:11.557902Z	npm error Missing: @esbuild/android-x64@0.25.4 from lock file
-2025-12-09T06:28:11.558005Z	npm error Missing: @esbuild/darwin-arm64@0.25.4 from lock file
-2025-12-09T06:28:11.558092Z	npm error Missing: @esbuild/darwin-x64@0.25.4 from lock file
-2025-12-09T06:28:11.558183Z	npm error Missing: @esbuild/freebsd-arm64@0.25.4 from lock file
-2025-12-09T06:28:11.558273Z	npm error Missing: @esbuild/freebsd-x64@0.25.4 from lock file
-2025-12-09T06:28:11.558379Z	npm error Missing: @esbuild/linux-arm@0.25.4 from lock file
-2025-12-09T06:28:11.558485Z	npm error Missing: @esbuild/linux-arm64@0.25.4 from lock file
-2025-12-09T06:28:11.558578Z	npm error Missing: @esbuild/linux-ia32@0.25.4 from lock file
-2025-12-09T06:28:11.55867Z	npm error Missing: @esbuild/linux-loong64@0.25.4 from lock file
-2025-12-09T06:28:11.558774Z	npm error Missing: @esbuild/linux-mips64el@0.25.4 from lock file
-2025-12-09T06:28:11.558875Z	npm error Missing: @esbuild/linux-ppc64@0.25.4 from lock file
-2025-12-09T06:28:11.558968Z	npm error Missing: @esbuild/linux-riscv64@0.25.4 from lock file
-2025-12-09T06:28:11.559077Z	npm error Missing: @esbuild/linux-s390x@0.25.4 from lock file
-2025-12-09T06:28:11.559175Z	npm error Missing: @esbuild/linux-x64@0.25.4 from lock file
-2025-12-09T06:28:11.559264Z	npm error Missing: @esbuild/netbsd-arm64@0.25.4 from lock file
-2025-12-09T06:28:11.559356Z	npm error Missing: @esbuild/netbsd-x64@0.25.4 from lock file
-2025-12-09T06:28:11.559442Z	npm error Missing: @esbuild/openbsd-arm64@0.25.4 from lock file
-2025-12-09T06:28:11.559531Z	npm error Missing: @esbuild/openbsd-x64@0.25.4 from lock file
-2025-12-09T06:28:11.559608Z	npm error Missing: @esbuild/sunos-x64@0.25.4 from lock file
-2025-12-09T06:28:11.559766Z	npm error Missing: @esbuild/win32-arm64@0.25.4 from lock file
-2025-12-09T06:28:11.559873Z	npm error Missing: @esbuild/win32-ia32@0.25.4 from lock file
-2025-12-09T06:28:11.559973Z	npm error Missing: @esbuild/win32-x64@0.25.4 from lock file
-2025-12-09T06:28:11.56007Z	npm error Missing: jackspeak@4.1.1 from lock file
-2025-12-09T06:28:11.56019Z	npm error Missing: minimatch@10.1.1 from lock file
-2025-12-09T06:28:11.560288Z	npm error Missing: path-scurry@2.0.1 from lock file
-2025-12-09T06:28:11.560388Z	npm error Missing: @isaacs/brace-expansion@5.0.0 from lock file
-2025-12-09T06:28:11.560477Z	npm error Missing: @isaacs/balanced-match@4.0.1 from lock file
-2025-12-09T06:28:11.560568Z	npm error Missing: lru-cache@11.2.4 from lock file
-2025-12-09T06:28:11.560899Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.561059Z	npm error Missing: @smithy/util-utf8@4.2.0 from lock file
-2025-12-09T06:28:11.561173Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.56131Z	npm error Missing: @smithy/fetch-http-handler@5.3.6 from lock file
-2025-12-09T06:28:11.561519Z	npm error Missing: @smithy/node-http-handler@4.4.5 from lock file
-2025-12-09T06:28:11.561635Z	npm error Missing: @smithy/querystring-builder@4.2.5 from lock file
-2025-12-09T06:28:11.561771Z	npm error Missing: @smithy/abort-controller@4.2.5 from lock file
-2025-12-09T06:28:11.561887Z	npm error Missing: @smithy/util-uri-escape@4.2.0 from lock file
-2025-12-09T06:28:11.562023Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.562305Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.562443Z	npm error Missing: @smithy/util-buffer-from@4.2.0 from lock file
-2025-12-09T06:28:11.562547Z	npm error Missing: @smithy/shared-ini-file-loader@4.4.0 from lock file
-2025-12-09T06:28:11.562673Z	npm error Missing: depd@2.0.0 from lock file
-2025-12-09T06:28:11.563363Z	npm error Missing: inherits@2.0.4 from lock file
-2025-12-09T06:28:11.563481Z	npm error Missing: setprototypeof@1.2.0 from lock file
-2025-12-09T06:28:11.563575Z	npm error Missing: statuses@2.0.2 from lock file
-2025-12-09T06:28:11.563665Z	npm error Missing: toidentifier@1.0.1 from lock file
-2025-12-09T06:28:11.563753Z	npm error Missing: emoji-regex@10.6.0 from lock file
-2025-12-09T06:28:11.563848Z	npm error Missing: get-east-asian-width@1.4.0 from lock file
-2025-12-09T06:28:11.563936Z	npm error Missing: ansi-styles@6.2.3 from lock file
-2025-12-09T06:28:11.564079Z	npm error Missing: undici-types@5.26.5 from lock file
-2025-12-09T06:28:11.564172Z	npm error Missing: ansi-regex@5.0.1 from lock file
-2025-12-09T06:28:11.564261Z	npm error Missing: inherits@2.0.4 from lock file
-2025-12-09T06:28:11.564364Z	npm error Missing: setprototypeof@1.2.0 from lock file
-2025-12-09T06:28:11.564457Z	npm error Missing: toidentifier@1.0.1 from lock file
-2025-12-09T06:28:11.564549Z	npm error Missing: mime-db@1.52.0 from lock file
-2025-12-09T06:28:11.564647Z	npm error Missing: depd@2.0.0 from lock file
-2025-12-09T06:28:11.564737Z	npm error Missing: inherits@2.0.4 from lock file
-2025-12-09T06:28:11.564828Z	npm error Missing: setprototypeof@1.2.0 from lock file
-2025-12-09T06:28:11.564915Z	npm error Missing: toidentifier@1.0.1 from lock file
-2025-12-09T06:28:11.565022Z	npm error Missing: emoji-regex@10.6.0 from lock file
-2025-12-09T06:28:11.565127Z	npm error
-2025-12-09T06:28:11.565223Z	npm error Clean install a project
-2025-12-09T06:28:11.565316Z	npm error
-2025-12-09T06:28:11.565404Z	npm error Usage:
-2025-12-09T06:28:11.565496Z	npm error npm ci
-2025-12-09T06:28:11.565591Z	npm error
-2025-12-09T06:28:11.565682Z	npm error Options:
-2025-12-09T06:28:11.565769Z	npm error [--install-strategy <hoisted|nested|shallow|linked>] [--legacy-bundling]
-2025-12-09T06:28:11.565841Z	npm error [--global-style] [--omit <dev|optional|peer> [--omit <dev|optional|peer> ...]]
-2025-12-09T06:28:11.565911Z	npm error [--include <prod|dev|optional|peer> [--include <prod|dev|optional|peer> ...]]
-2025-12-09T06:28:11.566011Z	npm error [--strict-peer-deps] [--foreground-scripts] [--ignore-scripts] [--no-audit]
-2025-12-09T06:28:11.566108Z	npm error [--no-bin-links] [--no-fund] [--dry-run]
-2025-12-09T06:28:11.56619Z	npm error [-w|--workspace <workspace-name> [-w|--workspace <workspace-name> ...]]
-2025-12-09T06:28:11.566274Z	npm error [-ws|--workspaces] [--include-workspace-root] [--install-links]
-2025-12-09T06:28:11.566371Z	npm error
-2025-12-09T06:28:11.566474Z	npm error aliases: clean-install, ic, install-clean, isntall-clean
-2025-12-09T06:28:11.566569Z	npm error
-2025-12-09T06:28:11.566659Z	npm error Run "npm help ci" for more info
-2025-12-09T06:28:11.566743Z	npm error A complete log of this run can be found in: /opt/buildhome/.npm/_logs/2025-12-09T06_28_02_593Z-debug-0.log
-2025-12-09T06:28:11.566825Z	Error: Exit with error code: 1
-2025-12-09T06:28:11.566911Z	    at ChildProcess.<anonymous> (/snapshot/dist/run-build.js)
-2025-12-09T06:28:11.56702Z	    at Object.onceWrapper (node:events:652:26)
-2025-12-09T06:28:11.567111Z	    at ChildProcess.emit (node:events:537:28)
-2025-12-09T06:28:11.567205Z	    at ChildProcess._handle.onexit (node:internal/child_process:291:12)
-2025-12-09T06:28:11.567519Z	Failed: build command exited with code: 1
-2025-12-09T06:28:12.931736Z	Failed: error occurred while running build command
+2025-12-09T06:53:39.849939Z	Cloning repository...
+2025-12-09T06:53:40.59799Z	From https://github.com/jgdglobal001/getkkul-shopping-main
+2025-12-09T06:53:40.598509Z	 * branch            15d14cd66e40811d25484b3702c18c7328d51a7f -> FETCH_HEAD
+2025-12-09T06:53:40.598636Z	
+2025-12-09T06:53:40.676754Z	HEAD is now at 15d14cd Fix: use dummy DB URL for build-time to avoid neon() error
+2025-12-09T06:53:40.677366Z	
+2025-12-09T06:53:40.756558Z	
+2025-12-09T06:53:40.757314Z	Using v2 root directory strategy
+2025-12-09T06:53:40.778876Z	Success: Finished cloning repository files
+2025-12-09T06:53:42.750646Z	Checking for configuration in a Wrangler configuration file (BETA)
+2025-12-09T06:53:42.751386Z	
+2025-12-09T06:53:42.75269Z	Found wrangler.toml file. Reading build configuration...
+2025-12-09T06:53:42.759485Z	pages_build_output_dir: .vercel/output/static
+2025-12-09T06:53:42.759689Z	Build environment variables: 
+2025-12-09T06:53:42.760093Z	  - NODE_ENV: production
+2025-12-09T06:53:43.859066Z	Successfully read wrangler.toml file.
+2025-12-09T06:53:43.925197Z	Detected the following tools from environment: npm@10.9.2, nodejs@22.16.0
+2025-12-09T06:53:43.925939Z	Installing project dependencies: npm clean-install --progress=false
+2025-12-09T06:53:48.872964Z	npm warn deprecated @types/bcryptjs@3.0.0: This is a stub types definition. bcryptjs provides its own type definitions, so you do not need this installed.
+2025-12-09T06:53:48.911011Z	npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+2025-12-09T06:54:11.442732Z	
+2025-12-09T06:54:11.443098Z	added 1094 packages, and audited 1095 packages in 27s
+2025-12-09T06:54:11.443233Z	
+2025-12-09T06:54:11.443352Z	120 packages are looking for funding
+2025-12-09T06:54:11.443455Z	  run `npm fund` for details
+2025-12-09T06:54:11.450732Z	
+2025-12-09T06:54:11.450949Z	1 moderate severity vulnerability
+2025-12-09T06:54:11.451072Z	
+2025-12-09T06:54:11.451195Z	To address all issues, run:
+2025-12-09T06:54:11.451489Z	  npm audit fix --force
+2025-12-09T06:54:11.451595Z	
+2025-12-09T06:54:11.451713Z	Run `npm audit` for details.
+2025-12-09T06:54:11.487716Z	Executing user command: npm run pages:build
+2025-12-09T06:54:11.853689Z	
+2025-12-09T06:54:11.853981Z	> shofy@0.1.0 pages:build
+2025-12-09T06:54:11.854109Z	> npx @cloudflare/next-on-pages
+2025-12-09T06:54:11.854222Z	
+2025-12-09T06:54:12.858341Z	npm warn exec The following package was not found and will be installed: @cloudflare/next-on-pages@1.13.16
+2025-12-09T06:54:25.92149Z	npm warn deprecated path-match@1.2.4: This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions
+2025-12-09T06:54:26.635293Z	npm warn deprecated @cloudflare/next-on-pages@1.13.16: Please use the OpenNext adapter instead: https://opennext.js.org/cloudflare
+2025-12-09T06:54:32.491737Z	⚡️ @cloudflare/next-on-pages CLI v.1.13.16
+2025-12-09T06:54:32.668713Z	⚡️ Detected Package Manager: npm (10.9.2)
+2025-12-09T06:54:32.669067Z	⚡️ Preparing project...
+2025-12-09T06:54:32.671859Z	⚡️ Project is ready
+2025-12-09T06:54:32.672307Z	⚡️ Building project...
+2025-12-09T06:54:33.6156Z	▲  npm warn exec The following package was not found and will be installed: vercel@49.1.2
+2025-12-09T06:54:37.914721Z	▲  npm warn deprecated path-match@1.2.4: This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions
+2025-12-09T06:54:40.480199Z	▲  Vercel CLI 49.1.2
+2025-12-09T06:54:40.484607Z	▲  > NOTE: The Vercel CLI now collects telemetry regarding usage of the CLI.
+2025-12-09T06:54:40.484919Z	▲  > This information is used to shape the CLI roadmap and prioritize features.
+2025-12-09T06:54:40.485026Z	▲  > You can learn more, including how to opt-out if you'd not like to participate in this program, by visiting the following URL:
+2025-12-09T06:54:40.485815Z	▲  > https://vercel.com/docs/cli/about-telemetry
+2025-12-09T06:54:40.571928Z	▲  WARN! Build not running on Vercel. System environment variables will not be available.
+2025-12-09T06:54:40.790603Z	▲  Installing dependencies...
+2025-12-09T06:54:44.960022Z	▲  added 217 packages in 4s
+2025-12-09T06:54:44.960455Z	▲  228 packages are looking for funding
+2025-12-09T06:54:44.960616Z	▲  run `npm fund` for details
+2025-12-09T06:54:44.973141Z	▲  Detected Next.js version: 15.4.8
+2025-12-09T06:54:44.981523Z	▲  Running "npm run build"
+2025-12-09T06:54:45.166326Z	▲  > shofy@0.1.0 build
+2025-12-09T06:54:45.166577Z	▲  > next build
+2025-12-09T06:54:45.862017Z	▲  Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2025-12-09T06:54:45.86231Z	▲  This information is used to shape Next.js' roadmap and prioritize features.
+2025-12-09T06:54:45.862535Z	▲  You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2025-12-09T06:54:45.862691Z	▲  https://nextjs.org/telemetry
+2025-12-09T06:54:45.92583Z	▲  ▲ Next.js 15.4.8
+2025-12-09T06:54:45.92612Z	▲  
+2025-12-09T06:54:45.99436Z	▲  Creating an optimized production build ...
+2025-12-09T06:55:15.506763Z	▲  ✓ Compiled successfully in 25.0s
+2025-12-09T06:55:15.511733Z	▲  Skipping validation of types
+2025-12-09T06:55:15.51196Z	▲  Linting ...
+2025-12-09T06:55:19.577162Z	▲  ./src/components/admin/product-form/OptionsManager.tsx
+2025-12-09T06:55:19.57756Z	▲  35:6  Warning: React Hook useEffect has a missing dependency: 'formData.options'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+2025-12-09T06:55:19.577871Z	▲  
+2025-12-09T06:55:19.578075Z	▲  info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+2025-12-09T06:55:19.579227Z	▲  Collecting page data ...
+2025-12-09T06:55:23.853648Z	▲  Generating static pages (0/71) ...
+2025-12-09T06:55:25.030948Z	▲  Generating static pages (17/71)
+2025-12-09T06:55:25.352887Z	▲  Generating static pages (35/71)
+2025-12-09T06:55:25.438062Z	▲  카테고리 API 오류: 404
+2025-12-09T06:55:25.503018Z	▲  Generating static pages (53/71)
+2025-12-09T06:55:26.176182Z	▲  ✓ Generating static pages (71/71)
+2025-12-09T06:55:26.890348Z	▲  Finalizing page optimization ...
+2025-12-09T06:55:26.890585Z	▲  Collecting build traces ...
+2025-12-09T06:55:32.776022Z	▲  
+2025-12-09T06:55:32.787316Z	▲  Route (app)                                    Size  First Load JS
+2025-12-09T06:55:32.787596Z	▲  ┌ ƒ /                                       4.06 kB         164 kB
+2025-12-09T06:55:32.787708Z	▲  ├ ○ /_not-found                               252 B        99.8 kB
+2025-12-09T06:55:32.787881Z	▲  ├ ƒ /about                                    169 B         103 kB
+2025-12-09T06:55:32.788099Z	▲  ├ ƒ /account                                   7 kB         154 kB
+2025-12-09T06:55:32.788249Z	▲  ├ ƒ /account/addresses                      4.96 kB         131 kB
+2025-12-09T06:55:32.788367Z	▲  ├ ƒ /account/admin                          3.21 kB         122 kB
+2025-12-09T06:55:32.788491Z	▲  ├ ƒ /account/admin/categories               2.97 kB         122 kB
+2025-12-09T06:55:32.788597Z	▲  ├ ƒ /account/admin/inquiries                1.99 kB         126 kB
+2025-12-09T06:55:32.788699Z	▲  ├ ƒ /account/admin/products                 3.27 kB         127 kB
+2025-12-09T06:55:32.788826Z	▲  ├ ƒ /account/admin/products/[id]            2.97 kB         127 kB
+2025-12-09T06:55:32.78893Z	▲  ├ ƒ /account/admin/products/[id]/edit         144 B         135 kB
+2025-12-09T06:55:32.789031Z	▲  ├ ƒ /account/admin/products/new               144 B         135 kB
+2025-12-09T06:55:32.789129Z	▲  ├ ƒ /account/notifications                  1.18 kB         117 kB
+2025-12-09T06:55:32.789221Z	▲  ├ ƒ /account/orders                         6.52 kB         145 kB
+2025-12-09T06:55:32.789328Z	▲  ├ ƒ /account/orders/[id]                    5.62 kB         144 kB
+2025-12-09T06:55:32.789439Z	▲  ├ ƒ /account/payment                          794 B         120 kB
+2025-12-09T06:55:32.789548Z	▲  ├ ƒ /account/profile                          252 B        99.8 kB
+2025-12-09T06:55:32.789649Z	▲  ├ ƒ /account/reviews                        3.84 kB         142 kB
+2025-12-09T06:55:32.789748Z	▲  ├ ƒ /account/settings                       3.03 kB         136 kB
+2025-12-09T06:55:32.789873Z	▲  ├ ƒ /api/admin/analytics                      252 B        99.8 kB
+2025-12-09T06:55:32.789973Z	▲  ├ ƒ /api/admin/categories                     252 B        99.8 kB
+2025-12-09T06:55:32.790075Z	▲  ├ ƒ /api/admin/categories/[id]                252 B        99.8 kB
+2025-12-09T06:55:32.790138Z	▲  ├ ƒ /api/admin/categories/migrate             252 B        99.8 kB
+2025-12-09T06:55:32.790255Z	▲  ├ ƒ /api/admin/dashboard/recent-orders        252 B        99.8 kB
+2025-12-09T06:55:32.790363Z	▲  ├ ƒ /api/admin/dashboard/stats                252 B        99.8 kB
+2025-12-09T06:55:32.790465Z	▲  ├ ƒ /api/admin/inquiries                      252 B        99.8 kB
+2025-12-09T06:55:32.790569Z	▲  ├ ƒ /api/admin/inquiries/[id]                 252 B        99.8 kB
+2025-12-09T06:55:32.790675Z	▲  ├ ƒ /api/admin/orders                         252 B        99.8 kB
+2025-12-09T06:55:32.790797Z	▲  ├ ƒ /api/admin/orders/[id]                    252 B        99.8 kB
+2025-12-09T06:55:32.79093Z	▲  ├ ƒ /api/admin/orders/bulk-delete             252 B        99.8 kB
+2025-12-09T06:55:32.791042Z	▲  ├ ƒ /api/admin/orders/bulk-delete-selected    252 B        99.8 kB
+2025-12-09T06:55:32.791131Z	▲  ├ ƒ /api/admin/products                       252 B        99.8 kB
+2025-12-09T06:55:32.791235Z	▲  ├ ƒ /api/admin/products/[id]                  252 B        99.8 kB
+2025-12-09T06:55:32.791376Z	▲  ├ ƒ /api/admin/setup                          252 B        99.8 kB
+2025-12-09T06:55:32.791475Z	▲  ├ ƒ /api/admin/stats                          252 B        99.8 kB
+2025-12-09T06:55:32.791572Z	▲  ├ ƒ /api/admin/users                          252 B        99.8 kB
+2025-12-09T06:55:32.791681Z	▲  ├ ƒ /api/admin/users/bulk-delete              252 B        99.8 kB
+2025-12-09T06:55:32.791793Z	▲  ├ ƒ /api/auth/[...nextauth]                   252 B        99.8 kB
+2025-12-09T06:55:32.791901Z	▲  ├ ƒ /api/auth/register                        252 B        99.8 kB
+2025-12-09T06:55:32.792Z	▲  ├ ƒ /api/auth/update-password                 252 B        99.8 kB
+2025-12-09T06:55:32.792095Z	▲  ├ ƒ /api/categories                           252 B        99.8 kB
+2025-12-09T06:55:32.792204Z	▲  ├ ƒ /api/checkout                             252 B        99.8 kB
+2025-12-09T06:55:32.792278Z	▲  ├ ƒ /api/orders                               252 B        99.8 kB
+2025-12-09T06:55:32.792343Z	▲  ├ ƒ /api/orders/place                         252 B        99.8 kB
+2025-12-09T06:55:32.792409Z	▲  ├ ƒ /api/orders/process                       252 B        99.8 kB
+2025-12-09T06:55:32.792465Z	▲  ├ ƒ /api/orders/toss-confirm                  252 B        99.8 kB
+2025-12-09T06:55:32.792521Z	▲  ├ ƒ /api/orders/toss-webhook                  252 B        99.8 kB
+2025-12-09T06:55:32.792592Z	▲  ├ ƒ /api/orders/update-payment                252 B        99.8 kB
+2025-12-09T06:55:32.792659Z	▲  ├ ƒ /api/product-questions                    252 B        99.8 kB
+2025-12-09T06:55:32.792717Z	▲  ├ ƒ /api/products                             252 B        99.8 kB
+2025-12-09T06:55:32.792805Z	▲  ├ ƒ /api/products/search                      252 B        99.8 kB
+2025-12-09T06:55:32.792886Z	▲  ├ ƒ /api/user/[id]                            252 B        99.8 kB
+2025-12-09T06:55:32.792957Z	▲  ├ ƒ /api/user/delete-address                  252 B        99.8 kB
+2025-12-09T06:55:32.793022Z	▲  ├ ƒ /api/user/orders                          252 B        99.8 kB
+2025-12-09T06:55:32.793105Z	▲  ├ ƒ /api/user/profile                         252 B        99.8 kB
+2025-12-09T06:55:32.793164Z	▲  ├ ƒ /api/user/upload-image                    252 B        99.8 kB
+2025-12-09T06:55:32.793235Z	▲  ├ ○ /auth/error                             1.29 kB         104 kB
+2025-12-09T06:55:32.793338Z	▲  ├ ○ /auth/register                          2.35 kB         125 kB
+2025-12-09T06:55:32.793404Z	▲  ├ ○ /auth/signin                            2.35 kB         125 kB
+2025-12-09T06:55:32.793493Z	▲  ├ ƒ /cancel                                   648 B         111 kB
+2025-12-09T06:55:32.793579Z	▲  ├ ƒ /cart                                   5.92 kB         172 kB
+2025-12-09T06:55:32.793674Z	▲  ├ ƒ /categories                             4.58 kB         132 kB
+2025-12-09T06:55:32.793744Z	▲  ├ ƒ /checkout                               7.09 kB         145 kB
+2025-12-09T06:55:32.79385Z	▲  ├ ƒ /contact                                  252 B        99.8 kB
+2025-12-09T06:55:32.793918Z	▲  ├ ƒ /customer-service                         169 B         103 kB
+2025-12-09T06:55:32.793998Z	▲  ├ ○ /dashboard                              1.08 kB         104 kB
+2025-12-09T06:55:32.794097Z	▲  ├ ○ /delivery                                 564 B         100 kB
+2025-12-09T06:55:32.794166Z	▲  ├ ○ /delivery-dashboard                     3.71 kB         111 kB
+2025-12-09T06:55:32.794293Z	▲  ├ ƒ /faqs                                   4.86 kB         115 kB
+2025-12-09T06:55:32.794474Z	▲  ├ ƒ /favorite                               3.59 kB         142 kB
+2025-12-09T06:55:32.794575Z	▲  ├ ○ /icon.png                                   0 B            0 B
+2025-12-09T06:55:32.794681Z	▲  ├ ƒ /inquiry                                  252 B        99.8 kB
+2025-12-09T06:55:32.794783Z	▲  ├ ƒ /offers                                 2.72 kB         199 kB
+2025-12-09T06:55:32.794874Z	▲  ├ ƒ /orders/[id]                              252 B        99.8 kB
+2025-12-09T06:55:32.794954Z	▲  ├ ○ /packer-dashboard                       5.64 kB         124 kB
+2025-12-09T06:55:32.795033Z	▲  ├ ○ /payment/fail                           2.06 kB         108 kB
+2025-12-09T06:55:32.795114Z	▲  ├ ○ /payment/success                         2.4 kB         112 kB
+2025-12-09T06:55:32.795196Z	▲  ├ ƒ /privacy-policy                           252 B        99.8 kB
+2025-12-09T06:55:32.795289Z	▲  ├ ƒ /products                               5.81 kB         200 kB
+2025-12-09T06:55:32.795373Z	▲  ├ ƒ /products/[id]                          7.31 kB         169 kB
+2025-12-09T06:55:32.795456Z	▲  ├ ƒ /success                                3.83 kB         134 kB
+2025-12-09T06:55:32.795536Z	▲  ├ ƒ /terms-of-service                         252 B        99.8 kB
+2025-12-09T06:55:32.795625Z	▲  ├ ○ /unauthorized                           2.16 kB         119 kB
+2025-12-09T06:55:32.795711Z	▲  └ ○ /user-dashboard                         4.19 kB         120 kB
+2025-12-09T06:55:32.795819Z	▲  + First Load JS shared by all               99.6 kB
+2025-12-09T06:55:32.795905Z	▲  ├ chunks/4bd1b696-602635ee57868870.js     54.1 kB
+2025-12-09T06:55:32.795988Z	▲  ├ chunks/5964-455cec4068509000.js         43.5 kB
+2025-12-09T06:55:32.796074Z	▲  └ other shared chunks (total)             1.93 kB
+2025-12-09T06:55:32.796162Z	▲  ○  (Static)   prerendered as static content
+2025-12-09T06:55:32.79626Z	▲  ƒ  (Dynamic)  server-rendered on demand
+2025-12-09T06:55:32.818875Z	▲  > shofy@0.1.0 postbuild
+2025-12-09T06:55:32.819134Z	▲  > next-sitemap
+2025-12-09T06:55:32.940406Z	▲  ✨ [next-sitemap] Loading next-sitemap config: file:///opt/buildhome/repo/next-sitemap.config.js
+2025-12-09T06:55:32.946903Z	▲  ✅ [next-sitemap] Generation completed
+2025-12-09T06:55:32.947636Z	▲  ┌───────────────┬────────┐
+2025-12-09T06:55:32.947797Z	▲  │ (index)       │ Values │
+2025-12-09T06:55:32.947951Z	▲  ├───────────────┼────────┤
+2025-12-09T06:55:32.948077Z	▲  │ indexSitemaps │ 1      │
+2025-12-09T06:55:32.948223Z	▲  │ sitemaps      │ 1      │
+2025-12-09T06:55:32.948471Z	▲  └───────────────┴────────┘
+2025-12-09T06:55:32.948604Z	▲  -----------------------------------------------------
+2025-12-09T06:55:32.948716Z	▲  SITEMAP INDICES 
+2025-12-09T06:55:32.948845Z	▲  -----------------------------------------------------
+2025-12-09T06:55:32.948951Z	▲  ○ https://shofy.reactbd.com/sitemap.xml
+2025-12-09T06:55:32.949066Z	▲  -----------------------------------------------------
+2025-12-09T06:55:32.949173Z	▲  SITEMAPS 
+2025-12-09T06:55:32.94927Z	▲  -----------------------------------------------------
+2025-12-09T06:55:32.949381Z	▲  ○ https://shofy.reactbd.com/sitemap-0.xml
+2025-12-09T06:55:33.340052Z	▲  Traced Next.js server files in: 284.382ms
+2025-12-09T06:55:33.703238Z	▲  Created all serverless functions in: 363.084ms
+2025-12-09T06:55:33.723714Z	▲  Collected static files (public/, static/, .next/static): 14.388ms
+2025-12-09T06:55:33.831179Z	▲  Build Completed in .vercel/output [53s]
+2025-12-09T06:55:33.971838Z	⚡️ Completed `npx vercel build`.
+2025-12-09T06:55:35.192517Z	
+2025-12-09T06:55:35.192813Z	⚡️ ERROR: Failed to produce a Cloudflare Pages build from the project.
+2025-12-09T06:55:35.192954Z	⚡️ 
+2025-12-09T06:55:35.193072Z	⚡️ 	The following routes were not configured to run with the Edge Runtime:
+2025-12-09T06:55:35.193181Z	⚡️ 	  - /about
+2025-12-09T06:55:35.193299Z	⚡️ 	  - /account/addresses
+2025-12-09T06:55:35.193395Z	⚡️ 	  - /account/admin/categories
+2025-12-09T06:55:35.193491Z	⚡️ 	  - /account/admin/inquiries
+2025-12-09T06:55:35.193586Z	⚡️ 	  - /account/admin/products/[id]/edit
+2025-12-09T06:55:35.193686Z	⚡️ 	  - /account/admin/products/[id]
+2025-12-09T06:55:35.193783Z	⚡️ 	  - /account/admin/products/new
+2025-12-09T06:55:35.193893Z	⚡️ 	  - /account/admin/products
+2025-12-09T06:55:35.193996Z	⚡️ 	  - /account/admin
+2025-12-09T06:55:35.194088Z	⚡️ 	  - /account/notifications
+2025-12-09T06:55:35.194182Z	⚡️ 	  - /account/orders/[id]
+2025-12-09T06:55:35.194275Z	⚡️ 	  - /account/orders
+2025-12-09T06:55:35.194361Z	⚡️ 	  - /account/payment
+2025-12-09T06:55:35.194461Z	⚡️ 	  - /account/profile
+2025-12-09T06:55:35.19455Z	⚡️ 	  - /account/reviews
+2025-12-09T06:55:35.194636Z	⚡️ 	  - /account/settings
+2025-12-09T06:55:35.194717Z	⚡️ 	  - /account
+2025-12-09T06:55:35.19484Z	⚡️ 	  - /api/admin/analytics
+2025-12-09T06:55:35.194933Z	⚡️ 	  - /api/admin/categories/[id]
+2025-12-09T06:55:35.195021Z	⚡️ 	  - /api/admin/categories/migrate
+2025-12-09T06:55:35.195116Z	⚡️ 	  - /api/admin/categories
+2025-12-09T06:55:35.19521Z	⚡️ 	  - /api/admin/dashboard/recent-orders
+2025-12-09T06:55:35.195311Z	⚡️ 	  - /api/admin/dashboard/stats
+2025-12-09T06:55:35.195399Z	⚡️ 	  - /api/admin/inquiries/[id]
+2025-12-09T06:55:35.195479Z	⚡️ 	  - /api/admin/inquiries
+2025-12-09T06:55:35.195575Z	⚡️ 	  - /api/admin/orders/[id]
+2025-12-09T06:55:35.195678Z	⚡️ 	  - /api/admin/orders/bulk-delete-selected
+2025-12-09T06:55:35.195778Z	⚡️ 	  - /api/admin/orders/bulk-delete
+2025-12-09T06:55:35.195872Z	⚡️ 	  - /api/admin/orders
+2025-12-09T06:55:35.195966Z	⚡️ 	  - /api/admin/products/[id]
+2025-12-09T06:55:35.196055Z	⚡️ 	  - /api/admin/products
+2025-12-09T06:55:35.196151Z	⚡️ 	  - /api/admin/setup
+2025-12-09T06:55:35.196231Z	⚡️ 	  - /api/admin/stats
+2025-12-09T06:55:35.196308Z	⚡️ 	  - /api/admin/users/bulk-delete
+2025-12-09T06:55:35.196399Z	⚡️ 	  - /api/admin/users
+2025-12-09T06:55:35.196483Z	⚡️ 	  - /api/auth/[...nextauth]
+2025-12-09T06:55:35.196568Z	⚡️ 	  - /api/auth/register
+2025-12-09T06:55:35.196659Z	⚡️ 	  - /api/auth/update-password
+2025-12-09T06:55:35.196745Z	⚡️ 	  - /api/categories
+2025-12-09T06:55:35.19684Z	⚡️ 	  - /api/checkout
+2025-12-09T06:55:35.196919Z	⚡️ 	  - /api/orders/place
+2025-12-09T06:55:35.196999Z	⚡️ 	  - /api/orders/process
+2025-12-09T06:55:35.197086Z	⚡️ 	  - /api/orders/toss-confirm
+2025-12-09T06:55:35.197168Z	⚡️ 	  - /api/orders/toss-webhook
+2025-12-09T06:55:35.197247Z	⚡️ 	  - /api/orders/update-payment
+2025-12-09T06:55:35.197323Z	⚡️ 	  - /api/orders
+2025-12-09T06:55:35.197402Z	⚡️ 	  - /api/product-questions
+2025-12-09T06:55:35.197476Z	⚡️ 	  - /api/products/search
+2025-12-09T06:55:35.197552Z	⚡️ 	  - /api/products
+2025-12-09T06:55:35.197642Z	⚡️ 	  - /api/user/[id]
+2025-12-09T06:55:35.197732Z	⚡️ 	  - /api/user/delete-address
+2025-12-09T06:55:35.197828Z	⚡️ 	  - /api/user/orders
+2025-12-09T06:55:35.197918Z	⚡️ 	  - /api/user/profile
+2025-12-09T06:55:35.198004Z	⚡️ 	  - /api/user/upload-image
+2025-12-09T06:55:35.198091Z	⚡️ 	  - /cancel
+2025-12-09T06:55:35.198186Z	⚡️ 	  - /cart
+2025-12-09T06:55:35.198281Z	⚡️ 	  - /categories
+2025-12-09T06:55:35.198367Z	⚡️ 	  - /checkout
+2025-12-09T06:55:35.19846Z	⚡️ 	  - /contact
+2025-12-09T06:55:35.19856Z	⚡️ 	  - /customer-service
+2025-12-09T06:55:35.198674Z	⚡️ 	  - /faqs
+2025-12-09T06:55:35.198779Z	⚡️ 	  - /favorite
+2025-12-09T06:55:35.198879Z	⚡️ 	  - /index
+2025-12-09T06:55:35.198978Z	⚡️ 	  - /inquiry
+2025-12-09T06:55:35.199076Z	⚡️ 	  - /offers
+2025-12-09T06:55:35.199174Z	⚡️ 	  - /orders/[id]
+2025-12-09T06:55:35.199293Z	⚡️ 	  - /privacy-policy
+2025-12-09T06:55:35.199432Z	⚡️ 	  - /products/[id]
+2025-12-09T06:55:35.199546Z	⚡️ 	  - /products
+2025-12-09T06:55:35.199652Z	⚡️ 	  - /success
+2025-12-09T06:55:35.199753Z	⚡️ 	  - /terms-of-service
+2025-12-09T06:55:35.199874Z	⚡️ 
+2025-12-09T06:55:35.199983Z	⚡️ 	Please make sure that all your non-static routes export the following edge runtime route segment config:
+2025-12-09T06:55:35.200128Z	⚡️ 	  export const runtime = 'edge';
+2025-12-09T06:55:35.200363Z	⚡️ 
+2025-12-09T06:55:35.200545Z	⚡️ 	You can read more about the Edge Runtime on the Next.js documentation:
+2025-12-09T06:55:35.200653Z	⚡️ 	  https://nextjs.org/docs/app/building-your-application/rendering/edge-and-nodejs-runtimes
+2025-12-09T06:55:35.200815Z	
+2025-12-09T06:55:35.236964Z	Failed: Error while executing user command. Exited with error code: 1
+2025-12-09T06:55:35.248552Z	Failed: build command exited with code: 1
+2025-12-09T06:55:36.440024Z	Failed: error occurred while running build command

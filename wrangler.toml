@@ -4,8 +4,8 @@ name = "getkkul-shopping-main"
 compatibility_date = "2024-12-01"
 compatibility_flags = ["nodejs_compat"]
 
-# Pages 배포 설정
-pages_build_output_dir = ".vercel/output/static"
+# Pages 배포 설정 (OpenNext 사용)
+pages_build_output_dir = ".open-next/assets"
 
 # 환경변수
 [vars]
