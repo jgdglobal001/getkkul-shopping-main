@@ -1,10 +1,10 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
-// POST: 吏덈Ц???듬? ?묒꽦
+// POST: 질문에 답변 작성
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -14,7 +14,7 @@ export async function POST(
 
     if (!session?.user?.email || session.user.role !== "admin") {
       return NextResponse.json(
-        { error: "愿由ъ옄 沅뚰븳???꾩슂?⑸땲?? },
+        { error: "관리자 권한이 필요합니다" },
         { status: 403 }
       );
     }
@@ -25,24 +25,24 @@ export async function POST(
 
     if (!answer) {
       return NextResponse.json(
-        { error: "?듬? ?댁슜???꾩슂?⑸땲?? },
+        { error: "답변 내용이 필요합니다" },
         { status: 400 }
       );
     }
 
-    // 愿由ъ옄 ?ъ슜??議고쉶
+    // 관리자 사용자 조회
     const adminUser = await prisma.user.findUnique({
       where: { email: session.user.email }
     });
 
     if (!adminUser) {
       return NextResponse.json(
-        { error: "愿由ъ옄瑜?李얠쓣 ???놁뒿?덈떎" },
+        { error: "관리자를 찾을 수 없습니다" },
         { status: 404 }
       );
     }
 
-    // ?듬? ?앹꽦
+    // 답변 생성
     const newAnswer = await prisma.productAnswer.create({
       data: {
         questionId,
@@ -54,7 +54,7 @@ export async function POST(
       }
     });
 
-    // 吏덈Ц??isAnswered ?곹깭 ?낅뜲?댄듃
+    // 질문의 isAnswered 상태 업데이트
     await prisma.productQuestion.update({
       where: { id: questionId },
       data: { isAnswered: true }
@@ -62,15 +62,15 @@ export async function POST(
 
     return NextResponse.json(newAnswer, { status: 201 });
   } catch (error) {
-    console.error("?듬? ?묒꽦 ?ㅻ쪟:", error);
+    console.error("답변 작성 오류:", error);
     return NextResponse.json(
-      { error: "?듬? ?묒꽦 以??ㅻ쪟媛 諛쒖깮?덉뒿?덈떎" },
+      { error: "답변 작성 중 오류가 발생했습니다" },
       { status: 500 }
     );
   }
 }
 
-// DELETE: ?듬? ??젣
+// DELETE: 답변 삭제
 export async function DELETE(
   request: NextRequest,
   { params }: { params: { id: string } }
@@ -80,23 +80,23 @@ export async function DELETE(
 
     if (!session?.user?.email || session.user.role !== "admin") {
       return NextResponse.json(
-        { error: "愿由ъ옄 沅뚰븳???꾩슂?⑸땲?? },
+        { error: "관리자 권한이 필요합니다" },
         { status: 403 }
       );
     }
 
     const answerId = await Promise.resolve(params.id);
 
-    // ?듬? ??젣
+    // 답변 삭제
     await prisma.productAnswer.delete({
       where: { id: answerId }
     });
 
-    return NextResponse.json({ message: "?듬?????젣?섏뿀?듬땲?? });
+    return NextResponse.json({ message: "답변이 삭제되었습니다" });
   } catch (error) {
-    console.error("?듬? ??젣 ?ㅻ쪟:", error);
+    console.error("답변 삭제 오류:", error);
     return NextResponse.json(
-      { error: "?듬? ??젣 以??ㅻ쪟媛 諛쒖깮?덉뒿?덈떎" },
+      { error: "답변 삭제 중 오류가 발생했습니다" },
       { status: 500 }
     );
   }

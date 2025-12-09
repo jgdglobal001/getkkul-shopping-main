@@ -1,4 +1,4 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 import SettingsClient from "@/components/account/SettingsClient";
 import ProtectedRoute from "@/components/ProtectedRoute";

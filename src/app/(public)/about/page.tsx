@@ -1,4 +1,4 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 import Container from "@/components/Container";
 import Title from "@/components/Title";
@@ -6,9 +6,9 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "?뚯궗?뚭컻 - Getkkul-shopping",
+  title: "회사소개 - Getkkul-shopping",
   description:
-    "寃잕??쇳븨??????먯꽭???뚯븘蹂댁꽭??- ?좊ː?????덈뒗 ??쒕?援?????⑤씪???쇳븨紐?,
+    "겟꿀쇼핑에 대해 자세히 알아보세요 - 신뢰할 수 있는 대한민국 대표 온라인 쇼핑몰",
 };
 
 export default function AboutPage() {
@@ -18,10 +18,10 @@ export default function AboutPage() {
         {/* Header Section */}
         <div className="text-center mb-12">
           <Title className="text-3xl lg:text-4xl font-bold mb-4">
-            寃잕??쇳븨 ?뚭컻
+            겟꿀쇼핑 소개
           </Title>
           <p className="text-light-text text-lg">
-            理쒓퀬???곹뭹??理쒖?媛濡? ?좊ː?????덈뒗 ??쒕?援?????⑤씪???쇳븨紐?
+            최고의 상품을 최저가로! 신뢰할 수 있는 대한민국 대표 온라인 쇼핑몰
           </p>
         </div>
 
@@ -30,45 +30,45 @@ export default function AboutPage() {
           {/* Our Story */}
           <section className="bg-light-bg rounded-lg p-6 lg:p-8">
             <h2 className="text-2xl font-semibold text-theme-color mb-4">
-              ?곕━???댁빞湲?
+              우리의 이야기
             </h2>
             <p className="text-light-text leading-relaxed mb-4">
-              2024?꾩뿉 ?ㅻ┰??寃잕??쇳븨? 怨좉컼?먭쾶 理쒓퀬???쇳븨 寃쏀뿕???쒓났?섎뒗
-              ??쒕?援?????⑤씪???쇳븨紐곕줈 ?깆옣?덉뒿?덈떎.
-              ??щ뒗 理쒓퀬 ?덉쭏???곹뭹怨??곗뼱???쇳븨 寃쏀뿕???쒓났?섍린 ?꾪빐 ?몃젰?섍퀬 ?덉뒿?덈떎.
-              ?⑤씪???쇳븨??紐⑤뱺 ?щ엺?먭쾶 媛꾨떒?섍퀬, ?덉쟾?섍퀬, 利먭굅?뚯빞 ?쒕떎怨?誘우뒿?덈떎.
+              2024년에 설립된 겟꿀쇼핑은 고객에게 최고의 쇼핑 경험을 제공하는
+              대한민국 대표 온라인 쇼핑몰로 성장했습니다.
+              저희는 최고 품질의 상품과 뛰어난 쇼핑 경험을 제공하기 위해 노력하고 있습니다.
+              온라인 쇼핑이 모든 사람에게 간단하고, 안전하고, 즐거워야 한다고 믿습니다.
             </p>
             <p className="text-light-text leading-relaxed">
-              ??ъ쓽 ?ъ젙? 媛꾨떒??誘몄뀡?쇰줈 ?쒖옉?섏뿀?듬땲?? ?덉쭏 ?덈뒗 ?곹뭹怨????멸퀎 怨좉컼 ?ъ씠??媛꾧꺽??醫곹엳??寃껋엯?덈떎.
-              ?ㅻ뒛????щ뒗 ?ㅼ뼇??移댄뀒怨좊━??嫄몄퀜 ?ㅼ뼇???곹뭹?쇰줈 ?섏쿇 紐낆쓽 留뚯”??怨좉컼???ш린怨??덉뒿?덈떎.
+              저희의 여정은 간단한 미션으로 시작되었습니다: 품질 있는 상품과 전 세계 고객 사이의 간격을 좁히는 것입니다.
+              오늘날 저희는 다양한 카테고리에 걸쳐 다양한 상품으로 수천 명의 만족한 고객을 섬기고 있습니다.
             </p>
           </section>
 
           {/* Our Mission */}
           <section className="bg-theme-white border border-border-color rounded-lg p-6 lg:p-8">
             <h2 className="text-2xl font-semibold text-theme-color mb-4">
-              ?곕━??誘몄뀡
+              우리의 미션
             </h2>
             <p className="text-light-text leading-relaxed">
-              怨좉컼?먭쾶 寃쎌웳???덈뒗 媛寃⑹쑝濡?怨좏뭹吏??곹뭹???묎렐?????덈룄濡??쒓났?섎㈃???곗뼱??怨좉컼 ?쒕퉬?ㅻ? ?쒓났?섎뒗 寃껋엯?덈떎.
-              ??щ뒗 湲곕?瑜?珥덇낵?섍퀬 怨좉컼怨??ㅻ옒 吏?띾릺??愿怨꾨? 援ъ텞?섎뒗 ?꾨꼍???쇳븨 寃쏀뿕??留뚮뱾湲??꾪빐 ?몃젰?⑸땲??
+              고객에게 경쟁력 있는 가격으로 고품질 상품에 접근할 수 있도록 제공하면서 뛰어난 고객 서비스를 제공하는 것입니다.
+              저희는 기대를 초과하고 고객과 오래 지속되는 관계를 구축하는 완벽한 쇼핑 경험을 만들기 위해 노력합니다.
             </p>
           </section>
 
           {/* What Sets Us Apart */}
           <section className="bg-light-bg rounded-lg p-6 lg:p-8">
             <h2 className="text-2xl font-semibold text-theme-color mb-6">
-              ?곕━瑜?李⑤퀎?뷀븯??寃?
+              우리를 차별화하는 것
             </h2>
             <div className="grid md:grid-cols-2 gap-6">
               <div className="flex items-start gap-3">
                 <div className="w-3 h-3 bg-theme-color rounded-full mt-2 flex-shrink-0"></div>
                 <div>
                   <h3 className="font-semibold text-gray-800 mb-1">
-                    ?덉쭏 蹂댁쬆
+                    품질 보증
                   </h3>
                   <p className="text-light-text text-sm">
-                    紐⑤뱺 ?곹뭹? 理쒓퀬???덉쭏 湲곗???蹂댁옣?섍린 ?꾪빐 ?좎쨷?섍쾶 ?좏깮?섍퀬 ?뚯뒪?몃맗?덈떎.
+                    모든 상품은 최고의 품질 기준을 보장하기 위해 신중하게 선택되고 테스트됩니다.
                   </p>
                 </div>
               </div>
@@ -76,10 +76,10 @@ export default function AboutPage() {
                 <div className="w-3 h-3 bg-theme-color rounded-full mt-2 flex-shrink-0"></div>
                 <div>
                   <h3 className="font-semibold text-gray-800 mb-1">
-                    鍮좊Ⅸ 諛곗넚
+                    빠른 배송
                   </h3>
                   <p className="text-light-text text-sm">
-                    鍮좊Ⅴ怨??좊ː?????덈뒗 諛곗넚?쇰줈 ?곹뭹??理쒕???鍮⑤━ 諛쏆쑝?몄슂.
+                    빠르고 신뢰할 수 있는 배송으로 상품을 최대한 빨리 받으세요.
                   </p>
                 </div>
               </div>
@@ -87,10 +87,10 @@ export default function AboutPage() {
                 <div className="w-3 h-3 bg-theme-color rounded-full mt-2 flex-shrink-0"></div>
                 <div>
                   <h3 className="font-semibold text-gray-800 mb-1">
-                    怨좉컼 吏??
+                    고객 지원
                   </h3>
                   <p className="text-light-text text-sm">
-                    24/7 怨좉컼 ?쒕퉬?ㅻ줈 紐⑤뱺 吏덈Ц?대굹 ?곕젮?ы빆???꾩??쒕┰?덈떎.
+                    24/7 고객 서비스로 모든 질문이나 우려사항을 도와드립니다.
                   </p>
                 </div>
               </div>
@@ -98,10 +98,10 @@ export default function AboutPage() {
                 <div className="w-3 h-3 bg-theme-color rounded-full mt-2 flex-shrink-0"></div>
                 <div>
                   <h3 className="font-semibold text-gray-800 mb-1">
-                    ?덉쟾???쇳븨
+                    안전한 쇼핑
                   </h3>
                   <p className="text-light-text text-sm">
-                    媛쒖씤?뺣낫? 寃곗젣 ?뺣낫瑜?蹂댄샇?섍린 ?꾪븳 怨좉툒 蹂댁븞 議곗튂.
+                    개인정보와 결제 정보를 보호하기 위한 고급 보안 조치.
                   </p>
                 </div>
               </div>
@@ -111,31 +111,31 @@ export default function AboutPage() {
           {/* Our Team */}
           <section className="bg-theme-white border border-border-color rounded-lg p-6 lg:p-8">
             <h2 className="text-2xl font-semibold text-theme-color mb-4">
-              ?곕━???
+              우리의 팀
             </h2>
             <p className="text-light-text leading-relaxed mb-4">
-              寃잕??쇳븨 ?ㅼ뿉???쇳븨 寃쏀뿕??媛쒖꽑?섍린 ?꾪빐 ?딆엫?놁씠 ?몃젰?섎뒗 ?붿옄?대꼫, 媛쒕컻?? 怨좉컼 ?쒕퉬???꾨Ц媛?ㅼ쓽 ?댁젙?곸씤 ????덉뒿?덈떎.
-              ??щ뒗 ?곸떊, ?덉쭏, 怨좉컼 留뚯”??理쒖꽑???ㅽ븯怨??덉뒿?덈떎.
+              겟꿀쇼핑 뒤에는 쇼핑 경험을 개선하기 위해 끊임없이 노력하는 디자이너, 개발자, 고객 서비스 전문가들의 열정적인 팀이 있습니다.
+              저희는 혁신, 품질, 고객 만족에 최선을 다하고 있습니다.
             </p>
             <p className="text-light-text leading-relaxed">
-              ??ъ쓽 ?ㅼ뼇???? ?꾩옄?곴굅?? 湲곗닠, 臾쇰쪟, 怨좉컼 愿怨????ㅼ뼇??遺꾩빞???꾨Ц 吏?앹쓣 紐⑥븘
-              紐⑤뱺 ?붽뎄?ы빆??異⑹”?섎뒗 ?ш큵?곸씤 ?쇳븨 ?뚮옯?쇱쓣 留뚮뱾怨??덉뒿?덈떎.
+              저희의 다양한 팀은 전자상거래, 기술, 물류, 고객 관계 등 다양한 분야의 전문 지식을 모아
+              모든 요구사항을 충족하는 포괄적인 쇼핑 플랫폼을 만들고 있습니다.
             </p>
           </section>
 
           {/* Call to Action */}
           <section className="text-center bg-sky-color/10 rounded-lg p-6 lg:p-8">
             <h2 className="text-2xl font-semibold text-theme-color mb-4">
-              ?쇳븨??以鍮꾧? ?섏뀲?섏슂?
+              쇼핑할 준비가 되셨나요?
             </h2>
             <p className="text-light-text mb-6">
-              ??ъ쓽 ?ㅼ뼇???곹뭹???먯깋?섍퀬 寃잕??쇳븨??李⑥씠瑜?寃쏀뿕?대낫?몄슂.
+              저희의 다양한 상품을 탐색하고 겟꿀쇼핑의 차이를 경험해보세요.
             </p>
             <Link
               href="/products"
               className="inline-block bg-theme-color text-theme-white px-6 py-3 rounded-lg hover:bg-theme-color/90 transition-colors duration-200 font-medium"
             >
-              ?곹뭹 蹂닿린
+              상품 보기
             </Link>
           </section>
         </div>

@@ -1,4 +1,4 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 import Container from "@/components/Container";
 import InfiniteCategoryGrid from "@/components/pages/categories/InfiniteCategoryGrid";
@@ -10,23 +10,23 @@ import koTranslations from "@/locales/ko.json";
 import koExtendedTranslations from "@/locales/ko-extended.json";
 
 export const metadata: Metadata = {
-  title: "?곹뭹 移댄뀒怨좊━ | Getkkul-shopping",
+  title: "상품 카테고리 | Getkkul-shopping",
   description:
-    "?꾩옄?쒗뭹, ?⑥뀡, ?덈뜲肄? 酉고떚 ???ㅼ뼇???곹뭹 移댄뀒怨좊━瑜??섎윭蹂댁꽭?? ?먰븯???곹뭹???쎄쾶 李얠쓣 ???덉뒿?덈떎.",
+    "전자제품, 패션, 홈데코, 뷰티 등 다양한 상품 카테고리를 둘러보세요. 원하는 상품을 쉽게 찾을 수 있습니다.",
   keywords: [
-    "?곹뭹 移댄뀒怨좊━",
-    "?꾩옄?쒗뭹",
-    "?⑥뀡",
-    "?덈뜲肄?,
-    "酉고떚 ?쒗뭹",
-    "?섎쪟",
-    "?≪꽭?쒕━",
-    "移댄뀒怨좊━蹂??쇳븨",
+    "상품 카테고리",
+    "전자제품",
+    "패션",
+    "홈데코",
+    "뷰티 제품",
+    "의류",
+    "액세서리",
+    "카테고리별 쇼핑",
   ],
   openGraph: {
-    title: "?곹뭹 移댄뀒怨좊━ | Getkkul-shopping",
+    title: "상품 카테고리 | Getkkul-shopping",
     description:
-      "?ㅼ뼇???곹뭹 移댄뀒怨좊━瑜??섎윭蹂댁꽭?? ?먰븯???곹뭹???쎄쾶 李얠쓣 ???덉뒿?덈떎.",
+      "다양한 상품 카테고리를 둘러보세요. 원하는 상품을 쉽게 찾을 수 있습니다.",
     url: "/categories",
     siteName: "Getkkul-shopping",
     type: "website",
@@ -73,13 +73,13 @@ export default async function CategoriesPage() {
     });
 
     if (!categoriesResponse.ok) {
-      console.error(`移댄뀒怨좊━ API ?ㅻ쪟: ${categoriesResponse.status}`);
+      console.error(`카테고리 API 오류: ${categoriesResponse.status}`);
       categoriesData = [];
     } else {
       categoriesData = await categoriesResponse.json();
     }
   } catch (error) {
-    console.error("移댄뀒怨좊━ ?섏묶 ?ㅽ뙣:", error);
+    console.error("카테고리 페칭 실패:", error);
     categoriesData = [];
   }
 

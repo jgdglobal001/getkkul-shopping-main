@@ -1,4 +1,4 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "../../../../../auth";
@@ -172,7 +172,7 @@ export async function PUT(request: NextRequest) {
           zipCode: updateData.zipCode,
           address: updateData.address,
           detailAddress: updateData.detailAddress,
-          deliveryRequest: updateData.deliveryRequest || "臾???,
+          deliveryRequest: updateData.deliveryRequest || "문 앞",
           entranceCode: updateData.entranceCode || null,
           isDefault: updateData.isDefault || false,
           updatedAt: new Date(),
@@ -205,7 +205,7 @@ export async function PUT(request: NextRequest) {
         zipCode: addAddress.zipCode,
         address: addAddress.address,
         detailAddress: addAddress.detailAddress,
-        deliveryRequest: addAddress.deliveryRequest || "臾???,
+        deliveryRequest: addAddress.deliveryRequest || "문 앞",
         entranceCode: addAddress.entranceCode || null,
         isDefault: isDefault,
         userId: user.id,

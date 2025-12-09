@@ -1,4 +1,4 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 import Container from "@/components/Container";
 import Image from "next/image";
@@ -19,7 +19,7 @@ import { db, products, productOptions, productVariants, productQuestions, produc
 import { eq, and, ne, asc, desc } from "drizzle-orm";
 import { notFound } from "next/navigation";
 
-// ?숈쟻 ?뚮뜑留??ㅼ젙 (DB 荑쇰━ ?뚮Ц??
+// 동적 렌더링 설정 (DB 쿼리 때문에)
 export const dynamic = "force-dynamic";
 
 interface Props {
@@ -31,11 +31,11 @@ interface Props {
 const SingleProductPage = async ({ params }: Props) => {
   const { id } = await params;
 
-  // DB?먯꽌 癒쇱? ?곹뭹 李얘린
+  // DB에서 먼저 상품 찾기
   const productResult = await db.select().from(products).where(eq(products.id, id)).limit(1);
   let product: any = productResult[0] || null;
 
-  // ?듭뀡怨?variants 議고쉶
+  // 옵션과 variants 조회
   if (product) {
     const [options, variants] = await Promise.all([
       db.select().from(productOptions).where(eq(productOptions.productId, id)).orderBy(asc(productOptions.order)),
@@ -45,25 +45,25 @@ const SingleProductPage = async ({ params }: Props) => {
     product.variants = variants;
   }
 
-  // DB???놁쑝硫?DummyJSON?먯꽌 李얘린 (紐⑤컮??移댄뀒怨좊━留?
+  // DB에 없으면 DummyJSON에서 찾기 (모바일 카테고리만)
   if (!product) {
     const dummyEndpoint = `https://dummyjson.com/products/${id}`;
     product = await getData(dummyEndpoint);
 
-    // DummyJSON?먯꽌 李얠? ?곹뭹??smartphones 移댄뀒怨좊━媛 ?꾨땲硫?404
+    // DummyJSON에서 찾은 상품이 smartphones 카테고리가 아니면 404
     if (!product || product.category !== "smartphones") {
       notFound();
     }
   }
 
-  // 愿???곹뭹 議고쉶 (媛숈? 移댄뀒怨좊━)
+  // 관련 상품 조회 (같은 카테고리)
   let allProducts: ProductType[] = [];
   if (product.category === "smartphones") {
-    // ?붾? 移댄뀒怨좊━硫?DummyJSON?먯꽌 議고쉶
+    // 더미 카테고리면 DummyJSON에서 조회
     const dummyData = await getData(`https://dummyjson.com/products/category/smartphones?limit=0`);
     allProducts = dummyData?.products || [];
   } else {
-    // DB 移댄뀒怨좊━硫?DB?먯꽌 議고쉶
+    // DB 카테고리면 DB에서 조회
     const dbRelated = await db
       .select()
       .from(products)
@@ -76,10 +76,10 @@ const SingleProductPage = async ({ params }: Props) => {
     allProducts = dbRelated as ProductType[];
   }
 
-  // ?곹뭹 吏덈Ц 議고쉶 (DB ?곹뭹留?- DummyJSON? 吏덈Ц 誘몄???
+  // 상품 질문 조회 (DB 상품만 - DummyJSON은 질문 미지원)
   let questions: any[] = [];
   if (product.category !== "smartphones") {
-    // DB ?곹뭹留?議고쉶
+    // DB 상품만 조회
     const questionsResult = await db
       .select({
         id: productQuestions.id,
@@ -162,17 +162,17 @@ const SingleProductPage = async ({ params }: Props) => {
               </div>
               <p className="text-base font-semibold">{`(${product?.rating?.toFixed(
                 1
-              )} 由щ럭)`}</p>
+              )} 리뷰)`}</p>
             </div>
           </div>
           <p className="flex items-center">
             <FaRegEye className="mr-1" />{" "}
-            <span className="font-semibold mr-1">250+</span> 紐낆씠 吏湲????곹뭹??蹂닿퀬 ?덉뒿?덈떎
+            <span className="font-semibold mr-1">250+</span> 명이 지금 이 상품을 보고 있습니다
           </p>
 
           <ProductDetailsInfo product={product} />
 
-          {/* ?듭뀡 ?좏깮 諛?援щℓ 踰꾪듉 */}
+          {/* 옵션 선택 및 구매 버튼 */}
           <ProductPurchaseSection
             product={product}
             options={product.options || []}
@@ -180,17 +180,17 @@ const SingleProductPage = async ({ params }: Props) => {
           />
         </div>
 
-        {/* ?꾩닔 ?쒓린 ?뺣낫 */}
+        {/* 필수 표기 정보 */}
         <div className="col-span-2">
           <ProductRequiredInfo product={product} />
         </div>
 
-        {/* ?곸꽭 ?뺣낫 ??*/}
+        {/* 상세 정보 탭 */}
         <div className="col-span-2">
           <ProductDetailTabs product={product} />
         </div>
 
-        {/* 怨좉컼 臾몄쓽 */}
+        {/* 고객 문의 */}
         <div className="col-span-2">
           <ProductQA product={product} questions={questions} />
         </div>

@@ -1,4 +1,4 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 import { NextResponse } from "next/server";
 import { db, categories } from "@/lib/db";
@@ -30,10 +30,10 @@ export async function GET() {
     response.headers.set('Expires', '0');
     return response;
   } catch (error) {
-    console.error("移댄뀒怨좊━ 議고쉶 ?ㅻ쪟:", error);
+    console.error("카테고리 조회 오류:", error);
     const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { error: "移댄뀒怨좊━瑜?議고쉶?섎뒗 以??ㅻ쪟媛 諛쒖깮?덉뒿?덈떎", details: errorMessage },
+      { error: "카테고리를 조회하는 중 오류가 발생했습니다", details: errorMessage },
       { status: 500 }
     );
   }

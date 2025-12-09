@@ -1,4 +1,4 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 "use client";
 
@@ -281,12 +281,12 @@ const CheckoutPage = () => {
 
       // Check if widget is ready
       if (!paymentWidgetRef.current) {
-        throw new Error("寃곗젣 ?꾩젽???꾩쭅 以鍮꾨릺吏 ?딆븯?듬땲?? ?좎떆 ???ㅼ떆 ?쒕룄?댁＜?몄슂.");
+        throw new Error("결제 위젯이 아직 준비되지 않았습니다. 잠시 후 다시 시도해주세요.");
       }
 
       // Validate order data
       if (!existingOrder) {
-        throw new Error("二쇰Ц ?뺣낫瑜?李얠쓣 ???놁뒿?덈떎.");
+        throw new Error("주문 정보를 찾을 수 없습니다.");
       }
 
       // Generate order ID
@@ -308,7 +308,7 @@ const CheckoutPage = () => {
       // Get customer name from session or email
       const customerName = session?.user?.name ||
                           session?.user?.email?.split('@')[0] ||
-                          "怨좉컼";
+                          "고객";
 
       // Request payment using the already-rendered widget
       await paymentWidgetRef.current.requestPayment({
@@ -325,14 +325,14 @@ const CheckoutPage = () => {
       console.error("Toss payment error:", error);
 
       // Handle cancellation gracefully
-      const errorMessage = error instanceof Error ? error.message : "?ㅼ떆 ?쒕룄?댁＜?몄슂.";
+      const errorMessage = error instanceof Error ? error.message : "다시 시도해주세요.";
 
-      if (errorMessage.includes("痍⑥냼")) {
+      if (errorMessage.includes("취소")) {
         // User cancelled the payment - no alert needed
         console.log("Payment cancelled by user");
       } else {
         // Other errors - show alert
-        alert(`寃곗젣 ?ㅽ뙣: ${errorMessage}`);
+        alert(`결제 실패: ${errorMessage}`);
       }
     } finally {
       setPaymentProcessing(false);
@@ -574,7 +574,7 @@ const CheckoutPage = () => {
                     </div>
                     <div className="ml-3">
                       <h3 className="text-sm font-medium text-red-800">
-                        寃곗젣 ?꾩젽 濡쒕뱶 ?ㅽ뙣
+                        결제 위젯 로드 실패
                       </h3>
                       <div className="mt-2 text-sm text-red-700">
                         <p>{widgetError}</p>
@@ -606,10 +606,10 @@ const CheckoutPage = () => {
                 ) : !widgetReady ? (
                   <>
                     <FiLoader className="animate-spin mr-2" />
-                    寃곗젣 以鍮?以?..
+                    결제 준비 중...
                   </>
                 ) : (
-                  "寃곗젣?섍린"
+                  "결제하기"
                 )}
               </button>
             </div>

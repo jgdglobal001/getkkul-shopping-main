@@ -1,12 +1,12 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 import Container from "@/components/Container";
 import Title from "@/components/Title";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "?댁슜?쎄? - Getkkul-shopping",
-  description: "寃잕??쇳븨 ?댁슜?쎄?",
+  title: "이용약관 - Getkkul-shopping",
+  description: "겟꿀쇼핑 이용약관",
 };
 
 export default function TermsOfServicePage() {
@@ -16,10 +16,10 @@ export default function TermsOfServicePage() {
         {/* Header Section */}
         <div className="text-center mb-12">
           <Title className="text-3xl lg:text-4xl font-bold mb-4">
-            ?댁슜?쎄?
+            이용약관
           </Title>
           <p className="text-light-text text-lg">
-            寃잕??쇳븨 ?댁슜?쎄????뺤씤?섏꽭??
+            겟꿀쇼핑 이용약관을 확인하세요
           </p>
         </div>
 
@@ -28,35 +28,35 @@ export default function TermsOfServicePage() {
           {/* Section 1 */}
           <section>
             <h2 className="text-xl font-semibold text-theme-color mb-4">
-              ??議?紐⑹쟻
+              제1조 목적
             </h2>
             <p className="text-light-text leading-relaxed">
-              蹂??쎄?? 寃잕??쇳븨(?댄븯 &quot;?뚯궗&quot;)???쒓났?섎뒗 ?꾩옄?곴굅???쒕퉬???댄븯 &quot;?쒕퉬??quot;)瑜??댁슜?⑥뿉 ?덉뼱 ?뚯궗? ?댁슜?먯쓽 沅뚮━, ?섎Т 諛?梨낆엫?ы빆??洹쒖젙?⑥쓣 紐⑹쟻?쇰줈 ?⑸땲??
+              본 약관은 겟꿀쇼핑(이하 &quot;회사&quot;)이 제공하는 전자상거래 서비스(이하 &quot;서비스&quot;)를 이용함에 있어 회사와 이용자의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.
             </p>
           </section>
 
           {/* Section 2 */}
           <section>
             <h2 className="text-xl font-semibold text-theme-color mb-4">
-              ??議??⑹뼱???뺤쓽
+              제2조 용어의 정의
             </h2>
             <div className="space-y-3">
               <div>
-                <p className="font-semibold text-gray-800 mb-1">1. &quot;?뚯궗&quot;</p>
+                <p className="font-semibold text-gray-800 mb-1">1. &quot;회사&quot;</p>
                 <p className="text-light-text">
-                  ?꾩옄?곴굅???ъ뾽???곸쐞?섎뒗 寃잕??쇳븨???섎??⑸땲??
+                  전자상거래 사업을 영위하는 겟꿀쇼핑을 의미합니다.
                 </p>
               </div>
               <div>
-                <p className="font-semibold text-gray-800 mb-1">2. &quot;?댁슜??quot;</p>
+                <p className="font-semibold text-gray-800 mb-1">2. &quot;이용자&quot;</p>
                 <p className="text-light-text">
-                  蹂??쎄????숈쓽?섏뿬 ?뚯궗媛 ?쒓났?섎뒗 ?쒕퉬?ㅻ? ?댁슜?섎뒗 怨좉컼???섎??⑸땲??
+                  본 약관에 동의하여 회사가 제공하는 서비스를 이용하는 고객을 의미합니다.
                 </p>
               </div>
               <div>
-                <p className="font-semibold text-gray-800 mb-1">3. &quot;?곹뭹&quot;</p>
+                <p className="font-semibold text-gray-800 mb-1">3. &quot;상품&quot;</p>
                 <p className="text-light-text">
-                  ?뚯궗媛 ?쒓났?섎뒗 紐⑤뱺 臾쇳뭹 諛??⑹뿭???섎??⑸땲??
+                  회사가 제공하는 모든 물품 및 용역을 의미합니다.
                 </p>
               </div>
             </div>
@@ -65,92 +65,92 @@ export default function TermsOfServicePage() {
           {/* Section 3 */}
           <section>
             <h2 className="text-xl font-semibold text-theme-color mb-4">
-              ??議??쎄????⑤젰 諛?蹂寃?
+              제3조 약관의 효력 및 변경
             </h2>
             <p className="text-light-text leading-relaxed mb-3">
-              蹂??쎄?? ?쒕퉬???붾㈃??寃뚯떆?⑥쑝濡쒖뜥 ?⑤젰??諛쒖깮?⑸땲??
+              본 약관은 서비스 화면에 게시함으로써 효력을 발생합니다.
             </p>
             <p className="text-light-text leading-relaxed">
-              ?뚯궗???꾩슂??寃쎌슦 蹂??쎄???蹂寃쏀븷 ???덉쑝硫? 蹂寃쎈맂 ?쎄?? ?쒕퉬???붾㈃??寃뚯떆?⑥쑝濡쒖뜥 ?⑤젰??諛쒖깮?⑸땲??
+              회사는 필요한 경우 본 약관을 변경할 수 있으며, 변경된 약관은 서비스 화면에 게시함으로써 효력을 발생합니다.
             </p>
           </section>
 
           {/* Section 4 */}
           <section>
             <h2 className="text-xl font-semibold text-theme-color mb-4">
-              ??議??쒕퉬???댁슜 怨꾩빟
+              제4조 서비스 이용 계약
             </h2>
             <p className="text-light-text leading-relaxed mb-3">
-              ?댁슜?먭? 蹂??쎄????숈쓽?섍퀬 ?뚯썝媛?낆쓣 ?꾨즺?섎㈃ ?쒕퉬???댁슜 怨꾩빟???깅┰?⑸땲??
+              이용자가 본 약관에 동의하고 회원가입을 완료하면 서비스 이용 계약이 성립합니다.
             </p>
             <p className="text-light-text leading-relaxed">
-              ?뚯궗???댁슜?먯쓽 ?좎껌??????쒕퉬???쒓났 媛???щ?瑜??먮떒?섏뿬 ?밸굺 ?먮뒗 嫄곗젅?????덉뒿?덈떎.
+              회사는 이용자의 신청에 대해 서비스 제공 가능 여부를 판단하여 승낙 또는 거절할 수 있습니다.
             </p>
           </section>
 
           {/* Section 5 */}
           <section>
             <h2 className="text-xl font-semibold text-theme-color mb-4">
-              ??議??댁슜?먯쓽 ?섎Т
+              제5조 이용자의 의무
             </h2>
             <div className="space-y-2 text-light-text">
-              <p>1. ?댁슜?먮뒗 蹂??쎄??먯꽌 洹쒖젙???ы빆怨?湲고? ?뚯궗媛 ?듭??섎뒗 ?ы빆??以?섑빐???⑸땲??</p>
-              <p>2. ?댁슜?먮뒗 ??몄쓽 媛쒖씤?뺣낫瑜??꾩슜?섍굅??遺?뺥븳 諛⑸쾿?쇰줈 ?쒕퉬?ㅻ? ?댁슜?????놁뒿?덈떎.</p>
-              <p>3. ?댁슜?먮뒗 ?뚯궗????묎텒 諛?吏?곸옱?곌텒??移⑦빐?????놁뒿?덈떎.</p>
-              <p>4. ?댁슜?먮뒗 ?쒕퉬?ㅻ? ?듯빐 遺덈쾿?곸씤 ?댁슜??寃뚯떆?섍굅??諛고룷?????놁뒿?덈떎.</p>
+              <p>1. 이용자는 본 약관에서 규정한 사항과 기타 회사가 통지하는 사항을 준수해야 합니다.</p>
+              <p>2. 이용자는 타인의 개인정보를 도용하거나 부정한 방법으로 서비스를 이용할 수 없습니다.</p>
+              <p>3. 이용자는 회사의 저작권 및 지적재산권을 침해할 수 없습니다.</p>
+              <p>4. 이용자는 서비스를 통해 불법적인 내용을 게시하거나 배포할 수 없습니다.</p>
             </div>
           </section>
 
           {/* Section 6 */}
           <section>
             <h2 className="text-xl font-semibold text-theme-color mb-4">
-              ??議??곹뭹 援щℓ 諛?寃곗젣
+              제6조 상품 구매 및 결제
             </h2>
             <p className="text-light-text leading-relaxed mb-3">
-              ?댁슜?먭? ?곹뭹???좏깮?섏뿬 援щℓ ?좎껌???섎㈃ 怨꾩빟 泥닿껐 ?섏궗瑜??쒖떆?섎뒗 寃껋쑝濡?遊낅땲??
+              이용자가 상품을 선택하여 구매 신청을 하면 계약 체결 의사를 표시하는 것으로 봅니다.
             </p>
             <p className="text-light-text leading-relaxed">
-              ?뚯궗???댁슜?먯쓽 援щℓ ?좎껌??????밸굺 ?먮뒗 嫄곗젅?????덉쑝硫? 寃곗젣 ?꾨즺 ??怨꾩빟???깅┰?⑸땲??
+              회사는 이용자의 구매 신청에 대해 승낙 또는 거절할 수 있으며, 결제 완료 시 계약이 성립합니다.
             </p>
           </section>
 
           {/* Section 7 */}
           <section>
             <h2 className="text-xl font-semibold text-theme-color mb-4">
-              ??議?諛곗넚 諛?諛섑뭹
+              제7조 배송 및 반품
             </h2>
             <p className="text-light-text leading-relaxed mb-3">
-              ?뚯궗??寃곗젣 ?꾨즺 ???곹뭹???좎냽?섍쾶 諛곗넚?⑸땲??
+              회사는 결제 완료 후 상품을 신속하게 배송합니다.
             </p>
             <p className="text-light-text leading-relaxed">
-              ?댁슜?먮뒗 ?곹뭹 ?섎졊 ??7???대궡??諛섑뭹 ?좎껌???????덉뒿?덈떎. ?? ?곹뭹???섏옄媛 ?녿뒗 寃쎌슦 諛섑뭹 諛곗넚猷뚮뒗 ?댁슜?먭? 遺?댄빀?덈떎.
+              이용자는 상품 수령 후 7일 이내에 반품 신청을 할 수 있습니다. 단, 상품의 하자가 없는 경우 반품 배송료는 이용자가 부담합니다.
             </p>
           </section>
 
           {/* Section 8 */}
           <section>
             <h2 className="text-xl font-semibold text-theme-color mb-4">
-              ??議?硫댁콉議고빆
+              제8조 면책조항
             </h2>
             <p className="text-light-text leading-relaxed">
-              ?뚯궗??泥쒖옱吏蹂, ?꾩웳, ?뚮윭 ??遺덇???젰?곸씤 ?ъ쑀濡??명븳 ?쒕퉬??以묐떒?????梨낆엫??吏吏 ?딆뒿?덈떎.
+              회사는 천재지변, 전쟁, 테러 등 불가항력적인 사유로 인한 서비스 중단에 대해 책임을 지지 않습니다.
             </p>
           </section>
 
           {/* Section 9 */}
           <section>
             <h2 className="text-xl font-semibold text-theme-color mb-4">
-              ??議?以嫄곕쾿 諛?愿??
+              제9조 준거법 및 관할
             </h2>
             <p className="text-light-text leading-relaxed">
-              蹂??쎄?? ??쒕?援?踰뺣쪧???곕씪 ?댁꽍?섎ŉ, 蹂??쎄?怨?愿?⑤맂 遺꾩웳? ??쒕?援?踰뺤썝??愿?좎쓣 諛쏆뒿?덈떎.
+              본 약관은 대한민국 법률에 따라 해석되며, 본 약관과 관련된 분쟁은 대한민국 법원의 관할을 받습니다.
             </p>
           </section>
 
           {/* Last Updated */}
           <div className="border-t border-border-color pt-6 mt-8">
             <p className="text-sm text-gray-500">
-              理쒖쥌 ?섏젙?? 2025??11??6??
+              최종 수정일: 2025년 11월 6일
             </p>
           </div>
         </div>

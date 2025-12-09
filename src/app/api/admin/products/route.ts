@@ -1,4 +1,4 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { db, products, productOptions, productVariants } from "@/lib/db";
@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
       conditions.push(ilike(products.category, `%${category}%`));
     }
 
-    // ?곹뭹 紐⑸줉 議고쉶
+    // 상품 목록 조회
     const [productList, countResult] = await Promise.all([
       db
         .select()
@@ -61,9 +61,9 @@ export async function GET(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error("?곹뭹 紐⑸줉 議고쉶 ?ㅻ쪟:", error);
+    console.error("상품 목록 조회 오류:", error);
     return NextResponse.json(
-      { error: "?곹뭹 紐⑸줉??媛?몄삤??以??ㅻ쪟媛 諛쒖깮?덉뒿?덈떎" },
+      { error: "상품 목록을 가져오는 중 오류가 발생했습니다" },
       { status: 500 }
     );
   }
@@ -73,18 +73,18 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // ?꾩닔 ?꾨뱶 寃利?
+    // 필수 필드 검증
     const requiredFields = ["title", "description", "price", "category", "sku"];
     for (const field of requiredFields) {
       if (!body[field]) {
         return NextResponse.json(
-          { error: `${field} ?꾨뱶???꾩닔?낅땲?? },
+          { error: `${field} 필드는 필수입니다` },
           { status: 400 }
         );
       }
     }
 
-    // SKU 以묐났 ?뺤씤
+    // SKU 중복 확인
     const existingProduct = await db
       .select()
       .from(products)
@@ -93,14 +93,14 @@ export async function POST(request: NextRequest) {
 
     if (existingProduct.length > 0) {
       return NextResponse.json(
-        { error: "?대? 議댁옱?섎뒗 SKU?낅땲?? },
+        { error: "이미 존재하는 SKU입니다" },
         { status: 400 }
       );
     }
 
     const productId = generateId();
 
-    // ?곹뭹 ?앹꽦
+    // 상품 생성
     const newProduct = await db
       .insert(products)
       .values({
@@ -130,7 +130,7 @@ export async function POST(request: NextRequest) {
       })
       .returning();
 
-    // ?듭뀡 ?앹꽦
+    // 옵션 생성
     if (body.hasOptions && body.options?.length > 0) {
       await db.insert(productOptions).values(
         body.options.map((opt: any, index: number) => ({
@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // variants ?앹꽦
+    // variants 생성
     if (body.hasOptions && body.variants?.length > 0) {
       await db.insert(productVariants).values(
         body.variants.map((v: any) => ({
@@ -167,9 +167,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(newProduct[0], { status: 201 });
 
   } catch (error) {
-    console.error("?곹뭹 ?앹꽦 ?ㅻ쪟:", error);
+    console.error("상품 생성 오류:", error);
     return NextResponse.json(
-      { error: "?곹뭹 ?앹꽦 以??ㅻ쪟媛 諛쒖깮?덉뒿?덈떎" },
+      { error: "상품 생성 중 오류가 발생했습니다" },
       { status: 500 }
     );
   }

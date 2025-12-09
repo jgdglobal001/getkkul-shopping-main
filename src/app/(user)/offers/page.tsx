@@ -1,4 +1,4 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 import Container from "@/components/Container";
 import { getData } from "../helpers";
@@ -10,13 +10,13 @@ import Link from "next/link";
 import { db, products } from "@/lib/db";
 import { eq, gt, desc, and } from "drizzle-orm";
 
-// ?숈쟻 ?뚮뜑留??ㅼ젙 (DB 荑쇰━ ?뚮Ц??
+// 동적 렌더링 설정 (DB 쿼리 때문에)
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "?밴? ?곹뭹 - Getkkul-shopping",
+  title: "특가 상품 - Getkkul-shopping",
   description:
-    "理쒓퀬???곹뭹?ㅼ쓣 ?밴?濡?留뚮굹蹂댁꽭?? ?꾩옄?쒗뭹, ?⑥뀡, 酉고떚 ???ㅼ뼇??移댄뀒怨좊━?먯꽌 ???좎씤 ?쒗깮???꾨━?몄슂!",
+    "최고의 상품들을 특가로 만나보세요! 전자제품, 패션, 뷰티 등 다양한 카테고리에서 큰 할인 혜택을 누리세요!",
 };
 
 interface OffersPageProps {
@@ -31,7 +31,7 @@ const OffersPage = async ({ searchParams }: OffersPageProps) => {
   // Await searchParams for Next.js 15 compatibility
   const params = await searchParams;
 
-  // DB?먯꽌 ?좎씤 ?곹뭹 議고쉶
+  // DB에서 할인 상품 조회
   const dbProducts = await db
     .select()
     .from(products)

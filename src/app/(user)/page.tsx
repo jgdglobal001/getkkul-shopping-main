@@ -1,4 +1,4 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 import Banner from "@/components/pages/home/Banner";
 import ProductSection from "@/components/pages/home/ProductSection";
@@ -14,23 +14,23 @@ import {
 import { db, products } from "@/lib/db";
 import { eq, desc } from "drizzle-orm";
 
-// ?숈쟻 ?뚮뜑留??ㅼ젙 (DB 荑쇰━ ?뚮Ц??
+// 동적 렌더링 설정 (DB 쿼리 때문에)
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  // DB?먯꽌 ?ㅼ젣 ?곹뭹 議고쉶
+  // DB에서 실제 상품 조회
   const dbProducts = await db
     .select()
     .from(products)
     .where(eq(products.isActive, true))
     .orderBy(desc(products.createdAt));
 
-  // ?붾? 李멸퀬???곹뭹 (紐⑤컮??移댄뀒怨좊━留?
+  // 더미 참고용 상품 (모바일 카테고리만)
   const dummyEndpoint = `https://dummyjson.com/products/category/smartphones?limit=0`;
   const dummyData = await getData(dummyEndpoint);
   const dummyProducts = dummyData?.products || [];
 
-  // DB ?곹뭹 湲곕컲 移댄뀒怨좊━??
+  // DB 상품 기반 카테고리화
   const bestSellers = getBestSellers(dbProducts);
   const newArrivals = getNewArrivals(dbProducts);
   const offers = getOffers(dbProducts);
@@ -49,8 +49,8 @@ export default async function Home() {
 
       {/* Best Sellers Section */}
       <ProductSection
-        title="踰좎뒪?몄???
-        subtitle="怨좉컼?ㅼ씠 媛???щ옉?섎뒗 ?멸린 ?곹뭹??
+        title="베스트셀러"
+        subtitle="고객들이 가장 사랑하는 인기 상품들"
         products={bestSellers}
         viewMoreLink="/products?category=bestsellers"
       />
@@ -59,8 +59,8 @@ export default async function Home() {
 
       {/* New Arrivals Section */}
       <ProductSection
-        title="?좎긽??
-        subtitle="?덈∼寃?異붽???理쒖떊 ?곹뭹??
+        title="신상품"
+        subtitle="새롭게 추가된 최신 상품들"
         products={newArrivals}
         viewMoreLink="/products?category=new"
       />
@@ -69,8 +69,8 @@ export default async function Home() {
 
       {/* Special Offers Section */}
       <ProductSection
-        title="?밴? ?곹뭹"
-        subtitle="?볦튂硫??꾪쉶???밸퀎???좎씤 ?쒗깮"
+        title="특가 상품"
+        subtitle="놓치면 후회할 특별한 할인 혜택"
         products={offers}
         viewMoreLink="/offers"
       />
@@ -80,8 +80,8 @@ export default async function Home() {
         <>
           <SectionDivider />
           <ProductSection
-            title="?벑 李멸퀬 ?곹뭹 (紐⑤컮??"
-            subtitle="?ㅼ뼇??紐⑤컮??湲곌린?ㅼ쓣 李멸퀬?섏꽭??
+            title="📱 참고 상품 (모바일)"
+            subtitle="다양한 모바일 기기들을 참고하세요"
             products={dummyProducts.slice(0, 8)}
             viewMoreLink="/products?category=smartphones"
           />

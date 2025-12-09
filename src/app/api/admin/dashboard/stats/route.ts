@@ -1,4 +1,4 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { db, users, orders, products } from "@/lib/db";
@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     today.setHours(0, 0, 0, 0);
     const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
 
-    // 蹂묐젹濡?紐⑤뱺 ?듦퀎 ?곗씠??媛?몄삤湲?
+    // 병렬로 모든 통계 데이터 가져오기
     const [
       userCount,
       orderCount,
@@ -21,32 +21,32 @@ export async function GET(request: NextRequest) {
       monthlyRevenueResult,
       totalRevenueResult
     ] = await Promise.all([
-      // 珥??ъ슜????
+      // 총 사용자 수
       db.select({ count: count() }).from(users),
 
-      // 珥?二쇰Ц ??
+      // 총 주문 수
       db.select({ count: count() }).from(orders),
 
-      // 珥??곹뭹 ??
+      // 총 상품 수
       db.select({ count: count() }).from(products),
 
-      // 泥섎━ ?湲?二쇰Ц
+      // 처리 대기 주문
       db.select({ count: count() }).from(orders).where(
         or(eq(orders.status, "pending"), eq(orders.status, "processing"))
       ),
 
-      // ?꾨즺??二쇰Ц
+      // 완료된 주문
       db.select({ count: count() }).from(orders).where(eq(orders.status, "completed")),
 
-      // ?ㅻ뒛 二쇰Ц ??
+      // 오늘 주문 수
       db.select({ count: count() }).from(orders).where(gte(orders.createdAt, today)),
 
-      // ?대쾲 ??留ㅼ텧
+      // 이번 달 매출
       db.select({ total: sql<number>`COALESCE(SUM(${orders.totalAmount}), 0)` })
         .from(orders)
         .where(and(eq(orders.status, "completed"), gte(orders.createdAt, monthStart))),
 
-      // 珥?留ㅼ텧
+      // 총 매출
       db.select({ total: sql<number>`COALESCE(SUM(${orders.totalAmount}), 0)` })
         .from(orders)
         .where(eq(orders.status, "completed"))
@@ -66,9 +66,9 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(stats);
 
   } catch (error) {
-    console.error("愿由ъ옄 ?듦퀎 議고쉶 ?ㅻ쪟:", error);
+    console.error("관리자 통계 조회 오류:", error);
     return NextResponse.json(
-      { error: "?듦퀎 ?곗씠?곕? 媛?몄삤??以??ㅻ쪟媛 諛쒖깮?덉뒿?덈떎" },
+      { error: "통계 데이터를 가져오는 중 오류가 발생했습니다" },
       { status: 500 }
     );
   }

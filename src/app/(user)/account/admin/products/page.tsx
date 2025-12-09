@@ -1,11 +1,11 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 import AdminProtectedRoute from "@/components/AdminProtectedRoute";
 import ProductsManagementClient from "@/components/admin/ProductsManagementClient";
 
 export default function ProductsManagementPage() {
   return (
-    <AdminProtectedRoute loadingMessage="?곹뭹 愿由?沅뚰븳???뺤씤?섎뒗 以?..">
+    <AdminProtectedRoute loadingMessage="상품 관리 권한을 확인하는 중...">
       <ProductsManagementClient />
     </AdminProtectedRoute>
   );

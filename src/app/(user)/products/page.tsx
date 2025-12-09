@@ -1,4 +1,4 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 import Container from "@/components/Container";
 import EnhancedProductsSideNav from "@/components/products/EnhancedProductsSideNav";
@@ -17,7 +17,7 @@ import { eq, desc } from "drizzle-orm";
 import koTranslations from "@/locales/ko.json";
 import koExtendedTranslations from "@/locales/ko-extended.json";
 
-// ?숈쟻 ?뚮뜑留??ㅼ젙 (DB 荑쇰━ ?뚮Ц??
+// 동적 렌더링 설정 (DB 쿼리 때문에)
 export const dynamic = "force-dynamic";
 
 interface Props {
@@ -60,18 +60,18 @@ const ProductsPage = async ({ searchParams }: Props) => {
   const params = await searchParams;
   const t = getT();
 
-  // DB?먯꽌 ?ㅼ젣 ?곹뭹 議고쉶
+  // DB에서 실제 상품 조회
   const dbProducts = await db
     .select()
     .from(products)
     .where(eq(products.isActive, true))
     .orderBy(desc(products.createdAt));
 
-  // ?붾? 李멸퀬???곹뭹 (紐⑤컮??移댄뀒怨좊━留?
+  // 더미 참고용 상품 (모바일 카테고리만)
   const dummyData = await getData(`https://dummyjson.com/products/category/smartphones?limit=0`);
   const dummyProducts = dummyData?.products || [];
 
-  let products = [...dbProducts]; // DB ?곹뭹??硫붿씤?쇰줈
+  let products = [...dbProducts]; // DB 상품을 메인으로
   const allProducts = [...products]; // Keep original for filters
 
   // Extract unique brands from DB products only
@@ -79,11 +79,11 @@ const ProductsPage = async ({ searchParams }: Props) => {
     ...new Set(allProducts.map((product: any) => product.brand).filter(Boolean)),
   ].sort();
 
-  // 移댄뀒怨좊━ ?꾪꽣留?- smartphones???붾??먯꽌 媛?몄삤湲?
+  // 카테고리 필터링 - smartphones는 더미에서 가져오기
   if (params.category === "smartphones") {
     products = dummyProducts;
   } else if (params.category) {
-    // ?ㅻⅨ 移댄뀒怨좊━??DB?먯꽌留?
+    // 다른 카테고리는 DB에서만
     switch (params.category) {
       case "bestsellers":
         products = getBestSellers(dbProducts);
@@ -99,7 +99,7 @@ const ProductsPage = async ({ searchParams }: Props) => {
     }
   }
 
-  // Filter by search term (DB?먯꽌留?寃??
+  // Filter by search term (DB에서만 검색)
   if (params.search) {
     products = searchProducts(products, params.search);
   }
@@ -143,22 +143,22 @@ const ProductsPage = async ({ searchParams }: Props) => {
     if (params.category) {
       switch (params.category) {
         case "bestsellers":
-          return t("categories.bestsellers", "踰좎뒪?몄???);
+          return t("categories.bestsellers", "베스트셀러");
         case "new":
-          return t("categories.new_arrivals", "?좎긽??);
+          return t("categories.new_arrivals", "신상품");
         case "offers":
-          return t("categories.special_offers", "?밸퀎 ?좎씤");
+          return t("categories.special_offers", "특별 할인");
         default:
           return `${
             params.category.charAt(0).toUpperCase() + params.category.slice(1)
-          } ${t("products.product_header", "?곹뭹")}`;
+          } ${t("products.product_header", "상품")}`;
       }
     }
     if (params.search) {
-      const template = t("products.search_results_for", `"{{query}}" 寃??寃곌낵`);
+      const template = t("products.search_results_for", `"{{query}}" 검색 결과`);
       return template.replace("{{query}}", params.search);
     }
-    return t("products.all_products", "紐⑤뱺 ?곹뭹");
+    return t("products.all_products", "모든 상품");
   };
 
   return (
@@ -171,11 +171,11 @@ const ProductsPage = async ({ searchParams }: Props) => {
         <p className="text-gray-600 text-lg">
           {params.category || params.search
             ? (() => {
-                const template = t("products.found_products", "{{count}}媛??곹뭹 李얠쓬");
+                const template = t("products.found_products", "{{count}}개 상품 찾음");
                 return template.replace("{{count}}", String(products.length));
               })()
             : (() => {
-                const template = t("products.discover_collection", "{{count}}媛??곹뭹???꾩껜 而щ젆??諛쒓껄");
+                const template = t("products.discover_collection", "{{count}}개 상품의 전체 컬렉션 발견");
                 return template.replace("{{count}}", String(products.length));
               })()}
         </p>
@@ -185,13 +185,13 @@ const ProductsPage = async ({ searchParams }: Props) => {
           <ol className="flex items-center space-x-2 text-gray-500">
             <li>
               <Link href="/" className="hover:text-gray-700">
-                {t("products.breadcrumb_home", "??)}
+                {t("products.breadcrumb_home", "홈")}
               </Link>
             </li>
             <li>{t("products.breadcrumb_separator", "/")}</li>
             <li>
               <Link href="/products" className="hover:text-gray-700">
-                {t("products.breadcrumb_products", "?곹뭹")}
+                {t("products.breadcrumb_products", "상품")}
               </Link>
             </li>
             {params.category && (
@@ -211,7 +211,7 @@ const ProductsPage = async ({ searchParams }: Props) => {
           <EnhancedProductsSideNav
             categories={[
               ...new Set(dbProducts.map((p: any) => p.category).filter(Boolean)),
-              "smartphones", // ?붾? 李멸퀬??移댄뀒怨좊━
+              "smartphones", // 더미 참고용 카테고리
             ]}
             brands={uniqueBrands}
             allProducts={allProducts}

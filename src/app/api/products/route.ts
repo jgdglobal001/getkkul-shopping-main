@@ -1,4 +1,4 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { db, products } from "@/lib/db";
@@ -13,14 +13,14 @@ export async function GET(request: NextRequest) {
 
     const offset = (page - 1) * limit;
 
-    // 寃??議곌굔 援ъ꽦
+    // 검색 조건 구성
     const conditions = [eq(products.isActive, true)];
 
     if (category && category !== "smartphones") {
       conditions.push(ilike(products.category, `%${category}%`));
     }
 
-    // ?곹뭹 紐⑸줉 議고쉶
+    // 상품 목록 조회
     const [productList, countResult] = await Promise.all([
       db
         .select()
@@ -45,9 +45,9 @@ export async function GET(request: NextRequest) {
       totalCount,
     });
   } catch (error) {
-    console.error("?곹뭹 紐⑸줉 議고쉶 ?ㅻ쪟:", error);
+    console.error("상품 목록 조회 오류:", error);
     return NextResponse.json(
-      { error: "?곹뭹 紐⑸줉??媛?몄삤??以??ㅻ쪟媛 諛쒖깮?덉뒿?덈떎" },
+      { error: "상품 목록을 가져오는 중 오류가 발생했습니다" },
       { status: 500 }
     );
   }

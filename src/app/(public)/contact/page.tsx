@@ -1,4 +1,4 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 import Container from "@/components/Container";
 import Title from "@/components/Title";
@@ -8,9 +8,9 @@ import { GrLocation } from "react-icons/gr";
 import { FiClock, FiMail, FiMapPin, FiPhone } from "react-icons/fi";
 
 export const metadata: Metadata = {
-  title: "?곕씫泥?- Getkkul-shopping",
+  title: "연락처 - Getkkul-shopping",
   description:
-    "寃잕??쇳븨??臾몄쓽?섏꽭??- 沅곴툑???먯씠??臾몄젣媛 ?덉쑝?쒕㈃ ?몄젣?좎? ?곕씫二쇱꽭??,
+    "겟꿀쇼핑에 문의하세요 - 궁금한 점이나 문제가 있으시면 언제든지 연락주세요",
 };
 
 export default function ContactPage() {

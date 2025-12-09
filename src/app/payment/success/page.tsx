@@ -1,4 +1,4 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 "use client";
 
@@ -64,7 +64,7 @@ export default function PaymentSuccess() {
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-gray-600">寃곗젣瑜??뺤씤 以묒엯?덈떎...</p>
+          <p className="text-gray-600">결제를 확인 중입니다...</p>
         </div>
       </div>
     );
@@ -74,15 +74,15 @@ export default function PaymentSuccess() {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8 text-center">
         <FiCheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">寃곗젣 ?꾨즺</h1>
-        <p className="text-gray-600 mb-4">二쇰Ц???깃났?곸쑝濡??꾨즺?섏뿀?듬땲??</p>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">결제 완료</h1>
+        <p className="text-gray-600 mb-4">주문이 성공적으로 완료되었습니다.</p>
         
         <div className="bg-gray-50 rounded p-4 mb-6 text-left">
           <p className="text-sm text-gray-600">
-            <span className="font-semibold">二쇰Ц踰덊샇:</span> {orderId}
+            <span className="font-semibold">주문번호:</span> {orderId}
           </p>
           <p className="text-sm text-gray-600 mt-2">
-            <span className="font-semibold">寃곗젣湲덉븸:</span> ??parseInt(amount || "0").toLocaleString("ko-KR")}
+            <span className="font-semibold">결제금액:</span> ₩{parseInt(amount || "0").toLocaleString("ko-KR")}
           </p>
         </div>
 
@@ -91,13 +91,13 @@ export default function PaymentSuccess() {
             href="/account/orders"
             className="block w-full bg-primary text-white py-2 px-4 rounded font-semibold hover:bg-primary-dark transition"
           >
-            二쇰Ц ?뺤씤
+            주문 확인
           </Link>
           <Link
             href="/"
             className="block w-full bg-gray-200 text-gray-800 py-2 px-4 rounded font-semibold hover:bg-gray-300 transition"
           >
-            怨꾩냽 ?쇳븨
+            계속 쇼핑
           </Link>
         </div>
       </div>

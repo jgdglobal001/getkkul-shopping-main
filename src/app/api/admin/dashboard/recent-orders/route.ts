@@ -1,4 +1,4 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { db, orders, users } from "@/lib/db";
@@ -6,7 +6,7 @@ import { desc, eq } from "drizzle-orm";
 
 export async function GET(request: NextRequest) {
   try {
-    // 理쒓렐 二쇰Ц 5媛?媛?몄삤湲?(user ?뺣낫 ?ы븿)
+    // 최근 주문 5개 가져오기 (user 정보 포함)
     const recentOrders = await db
       .select({
         id: orders.id,
@@ -21,31 +21,31 @@ export async function GET(request: NextRequest) {
       .orderBy(desc(orders.createdAt))
       .limit(5);
 
-    // 二쇰Ц???녿뒗 寃쎌슦 ?붾? ?곗씠???쒓났
+    // 주문이 없는 경우 더미 데이터 제공
     if (recentOrders.length === 0) {
       const dummyOrders = [
         {
           id: "dummy-1",
           orderId: "ORD-DEMO-001",
-          customerName: "源泥좎닔 (?곕え)",
+          customerName: "김철수 (데모)",
           amount: 89000,
-          status: "諛곗넚以?,
+          status: "배송중",
           createdAt: new Date().toISOString()
         },
         {
           id: "dummy-2",
           orderId: "ORD-DEMO-002",
-          customerName: "?댁쁺??(?곕え)",
+          customerName: "이영희 (데모)",
           amount: 156000,
-          status: "?꾨즺",
+          status: "완료",
           createdAt: new Date(Date.now() - 86400000).toISOString()
         },
         {
           id: "dummy-3",
           orderId: "ORD-DEMO-003",
-          customerName: "諛뺣???(?곕え)",
+          customerName: "박민수 (데모)",
           amount: 234000,
-          status: "泥섎━以?,
+          status: "처리중",
           createdAt: new Date(Date.now() - 172800000).toISOString()
         }
       ];
@@ -53,11 +53,11 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(dummyOrders);
     }
 
-    // ?묐떟 ?뺤떇??留욊쾶 蹂??
+    // 응답 형식에 맞게 변환
     const formattedOrders = recentOrders.map((order) => ({
       id: order.id,
       orderId: `ORD-${order.id.slice(-8).toUpperCase()}`,
-      customerName: order.userName || order.userEmail || "?????놁쓬",
+      customerName: order.userName || order.userEmail || "알 수 없음",
       amount: order.totalAmount,
       status: getKoreanStatus(order.status || "pending"),
       createdAt: order.createdAt?.toISOString() || new Date().toISOString()
@@ -66,24 +66,24 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(formattedOrders);
 
   } catch (error) {
-    console.error("理쒓렐 二쇰Ц 議고쉶 ?ㅻ쪟:", error);
+    console.error("최근 주문 조회 오류:", error);
     return NextResponse.json(
-      { error: "理쒓렐 二쇰Ц ?곗씠?곕? 媛?몄삤??以??ㅻ쪟媛 諛쒖깮?덉뒿?덈떎" },
+      { error: "최근 주문 데이터를 가져오는 중 오류가 발생했습니다" },
       { status: 500 }
     );
   }
 }
 
-// 二쇰Ц ?곹깭瑜??쒓뎅?대줈 蹂??
+// 주문 상태를 한국어로 변환
 function getKoreanStatus(status: string): string {
   const statusMap: { [key: string]: string } = {
-    pending: "泥섎━以?,
-    processing: "泥섎━以?, 
-    shipped: "諛곗넚以?,
-    delivered: "?꾨즺",
-    completed: "?꾨즺",
-    cancelled: "痍⑥냼",
-    refunded: "?섎텋"
+    pending: "처리중",
+    processing: "처리중", 
+    shipped: "배송중",
+    delivered: "완료",
+    completed: "완료",
+    cancelled: "취소",
+    refunded: "환불"
   };
   
   return statusMap[status] || status;

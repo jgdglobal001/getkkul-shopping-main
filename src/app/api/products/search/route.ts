@@ -1,4 +1,4 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { db, products } from "@/lib/db";
@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get("limit") || "10");
 
     if (!query.trim()) {
-      // 寃?됱뼱 ?놁쑝硫?理쒖떊 ?곹뭹 諛섑솚
+      // 검색어 없으면 최신 상품 반환
       const productList = await db
         .select()
         .from(products)
@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ products: productList });
     }
 
-    // DB?먯꽌 寃??(?쒕ぉ, ?ㅻ챸, 釉뚮옖?? 移댄뀒怨좊━, SKU)
+    // DB에서 검색 (제목, 설명, 브랜드, 카테고리, SKU)
     const productList = await db
       .select()
       .from(products)
@@ -43,9 +43,9 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ products: productList });
   } catch (error) {
-    console.error("寃???ㅻ쪟:", error);
+    console.error("검색 오류:", error);
     return NextResponse.json(
-      { error: "寃??以??ㅻ쪟媛 諛쒖깮?덉뒿?덈떎" },
+      { error: "검색 중 오류가 발생했습니다" },
       { status: 500 }
     );
   }

@@ -1,4 +1,4 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 "use client";
 
@@ -213,7 +213,7 @@ function DeliveryDashboardContent() {
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <div className="h-8 w-8 text-indigo-600 text-2xl flex items-center justify-center">
-                  ?슊
+                  🚚
                 </div>
               </div>
               <div className="ml-4">
@@ -231,7 +231,7 @@ function DeliveryDashboardContent() {
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <div className="h-8 w-8 text-yellow-600 text-2xl flex items-center justify-center">
-                  ?뱧
+                  📍
                 </div>
               </div>
               <div className="ml-4">
@@ -249,7 +249,7 @@ function DeliveryDashboardContent() {
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <div className="h-8 w-8 text-blue-600 text-2xl flex items-center justify-center">
-                  ??
+                  ⏰
                 </div>
               </div>
               <div className="ml-4">
@@ -265,7 +265,7 @@ function DeliveryDashboardContent() {
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <div className="h-8 w-8 text-green-600 text-2xl flex items-center justify-center">
-                  ??
+                  ✅
                 </div>
               </div>
               <div className="ml-4">
@@ -386,7 +386,7 @@ function DeliveryDashboardContent() {
                           onClick={() => setSelectedOrder(order)}
                           className="text-indigo-600 hover:text-indigo-900 flex items-center"
                         >
-                          <span className="mr-1">?몓截?/span>
+                          <span className="mr-1">👁️</span>
                           View
                         </button>
                       </div>
@@ -400,7 +400,7 @@ function DeliveryDashboardContent() {
           {filteredOrders.length === 0 && (
             <div className="text-center py-12">
               <div className="mx-auto h-12 w-12 text-gray-400 text-4xl flex items-center justify-center">
-                ?슊
+                🚚
               </div>
               <h3 className="mt-2 text-sm font-medium text-gray-900">
                 No orders found
@@ -427,7 +427,7 @@ function DeliveryDashboardContent() {
                 onClick={() => setSelectedOrder(null)}
                 className="text-gray-400 hover:text-gray-600"
               >
-                <span className="sr-only">Close</span>??
+                <span className="sr-only">Close</span>✕
               </button>
             </div>
 

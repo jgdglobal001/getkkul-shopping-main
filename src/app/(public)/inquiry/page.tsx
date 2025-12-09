@@ -1,4 +1,4 @@
-﻿export const runtime = 'edge';
+export const runtime = 'edge';
 
 import Container from "@/components/Container";
 import Title from "@/components/Title";
@@ -13,9 +13,9 @@ import {
 } from "react-icons/fi";
 
 export const metadata: Metadata = {
-  title: "鍮꾩쫰?덉뒪 臾몄쓽 - Getkkul-shopping",
+  title: "비즈니스 문의 - Getkkul-shopping",
   description:
-    "寃잕??쇳븨怨??뚰듃?덉떗??留븐쑝?몄슂 - ?꾨ℓ, ???二쇰Ц, 鍮꾩쫰?덉뒪 湲고쉶瑜??먯깋?대낫?몄슂",
+    "겟꿀쇼핑과 파트너십을 맺으세요 - 도매, 대량 주문, 비즈니스 기회를 탐색해보세요",
 };
 
 export default function InquiryPage() {
@@ -25,10 +25,10 @@ export default function InquiryPage() {
         {/* Header Section */}
         <div className="text-center mb-12">
           <Title className="text-3xl lg:text-4xl font-bold mb-4">
-            臾몄쓽?섍린
+            문의하기
           </Title>
           <p className="text-light-text text-lg">
-            寃잕??쇳븨怨쇱쓽 ?뚰듃?덉떗 湲고쉶? 鍮꾩쫰?덉뒪 ?붾（?섏쓣 ?먯깋?대낫?몄슂
+            겟꿀쇼핑과의 파트너십 기회와 비즈니스 솔루션을 탐색해보세요
           </p>
         </div>
 
@@ -39,10 +39,10 @@ export default function InquiryPage() {
               <FiPackage className="w-8 h-8 text-theme-color" />
             </div>
             <h3 className="text-xl font-semibold text-gray-800 mb-2">
-              ?꾨ℓ 二쇰Ц
+              도매 주문
             </h3>
             <p className="text-light-text">
-              ???援щℓ 諛??꾨ℓ 二쇰Ц??????밸퀎 媛寃? ?뚮ℓ?낆껜 諛??ы뙋留ㅼ옄?먭쾶 ?꾨꼍?⑸땲??
+              대량 구매 및 도매 주문에 대한 특별 가격. 소매업체 및 재판매자에게 완벽합니다.
             </p>
           </div>
 
@@ -51,10 +51,10 @@ export default function InquiryPage() {
               <FiUsers className="w-8 h-8 text-theme-color" />
             </div>
             <h3 className="text-xl font-semibold text-gray-800 mb-2">
-              B2B ?뚰듃?덉떗
+              B2B 파트너십
             </h3>
             <p className="text-light-text">
-              ????뚰듃???ㅽ듃?뚰겕??李몄뿬?섍퀬 ?ш큵?곸씤 吏???쒖뒪?쒖쑝濡?鍮꾩쫰?덉뒪瑜??깆옣?쒗궎?몄슂.
+              저희 파트너 네트워크에 참여하고 포괄적인 지원 시스템으로 비즈니스를 성장시키세요.
             </p>
           </div>
 
@@ -63,10 +63,10 @@ export default function InquiryPage() {
               <FiTruck className="w-8 h-8 text-theme-color" />
             </div>
             <h3 className="text-xl font-semibold text-gray-800 mb-2">
-              留욎땄???붾（??
+              맞춤형 솔루션
             </h3>
             <p className="text-light-text">
-              洹?ъ쓽 ?뱀젙 鍮꾩쫰?덉뒪 ?붽뎄??留욎텣 臾쇰쪟 諛?怨듦툒留??붾（??
+              귀사의 특정 비즈니스 요구에 맞춘 물류 및 공급망 솔루션.
             </p>
           </div>
         </div>
@@ -75,55 +75,55 @@ export default function InquiryPage() {
           {/* Inquiry Types */}
           <div>
             <h2 className="text-2xl font-semibold text-theme-color mb-6">
-              臾몄쓽 ?좏삎
+              문의 유형
             </h2>
 
             <div className="space-y-4">
               <div className="bg-theme-white border border-border-color rounded-lg p-6">
                 <h3 className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
                   <FiShoppingCart className="w-5 h-5 text-theme-color" />
-                  ???諛??꾨ℓ 二쇰Ц
+                  대량 및 도매 주문
                 </h3>
                 <p className="text-light-text text-sm mb-3">
-                  ???二쇰Ц???먰븯?쒕굹?? ?밸퀎???꾨ℓ 媛寃⑷낵 ?꾨떞 吏?먯쓣 諛쏆쑝?몄슂.
+                  대량 주문을 원하시나요? 특별한 도매 가격과 전담 지원을 받으세요.
                 </p>
                 <ul className="text-light-text text-sm space-y-1">
-                  <li>??理쒖냼 二쇰Ц ?섎웾: 50媛??댁긽</li>
-                  <li>??????좎씤 媛??/li>
-                  <li>???꾨떞 怨꾩젙 愿由ъ옄</li>
-                  <li>???좎뿰??寃곗젣 議곌굔</li>
+                  <li>• 최소 주문 수량: 50개 이상</li>
+                  <li>• 대량 할인 가능</li>
+                  <li>• 전담 계정 관리자</li>
+                  <li>• 유연한 결제 조건</li>
                 </ul>
               </div>
 
               <div className="bg-theme-white border border-border-color rounded-lg p-6">
                 <h3 className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
                   <FiUsers className="w-5 h-5 text-theme-color" />
-                  ?뚰듃?덉떗 湲고쉶
+                  파트너십 기회
                 </h3>
                 <p className="text-light-text text-sm mb-3">
-                  寃잕??쇳븨 ?뚰듃?덇? ?섍퀬 ?띠쑝?좉??? ?좊ː?????덈뒗 鍮꾩쫰?덉뒪 ?뚰듃???ㅽ듃?뚰겕??李몄뿬?섏꽭??
+                  겟꿀쇼핑 파트너가 되고 싶으신가요? 신뢰할 수 있는 비즈니스 파트너 네트워크에 참여하세요.
                 </p>
                 <ul className="text-light-text text-sm space-y-1">
-                  <li>???ы뙋留??뚰듃?덉떗</li>
-                  <li>???쒗쑕 ?꾨줈洹몃옩</li>
-                  <li>??釉뚮옖???묒뾽</li>
-                  <li>???좏넻 ?뚰듃?덉떗</li>
+                  <li>• 재판매 파트너십</li>
+                  <li>• 제휴 프로그램</li>
+                  <li>• 브랜드 협업</li>
+                  <li>• 유통 파트너십</li>
                 </ul>
               </div>
 
               <div className="bg-theme-white border border-border-color rounded-lg p-6">
                 <h3 className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
                   <FiHelpCircle className="w-5 h-5 text-theme-color" />
-                  留욎땄???붾（??
+                  맞춤형 솔루션
                 </h3>
                 <p className="text-light-text text-sm mb-3">
-                  ?뱀젙??寃껋씠 ?꾩슂?섏떊媛?? 怨좎쑀??鍮꾩쫰?덉뒪 ?붽뎄?ы빆??留욎텣 留욎땄???붾（?섏쓣 ?쒓났?⑸땲??
+                  특정한 것이 필요하신가요? 고유한 비즈니스 요구사항에 맞춘 맞춤형 솔루션을 제공합니다.
                 </p>
                 <ul className="text-light-text text-sm space-y-1">
-                  <li>???꾨씪?대퉿 ?쇰꺼留?/li>
-                  <li>??留욎땄???ъ옣</li>
-                  <li>???밸퀎 臾쇰쪟 諛곗튂</li>
-                  <li>???뷀꽣?꾨씪?댁쫰 ?듯빀</li>
+                  <li>• 프라이빗 라벨링</li>
+                  <li>• 맞춤형 포장</li>
+                  <li>• 특별 물류 배치</li>
+                  <li>• 엔터프라이즈 통합</li>
                 </ul>
               </div>
             </div>
@@ -133,7 +133,7 @@ export default function InquiryPage() {
           <div className="bg-light-bg rounded-lg p-6 lg:p-8">
             <h2 className="text-2xl font-semibold text-theme-color mb-6 flex items-center gap-2">
               <FiMessageSquare className="w-6 h-6" />
-              臾몄쓽 ?쒖텧
+              문의 제출
             </h2>
 
             <form className="space-y-6">
@@ -143,7 +143,7 @@ export default function InquiryPage() {
                     htmlFor="companyName"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    ?뚯궗紐?*
+                    회사명 *
                   </label>
                   <input
                     type="text"
@@ -151,7 +151,7 @@ export default function InquiryPage() {
                     name="companyName"
                     required
                     className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent outline-none transition-colors"
-                    placeholder="?뚯궗紐낆쓣 ?낅젰?섏꽭??
+                    placeholder="회사명을 입력하세요"
                   />
                 </div>
                 <div>
@@ -159,7 +159,7 @@ export default function InquiryPage() {
                     htmlFor="contactPerson"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    ?대떦?먮챸 *
+                    담당자명 *
                   </label>
                   <input
                     type="text"
@@ -167,7 +167,7 @@ export default function InquiryPage() {
                     name="contactPerson"
                     required
                     className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent outline-none transition-colors"
-                    placeholder="?대떦???대쫫???낅젰?섏꽭??
+                    placeholder="담당자 이름을 입력하세요"
                   />
                 </div>
               </div>
@@ -178,7 +178,7 @@ export default function InquiryPage() {
                     htmlFor="email"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    鍮꾩쫰?덉뒪 ?대찓??*
+                    비즈니스 이메일 *
                   </label>
                   <input
                     type="email"
@@ -194,7 +194,7 @@ export default function InquiryPage() {
                     htmlFor="phone"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    ?꾪솕踰덊샇 *
+                    전화번호 *
                   </label>
                   <input
                     type="tel"
@@ -212,7 +212,7 @@ export default function InquiryPage() {
                   htmlFor="inquiryType"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  臾몄쓽 ?좏삎 *
+                  문의 유형 *
                 </label>
                 <select
                   id="inquiryType"
@@ -220,13 +220,13 @@ export default function InquiryPage() {
                   required
                   className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent outline-none transition-colors"
                 >
-                  <option value="">臾몄쓽 ?좏삎???좏깮?섏꽭??/option>
-                  <option value="wholesale">?꾨ℓ 二쇰Ц</option>
-                  <option value="partnership">?뚰듃?덉떗 湲고쉶</option>
-                  <option value="custom">留욎땄???붾（??/option>
-                  <option value="reseller">?ы뙋留??꾨줈洹몃옩</option>
-                  <option value="distribution">?좏넻 ?뚰듃?덉떗</option>
-                  <option value="other">湲고?</option>
+                  <option value="">문의 유형을 선택하세요</option>
+                  <option value="wholesale">도매 주문</option>
+                  <option value="partnership">파트너십 기회</option>
+                  <option value="custom">맞춤형 솔루션</option>
+                  <option value="reseller">재판매 프로그램</option>
+                  <option value="distribution">유통 파트너십</option>
+                  <option value="other">기타</option>
                 </select>
               </div>
 
@@ -235,18 +235,18 @@ export default function InquiryPage() {
                   htmlFor="estimatedVolume"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  ?덉긽 ?붽컙 嫄곕옒??
+                  예상 월간 거래량
                 </label>
                 <select
                   id="estimatedVolume"
                   name="estimatedVolume"
                   className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent outline-none transition-colors"
                 >
-                  <option value="">嫄곕옒??踰붿쐞瑜??좏깮?섏꽭??/option>
-                  <option value="50-100">50-100媛?/option>
-                  <option value="100-500">100-500媛?/option>
-                  <option value="500-1000">500-1000媛?/option>
-                  <option value="1000+">1000媛??댁긽</option>
+                  <option value="">거래량 범위를 선택하세요</option>
+                  <option value="50-100">50-100개</option>
+                  <option value="100-500">100-500개</option>
+                  <option value="500-1000">500-1000개</option>
+                  <option value="1000+">1000개 이상</option>
                 </select>
               </div>
 
@@ -255,7 +255,7 @@ export default function InquiryPage() {
                   htmlFor="details"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  臾몄쓽 ?댁슜 *
+                  문의 내용 *
                 </label>
                 <textarea
                   id="details"
@@ -263,7 +263,7 @@ export default function InquiryPage() {
                   required
                   rows={6}
                   className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent outline-none transition-colors resize-vertical"
-                  placeholder="鍮꾩쫰?덉뒪 臾몄쓽 ?댁슜, 援ъ껜?곸씤 ?붽뎄?ы빆, ?쇱젙 諛?湲고? 愿???뺣낫瑜??낅젰?댁＜?몄슂..."
+                  placeholder="비즈니스 문의 내용, 구체적인 요구사항, 일정 및 기타 관련 정보를 입력해주세요..."
                 />
               </div>
 
@@ -271,7 +271,7 @@ export default function InquiryPage() {
                 type="submit"
                 className="w-full bg-theme-color text-theme-white py-3 px-6 rounded-lg hover:bg-theme-color/90 transition-colors duration-200 font-medium"
               >
-                臾몄쓽 ?쒖텧
+                문의 제출
               </button>
             </form>
           </div>
@@ -280,23 +280,23 @@ export default function InquiryPage() {
         {/* Contact Information */}
         <div className="mt-16 text-center bg-sky-color/10 rounded-lg p-8">
           <h2 className="text-2xl font-semibold text-theme-color mb-4">
-            ?붽뎄?ы빆???쇱쓽?섍퀬 ?띠쑝?좉???
+            요구사항을 논의하고 싶으신가요?
           </h2>
           <p className="text-light-text mb-6">
-            ???鍮꾩쫰?덉뒪 媛쒕컻????꾨꼍???붾（?섏쓣 李얜뒗 ???꾩????쒕┫ 以鍮꾧? ?섏뼱 ?덉뒿?덈떎.
+            저희 비즈니스 개발팀이 완벽한 솔루션을 찾는 데 도움을 드릴 준비가 되어 있습니다.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="mailto:jgdglobal@kakao.com"
               className="inline-block bg-theme-color text-theme-white px-6 py-3 rounded-lg hover:bg-theme-color/90 transition-colors duration-200 font-medium"
             >
-              鍮꾩쫰?덉뒪? ?대찓??
+              비즈니스팀 이메일
             </a>
             <a
               href="tel:010-7218-2858"
               className="inline-block bg-theme-white text-theme-color border-2 border-theme-color px-6 py-3 rounded-lg hover:bg-theme-color hover:text-theme-white transition-colors duration-200 font-medium"
             >
-              ?꾪솕 ?곷떞 ?덉빟
+              전화 상담 예약
             </a>
           </div>
         </div>

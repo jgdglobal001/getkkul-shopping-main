@@ -1,1 +1,2 @@
-﻿
+export const runtime = 'edge';
+
