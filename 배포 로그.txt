@@ -1,284 +1,349 @@
-2025-12-09T06:53:39.849939Z	Cloning repository...
-2025-12-09T06:53:40.59799Z	From https://github.com/jgdglobal001/getkkul-shopping-main
-2025-12-09T06:53:40.598509Z	 * branch            15d14cd66e40811d25484b3702c18c7328d51a7f -> FETCH_HEAD
-2025-12-09T06:53:40.598636Z	
-2025-12-09T06:53:40.676754Z	HEAD is now at 15d14cd Fix: use dummy DB URL for build-time to avoid neon() error
-2025-12-09T06:53:40.677366Z	
-2025-12-09T06:53:40.756558Z	
-2025-12-09T06:53:40.757314Z	Using v2 root directory strategy
-2025-12-09T06:53:40.778876Z	Success: Finished cloning repository files
-2025-12-09T06:53:42.750646Z	Checking for configuration in a Wrangler configuration file (BETA)
-2025-12-09T06:53:42.751386Z	
-2025-12-09T06:53:42.75269Z	Found wrangler.toml file. Reading build configuration...
-2025-12-09T06:53:42.759485Z	pages_build_output_dir: .vercel/output/static
-2025-12-09T06:53:42.759689Z	Build environment variables: 
-2025-12-09T06:53:42.760093Z	  - NODE_ENV: production
-2025-12-09T06:53:43.859066Z	Successfully read wrangler.toml file.
-2025-12-09T06:53:43.925197Z	Detected the following tools from environment: npm@10.9.2, nodejs@22.16.0
-2025-12-09T06:53:43.925939Z	Installing project dependencies: npm clean-install --progress=false
-2025-12-09T06:53:48.872964Z	npm warn deprecated @types/bcryptjs@3.0.0: This is a stub types definition. bcryptjs provides its own type definitions, so you do not need this installed.
-2025-12-09T06:53:48.911011Z	npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
-2025-12-09T06:54:11.442732Z	
-2025-12-09T06:54:11.443098Z	added 1094 packages, and audited 1095 packages in 27s
-2025-12-09T06:54:11.443233Z	
-2025-12-09T06:54:11.443352Z	120 packages are looking for funding
-2025-12-09T06:54:11.443455Z	  run `npm fund` for details
-2025-12-09T06:54:11.450732Z	
-2025-12-09T06:54:11.450949Z	1 moderate severity vulnerability
-2025-12-09T06:54:11.451072Z	
-2025-12-09T06:54:11.451195Z	To address all issues, run:
-2025-12-09T06:54:11.451489Z	  npm audit fix --force
-2025-12-09T06:54:11.451595Z	
-2025-12-09T06:54:11.451713Z	Run `npm audit` for details.
-2025-12-09T06:54:11.487716Z	Executing user command: npm run pages:build
-2025-12-09T06:54:11.853689Z	
-2025-12-09T06:54:11.853981Z	> shofy@0.1.0 pages:build
-2025-12-09T06:54:11.854109Z	> npx @cloudflare/next-on-pages
-2025-12-09T06:54:11.854222Z	
-2025-12-09T06:54:12.858341Z	npm warn exec The following package was not found and will be installed: @cloudflare/next-on-pages@1.13.16
-2025-12-09T06:54:25.92149Z	npm warn deprecated path-match@1.2.4: This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions
-2025-12-09T06:54:26.635293Z	npm warn deprecated @cloudflare/next-on-pages@1.13.16: Please use the OpenNext adapter instead: https://opennext.js.org/cloudflare
-2025-12-09T06:54:32.491737Z	⚡️ @cloudflare/next-on-pages CLI v.1.13.16
-2025-12-09T06:54:32.668713Z	⚡️ Detected Package Manager: npm (10.9.2)
-2025-12-09T06:54:32.669067Z	⚡️ Preparing project...
-2025-12-09T06:54:32.671859Z	⚡️ Project is ready
-2025-12-09T06:54:32.672307Z	⚡️ Building project...
-2025-12-09T06:54:33.6156Z	▲  npm warn exec The following package was not found and will be installed: vercel@49.1.2
-2025-12-09T06:54:37.914721Z	▲  npm warn deprecated path-match@1.2.4: This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions
-2025-12-09T06:54:40.480199Z	▲  Vercel CLI 49.1.2
-2025-12-09T06:54:40.484607Z	▲  > NOTE: The Vercel CLI now collects telemetry regarding usage of the CLI.
-2025-12-09T06:54:40.484919Z	▲  > This information is used to shape the CLI roadmap and prioritize features.
-2025-12-09T06:54:40.485026Z	▲  > You can learn more, including how to opt-out if you'd not like to participate in this program, by visiting the following URL:
-2025-12-09T06:54:40.485815Z	▲  > https://vercel.com/docs/cli/about-telemetry
-2025-12-09T06:54:40.571928Z	▲  WARN! Build not running on Vercel. System environment variables will not be available.
-2025-12-09T06:54:40.790603Z	▲  Installing dependencies...
-2025-12-09T06:54:44.960022Z	▲  added 217 packages in 4s
-2025-12-09T06:54:44.960455Z	▲  228 packages are looking for funding
-2025-12-09T06:54:44.960616Z	▲  run `npm fund` for details
-2025-12-09T06:54:44.973141Z	▲  Detected Next.js version: 15.4.8
-2025-12-09T06:54:44.981523Z	▲  Running "npm run build"
-2025-12-09T06:54:45.166326Z	▲  > shofy@0.1.0 build
-2025-12-09T06:54:45.166577Z	▲  > next build
-2025-12-09T06:54:45.862017Z	▲  Attention: Next.js now collects completely anonymous telemetry regarding usage.
-2025-12-09T06:54:45.86231Z	▲  This information is used to shape Next.js' roadmap and prioritize features.
-2025-12-09T06:54:45.862535Z	▲  You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
-2025-12-09T06:54:45.862691Z	▲  https://nextjs.org/telemetry
-2025-12-09T06:54:45.92583Z	▲  ▲ Next.js 15.4.8
-2025-12-09T06:54:45.92612Z	▲  
-2025-12-09T06:54:45.99436Z	▲  Creating an optimized production build ...
-2025-12-09T06:55:15.506763Z	▲  ✓ Compiled successfully in 25.0s
-2025-12-09T06:55:15.511733Z	▲  Skipping validation of types
-2025-12-09T06:55:15.51196Z	▲  Linting ...
-2025-12-09T06:55:19.577162Z	▲  ./src/components/admin/product-form/OptionsManager.tsx
-2025-12-09T06:55:19.57756Z	▲  35:6  Warning: React Hook useEffect has a missing dependency: 'formData.options'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
-2025-12-09T06:55:19.577871Z	▲  
-2025-12-09T06:55:19.578075Z	▲  info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
-2025-12-09T06:55:19.579227Z	▲  Collecting page data ...
-2025-12-09T06:55:23.853648Z	▲  Generating static pages (0/71) ...
-2025-12-09T06:55:25.030948Z	▲  Generating static pages (17/71)
-2025-12-09T06:55:25.352887Z	▲  Generating static pages (35/71)
-2025-12-09T06:55:25.438062Z	▲  카테고리 API 오류: 404
-2025-12-09T06:55:25.503018Z	▲  Generating static pages (53/71)
-2025-12-09T06:55:26.176182Z	▲  ✓ Generating static pages (71/71)
-2025-12-09T06:55:26.890348Z	▲  Finalizing page optimization ...
-2025-12-09T06:55:26.890585Z	▲  Collecting build traces ...
-2025-12-09T06:55:32.776022Z	▲  
-2025-12-09T06:55:32.787316Z	▲  Route (app)                                    Size  First Load JS
-2025-12-09T06:55:32.787596Z	▲  ┌ ƒ /                                       4.06 kB         164 kB
-2025-12-09T06:55:32.787708Z	▲  ├ ○ /_not-found                               252 B        99.8 kB
-2025-12-09T06:55:32.787881Z	▲  ├ ƒ /about                                    169 B         103 kB
-2025-12-09T06:55:32.788099Z	▲  ├ ƒ /account                                   7 kB         154 kB
-2025-12-09T06:55:32.788249Z	▲  ├ ƒ /account/addresses                      4.96 kB         131 kB
-2025-12-09T06:55:32.788367Z	▲  ├ ƒ /account/admin                          3.21 kB         122 kB
-2025-12-09T06:55:32.788491Z	▲  ├ ƒ /account/admin/categories               2.97 kB         122 kB
-2025-12-09T06:55:32.788597Z	▲  ├ ƒ /account/admin/inquiries                1.99 kB         126 kB
-2025-12-09T06:55:32.788699Z	▲  ├ ƒ /account/admin/products                 3.27 kB         127 kB
-2025-12-09T06:55:32.788826Z	▲  ├ ƒ /account/admin/products/[id]            2.97 kB         127 kB
-2025-12-09T06:55:32.78893Z	▲  ├ ƒ /account/admin/products/[id]/edit         144 B         135 kB
-2025-12-09T06:55:32.789031Z	▲  ├ ƒ /account/admin/products/new               144 B         135 kB
-2025-12-09T06:55:32.789129Z	▲  ├ ƒ /account/notifications                  1.18 kB         117 kB
-2025-12-09T06:55:32.789221Z	▲  ├ ƒ /account/orders                         6.52 kB         145 kB
-2025-12-09T06:55:32.789328Z	▲  ├ ƒ /account/orders/[id]                    5.62 kB         144 kB
-2025-12-09T06:55:32.789439Z	▲  ├ ƒ /account/payment                          794 B         120 kB
-2025-12-09T06:55:32.789548Z	▲  ├ ƒ /account/profile                          252 B        99.8 kB
-2025-12-09T06:55:32.789649Z	▲  ├ ƒ /account/reviews                        3.84 kB         142 kB
-2025-12-09T06:55:32.789748Z	▲  ├ ƒ /account/settings                       3.03 kB         136 kB
-2025-12-09T06:55:32.789873Z	▲  ├ ƒ /api/admin/analytics                      252 B        99.8 kB
-2025-12-09T06:55:32.789973Z	▲  ├ ƒ /api/admin/categories                     252 B        99.8 kB
-2025-12-09T06:55:32.790075Z	▲  ├ ƒ /api/admin/categories/[id]                252 B        99.8 kB
-2025-12-09T06:55:32.790138Z	▲  ├ ƒ /api/admin/categories/migrate             252 B        99.8 kB
-2025-12-09T06:55:32.790255Z	▲  ├ ƒ /api/admin/dashboard/recent-orders        252 B        99.8 kB
-2025-12-09T06:55:32.790363Z	▲  ├ ƒ /api/admin/dashboard/stats                252 B        99.8 kB
-2025-12-09T06:55:32.790465Z	▲  ├ ƒ /api/admin/inquiries                      252 B        99.8 kB
-2025-12-09T06:55:32.790569Z	▲  ├ ƒ /api/admin/inquiries/[id]                 252 B        99.8 kB
-2025-12-09T06:55:32.790675Z	▲  ├ ƒ /api/admin/orders                         252 B        99.8 kB
-2025-12-09T06:55:32.790797Z	▲  ├ ƒ /api/admin/orders/[id]                    252 B        99.8 kB
-2025-12-09T06:55:32.79093Z	▲  ├ ƒ /api/admin/orders/bulk-delete             252 B        99.8 kB
-2025-12-09T06:55:32.791042Z	▲  ├ ƒ /api/admin/orders/bulk-delete-selected    252 B        99.8 kB
-2025-12-09T06:55:32.791131Z	▲  ├ ƒ /api/admin/products                       252 B        99.8 kB
-2025-12-09T06:55:32.791235Z	▲  ├ ƒ /api/admin/products/[id]                  252 B        99.8 kB
-2025-12-09T06:55:32.791376Z	▲  ├ ƒ /api/admin/setup                          252 B        99.8 kB
-2025-12-09T06:55:32.791475Z	▲  ├ ƒ /api/admin/stats                          252 B        99.8 kB
-2025-12-09T06:55:32.791572Z	▲  ├ ƒ /api/admin/users                          252 B        99.8 kB
-2025-12-09T06:55:32.791681Z	▲  ├ ƒ /api/admin/users/bulk-delete              252 B        99.8 kB
-2025-12-09T06:55:32.791793Z	▲  ├ ƒ /api/auth/[...nextauth]                   252 B        99.8 kB
-2025-12-09T06:55:32.791901Z	▲  ├ ƒ /api/auth/register                        252 B        99.8 kB
-2025-12-09T06:55:32.792Z	▲  ├ ƒ /api/auth/update-password                 252 B        99.8 kB
-2025-12-09T06:55:32.792095Z	▲  ├ ƒ /api/categories                           252 B        99.8 kB
-2025-12-09T06:55:32.792204Z	▲  ├ ƒ /api/checkout                             252 B        99.8 kB
-2025-12-09T06:55:32.792278Z	▲  ├ ƒ /api/orders                               252 B        99.8 kB
-2025-12-09T06:55:32.792343Z	▲  ├ ƒ /api/orders/place                         252 B        99.8 kB
-2025-12-09T06:55:32.792409Z	▲  ├ ƒ /api/orders/process                       252 B        99.8 kB
-2025-12-09T06:55:32.792465Z	▲  ├ ƒ /api/orders/toss-confirm                  252 B        99.8 kB
-2025-12-09T06:55:32.792521Z	▲  ├ ƒ /api/orders/toss-webhook                  252 B        99.8 kB
-2025-12-09T06:55:32.792592Z	▲  ├ ƒ /api/orders/update-payment                252 B        99.8 kB
-2025-12-09T06:55:32.792659Z	▲  ├ ƒ /api/product-questions                    252 B        99.8 kB
-2025-12-09T06:55:32.792717Z	▲  ├ ƒ /api/products                             252 B        99.8 kB
-2025-12-09T06:55:32.792805Z	▲  ├ ƒ /api/products/search                      252 B        99.8 kB
-2025-12-09T06:55:32.792886Z	▲  ├ ƒ /api/user/[id]                            252 B        99.8 kB
-2025-12-09T06:55:32.792957Z	▲  ├ ƒ /api/user/delete-address                  252 B        99.8 kB
-2025-12-09T06:55:32.793022Z	▲  ├ ƒ /api/user/orders                          252 B        99.8 kB
-2025-12-09T06:55:32.793105Z	▲  ├ ƒ /api/user/profile                         252 B        99.8 kB
-2025-12-09T06:55:32.793164Z	▲  ├ ƒ /api/user/upload-image                    252 B        99.8 kB
-2025-12-09T06:55:32.793235Z	▲  ├ ○ /auth/error                             1.29 kB         104 kB
-2025-12-09T06:55:32.793338Z	▲  ├ ○ /auth/register                          2.35 kB         125 kB
-2025-12-09T06:55:32.793404Z	▲  ├ ○ /auth/signin                            2.35 kB         125 kB
-2025-12-09T06:55:32.793493Z	▲  ├ ƒ /cancel                                   648 B         111 kB
-2025-12-09T06:55:32.793579Z	▲  ├ ƒ /cart                                   5.92 kB         172 kB
-2025-12-09T06:55:32.793674Z	▲  ├ ƒ /categories                             4.58 kB         132 kB
-2025-12-09T06:55:32.793744Z	▲  ├ ƒ /checkout                               7.09 kB         145 kB
-2025-12-09T06:55:32.79385Z	▲  ├ ƒ /contact                                  252 B        99.8 kB
-2025-12-09T06:55:32.793918Z	▲  ├ ƒ /customer-service                         169 B         103 kB
-2025-12-09T06:55:32.793998Z	▲  ├ ○ /dashboard                              1.08 kB         104 kB
-2025-12-09T06:55:32.794097Z	▲  ├ ○ /delivery                                 564 B         100 kB
-2025-12-09T06:55:32.794166Z	▲  ├ ○ /delivery-dashboard                     3.71 kB         111 kB
-2025-12-09T06:55:32.794293Z	▲  ├ ƒ /faqs                                   4.86 kB         115 kB
-2025-12-09T06:55:32.794474Z	▲  ├ ƒ /favorite                               3.59 kB         142 kB
-2025-12-09T06:55:32.794575Z	▲  ├ ○ /icon.png                                   0 B            0 B
-2025-12-09T06:55:32.794681Z	▲  ├ ƒ /inquiry                                  252 B        99.8 kB
-2025-12-09T06:55:32.794783Z	▲  ├ ƒ /offers                                 2.72 kB         199 kB
-2025-12-09T06:55:32.794874Z	▲  ├ ƒ /orders/[id]                              252 B        99.8 kB
-2025-12-09T06:55:32.794954Z	▲  ├ ○ /packer-dashboard                       5.64 kB         124 kB
-2025-12-09T06:55:32.795033Z	▲  ├ ○ /payment/fail                           2.06 kB         108 kB
-2025-12-09T06:55:32.795114Z	▲  ├ ○ /payment/success                         2.4 kB         112 kB
-2025-12-09T06:55:32.795196Z	▲  ├ ƒ /privacy-policy                           252 B        99.8 kB
-2025-12-09T06:55:32.795289Z	▲  ├ ƒ /products                               5.81 kB         200 kB
-2025-12-09T06:55:32.795373Z	▲  ├ ƒ /products/[id]                          7.31 kB         169 kB
-2025-12-09T06:55:32.795456Z	▲  ├ ƒ /success                                3.83 kB         134 kB
-2025-12-09T06:55:32.795536Z	▲  ├ ƒ /terms-of-service                         252 B        99.8 kB
-2025-12-09T06:55:32.795625Z	▲  ├ ○ /unauthorized                           2.16 kB         119 kB
-2025-12-09T06:55:32.795711Z	▲  └ ○ /user-dashboard                         4.19 kB         120 kB
-2025-12-09T06:55:32.795819Z	▲  + First Load JS shared by all               99.6 kB
-2025-12-09T06:55:32.795905Z	▲  ├ chunks/4bd1b696-602635ee57868870.js     54.1 kB
-2025-12-09T06:55:32.795988Z	▲  ├ chunks/5964-455cec4068509000.js         43.5 kB
-2025-12-09T06:55:32.796074Z	▲  └ other shared chunks (total)             1.93 kB
-2025-12-09T06:55:32.796162Z	▲  ○  (Static)   prerendered as static content
-2025-12-09T06:55:32.79626Z	▲  ƒ  (Dynamic)  server-rendered on demand
-2025-12-09T06:55:32.818875Z	▲  > shofy@0.1.0 postbuild
-2025-12-09T06:55:32.819134Z	▲  > next-sitemap
-2025-12-09T06:55:32.940406Z	▲  ✨ [next-sitemap] Loading next-sitemap config: file:///opt/buildhome/repo/next-sitemap.config.js
-2025-12-09T06:55:32.946903Z	▲  ✅ [next-sitemap] Generation completed
-2025-12-09T06:55:32.947636Z	▲  ┌───────────────┬────────┐
-2025-12-09T06:55:32.947797Z	▲  │ (index)       │ Values │
-2025-12-09T06:55:32.947951Z	▲  ├───────────────┼────────┤
-2025-12-09T06:55:32.948077Z	▲  │ indexSitemaps │ 1      │
-2025-12-09T06:55:32.948223Z	▲  │ sitemaps      │ 1      │
-2025-12-09T06:55:32.948471Z	▲  └───────────────┴────────┘
-2025-12-09T06:55:32.948604Z	▲  -----------------------------------------------------
-2025-12-09T06:55:32.948716Z	▲  SITEMAP INDICES 
-2025-12-09T06:55:32.948845Z	▲  -----------------------------------------------------
-2025-12-09T06:55:32.948951Z	▲  ○ https://shofy.reactbd.com/sitemap.xml
-2025-12-09T06:55:32.949066Z	▲  -----------------------------------------------------
-2025-12-09T06:55:32.949173Z	▲  SITEMAPS 
-2025-12-09T06:55:32.94927Z	▲  -----------------------------------------------------
-2025-12-09T06:55:32.949381Z	▲  ○ https://shofy.reactbd.com/sitemap-0.xml
-2025-12-09T06:55:33.340052Z	▲  Traced Next.js server files in: 284.382ms
-2025-12-09T06:55:33.703238Z	▲  Created all serverless functions in: 363.084ms
-2025-12-09T06:55:33.723714Z	▲  Collected static files (public/, static/, .next/static): 14.388ms
-2025-12-09T06:55:33.831179Z	▲  Build Completed in .vercel/output [53s]
-2025-12-09T06:55:33.971838Z	⚡️ Completed `npx vercel build`.
-2025-12-09T06:55:35.192517Z	
-2025-12-09T06:55:35.192813Z	⚡️ ERROR: Failed to produce a Cloudflare Pages build from the project.
-2025-12-09T06:55:35.192954Z	⚡️ 
-2025-12-09T06:55:35.193072Z	⚡️ 	The following routes were not configured to run with the Edge Runtime:
-2025-12-09T06:55:35.193181Z	⚡️ 	  - /about
-2025-12-09T06:55:35.193299Z	⚡️ 	  - /account/addresses
-2025-12-09T06:55:35.193395Z	⚡️ 	  - /account/admin/categories
-2025-12-09T06:55:35.193491Z	⚡️ 	  - /account/admin/inquiries
-2025-12-09T06:55:35.193586Z	⚡️ 	  - /account/admin/products/[id]/edit
-2025-12-09T06:55:35.193686Z	⚡️ 	  - /account/admin/products/[id]
-2025-12-09T06:55:35.193783Z	⚡️ 	  - /account/admin/products/new
-2025-12-09T06:55:35.193893Z	⚡️ 	  - /account/admin/products
-2025-12-09T06:55:35.193996Z	⚡️ 	  - /account/admin
-2025-12-09T06:55:35.194088Z	⚡️ 	  - /account/notifications
-2025-12-09T06:55:35.194182Z	⚡️ 	  - /account/orders/[id]
-2025-12-09T06:55:35.194275Z	⚡️ 	  - /account/orders
-2025-12-09T06:55:35.194361Z	⚡️ 	  - /account/payment
-2025-12-09T06:55:35.194461Z	⚡️ 	  - /account/profile
-2025-12-09T06:55:35.19455Z	⚡️ 	  - /account/reviews
-2025-12-09T06:55:35.194636Z	⚡️ 	  - /account/settings
-2025-12-09T06:55:35.194717Z	⚡️ 	  - /account
-2025-12-09T06:55:35.19484Z	⚡️ 	  - /api/admin/analytics
-2025-12-09T06:55:35.194933Z	⚡️ 	  - /api/admin/categories/[id]
-2025-12-09T06:55:35.195021Z	⚡️ 	  - /api/admin/categories/migrate
-2025-12-09T06:55:35.195116Z	⚡️ 	  - /api/admin/categories
-2025-12-09T06:55:35.19521Z	⚡️ 	  - /api/admin/dashboard/recent-orders
-2025-12-09T06:55:35.195311Z	⚡️ 	  - /api/admin/dashboard/stats
-2025-12-09T06:55:35.195399Z	⚡️ 	  - /api/admin/inquiries/[id]
-2025-12-09T06:55:35.195479Z	⚡️ 	  - /api/admin/inquiries
-2025-12-09T06:55:35.195575Z	⚡️ 	  - /api/admin/orders/[id]
-2025-12-09T06:55:35.195678Z	⚡️ 	  - /api/admin/orders/bulk-delete-selected
-2025-12-09T06:55:35.195778Z	⚡️ 	  - /api/admin/orders/bulk-delete
-2025-12-09T06:55:35.195872Z	⚡️ 	  - /api/admin/orders
-2025-12-09T06:55:35.195966Z	⚡️ 	  - /api/admin/products/[id]
-2025-12-09T06:55:35.196055Z	⚡️ 	  - /api/admin/products
-2025-12-09T06:55:35.196151Z	⚡️ 	  - /api/admin/setup
-2025-12-09T06:55:35.196231Z	⚡️ 	  - /api/admin/stats
-2025-12-09T06:55:35.196308Z	⚡️ 	  - /api/admin/users/bulk-delete
-2025-12-09T06:55:35.196399Z	⚡️ 	  - /api/admin/users
-2025-12-09T06:55:35.196483Z	⚡️ 	  - /api/auth/[...nextauth]
-2025-12-09T06:55:35.196568Z	⚡️ 	  - /api/auth/register
-2025-12-09T06:55:35.196659Z	⚡️ 	  - /api/auth/update-password
-2025-12-09T06:55:35.196745Z	⚡️ 	  - /api/categories
-2025-12-09T06:55:35.19684Z	⚡️ 	  - /api/checkout
-2025-12-09T06:55:35.196919Z	⚡️ 	  - /api/orders/place
-2025-12-09T06:55:35.196999Z	⚡️ 	  - /api/orders/process
-2025-12-09T06:55:35.197086Z	⚡️ 	  - /api/orders/toss-confirm
-2025-12-09T06:55:35.197168Z	⚡️ 	  - /api/orders/toss-webhook
-2025-12-09T06:55:35.197247Z	⚡️ 	  - /api/orders/update-payment
-2025-12-09T06:55:35.197323Z	⚡️ 	  - /api/orders
-2025-12-09T06:55:35.197402Z	⚡️ 	  - /api/product-questions
-2025-12-09T06:55:35.197476Z	⚡️ 	  - /api/products/search
-2025-12-09T06:55:35.197552Z	⚡️ 	  - /api/products
-2025-12-09T06:55:35.197642Z	⚡️ 	  - /api/user/[id]
-2025-12-09T06:55:35.197732Z	⚡️ 	  - /api/user/delete-address
-2025-12-09T06:55:35.197828Z	⚡️ 	  - /api/user/orders
-2025-12-09T06:55:35.197918Z	⚡️ 	  - /api/user/profile
-2025-12-09T06:55:35.198004Z	⚡️ 	  - /api/user/upload-image
-2025-12-09T06:55:35.198091Z	⚡️ 	  - /cancel
-2025-12-09T06:55:35.198186Z	⚡️ 	  - /cart
-2025-12-09T06:55:35.198281Z	⚡️ 	  - /categories
-2025-12-09T06:55:35.198367Z	⚡️ 	  - /checkout
-2025-12-09T06:55:35.19846Z	⚡️ 	  - /contact
-2025-12-09T06:55:35.19856Z	⚡️ 	  - /customer-service
-2025-12-09T06:55:35.198674Z	⚡️ 	  - /faqs
-2025-12-09T06:55:35.198779Z	⚡️ 	  - /favorite
-2025-12-09T06:55:35.198879Z	⚡️ 	  - /index
-2025-12-09T06:55:35.198978Z	⚡️ 	  - /inquiry
-2025-12-09T06:55:35.199076Z	⚡️ 	  - /offers
-2025-12-09T06:55:35.199174Z	⚡️ 	  - /orders/[id]
-2025-12-09T06:55:35.199293Z	⚡️ 	  - /privacy-policy
-2025-12-09T06:55:35.199432Z	⚡️ 	  - /products/[id]
-2025-12-09T06:55:35.199546Z	⚡️ 	  - /products
-2025-12-09T06:55:35.199652Z	⚡️ 	  - /success
-2025-12-09T06:55:35.199753Z	⚡️ 	  - /terms-of-service
-2025-12-09T06:55:35.199874Z	⚡️ 
-2025-12-09T06:55:35.199983Z	⚡️ 	Please make sure that all your non-static routes export the following edge runtime route segment config:
-2025-12-09T06:55:35.200128Z	⚡️ 	  export const runtime = 'edge';
-2025-12-09T06:55:35.200363Z	⚡️ 
-2025-12-09T06:55:35.200545Z	⚡️ 	You can read more about the Edge Runtime on the Next.js documentation:
-2025-12-09T06:55:35.200653Z	⚡️ 	  https://nextjs.org/docs/app/building-your-application/rendering/edge-and-nodejs-runtimes
-2025-12-09T06:55:35.200815Z	
-2025-12-09T06:55:35.236964Z	Failed: Error while executing user command. Exited with error code: 1
-2025-12-09T06:55:35.248552Z	Failed: build command exited with code: 1
-2025-12-09T06:55:36.440024Z	Failed: error occurred while running build command
+2025-12-09T07:26:50.113245Z	Cloning repository...
+2025-12-09T07:26:50.890313Z	From https://github.com/jgdglobal001/getkkul-shopping-main
+2025-12-09T07:26:50.890766Z	 * branch            ddcc1459fef74e46f8313e98d23e0f307e735b44 -> FETCH_HEAD
+2025-12-09T07:26:50.890874Z	
+2025-12-09T07:26:50.966167Z	HEAD is now at ddcc145 Fix: Restore files and add edge runtime correctly with Node.js script
+2025-12-09T07:26:50.966556Z	
+2025-12-09T07:26:51.043133Z	
+2025-12-09T07:26:51.043597Z	Using v2 root directory strategy
+2025-12-09T07:26:51.065922Z	Success: Finished cloning repository files
+2025-12-09T07:26:52.769919Z	Checking for configuration in a Wrangler configuration file (BETA)
+2025-12-09T07:26:52.771412Z	
+2025-12-09T07:26:52.772626Z	Found wrangler.toml file. Reading build configuration...
+2025-12-09T07:26:52.779611Z	pages_build_output_dir: .vercel/output/static
+2025-12-09T07:26:52.779801Z	Build environment variables: 
+2025-12-09T07:26:52.780086Z	  - NODE_ENV: production
+2025-12-09T07:26:53.958619Z	Successfully read wrangler.toml file.
+2025-12-09T07:26:54.024717Z	Detected the following tools from environment: npm@10.9.2, nodejs@22.16.0
+2025-12-09T07:26:54.025277Z	Installing project dependencies: npm clean-install --progress=false
+2025-12-09T07:26:59.09127Z	npm warn deprecated @types/bcryptjs@3.0.0: This is a stub types definition. bcryptjs provides its own type definitions, so you do not need this installed.
+2025-12-09T07:26:59.14102Z	npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+2025-12-09T07:27:25.055973Z	
+2025-12-09T07:27:25.056563Z	added 1096 packages, and audited 1097 packages in 31s
+2025-12-09T07:27:25.056696Z	
+2025-12-09T07:27:25.056798Z	120 packages are looking for funding
+2025-12-09T07:27:25.056948Z	  run `npm fund` for details
+2025-12-09T07:27:25.065439Z	
+2025-12-09T07:27:25.065842Z	1 moderate severity vulnerability
+2025-12-09T07:27:25.065972Z	
+2025-12-09T07:27:25.066431Z	To address all issues, run:
+2025-12-09T07:27:25.066547Z	  npm audit fix --force
+2025-12-09T07:27:25.066662Z	
+2025-12-09T07:27:25.066779Z	Run `npm audit` for details.
+2025-12-09T07:27:25.108076Z	Executing user command: npm run cf:build
+2025-12-09T07:27:25.495586Z	
+2025-12-09T07:27:25.495821Z	> shofy@0.1.0 cf:build
+2025-12-09T07:27:25.495903Z	> npx @cloudflare/next-on-pages
+2025-12-09T07:27:25.495975Z	
+2025-12-09T07:27:26.67902Z	npm warn exec The following package was not found and will be installed: @cloudflare/next-on-pages@1.13.16
+2025-12-09T07:27:38.656806Z	npm warn deprecated path-match@1.2.4: This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions
+2025-12-09T07:27:39.471443Z	npm warn deprecated @cloudflare/next-on-pages@1.13.16: Please use the OpenNext adapter instead: https://opennext.js.org/cloudflare
+2025-12-09T07:27:45.377055Z	⚡️ @cloudflare/next-on-pages CLI v.1.13.16
+2025-12-09T07:27:45.547744Z	⚡️ Detected Package Manager: npm (10.9.2)
+2025-12-09T07:27:45.548106Z	⚡️ Preparing project...
+2025-12-09T07:27:45.550914Z	⚡️ Project is ready
+2025-12-09T07:27:45.551147Z	⚡️ Building project...
+2025-12-09T07:27:46.520709Z	▲  npm warn exec The following package was not found and will be installed: vercel@49.1.2
+2025-12-09T07:27:54.156401Z	▲  npm warn deprecated path-match@1.2.4: This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions
+2025-12-09T07:27:56.772594Z	▲  Vercel CLI 49.1.2
+2025-12-09T07:27:56.776934Z	▲  > NOTE: The Vercel CLI now collects telemetry regarding usage of the CLI.
+2025-12-09T07:27:56.777128Z	▲  > This information is used to shape the CLI roadmap and prioritize features.
+2025-12-09T07:27:56.777423Z	▲  > You can learn more, including how to opt-out if you'd not like to participate in this program, by visiting the following URL:
+2025-12-09T07:27:56.777578Z	▲  > https://vercel.com/docs/cli/about-telemetry
+2025-12-09T07:27:56.867513Z	▲  WARN! Build not running on Vercel. System environment variables will not be available.
+2025-12-09T07:27:57.0843Z	▲  Installing dependencies...
+2025-12-09T07:28:01.399643Z	▲  added 217 packages in 4s
+2025-12-09T07:28:01.400072Z	▲  228 packages are looking for funding
+2025-12-09T07:28:01.400296Z	▲  run `npm fund` for details
+2025-12-09T07:28:01.412578Z	▲  Detected Next.js version: 15.4.8
+2025-12-09T07:28:01.421012Z	▲  Running "npm run build"
+2025-12-09T07:28:01.606605Z	▲  > shofy@0.1.0 build
+2025-12-09T07:28:01.606835Z	▲  > next build
+2025-12-09T07:28:02.317215Z	▲  Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2025-12-09T07:28:02.317509Z	▲  This information is used to shape Next.js' roadmap and prioritize features.
+2025-12-09T07:28:02.317636Z	▲  You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2025-12-09T07:28:02.317742Z	▲  https://nextjs.org/telemetry
+2025-12-09T07:28:02.317883Z	▲  
+2025-12-09T07:28:02.382318Z	▲  ▲ Next.js 15.4.8
+2025-12-09T07:28:02.382635Z	▲  
+2025-12-09T07:28:02.455628Z	▲  Creating an optimized production build ...
+2025-12-09T07:28:31.820185Z	▲  Failed to compile.
+2025-12-09T07:28:31.820895Z	▲  ./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(public)%2Ffaqs%2Fpage&page=%2F(public)%2Ffaqs%2Fpage&pagePath=private-next-app-dir%2F(public)%2Ffaqs%2Fpage.tsx&appDir=%2Fopt%2Fbuildhome%2Frepo%2Fsrc%2Fapp&appPaths=%2F(public)%2Ffaqs%2Fpage&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!./src/app/(public)/faqs/page.tsx?__next_edge_ssr_entry__
+2025-12-09T07:28:31.82112Z	▲  Error:   [31mx[0m The "use client" directive must be placed before other expressions. Move it to the top of the file to resolve this issue.
+2025-12-09T07:28:31.82129Z	▲    ,-[[36;1;4m/opt/buildhome/repo/src/app/(public)/faqs/page.tsx[0m:3:1]
+2025-12-09T07:28:31.821424Z	▲  [2m1[0m | export const runtime = 'edge';
+2025-12-09T07:28:31.821542Z	▲  [2m2[0m | 
+2025-12-09T07:28:31.821681Z	▲  [2m3[0m | "use client";
+2025-12-09T07:28:31.821808Z	▲    : [35;1m^^^^^^^^^^^^^[0m
+2025-12-09T07:28:31.821916Z	▲  [2m4[0m | 
+2025-12-09T07:28:31.822036Z	▲  [2m5[0m | import Container from "@/components/Container";
+2025-12-09T07:28:31.822159Z	▲  [2m6[0m | import Title from "@/components/Title";
+2025-12-09T07:28:31.822269Z	▲    `----
+2025-12-09T07:28:31.822384Z	▲   [31mx[0m You're importing a component that needs `useState`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
+2025-12-09T07:28:31.822514Z	▲   [31m|[0m
+2025-12-09T07:28:31.822637Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+2025-12-09T07:28:31.822765Z	▲   [31m|[0m
+2025-12-09T07:28:31.822885Z	▲  
+2025-12-09T07:28:31.823007Z	▲     ,-[[36;1;4m/opt/buildhome/repo/src/app/(public)/faqs/page.tsx[0m:8:1]
+2025-12-09T07:28:31.823122Z	▲  [2m 5[0m | import Container from "@/components/Container";
+2025-12-09T07:28:31.823258Z	▲  [2m 6[0m | import Title from "@/components/Title";
+2025-12-09T07:28:31.823386Z	▲  [2m 7[0m | import { Metadata } from "next";
+2025-12-09T07:28:31.823491Z	▲  [2m 8[0m | import { useState } from "react";
+2025-12-09T07:28:31.823597Z	▲     : [35;1m         ^^^^^^^^[0m
+2025-12-09T07:28:31.823698Z	▲  [2m 9[0m | import {
+2025-12-09T07:28:31.823801Z	▲  [2m10[0m |   FiChevronDown,
+2025-12-09T07:28:31.823912Z	▲  [2m11[0m |   FiChevronRight,
+2025-12-09T07:28:31.824024Z	▲     `----
+2025-12-09T07:28:31.824153Z	▲  
+2025-12-09T07:28:31.824272Z	▲  Import trace for requested module:
+2025-12-09T07:28:31.824396Z	▲  ./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(public)%2Ffaqs%2Fpage&page=%2F(public)%2Ffaqs%2Fpage&pagePath=private-next-app-dir%2F(public)%2Ffaqs%2Fpage.tsx&appDir=%2Fopt%2Fbuildhome%2Frepo%2Fsrc%2Fapp&appPaths=%2F(public)%2Ffaqs%2Fpage&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!./src/app/(public)/faqs/page.tsx?__next_edge_ssr_entry__
+2025-12-09T07:28:31.824577Z	▲  
+2025-12-09T07:28:31.824844Z	▲  ./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(user)%2Faccount%2Forders%2F%5Bid%5D%2Fpage&page=%2F(user)%2Faccount%2Forders%2F%5Bid%5D%2Fpage&pagePath=private-next-app-dir%2F(user)%2Faccount%2Forders%2F%5Bid%5D%2Fpage.tsx&appDir=%2Fopt%2Fbuildhome%2Frepo%2Fsrc%2Fapp&appPaths=%2F(user)%2Faccount%2Forders%2F%5Bid%5D%2Fpage&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!./src/app/(user)/account/orders/[id]/page.tsx?__next_edge_ssr_entry__
+2025-12-09T07:28:31.82504Z	▲  Error:   [31mx[0m The "use client" directive must be placed before other expressions. Move it to the top of the file to resolve this issue.
+2025-12-09T07:28:31.825279Z	▲    ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/account/orders/[id]/page.tsx[0m:3:1]
+2025-12-09T07:28:31.825434Z	▲  [2m1[0m | export const runtime = 'edge';
+2025-12-09T07:28:31.825599Z	▲  [2m2[0m | 
+2025-12-09T07:28:31.825741Z	▲  [2m3[0m | "use client";
+2025-12-09T07:28:31.826002Z	▲    : [35;1m^^^^^^^^^^^^^[0m
+2025-12-09T07:28:31.826099Z	▲  [2m4[0m | 
+2025-12-09T07:28:31.826226Z	▲  [2m5[0m | import { useEffect, useState, useCallback } from "react";
+2025-12-09T07:28:31.826376Z	▲  [2m6[0m | import { useSession } from "next-auth/react";
+2025-12-09T07:28:31.82652Z	▲    `----
+2025-12-09T07:28:31.826651Z	▲   [31mx[0m You're importing a component that needs `useEffect`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
+2025-12-09T07:28:31.826784Z	▲   [31m|[0m
+2025-12-09T07:28:31.827579Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+2025-12-09T07:28:31.827748Z	▲   [31m|[0m
+2025-12-09T07:28:31.827894Z	▲  
+2025-12-09T07:28:31.82802Z	▲    ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/account/orders/[id]/page.tsx[0m:5:1]
+2025-12-09T07:28:31.828152Z	▲  [2m2[0m | 
+2025-12-09T07:28:31.828276Z	▲  [2m3[0m | "use client";
+2025-12-09T07:28:31.828387Z	▲  [2m4[0m | 
+2025-12-09T07:28:31.828529Z	▲  [2m5[0m | import { useEffect, useState, useCallback } from "react";
+2025-12-09T07:28:31.828652Z	▲    : [35;1m         ^^^^^^^^^[0m
+2025-12-09T07:28:31.828759Z	▲  [2m6[0m | import { useSession } from "next-auth/react";
+2025-12-09T07:28:31.828872Z	▲  [2m7[0m | import { useTranslation } from "react-i18next";
+2025-12-09T07:28:31.828976Z	▲  [2m8[0m | import Image from "next/image";
+2025-12-09T07:28:31.829094Z	▲    `----
+2025-12-09T07:28:31.829256Z	▲   [31mx[0m You're importing a component that needs `useState`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
+2025-12-09T07:28:31.829378Z	▲   [31m|[0m
+2025-12-09T07:28:31.829489Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+2025-12-09T07:28:31.829714Z	▲   [31m|[0m
+2025-12-09T07:28:31.829839Z	▲  
+2025-12-09T07:28:31.82995Z	▲    ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/account/orders/[id]/page.tsx[0m:5:1]
+2025-12-09T07:28:31.830054Z	▲  [2m2[0m | 
+2025-12-09T07:28:31.830182Z	▲  [2m3[0m | "use client";
+2025-12-09T07:28:31.830287Z	▲  [2m4[0m | 
+2025-12-09T07:28:31.830396Z	▲  [2m5[0m | import { useEffect, useState, useCallback } from "react";
+2025-12-09T07:28:31.830512Z	▲    : [35;1m                    ^^^^^^^^[0m
+2025-12-09T07:28:31.830622Z	▲  [2m6[0m | import { useSession } from "next-auth/react";
+2025-12-09T07:28:31.830732Z	▲  [2m7[0m | import { useTranslation } from "react-i18next";
+2025-12-09T07:28:31.830841Z	▲  [2m8[0m | import Image from "next/image";
+2025-12-09T07:28:31.830944Z	▲    `----
+2025-12-09T07:28:31.831044Z	▲   [31mx[0m You're importing a component that needs `useParams`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
+2025-12-09T07:28:31.831187Z	▲   [31m|[0m
+2025-12-09T07:28:31.831294Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+2025-12-09T07:28:31.831413Z	▲   [31m|[0m
+2025-12-09T07:28:31.831522Z	▲  
+2025-12-09T07:28:31.831621Z	▲     ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/account/orders/[id]/page.tsx[0m:9:1]
+2025-12-09T07:28:31.831729Z	▲  [2m 6[0m | import { useSession } from "next-auth/react";
+2025-12-09T07:28:31.831827Z	▲  [2m 7[0m | import { useTranslation } from "react-i18next";
+2025-12-09T07:28:31.831932Z	▲  [2m 8[0m | import Image from "next/image";
+2025-12-09T07:28:31.832033Z	▲  [2m 9[0m | import { useParams, useRouter } from "next/navigation";
+2025-12-09T07:28:31.832156Z	▲     : [35;1m         ^^^^^^^^^[0m
+2025-12-09T07:28:31.832271Z	▲  [2m10[0m | import Container from "@/components/Container";
+2025-12-09T07:28:31.832379Z	▲  [2m11[0m | import PriceFormat from "@/components/PriceFormat";
+2025-12-09T07:28:31.832495Z	▲  [2m12[0m | import ProtectedRoute from "@/components/ProtectedRoute";
+2025-12-09T07:28:31.832605Z	▲     `----
+2025-12-09T07:28:31.832721Z	▲   [31mx[0m You're importing a component that needs `useRouter`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
+2025-12-09T07:28:31.832827Z	▲   [31m|[0m
+2025-12-09T07:28:31.832935Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+2025-12-09T07:28:31.833044Z	▲   [31m|[0m
+2025-12-09T07:28:31.833161Z	▲  
+2025-12-09T07:28:31.833268Z	▲     ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/account/orders/[id]/page.tsx[0m:9:1]
+2025-12-09T07:28:31.833379Z	▲  [2m 6[0m | import { useSession } from "next-auth/react";
+2025-12-09T07:28:31.833464Z	▲  [2m 7[0m | import { useTranslation } from "react-i18next";
+2025-12-09T07:28:31.833632Z	▲  [2m 8[0m | import Image from "next/image";
+2025-12-09T07:28:31.8337Z	▲  [2m 9[0m | import { useParams, useRouter } from "next/navigation";
+2025-12-09T07:28:31.834005Z	▲     : [35;1m                    ^^^^^^^^^[0m
+2025-12-09T07:28:31.834088Z	▲  [2m10[0m | import Container from "@/components/Container";
+2025-12-09T07:28:31.834271Z	▲  [2m11[0m | import PriceFormat from "@/components/PriceFormat";
+2025-12-09T07:28:31.834456Z	▲  [2m12[0m | import ProtectedRoute from "@/components/ProtectedRoute";
+2025-12-09T07:28:31.834615Z	▲     `----
+2025-12-09T07:28:31.834754Z	▲  
+2025-12-09T07:28:31.834835Z	▲  Import trace for requested module:
+2025-12-09T07:28:31.834959Z	▲  ./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(user)%2Faccount%2Forders%2F%5Bid%5D%2Fpage&page=%2F(user)%2Faccount%2Forders%2F%5Bid%5D%2Fpage&pagePath=private-next-app-dir%2F(user)%2Faccount%2Forders%2F%5Bid%5D%2Fpage.tsx&appDir=%2Fopt%2Fbuildhome%2Frepo%2Fsrc%2Fapp&appPaths=%2F(user)%2Faccount%2Forders%2F%5Bid%5D%2Fpage&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!./src/app/(user)/account/orders/[id]/page.tsx?__next_edge_ssr_entry__
+2025-12-09T07:28:31.83507Z	▲  
+2025-12-09T07:28:31.835263Z	▲  ./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(user)%2Fcheckout%2Fpage&page=%2F(user)%2Fcheckout%2Fpage&pagePath=private-next-app-dir%2F(user)%2Fcheckout%2Fpage.tsx&appDir=%2Fopt%2Fbuildhome%2Frepo%2Fsrc%2Fapp&appPaths=%2F(user)%2Fcheckout%2Fpage&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!./src/app/(user)/checkout/page.tsx?__next_edge_ssr_entry__
+2025-12-09T07:28:31.835359Z	▲  Error:   [31mx[0m The "use client" directive must be placed before other expressions. Move it to the top of the file to resolve this issue.
+2025-12-09T07:28:31.835525Z	▲    ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/checkout/page.tsx[0m:3:1]
+2025-12-09T07:28:31.835681Z	▲  [2m1[0m | export const runtime = 'edge';
+2025-12-09T07:28:31.835839Z	▲  [2m2[0m | 
+2025-12-09T07:28:31.835987Z	▲  [2m3[0m | "use client";
+2025-12-09T07:28:31.836122Z	▲    : [35;1m^^^^^^^^^^^^^[0m
+2025-12-09T07:28:31.836291Z	▲  [2m4[0m | 
+2025-12-09T07:28:31.83646Z	▲  [2m5[0m | import { useEffect, useState, useRef, useCallback } from "react";
+2025-12-09T07:28:31.836602Z	▲  [2m6[0m | import { useSession } from "next-auth/react";
+2025-12-09T07:28:31.836762Z	▲    `----
+2025-12-09T07:28:31.836979Z	▲   [31mx[0m You're importing a component that needs `useEffect`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
+2025-12-09T07:28:31.83713Z	▲   [31m|[0m
+2025-12-09T07:28:31.837248Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+2025-12-09T07:28:31.837759Z	▲   [31m|[0m
+2025-12-09T07:28:31.837903Z	▲  
+2025-12-09T07:28:31.838009Z	▲    ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/checkout/page.tsx[0m:5:1]
+2025-12-09T07:28:31.838081Z	▲  [2m2[0m | 
+2025-12-09T07:28:31.838155Z	▲  [2m3[0m | "use client";
+2025-12-09T07:28:31.838253Z	▲  [2m4[0m | 
+2025-12-09T07:28:31.838323Z	▲  [2m5[0m | import { useEffect, useState, useRef, useCallback } from "react";
+2025-12-09T07:28:31.83839Z	▲    : [35;1m         ^^^^^^^^^[0m
+2025-12-09T07:28:31.83845Z	▲  [2m6[0m | import { useSession } from "next-auth/react";
+2025-12-09T07:28:31.838513Z	▲  [2m7[0m | import Image from "next/image";
+2025-12-09T07:28:31.838572Z	▲  [2m8[0m | import { useRouter, useSearchParams } from "next/navigation";
+2025-12-09T07:28:31.838648Z	▲    `----
+2025-12-09T07:28:31.83872Z	▲   [31mx[0m You're importing a component that needs `useState`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
+2025-12-09T07:28:31.838807Z	▲   [31m|[0m
+2025-12-09T07:28:31.838877Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+2025-12-09T07:28:31.83894Z	▲   [31m|[0m
+2025-12-09T07:28:31.839004Z	▲  
+2025-12-09T07:28:31.839068Z	▲    ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/checkout/page.tsx[0m:5:1]
+2025-12-09T07:28:31.839131Z	▲  [2m2[0m | 
+2025-12-09T07:28:31.839222Z	▲  [2m3[0m | "use client";
+2025-12-09T07:28:31.839283Z	▲  [2m4[0m | 
+2025-12-09T07:28:31.839341Z	▲  [2m5[0m | import { useEffect, useState, useRef, useCallback } from "react";
+2025-12-09T07:28:31.839398Z	▲    : [35;1m                    ^^^^^^^^[0m
+2025-12-09T07:28:31.839461Z	▲  [2m6[0m | import { useSession } from "next-auth/react";
+2025-12-09T07:28:31.839528Z	▲  [2m7[0m | import Image from "next/image";
+2025-12-09T07:28:31.839585Z	▲  [2m8[0m | import { useRouter, useSearchParams } from "next/navigation";
+2025-12-09T07:28:31.839642Z	▲    `----
+2025-12-09T07:28:31.839807Z	▲   [31mx[0m You're importing a component that needs `useRef`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
+2025-12-09T07:28:31.839893Z	▲   [31m|[0m
+2025-12-09T07:28:31.839958Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+2025-12-09T07:28:31.840016Z	▲   [31m|[0m
+2025-12-09T07:28:31.840074Z	▲  
+2025-12-09T07:28:31.84013Z	▲    ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/checkout/page.tsx[0m:5:1]
+2025-12-09T07:28:31.840209Z	▲  [2m2[0m | 
+2025-12-09T07:28:31.840269Z	▲  [2m3[0m | "use client";
+2025-12-09T07:28:31.840327Z	▲  [2m4[0m | 
+2025-12-09T07:28:31.84039Z	▲  [2m5[0m | import { useEffect, useState, useRef, useCallback } from "react";
+2025-12-09T07:28:31.840447Z	▲    : [35;1m                              ^^^^^^[0m
+2025-12-09T07:28:31.840504Z	▲  [2m6[0m | import { useSession } from "next-auth/react";
+2025-12-09T07:28:31.840564Z	▲  [2m7[0m | import Image from "next/image";
+2025-12-09T07:28:31.840621Z	▲  [2m8[0m | import { useRouter, useSearchParams } from "next/navigation";
+2025-12-09T07:28:31.840678Z	▲    `----
+2025-12-09T07:28:31.840743Z	▲   [31mx[0m You're importing a component that needs `useRouter`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
+2025-12-09T07:28:31.840804Z	▲   [31m|[0m
+2025-12-09T07:28:31.840868Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+2025-12-09T07:28:31.840932Z	▲   [31m|[0m
+2025-12-09T07:28:31.840992Z	▲  
+2025-12-09T07:28:31.841055Z	▲     ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/checkout/page.tsx[0m:8:1]
+2025-12-09T07:28:31.841114Z	▲  [2m 5[0m | import { useEffect, useState, useRef, useCallback } from "react";
+2025-12-09T07:28:31.841194Z	▲  [2m 6[0m | import { useSession } from "next-auth/react";
+2025-12-09T07:28:31.841255Z	▲  [2m 7[0m | import Image from "next/image";
+2025-12-09T07:28:31.841314Z	▲  [2m 8[0m | import { useRouter, useSearchParams } from "next/navigation";
+2025-12-09T07:28:31.841372Z	▲     : [35;1m         ^^^^^^^^^[0m
+2025-12-09T07:28:31.84143Z	▲  [2m 9[0m | import { useTranslation } from "react-i18next";
+2025-12-09T07:28:31.841495Z	▲  [2m10[0m | import Container from "@/components/Container";
+2025-12-09T07:28:31.841561Z	▲  [2m11[0m | import PriceFormat from "@/components/PriceFormat";
+2025-12-09T07:28:31.841619Z	▲     `----
+2025-12-09T07:28:31.841684Z	▲   [31mx[0m You're importing a component that needs `useSearchParams`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
+2025-12-09T07:28:31.841758Z	▲   [31m|[0m
+2025-12-09T07:28:31.841823Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+2025-12-09T07:28:31.841883Z	▲   [31m|[0m
+2025-12-09T07:28:31.84194Z	▲  
+2025-12-09T07:28:31.841999Z	▲     ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/checkout/page.tsx[0m:8:1]
+2025-12-09T07:28:31.842066Z	▲  [2m 5[0m | import { useEffect, useState, useRef, useCallback } from "react";
+2025-12-09T07:28:31.842122Z	▲  [2m 6[0m | import { useSession } from "next-auth/react";
+2025-12-09T07:28:31.842195Z	▲  [2m 7[0m | import Image from "next/image";
+2025-12-09T07:28:31.84226Z	▲  [2m 8[0m | import { useRouter, useSearchParams } from "next/navigation";
+2025-12-09T07:28:31.842319Z	▲     : [35;1m                    ^^^^^^^^^^^^^^^[0m
+2025-12-09T07:28:31.842377Z	▲  [2m 9[0m | import { useTranslation } from "react-i18next";
+2025-12-09T07:28:31.842449Z	▲  [2m10[0m | import Container from "@/components/Container";
+2025-12-09T07:28:31.842514Z	▲  [2m11[0m | import PriceFormat from "@/components/PriceFormat";
+2025-12-09T07:28:31.842577Z	▲     `----
+2025-12-09T07:28:31.84264Z	▲  
+2025-12-09T07:28:31.842705Z	▲  Import trace for requested module:
+2025-12-09T07:28:31.842766Z	▲  ./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(user)%2Fcheckout%2Fpage&page=%2F(user)%2Fcheckout%2Fpage&pagePath=private-next-app-dir%2F(user)%2Fcheckout%2Fpage.tsx&appDir=%2Fopt%2Fbuildhome%2Frepo%2Fsrc%2Fapp&appPaths=%2F(user)%2Fcheckout%2Fpage&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!./src/app/(user)/checkout/page.tsx?__next_edge_ssr_entry__
+2025-12-09T07:28:31.842838Z	▲  
+2025-12-09T07:28:31.842898Z	▲  ./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(user)%2Ffavorite%2Fpage&page=%2F(user)%2Ffavorite%2Fpage&pagePath=private-next-app-dir%2F(user)%2Ffavorite%2Fpage.tsx&appDir=%2Fopt%2Fbuildhome%2Frepo%2Fsrc%2Fapp&appPaths=%2F(user)%2Ffavorite%2Fpage&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!./src/app/(user)/favorite/page.tsx?__next_edge_ssr_entry__
+2025-12-09T07:28:31.842979Z	▲  Error:   [31mx[0m The "use client" directive must be placed before other expressions. Move it to the top of the file to resolve this issue.
+2025-12-09T07:28:31.843048Z	▲    ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/favorite/page.tsx[0m:3:1]
+2025-12-09T07:28:31.843111Z	▲  [2m1[0m | export const runtime = 'edge';
+2025-12-09T07:28:31.843187Z	▲  [2m2[0m | 
+2025-12-09T07:28:31.843248Z	▲  [2m3[0m | "use client";
+2025-12-09T07:28:31.843309Z	▲    : [35;1m^^^^^^^^^^^^^[0m
+2025-12-09T07:28:31.843365Z	▲  [2m4[0m | 
+2025-12-09T07:28:31.843424Z	▲  [2m5[0m | import React from "react";
+2025-12-09T07:28:31.843494Z	▲  [2m6[0m | import Image from "next/image";
+2025-12-09T07:28:31.843552Z	▲    `----
+2025-12-09T07:28:31.843611Z	▲  
+2025-12-09T07:28:31.843671Z	▲  Import trace for requested module:
+2025-12-09T07:28:31.843735Z	▲  ./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(user)%2Ffavorite%2Fpage&page=%2F(user)%2Ffavorite%2Fpage&pagePath=private-next-app-dir%2F(user)%2Ffavorite%2Fpage.tsx&appDir=%2Fopt%2Fbuildhome%2Frepo%2Fsrc%2Fapp&appPaths=%2F(user)%2Ffavorite%2Fpage&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!./src/app/(user)/favorite/page.tsx?__next_edge_ssr_entry__
+2025-12-09T07:28:31.843798Z	▲  
+2025-12-09T07:28:31.843855Z	▲  ./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(user)%2Fsuccess%2Fpage&page=%2F(user)%2Fsuccess%2Fpage&pagePath=private-next-app-dir%2F(user)%2Fsuccess%2Fpage.tsx&appDir=%2Fopt%2Fbuildhome%2Frepo%2Fsrc%2Fapp&appPaths=%2F(user)%2Fsuccess%2Fpage&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!./src/app/(user)/success/page.tsx?__next_edge_ssr_entry__
+2025-12-09T07:28:31.843915Z	▲  Error:   [31mx[0m The "use client" directive must be placed before other expressions. Move it to the top of the file to resolve this issue.
+2025-12-09T07:28:31.843973Z	▲    ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/success/page.tsx[0m:3:1]
+2025-12-09T07:28:31.84403Z	▲  [2m1[0m | export const runtime = 'edge';
+2025-12-09T07:28:31.844085Z	▲  [2m2[0m | 
+2025-12-09T07:28:31.844149Z	▲  [2m3[0m | "use client";
+2025-12-09T07:28:31.844208Z	▲    : [35;1m^^^^^^^^^^^^^[0m
+2025-12-09T07:28:31.844268Z	▲  [2m4[0m | 
+2025-12-09T07:28:31.844325Z	▲  [2m5[0m | import Container from "@/components/Container";
+2025-12-09T07:28:31.844381Z	▲  [2m6[0m | import OrderSummarySkeleton from "@/components/OrderSummarySkeleton";
+2025-12-09T07:28:31.844448Z	▲    `----
+2025-12-09T07:28:31.844511Z	▲   [31mx[0m You're importing a component that needs `useSearchParams`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
+2025-12-09T07:28:31.84457Z	▲   [31m|[0m
+2025-12-09T07:28:31.844635Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+2025-12-09T07:28:31.844701Z	▲   [31m|[0m
+2025-12-09T07:28:31.844768Z	▲  
+2025-12-09T07:28:31.844833Z	▲     ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/success/page.tsx[0m:11:1]
+2025-12-09T07:28:31.844893Z	▲  [2m 8[0m | import ProtectedRoute from "@/components/ProtectedRoute";
+2025-12-09T07:28:31.844956Z	▲  [2m 9[0m | import { resetCart } from "@/redux/shofySlice";
+2025-12-09T07:28:31.845014Z	▲  [2m10[0m | import Link from "next/link";
+2025-12-09T07:28:31.845073Z	▲  [2m11[0m | import { redirect, useSearchParams } from "next/navigation";
+2025-12-09T07:28:31.84513Z	▲     : [35;1m                   ^^^^^^^^^^^^^^^[0m
+2025-12-09T07:28:31.845371Z	▲  [2m12[0m | import React, { useEffect, useState, useCallback } from "react";
+2025-12-09T07:28:31.845474Z	▲  [2m13[0m | import toast from "react-hot-toast";
+2025-12-09T07:28:31.84556Z	▲  [2m14[0m | import { useDispatch } from "react-redux";
+2025-12-09T07:28:31.84568Z	▲     `----
+2025-12-09T07:28:31.84589Z	▲   [31mx[0m You're importing a component that needs `useEffect`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
+2025-12-09T07:28:31.846001Z	▲   [31m|[0m
+2025-12-09T07:28:31.846106Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+2025-12-09T07:28:31.846302Z	▲   [31m|[0m
+2025-12-09T07:28:31.846426Z	▲  
+2025-12-09T07:28:31.846527Z	▲     ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/success/page.tsx[0m:12:1]
+2025-12-09T07:28:31.846632Z	▲  [2m 9[0m | import { resetCart } from "@/redux/shofySlice";
+2025-12-09T07:28:31.846748Z	▲  [2m10[0m | import Link from "next/link";
+2025-12-09T07:28:31.846861Z	▲  [2m11[0m | import { redirect, useSearchParams } from "next/navigation";
+2025-12-09T07:28:31.846976Z	▲  [2m12[0m | import React, { useEffect, useState, useCallback } from "react";
+2025-12-09T07:28:31.847077Z	▲     : [35;1m                ^^^^^^^^^[0m
+2025-12-09T07:28:31.847192Z	▲  [2m13[0m | import toast from "react-hot-toast";
+2025-12-09T07:28:31.847286Z	▲  [2m14[0m | import { useDispatch } from "react-redux";
+2025-12-09T07:28:31.847375Z	▲  [2m15[0m | import { useSession } from "next-auth/react";
+2025-12-09T07:28:31.847464Z	▲     `----
+2025-12-09T07:28:31.847554Z	▲   [31mx[0m You're importing a component that needs `useState`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
+2025-12-09T07:28:31.847645Z	▲   [31m|[0m
+2025-12-09T07:28:31.847741Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
+2025-12-09T07:28:31.84783Z	▲   [31m|[0m
+2025-12-09T07:28:31.847924Z	▲  
+2025-12-09T07:28:31.848021Z	▲     ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/success/page.tsx[0m:12:1]
+2025-12-09T07:28:31.84815Z	▲  [2m 9[0m | import { resetCart } from "@/redux/shofySlice";
+2025-12-09T07:28:31.848243Z	▲  [2m10[0m | import Link from "next/link";
+2025-12-09T07:28:31.848333Z	▲  [2m11[0m | import { redirect, useSearchParams } from "next/navigation";
+2025-12-09T07:28:31.848426Z	▲  [2m12[0m | import React, { useEffect, useState, useCallback } from "react";
+2025-12-09T07:28:31.848516Z	▲     : [35;1m                           ^^^^^^^^[0m
+2025-12-09T07:28:31.848624Z	▲  [2m13[0m | import toast from "react-hot-toast";
+2025-12-09T07:28:31.848741Z	▲  [2m14[0m | import { useDispatch } from "react-redux";
+2025-12-09T07:28:31.84882Z	▲  [2m15[0m | import { useSession } from "next-auth/react";
+2025-12-09T07:28:31.848885Z	▲     `----
+2025-12-09T07:28:31.849Z	▲  
+2025-12-09T07:28:31.849079Z	▲  Import trace for requested module:
+2025-12-09T07:28:31.84918Z	▲  ./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(user)%2Fsuccess%2Fpage&page=%2F(user)%2Fsuccess%2Fpage&pagePath=private-next-app-dir%2F(user)%2Fsuccess%2Fpage.tsx&appDir=%2Fopt%2Fbuildhome%2Frepo%2Fsrc%2Fapp&appPaths=%2F(user)%2Fsuccess%2Fpage&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!./src/app/(user)/success/page.tsx?__next_edge_ssr_entry__
+2025-12-09T07:28:31.854967Z	▲  
+2025-12-09T07:28:31.855151Z	▲  > Build failed because of webpack errors
+2025-12-09T07:28:31.966304Z	▲  Error: Command "npm run build" exited with 1
+2025-12-09T07:28:32.106981Z	
+2025-12-09T07:28:32.107626Z	⚡️ The Vercel build (`npx vercel build`) command failed. For more details see the Vercel logs above.
+2025-12-09T07:28:32.107786Z	⚡️ If you need help solving the issue, refer to the Vercel or Next.js documentation or their repositories.
+2025-12-09T07:28:32.107878Z	
+2025-12-09T07:28:32.154537Z	Failed: Error while executing user command. Exited with error code: 1
+2025-12-09T07:28:32.163147Z	Failed: build command exited with code: 1
+2025-12-09T07:28:33.426396Z	Failed: error occurred while running build command
