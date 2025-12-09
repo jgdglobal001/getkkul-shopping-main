@@ -14,10 +14,9 @@
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:debug": "playwright test --debug",
-    "cf:build": "npx @opennextjs/cloudflare build",
-    "cf:dev": "wrangler dev",
-    "cf:deploy": "npm run cf:build && wrangler deploy",
-    "cf:preview": "npm run cf:build && wrangler pages dev .open-next/assets --compatibility-flags=nodejs_compat_v2"
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "pages:dev": "npx wrangler pages dev .vercel/output/static --compatibility-flags=nodejs_compat",
+    "pages:deploy": "npm run pages:build && npx wrangler pages deploy .vercel/output/static --project-name=getkkul-shopping-main"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.11.1",
