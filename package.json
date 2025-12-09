@@ -23,6 +23,7 @@
     "@auth/prisma-adapter": "^2.11.0",
     "@headlessui/react": "^2.2.7",
     "@neondatabase/serverless": "^1.0.2",
+    "@opennextjs/cloudflare": "^1.14.4",
     "@prisma/adapter-neon": "^7.1.0",
     "@prisma/client": "^6.18.0",
     "@reduxjs/toolkit": "^2.8.2",
@@ -53,7 +54,6 @@
     "ws": "^8.18.3"
   },
   "devDependencies": {
-    "@opennextjs/cloudflare": "^1.14.4",
     "@playwright/test": "^1.56.1",
     "@tailwindcss/postcss": "^4.1.11",
     "@types/node": "^24.2.1",
