@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import CartProducts from "@/components/cart/CartProducts";
 import Container from "@/components/Container";
 

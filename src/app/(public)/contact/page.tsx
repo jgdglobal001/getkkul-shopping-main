@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import Container from "@/components/Container";
 import Title from "@/components/Title";
 import { Metadata } from "next";
@@ -6,9 +8,9 @@ import { GrLocation } from "react-icons/gr";
 import { FiClock, FiMail, FiMapPin, FiPhone } from "react-icons/fi";
 
 export const metadata: Metadata = {
-  title: "연락처 - Getkkul-shopping",
+  title: "?�락�?- Getkkul-shopping",
   description:
-    "겟꿀쇼핑에 문의하세요 - 궁금한 점이나 문제가 있으시면 언제든지 연락주세요",
+    "겟�??�핑??문의?�세??- 궁금???�이??문제가 ?�으?�면 ?�제?��? ?�락주세??,
 };
 
 export default function ContactPage() {

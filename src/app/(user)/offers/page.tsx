@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import Container from "@/components/Container";
 import { getData } from "../helpers";
 import OffersHero from "@/components/pages/offers/OffersHero";
@@ -8,13 +10,13 @@ import Link from "next/link";
 import { db, products } from "@/lib/db";
 import { eq, gt, desc, and } from "drizzle-orm";
 
-// 동적 렌더링 설정 (DB 쿼리 때문에)
+// ?�적 ?�더�??�정 (DB 쿼리 ?�문??
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "특가 상품 - Getkkul-shopping",
+  title: "?��? ?�품 - Getkkul-shopping",
   description:
-    "최고의 상품들을 특가로 만나보세요! 전자제품, 패션, 뷰티 등 다양한 카테고리에서 큰 할인 혜택을 누리세요!",
+    "최고???�품?�을 ?��?�?만나보세?? ?�자?�품, ?�션, 뷰티 ???�양??카테고리?�서 ???�인 ?�택???�리?�요!",
 };
 
 interface OffersPageProps {
@@ -29,7 +31,7 @@ const OffersPage = async ({ searchParams }: OffersPageProps) => {
   // Await searchParams for Next.js 15 compatibility
   const params = await searchParams;
 
-  // DB에서 할인 상품 조회
+  // DB?�서 ?�인 ?�품 조회
   const dbProducts = await db
     .select()
     .from(products)

@@ -1,14 +1,11 @@
 #:schema node_modules/wrangler/config-schema.json
 
 name = "getkkul-shopping-main"
-main = ".open-next/worker.js"
 compatibility_date = "2024-12-01"
 compatibility_flags = ["nodejs_compat"]
 
-# OpenNext 자산 설정
-[assets]
-directory = ".open-next/assets"
-binding = "ASSETS"
+# Pages 배포 설정
+pages_build_output_dir = ".vercel/output/static"
 
 # 환경변수
 [vars]

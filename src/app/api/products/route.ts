@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { NextRequest, NextResponse } from "next/server";
 import { db, products } from "@/lib/db";
 import { eq, desc, ilike, and, count, sql } from "drizzle-orm";
@@ -11,14 +13,14 @@ export async function GET(request: NextRequest) {
 
     const offset = (page - 1) * limit;
 
-    // 검색 조건 구성
+    // 검??조건 구성
     const conditions = [eq(products.isActive, true)];
 
     if (category && category !== "smartphones") {
       conditions.push(ilike(products.category, `%${category}%`));
     }
 
-    // 상품 목록 조회
+    // ?�품 목록 조회
     const [productList, countResult] = await Promise.all([
       db
         .select()
@@ -43,9 +45,9 @@ export async function GET(request: NextRequest) {
       totalCount,
     });
   } catch (error) {
-    console.error("상품 목록 조회 오류:", error);
+    console.error("?�품 목록 조회 ?�류:", error);
     return NextResponse.json(
-      { error: "상품 목록을 가져오는 중 오류가 발생했습니다" },
+      { error: "?�품 목록??가?�오??�??�류가 발생?�습?�다" },
       { status: 500 }
     );
   }

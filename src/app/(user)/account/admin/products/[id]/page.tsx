@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import AdminProtectedRoute from "@/components/AdminProtectedRoute";
 import ProductDetailClient from "@/components/admin/ProductDetailClient";
 

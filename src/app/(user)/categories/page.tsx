@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import Container from "@/components/Container";
 import InfiniteCategoryGrid from "@/components/pages/categories/InfiniteCategoryGrid";
 import { getData } from "../helpers";
@@ -8,23 +10,23 @@ import koTranslations from "@/locales/ko.json";
 import koExtendedTranslations from "@/locales/ko-extended.json";
 
 export const metadata: Metadata = {
-  title: "상품 카테고리 | Getkkul-shopping",
+  title: "?�품 카테고리 | Getkkul-shopping",
   description:
-    "전자제품, 패션, 홈데코, 뷰티 등 다양한 상품 카테고리를 둘러보세요. 원하는 상품을 쉽게 찾을 수 있습니다.",
+    "?�자?�품, ?�션, ?�데�? 뷰티 ???�양???�품 카테고리�??�러보세?? ?�하???�품???�게 찾을 ???�습?�다.",
   keywords: [
-    "상품 카테고리",
-    "전자제품",
-    "패션",
-    "홈데코",
-    "뷰티 제품",
-    "의류",
-    "액세서리",
-    "카테고리별 쇼핑",
+    "?�품 카테고리",
+    "?�자?�품",
+    "?�션",
+    "?�데�?,
+    "뷰티 ?�품",
+    "?�류",
+    "?�세?�리",
+    "카테고리�??�핑",
   ],
   openGraph: {
-    title: "상품 카테고리 | Getkkul-shopping",
+    title: "?�품 카테고리 | Getkkul-shopping",
     description:
-      "다양한 상품 카테고리를 둘러보세요. 원하는 상품을 쉽게 찾을 수 있습니다.",
+      "?�양???�품 카테고리�??�러보세?? ?�하???�품???�게 찾을 ???�습?�다.",
     url: "/categories",
     siteName: "Getkkul-shopping",
     type: "website",
@@ -71,13 +73,13 @@ export default async function CategoriesPage() {
     });
 
     if (!categoriesResponse.ok) {
-      console.error(`카테고리 API 오류: ${categoriesResponse.status}`);
+      console.error(`카테고리 API ?�류: ${categoriesResponse.status}`);
       categoriesData = [];
     } else {
       categoriesData = await categoriesResponse.json();
     }
   } catch (error) {
-    console.error("카테고리 페칭 실패:", error);
+    console.error("카테고리 ?�칭 ?�패:", error);
     categoriesData = [];
   }
 

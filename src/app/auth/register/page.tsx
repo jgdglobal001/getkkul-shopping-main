@@ -1,10 +1,12 @@
+export const runtime = 'edge';
+
 import RegisterForm from "@/components/auth/RegisterForm";
 import Logo from "@/components/Logo";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "회원가입 | Getkkul-shopping",
-  description: "겟꿀쇼핑 계정을 만드세요",
+  title: "?�원가??| Getkkul-shopping",
+  description: "겟�??�핑 계정??만드?�요",
 };
 
 export default function RegisterPage() {
@@ -15,9 +17,9 @@ export default function RegisterPage() {
           <Logo />
         </div>
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">계정 만들기</h1>
+          <h1 className="text-3xl font-bold text-gray-900">계정 만들�?/h1>
           <p className="mt-2 text-sm text-gray-600">
-            지금 겟꿀쇼핑에 가입하고 쇼핑을 시작하세요!
+            지�?겟�??�핑??가?�하�??�핑???�작?�세??
           </p>
         </div>
       </div>

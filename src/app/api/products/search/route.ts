@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { NextRequest, NextResponse } from "next/server";
 import { db, products } from "@/lib/db";
 import { eq, desc, ilike, or, and, sql } from "drizzle-orm";
@@ -9,7 +11,7 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get("limit") || "10");
 
     if (!query.trim()) {
-      // 검색어 없으면 최신 상품 반환
+      // 검?�어 ?�으�?최신 ?�품 반환
       const productList = await db
         .select()
         .from(products)
@@ -19,7 +21,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ products: productList });
     }
 
-    // DB에서 검색 (제목, 설명, 브랜드, 카테고리, SKU)
+    // DB?�서 검??(?�목, ?�명, 브랜?? 카테고리, SKU)
     const productList = await db
       .select()
       .from(products)
@@ -41,9 +43,9 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ products: productList });
   } catch (error) {
-    console.error("검색 오류:", error);
+    console.error("검???�류:", error);
     return NextResponse.json(
-      { error: "검색 중 오류가 발생했습니다" },
+      { error: "검??�??�류가 발생?�습?�다" },
       { status: 500 }
     );
   }

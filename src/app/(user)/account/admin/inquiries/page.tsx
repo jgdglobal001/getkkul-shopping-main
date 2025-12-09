@@ -1,13 +1,15 @@
+export const runtime = 'edge';
+
 import AdminProtectedRoute from "@/components/AdminProtectedRoute";
 import InquiriesManagement from "@/components/admin/InquiriesManagement";
 
 export default function InquiriesManagementPage() {
   return (
-    <AdminProtectedRoute loadingMessage="상담 관리 권한을 확인하는 중...">
+    <AdminProtectedRoute loadingMessage="?�담 관�?권한???�인?�는 �?..">
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">고객 상담 관리</h1>
-          <p className="text-gray-600 mt-2">고객이 제출한 제품 관련 질문을 확인하고 답변할 수 있습니다.</p>
+          <h1 className="text-3xl font-bold text-gray-900">고객 ?�담 관�?/h1>
+          <p className="text-gray-600 mt-2">고객???�출???�품 관??질문???�인?�고 ?��??????�습?�다.</p>
         </div>
         <InquiriesManagement />
       </div>

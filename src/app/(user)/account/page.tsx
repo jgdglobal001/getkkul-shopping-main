@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import AccountClient from "@/components/account/AccountClient";
 import ProtectedRoute from "@/components/ProtectedRoute";
 

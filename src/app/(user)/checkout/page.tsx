@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
@@ -279,12 +281,12 @@ const CheckoutPage = () => {
 
       // Check if widget is ready
       if (!paymentWidgetRef.current) {
-        throw new Error("결제 위젯이 아직 준비되지 않았습니다. 잠시 후 다시 시도해주세요.");
+        throw new Error("결제 ?�젯???�직 준비되지 ?�았?�니?? ?�시 ???�시 ?�도?�주?�요.");
       }
 
       // Validate order data
       if (!existingOrder) {
-        throw new Error("주문 정보를 찾을 수 없습니다.");
+        throw new Error("주문 ?�보�?찾을 ???�습?�다.");
       }
 
       // Generate order ID
@@ -323,14 +325,14 @@ const CheckoutPage = () => {
       console.error("Toss payment error:", error);
 
       // Handle cancellation gracefully
-      const errorMessage = error instanceof Error ? error.message : "다시 시도해주세요.";
+      const errorMessage = error instanceof Error ? error.message : "?�시 ?�도?�주?�요.";
 
       if (errorMessage.includes("취소")) {
         // User cancelled the payment - no alert needed
         console.log("Payment cancelled by user");
       } else {
         // Other errors - show alert
-        alert(`결제 실패: ${errorMessage}`);
+        alert(`결제 ?�패: ${errorMessage}`);
       }
     } finally {
       setPaymentProcessing(false);
@@ -572,7 +574,7 @@ const CheckoutPage = () => {
                     </div>
                     <div className="ml-3">
                       <h3 className="text-sm font-medium text-red-800">
-                        결제 위젯 로드 실패
+                        결제 ?�젯 로드 ?�패
                       </h3>
                       <div className="mt-2 text-sm text-red-700">
                         <p>{widgetError}</p>
@@ -604,10 +606,10 @@ const CheckoutPage = () => {
                 ) : !widgetReady ? (
                   <>
                     <FiLoader className="animate-spin mr-2" />
-                    결제 준비 중...
+                    결제 준�?�?..
                   </>
                 ) : (
-                  "결제하기"
+                  "결제?�기"
                 )}
               </button>
             </div>

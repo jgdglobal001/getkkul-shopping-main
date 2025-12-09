@@ -1,9 +1,11 @@
+export const runtime = 'edge';
+
 import AdminProtectedRoute from "@/components/AdminProtectedRoute";
 import ProductFormClient from "@/components/admin/ProductFormClient";
 
 export default function NewProductPage() {
   return (
-    <AdminProtectedRoute loadingMessage="상품 추가 권한을 확인하는 중...">
+    <AdminProtectedRoute loadingMessage="?�품 추�? 권한???�인?�는 �?..">
       <ProductFormClient mode="create" />
     </AdminProtectedRoute>
   );

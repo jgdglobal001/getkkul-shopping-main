@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 "use client";
 
 import Container from "@/components/Container";
@@ -19,109 +21,109 @@ import {
 const faqCategories = [
   {
     id: "orders",
-    title: "주문 및 배송",
-    icon: "📦",
+    title: "주문 �?배송",
+    icon: "?��",
     faqs: [
       {
-        question: "배송은 얼마나 걸리나요?",
+        question: "배송?� ?�마??걸리?�요?",
         answer:
-          "일반 배송은 보통 3-7 영업일이 소요됩니다. 빠른 배송은 1-2 영업일 내에 배송됩니다. 배송 시간은 지역과 상품 재고에 따라 달라질 수 있습니다.",
+          "?�반 배송?� 보통 3-7 ?�업?�이 ?�요?�니?? 빠른 배송?� 1-2 ?�업???�에 배송?�니?? 배송 ?�간?� 지??�� ?�품 ?�고???�라 ?�라�????�습?�다.",
       },
       {
-        question: "주문을 추적할 수 있나요?",
+        question: "주문??추적?????�나??",
         answer:
-          "네! 주문이 배송되면 이메일로 추적 번호를 받게 됩니다. 계정에 로그인하여 '주문 내역' 섹션에서 주문 상태를 확인할 수도 있습니다.",
+          "?? 주문??배송?�면 ?�메?�로 추적 번호�?받게 ?�니?? 계정??로그?�하??'주문 ?�역' ?�션?�서 주문 ?�태�??�인???�도 ?�습?�다.",
       },
       {
-        question: "배송료는 얼마인가요?",
+        question: "배송료는 ?�마?��???",
         answer:
-          "배송료는 지역, 주문 규모, 배송 방법에 따라 다릅니다. 50,000원 이상 주문 시 무료 배송이 제공됩니다. 정확한 배송료는 결제 시 계산됩니다.",
+          "배송료는 지?? 주문 규모, 배송 방법???�라 ?�릅?�다. 50,000???�상 주문 ??무료 배송???�공?�니?? ?�확??배송료는 결제 ??계산?�니??",
       },
       {
-        question: "주문을 변경하거나 취소할 수 있나요?",
+        question: "주문??변경하거나 취소?????�나??",
         answer:
-          "주문 후 1시간 이내에 주문을 취소하거나 수정할 수 있습니다. 그 이후에는 고객센터에 즉시 연락해주세요. 배송되지 않은 주문이라면 최선을 다해 도와드리겠습니다.",
+          "주문 ??1?�간 ?�내??주문??취소?�거???�정?????�습?�다. �??�후?�는 고객?�터??즉시 ?�락?�주?�요. 배송?��? ?��? 주문?�라�?최선???�해 ?��??�리겠습?�다.",
       },
     ],
   },
   {
     id: "returns",
-    title: "반품 및 환불",
-    icon: "↩️",
+    title: "반품 �??�불",
+    icon: "?�️",
     faqs: [
       {
-        question: "반품 정책은 무엇인가요?",
+        question: "반품 ?�책?� 무엇?��???",
         answer:
-          "대부분의 상품에 대해 30일 반품 정책을 제공합니다. 상품은 미사용 상태이고 원래 포장 상태여야 하며 받은 상태와 동일해야 합니다. 맞춤형 상품 등 일부 상품은 반품이 불가능할 수 있습니다.",
+          "?�부분의 ?�품???�??30??반품 ?�책???�공?�니?? ?�품?� 미사???�태?�고 ?�래 ?�장 ?�태?�야 ?�며 받�? ?�태?� ?�일?�야 ?�니?? 맞춤???�품 ???��? ?�품?� 반품??불�??�할 ???�습?�다.",
       },
       {
-        question: "반품을 어떻게 시작하나요?",
+        question: "반품???�떻�??�작?�나??",
         answer:
-          "반품을 시작하려면 계정에 로그인하여 '주문 내역'으로 이동한 후 상품 옆의 '반품하기'를 클릭하세요. 지시에 따라 반품 송장을 인쇄하고 인정된 배송 위치에 패키지를 제출하세요.",
+          "반품???�작?�려�?계정??로그?�하??'주문 ?�역'?�로 ?�동?????�품 ?�의 '반품?�기'�??�릭?�세?? 지?�에 ?�라 반품 ?�장???�쇄?�고 ?�정??배송 ?�치???�키지�??�출?�세??",
       },
       {
-        question: "환불은 언제 받나요?",
+        question: "?�불?� ?�제 받나??",
         answer:
-          "반품 상품을 받은 후 3-5 영업일 이내에 환불이 처리됩니다. 환불은 원래 결제 방법으로 입금됩니다. 신용카드 환불의 경우 추가로 1-2 청구 주기가 소요될 수 있습니다.",
+          "반품 ?�품??받�? ??3-5 ?�업???�내???�불??처리?�니?? ?�불?� ?�래 결제 방법?�로 ?�금?�니?? ?�용카드 ?�불??경우 추�?�?1-2 �?�� 주기가 ?�요?????�습?�다.",
       },
       {
-        question: "반품 배송료는 누가 내나요?",
+        question: "반품 배송료는 ?��? ?�나??",
         answer:
-          "불량품이나 잘못된 상품의 경우 선불 반품 송장을 제공합니다. 기타 반품의 경우 고객이 반품 배송료를 부담하며, 무료 반품 대상 주문은 예외입니다.",
+          "불량?�이???�못???�품??경우 ?�불 반품 ?�장???�공?�니?? 기�? 반품??경우 고객??반품 배송료�? 부?�하�? 무료 반품 ?�??주문?� ?�외?�니??",
       },
     ],
   },
   {
     id: "account",
-    title: "계정 및 결제",
-    icon: "👤",
+    title: "계정 �?결제",
+    icon: "?��",
     faqs: [
       {
-        question: "계정을 어떻게 만드나요?",
+        question: "계정???�떻�?만드?�요?",
         answer:
-          "페이지 상단의 '회원가입'을 클릭하고 이메일 주소를 입력한 후 비밀번호를 설정하세요. 결제 시에도 가입할 수 있습니다. 계정이 있으면 주문을 추적하고, 주소를 저장하고, 특별한 혜택을 받을 수 있습니다.",
+          "?�이지 ?�단??'?�원가?????�릭?�고 ?�메??주소�??�력????비�?번호�??�정?�세?? 결제 ?�에??가?�할 ???�습?�다. 계정???�으�?주문??추적?�고, 주소�??�?�하�? ?�별???�택??받을 ???�습?�다.",
       },
       {
-        question: "어떤 결제 방법을 사용할 수 있나요?",
+        question: "?�떤 결제 방법???�용?????�나??",
         answer:
-          "모든 주요 신용카드(Visa, MasterCard, American Express), PayPal, Apple Pay, Google Pay를 사용할 수 있습니다. 모든 결제는 암호화된 안전한 연결을 통해 처리됩니다.",
+          "모든 주요 ?�용카드(Visa, MasterCard, American Express), PayPal, Apple Pay, Google Pay�??�용?????�습?�다. 모든 결제???�호?�된 ?�전???�결???�해 처리?�니??",
       },
       {
-        question: "결제 정보는 안전한가요?",
+        question: "결제 ?�보???�전?��???",
         answer:
-          "네! 업계 표준 SSL 암호화를 사용하며 결제 정보를 서버에 저장하지 않습니다. 모든 거래는 안전한 PCI 준수 결제 처리업체를 통해 처리됩니다.",
+          "?? ?�계 ?��? SSL ?�호?��? ?�용?�며 결제 ?�보�??�버???�?�하지 ?�습?�다. 모든 거래???�전??PCI 준??결제 처리?�체�??�해 처리?�니??",
       },
       {
-        question: "여러 주소를 저장할 수 있나요?",
+        question: "?�러 주소�??�?�할 ???�나??",
         answer:
-          "네! 계정에 여러 배송 및 청구 주소를 저장할 수 있습니다. 이렇게 하면 향후 주문 시 결제가 더 빠르고 쉬워집니다. 계정 설정에서 언제든지 주소를 추가, 수정 또는 삭제할 수 있습니다.",
+          "?? 계정???�러 배송 �?�?�� 주소�??�?�할 ???�습?�다. ?�렇�??�면 ?�후 주문 ??결제가 ??빠르�??�워집니?? 계정 ?�정?�서 ?�제?��? 주소�?추�?, ?�정 ?�는 ??��?????�습?�다.",
       },
     ],
   },
   {
     id: "products",
-    title: "상품 및 재고",
-    icon: "🛍️",
+    title: "?�품 �??�고",
+    icon: "?���?,
     faqs: [
       {
-        question: "상품은 정품인가요?",
+        question: "?�품?� ?�품?��???",
         answer:
-          "네! 저희는 인정된 유통업체 및 제조업체에서 직접 공급받은 정품만 판매합니다. 모든 상품은 정품성과 품질을 보장합니다.",
+          "?? ?�?�는 ?�정???�통?�체 �??�조?�체?�서 직접 공급받�? ?�품�??�매?�니?? 모든 ?�품?� ?�품?�과 ?�질??보장?�니??",
       },
       {
-        question: "상품이 재고가 있는지 어떻게 알 수 있나요?",
+        question: "?�품???�고가 ?�는지 ?�떻�??????�나??",
         answer:
-          "각 상품 페이지에 재고 가용성이 표시됩니다. 상품이 품절된 경우 알림을 신청하여 다시 입고될 때 알림을 받을 수 있습니다. 저희는 실시간으로 재고를 업데이트합니다.",
+          "�??�품 ?�이지???�고 가?�성???�시?�니?? ?�품???�절??경우 ?�림???�청?�여 ?�시 ?�고?????�림??받을 ???�습?�다. ?�?�는 ?�시간으�??�고�??�데?�트?�니??",
       },
       {
-        question: "상품 보증이 있나요?",
+        question: "?�품 보증???�나??",
         answer:
-          "많은 상품에 제조사 보증이 포함되어 있습니다. 보증 정보는 각 상품 페이지에 표시됩니다. 또한 모든 구매에 대해 저희의 만족도 보장을 제공합니다.",
+          "많�? ?�품???�조??보증???�함?�어 ?�습?�다. 보증 ?�보??�??�품 ?�이지???�시?�니?? ?�한 모든 구매???�???�?�의 만족??보장???�공?�니??",
       },
       {
-        question: "상품이 할인될 때 알림을 받을 수 있나요?",
+        question: "?�품???�인?????�림??받을 ???�나??",
         answer:
-          "네! 상품을 위시리스트에 추가하고 가격 인하 알림을 활성화할 수 있습니다. 또한 뉴스레터를 구독하여 판매 및 특별 프로모션 업데이트를 받을 수 있습니다.",
+          "?? ?�품???�시리스?�에 추�??�고 가�??�하 ?�림???�성?�할 ???�습?�다. ?�한 ?�스?�터�?구독?�여 ?�매 �??�별 ?�로모션 ?�데?�트�?받을 ???�습?�다.",
       },
     ],
   },
@@ -153,10 +155,10 @@ export default function FAQsPage() {
         {/* Header Section */}
         <div className="text-center mb-12">
           <Title className="text-3xl lg:text-4xl font-bold mb-4">
-            자주 묻는 질문
+            ?�주 묻는 질문
           </Title>
           <p className="text-light-text text-lg mb-8">
-            겟꿀쇼핑 이용에 관한 자주 묻는 질문들의 답변을 찾아보세요
+            겟�??�핑 ?�용??관???�주 묻는 질문?�의 ?��???찾아보세??
           </p>
 
           {/* Search Bar */}
@@ -164,7 +166,7 @@ export default function FAQsPage() {
             <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-light-text w-5 h-5" />
             <input
               type="text"
-              placeholder="FAQ 검색..."
+              placeholder="FAQ 검??.."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent outline-none transition-colors"
@@ -202,7 +204,7 @@ export default function FAQsPage() {
               /* Search Results */
               <div>
                 <h2 className="text-2xl font-semibold text-theme-color mb-6">
-                  &ldquo;{searchTerm}&rdquo; 검색 결과
+                  &ldquo;{searchTerm}&rdquo; 검??결과
                 </h2>
                 {filteredCategories.length > 0 ? (
                   <div className="space-y-8">
@@ -253,10 +255,10 @@ export default function FAQsPage() {
                   <div className="text-center py-12">
                     <FiHelpCircle className="w-16 h-16 text-light-text mx-auto mb-4" />
                     <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                      검색 결과가 없습니다
+                      검??결과가 ?�습?�다
                     </h3>
                     <p className="text-light-text">
-                      다른 키워드로 검색하거나 위의 카테고리를 둘러보세요.
+                      ?�른 ?�워?�로 검?�하거나 ?�의 카테고리�??�러보세??
                     </p>
                   </div>
                 )}
@@ -321,23 +323,23 @@ export default function FAQsPage() {
         {/* Contact Section */}
         <div className="mt-16 text-center bg-sky-color/10 rounded-lg p-8">
           <h2 className="text-2xl font-semibold text-theme-color mb-4">
-            아직 궁금한 점이 있으신가요?
+            ?�직 궁금???�이 ?�으?��???
           </h2>
           <p className="text-light-text mb-6">
-            찾으시는 답변이 없으신가요? 고객지원팀이 도와드리겠습니다.
+            찾으?�는 ?��????�으?��??? 고객지?��????��??�리겠습?�다.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/contact"
               className="inline-block bg-theme-color text-theme-white px-6 py-3 rounded-lg hover:bg-theme-color/90 transition-colors duration-200 font-medium"
             >
-              고객지원 문의
+              고객지??문의
             </a>
             <a
               href="mailto:jgdglobal@kakao.com"
               className="inline-block bg-theme-white text-theme-color border-2 border-theme-color px-6 py-3 rounded-lg hover:bg-theme-color hover:text-theme-white transition-colors duration-200 font-medium"
             >
-              이메일 문의
+              ?�메??문의
             </a>
           </div>
         </div>

@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import AddressesClient from "@/components/account/AddressesClient";
 
 export default function AddressesPage() {

@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { NextRequest, NextResponse } from "next/server";
 import { db, users } from "@/lib/db";
 import { inArray } from "drizzle-orm";

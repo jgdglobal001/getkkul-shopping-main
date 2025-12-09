@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import PaymentClient from "@/components/account/PaymentClient";
 
 export default function PaymentPage() {

@@ -1,10 +1,12 @@
+export const runtime = 'edge';
+
 import SignInForm from "@/components/auth/SignInForm";
 import Logo from "@/components/Logo";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "로그인 | Getkkul-shopping",
-  description: "겟꿀쇼핑 계정에 로그인하세요",
+  title: "로그??| Getkkul-shopping",
+  description: "겟�??�핑 계정??로그?�하?�요",
 };
 
 export default function SignInPage() {
@@ -15,9 +17,9 @@ export default function SignInPage() {
           <Logo />
         </div>
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">로그인</h1>
+          <h1 className="text-3xl font-bold text-gray-900">로그??/h1>
           <p className="mt-2 text-sm text-gray-600">
-            다시 오신 것을 환영합니다! 계정에 로그인해주세요.
+            ?�시 ?�신 것을 ?�영?�니?? 계정??로그?�해주세??
           </p>
         </div>
       </div>

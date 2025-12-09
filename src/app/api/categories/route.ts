@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { NextResponse } from "next/server";
 import { db, categories } from "@/lib/db";
 import { eq, asc } from "drizzle-orm";
@@ -28,10 +30,10 @@ export async function GET() {
     response.headers.set('Expires', '0');
     return response;
   } catch (error) {
-    console.error("카테고리 조회 오류:", error);
+    console.error("카테고리 조회 ?�류:", error);
     const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { error: "카테고리를 조회하는 중 오류가 발생했습니다", details: errorMessage },
+      { error: "카테고리�?조회?�는 �??�류가 발생?�습?�다", details: errorMessage },
       { status: 500 }
     );
   }

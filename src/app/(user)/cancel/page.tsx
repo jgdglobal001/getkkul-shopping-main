@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import Container from "@/components/Container";
 import Title from "@/components/Title";
 import Button from "@/components/ui/Button";
