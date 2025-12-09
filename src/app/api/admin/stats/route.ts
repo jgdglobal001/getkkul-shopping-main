@@ -1,39 +1,35 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db, users, orders, products } from "@/lib/db";
+import { eq, count, sql } from "drizzle-orm";
 
 export async function GET() {
   try {
-    // Fetch real data from Prisma
+    // Fetch real data from Drizzle
     const [
-      totalUsers,
-      totalOrders,
-      totalProducts,
-      pendingOrders,
-      completedOrders,
-      totalRevenue
+      userCount,
+      orderCount,
+      productCount,
+      pendingCount,
+      completedCount,
+      revenueResult
     ] = await Promise.all([
-      prisma.user.count(),
-      prisma.order.count(),
-      prisma.product.count(),
-      prisma.order.count({
-        where: { status: "pending" }
-      }),
-      prisma.order.count({
-        where: { status: "completed" }
-      }),
-      prisma.order.aggregate({
-        where: { status: "completed" },
-        _sum: { totalAmount: true }
-      })
+      db.select({ count: count() }).from(users),
+      db.select({ count: count() }).from(orders),
+      db.select({ count: count() }).from(products),
+      db.select({ count: count() }).from(orders).where(eq(orders.status, "pending")),
+      db.select({ count: count() }).from(orders).where(eq(orders.status, "completed")),
+      db.select({ total: sql<number>`COALESCE(SUM(${orders.totalAmount}), 0)` })
+        .from(orders)
+        .where(eq(orders.status, "completed")),
     ]);
 
     const stats = {
-      totalUsers,
-      totalOrders,
-      totalRevenue: totalRevenue._sum.totalAmount || 0,
-      totalProducts,
-      pendingOrders,
-      completedOrders,
+      totalUsers: userCount[0]?.count || 0,
+      totalOrders: orderCount[0]?.count || 0,
+      totalRevenue: revenueResult[0]?.total || 0,
+      totalProducts: productCount[0]?.count || 0,
+      pendingOrders: pendingCount[0]?.count || 0,
+      completedOrders: completedCount[0]?.count || 0,
     };
 
     return NextResponse.json(stats);

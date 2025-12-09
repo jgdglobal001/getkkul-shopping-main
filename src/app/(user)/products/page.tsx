@@ -10,7 +10,8 @@ import {
   getProductsByCategory,
 } from "../helpers/productHelpers";
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import { db, products } from "@/lib/db";
+import { eq, desc } from "drizzle-orm";
 import koTranslations from "@/locales/ko.json";
 import koExtendedTranslations from "@/locales/ko-extended.json";
 
@@ -58,10 +59,11 @@ const ProductsPage = async ({ searchParams }: Props) => {
   const t = getT();
 
   // DB에서 실제 상품 조회
-  const dbProducts = await prisma.product.findMany({
-    where: { isActive: true },
-    orderBy: { createdAt: "desc" },
-  });
+  const dbProducts = await db
+    .select()
+    .from(products)
+    .where(eq(products.isActive, true))
+    .orderBy(desc(products.createdAt));
 
   // 더미 참고용 상품 (모바일 카테고리만)
   const dummyData = await getData(`https://dummyjson.com/products/category/smartphones?limit=0`);

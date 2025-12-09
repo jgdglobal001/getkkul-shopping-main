@@ -9,17 +9,19 @@ import {
   getNewArrivals,
   getOffers,
 } from "./helpers/productHelpers";
-import { prisma } from "@/lib/prisma";
+import { db, products } from "@/lib/db";
+import { eq, desc } from "drizzle-orm";
 
 // 동적 렌더링 설정 (DB 쿼리 때문에)
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
   // DB에서 실제 상품 조회
-  const dbProducts = await prisma.product.findMany({
-    where: { isActive: true },
-    orderBy: { createdAt: "desc" },
-  });
+  const dbProducts = await db
+    .select()
+    .from(products)
+    .where(eq(products.isActive, true))
+    .orderBy(desc(products.createdAt));
 
   // 더미 참고용 상품 (모바일 카테고리만)
   const dummyEndpoint = `https://dummyjson.com/products/category/smartphones?limit=0`;

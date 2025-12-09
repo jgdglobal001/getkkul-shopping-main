@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db, users } from "@/lib/db";
+import { eq } from "drizzle-orm";
 
 export async function DELETE(request: NextRequest) {
   try {
@@ -12,19 +13,18 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    const user = await prisma.user.findUnique({
-      where: { email }
-    });
+    const userResult = await db.select().from(users).where(eq(users.email, email)).limit(1);
+    const user = userResult[0];
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
     // Parse addresses from JSON string if it exists
-    let addresses = [];
+    let addresses: any[] = [];
     if (user.addresses) {
       try {
-        addresses = JSON.parse(user.addresses);
+        addresses = JSON.parse(user.addresses as string);
       } catch (e) {
         addresses = [];
       }
@@ -41,13 +41,10 @@ export async function DELETE(request: NextRequest) {
     }
 
     // Update user with new addresses
-    await prisma.user.update({
-      where: { email },
-      data: {
-        addresses: JSON.stringify(addresses),
-        updatedAt: new Date(),
-      }
-    });
+    await db.update(users).set({
+      addresses: JSON.stringify(addresses),
+      updatedAt: new Date(),
+    }).where(eq(users.email, email));
 
     return NextResponse.json({ success: true, addresses });
   } catch (error) {

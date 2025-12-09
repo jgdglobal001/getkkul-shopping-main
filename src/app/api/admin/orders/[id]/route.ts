@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hasPermission } from "@/lib/rbac/roles";
-import { prisma } from "@/lib/prisma";
+import { db, orders, users } from "@/lib/db";
+import { eq } from "drizzle-orm";
 
 export async function PUT(
   request: NextRequest,
@@ -17,20 +18,21 @@ export async function PUT(
       return NextResponse.json({ error: "Order ID required" }, { status: 400 });
     }
 
-    // Try to update order in Prisma orders table
+    // Try to update order
     try {
-      const updatedOrder = await prisma.order.update({
-        where: { id: orderId },
-        data: {
-          ...updates,
-          updatedAt: new Date(),
-        }
-      });
+      const updatedOrders = await db.update(orders).set({
+        ...updates,
+        updatedAt: new Date(),
+      }).where(eq(orders.id, orderId)).returning();
+
+      if (updatedOrders.length === 0) {
+        return NextResponse.json({ error: "Order not found" }, { status: 404 });
+      }
 
       return NextResponse.json({
         success: true,
         updated: "orders_table",
-        order: updatedOrder,
+        order: updatedOrders[0],
       });
     } catch (orderError) {
       console.log("Order not found in orders table:", orderError);
@@ -59,11 +61,13 @@ export async function DELETE(
       return NextResponse.json({ error: "Order ID required" }, { status: 400 });
     }
 
-    // Try to delete from Prisma orders table
+    // Try to delete from orders table
     try {
-      await prisma.order.delete({
-        where: { id: orderId }
-      });
+      const deleted = await db.delete(orders).where(eq(orders.id, orderId)).returning();
+
+      if (deleted.length === 0) {
+        return NextResponse.json({ error: "Order not found" }, { status: 404 });
+      }
 
       return NextResponse.json({
         success: true,
@@ -96,26 +100,29 @@ export async function GET(
       return NextResponse.json({ error: "Order ID required" }, { status: 400 });
     }
 
-    // Try to get order from Prisma orders table
+    // Try to get order from orders table
     try {
-      const order = await prisma.order.findUnique({
-        where: { id: orderId },
-        include: {
-          user: {
-            select: { name: true, email: true }
-          }
-        }
-      });
+      const orderResult = await db
+        .select({
+          order: orders,
+          userName: users.name,
+          userEmail: users.email,
+        })
+        .from(orders)
+        .leftJoin(users, eq(orders.userId, users.id))
+        .where(eq(orders.id, orderId))
+        .limit(1);
 
-      if (order) {
+      if (orderResult.length > 0) {
+        const { order, userName, userEmail } = orderResult[0];
         return NextResponse.json({
           order: {
             ...order,
-            createdAt: order.createdAt.toISOString(),
-            updatedAt: order.updatedAt.toISOString(),
+            createdAt: order.createdAt?.toISOString(),
+            updatedAt: order.updatedAt?.toISOString(),
           },
-          customerName: order.user?.name || "Unknown User",
-          customerEmail: order.user?.email || "",
+          customerName: userName || "Unknown User",
+          customerEmail: userEmail || "",
           source: "orders_table",
         });
       }

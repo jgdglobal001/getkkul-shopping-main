@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db, categories } from "@/lib/db";
+import { asc } from "drizzle-orm";
 import { auth } from "../../../../../auth";
+
+function generateId() {
+  return `${Date.now().toString(36)}${Math.random().toString(36).substr(2, 9)}`;
+}
 
 export async function GET(request: NextRequest) {
   try {
     const session = await auth();
-    
+
     if (!session?.user || session.user.role !== "admin") {
       return NextResponse.json(
         { error: "관리자 권한이 필요합니다" },
@@ -13,11 +18,12 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const categories = await prisma.category.findMany({
-      orderBy: { order: "asc" },
-    });
+    const result = await db
+      .select()
+      .from(categories)
+      .orderBy(asc(categories.order));
 
-    return NextResponse.json(categories);
+    return NextResponse.json(result);
   } catch (error) {
     console.error("카테고리 조회 오류:", error);
     return NextResponse.json(
@@ -30,7 +36,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const session = await auth();
-    
+
     if (!session?.user || session.user.role !== "admin") {
       return NextResponse.json(
         { error: "관리자 권한이 필요합니다" },
@@ -48,22 +54,28 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const category = await prisma.category.create({
-      data: {
+    const category = await db
+      .insert(categories)
+      .values({
+        id: generateId(),
         name,
         slug: slug.toLowerCase(),
         description: description || null,
         image: image || null,
         icon: icon || null,
         order: order || 0,
-      },
-    });
+        isActive: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .returning();
 
-    return NextResponse.json(category, { status: 201 });
+    return NextResponse.json(category[0], { status: 201 });
   } catch (error: any) {
     console.error("카테고리 생성 오류:", error);
-    
-    if (error.code === "P2002") {
+
+    // Check for unique constraint violation
+    if (error.message?.includes("unique") || error.code === "23505") {
       return NextResponse.json(
         { error: "이미 존재하는 카테고리입니다" },
         { status: 400 }

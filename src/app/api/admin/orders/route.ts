@@ -1,48 +1,54 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hasPermission } from "@/lib/rbac/roles";
-import { prisma } from "@/lib/prisma";
+import { db, users, orders } from "@/lib/db";
+import { eq, desc } from "drizzle-orm";
 
 export async function GET(request: NextRequest) {
   try {
     // TODO: Add proper authentication check
     // For now, assume admin access
 
-    // Fetch all users with their orders
-    const users = await prisma.user.findMany({
-      include: {
-        orders: {
-          orderBy: { createdAt: "desc" }
-        }
-      },
-      orderBy: { createdAt: "desc" }
-    });
+    // Fetch all users
+    const usersResult = await db.select().from(users).orderBy(desc(users.createdAt));
 
-    const transformedUsers = users.map((user) => ({
+    // Fetch all orders with user info
+    const ordersResult = await db
+      .select({
+        order: orders,
+        userName: users.name,
+        userEmail: users.email,
+      })
+      .from(orders)
+      .leftJoin(users, eq(orders.userId, users.id))
+      .orderBy(desc(orders.createdAt));
+
+    // Group orders by user
+    const userOrdersMap = new Map<string, any[]>();
+    for (const { order, userName, userEmail } of ordersResult) {
+      if (order.userId) {
+        if (!userOrdersMap.has(order.userId)) {
+          userOrdersMap.set(order.userId, []);
+        }
+        userOrdersMap.get(order.userId)!.push(order);
+      }
+    }
+
+    const transformedUsers = usersResult.map((user) => ({
       id: user.id,
       name: user.name || "Unknown User",
       email: user.email || "",
       role: user.role || "user",
-      createdAt: user.createdAt.toISOString(),
-      orders: user.orders || [],
+      createdAt: user.createdAt?.toISOString(),
+      orders: userOrdersMap.get(user.id) || [],
     }));
 
-    // Also fetch standalone orders from the orders table
-    const standaloneOrders = await prisma.order.findMany({
-      include: {
-        user: {
-          select: { name: true, email: true }
-        }
-      },
-      orderBy: { createdAt: "desc" }
-    });
-
-    const transformedStandaloneOrders = standaloneOrders.map(order => ({
+    const transformedStandaloneOrders = ordersResult.map(({ order, userName, userEmail }) => ({
       id: order.id,
       ...order,
-      createdAt: order.createdAt.toISOString(),
-      updatedAt: order.updatedAt.toISOString(),
-      customerName: order.user?.name || "Unknown User",
-      customerEmail: order.user?.email || "",
+      createdAt: order.createdAt?.toISOString(),
+      updatedAt: order.updatedAt?.toISOString(),
+      customerName: userName || "Unknown User",
+      customerEmail: userEmail || "",
     }));
 
     return NextResponse.json(
@@ -50,7 +56,7 @@ export async function GET(request: NextRequest) {
         users: transformedUsers,
         standaloneOrders: transformedStandaloneOrders,
         totalUsers: transformedUsers.length,
-        totalOrders: transformedUsers.reduce((sum, user) => sum + (user.orders?.length || 0), 0) + standaloneOrders.length,
+        totalOrders: ordersResult.length,
       },
       { status: 200 }
     );
@@ -79,20 +85,21 @@ export async function PUT(request: NextRequest) {
     if (status) updateFields.status = status;
     if (paymentStatus) updateFields.paymentStatus = paymentStatus;
 
-    // Try to update order in Prisma orders table
+    // Try to update order
     try {
-      const updatedOrder = await prisma.order.update({
-        where: { id: orderId },
-        data: {
-          ...updateFields,
-          updatedAt: new Date(),
-        }
-      });
+      const updatedOrders = await db.update(orders).set({
+        ...updateFields,
+        updatedAt: new Date(),
+      }).where(eq(orders.id, orderId)).returning();
+
+      if (updatedOrders.length === 0) {
+        return NextResponse.json({ error: "Order not found" }, { status: 404 });
+      }
 
       return NextResponse.json({
         success: true,
         updated: "orders_table",
-        order: updatedOrder
+        order: updatedOrders[0]
       });
     } catch (orderError) {
       console.log("Order not found in orders table:", orderError);
@@ -118,11 +125,13 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: "Order ID required" }, { status: 400 });
     }
 
-    // Try to delete from Prisma orders table
+    // Try to delete from orders table
     try {
-      await prisma.order.delete({
-        where: { id: orderId }
-      });
+      const deleted = await db.delete(orders).where(eq(orders.id, orderId)).returning();
+
+      if (deleted.length === 0) {
+        return NextResponse.json({ error: "Order not found" }, { status: 404 });
+      }
 
       return NextResponse.json({
         success: true,

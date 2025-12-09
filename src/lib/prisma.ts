@@ -1,10 +1,18 @@
 import { PrismaClient, Prisma } from '@prisma/client'
 import { Pool, neonConfig } from '@neondatabase/serverless'
 import { PrismaNeon } from '@prisma/adapter-neon'
-import ws from 'ws'
 
-// WebSocket 설정 (Node.js 환경에서 필요)
-neonConfig.webSocketConstructor = ws
+// WebSocket 설정 - Edge/Workers 환경에서는 네이티브 WebSocket 사용
+// Node.js 환경에서만 ws 패키지 사용
+if (typeof globalThis.WebSocket === 'undefined') {
+  // Node.js 환경 (로컬 개발)
+  // eslint-disable-next-line
+  const ws = require('ws')
+  neonConfig.webSocketConstructor = ws
+} else {
+  // Edge/Workers 환경 (Cloudflare)
+  neonConfig.webSocketConstructor = globalThis.WebSocket
+}
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined

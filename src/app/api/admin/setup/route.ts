@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db, users } from "@/lib/db";
+import { eq } from "drizzle-orm";
 
 // This is a development utility endpoint to set admin role
-// In production, this should be secured or done through Firebase Admin Console
+// In production, this should be secured or done through admin dashboard
 export async function POST(request: NextRequest) {
   try {
     const { email, secretKey } = await request.json();
@@ -17,13 +18,10 @@ export async function POST(request: NextRequest) {
     }
 
     // Update user role to admin
-    await prisma.user.update({
-      where: { email },
-      data: {
-        role: "admin",
-        updatedAt: new Date(),
-      }
-    });
+    await db.update(users).set({
+      role: "admin",
+      updatedAt: new Date(),
+    }).where(eq(users.email, email));
 
     return NextResponse.json({
       message: `User ${email} has been promoted to admin`,

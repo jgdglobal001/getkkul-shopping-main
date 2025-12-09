@@ -13,7 +13,8 @@ import ProductRequiredInfo from "@/components/ProductRequiredInfo";
 import ProductDetailTabs from "@/components/ProductDetailTabs";
 import ProductDetailsInfo from "@/components/ProductDetailsInfo";
 import ProductPurchaseSection from "@/components/ProductPurchaseSection";
-import { prisma } from "@/lib/prisma";
+import { db, products, productOptions, productVariants, productQuestions, productAnswers, users } from "@/lib/db";
+import { eq, and, ne, asc, desc } from "drizzle-orm";
 import { notFound } from "next/navigation";
 
 // 동적 렌더링 설정 (DB 쿼리 때문에)
@@ -28,19 +29,19 @@ interface Props {
 const SingleProductPage = async ({ params }: Props) => {
   const { id } = await params;
 
-  // DB에서 먼저 상품 찾기 (옵션 포함)
-  let product: any = await prisma.product.findUnique({
-    where: { id },
-    include: {
-      options: {
-        orderBy: { order: 'asc' },
-      },
-      variants: {
-        where: { isActive: true },
-        orderBy: { createdAt: 'asc' },
-      },
-    },
-  });
+  // DB에서 먼저 상품 찾기
+  const productResult = await db.select().from(products).where(eq(products.id, id)).limit(1);
+  let product: any = productResult[0] || null;
+
+  // 옵션과 variants 조회
+  if (product) {
+    const [options, variants] = await Promise.all([
+      db.select().from(productOptions).where(eq(productOptions.productId, id)).orderBy(asc(productOptions.order)),
+      db.select().from(productVariants).where(and(eq(productVariants.productId, id), eq(productVariants.isActive, true))).orderBy(asc(productVariants.createdAt)),
+    ]);
+    product.options = options;
+    product.variants = variants;
+  }
 
   // DB에 없으면 DummyJSON에서 찾기 (모바일 카테고리만)
   if (!product) {
@@ -61,32 +62,60 @@ const SingleProductPage = async ({ params }: Props) => {
     allProducts = dummyData?.products || [];
   } else {
     // DB 카테고리면 DB에서 조회
-    const dbRelated = await prisma.product.findMany({
-      where: {
-        category: product.category,
-        isActive: true,
-        NOT: { id: product.id }
-      },
-      take: 10,
-    });
-    allProducts = dbRelated;
+    const dbRelated = await db
+      .select()
+      .from(products)
+      .where(and(
+        eq(products.category, product.category),
+        eq(products.isActive, true),
+        ne(products.id, product.id)
+      ))
+      .limit(10);
+    allProducts = dbRelated as ProductType[];
   }
 
   // 상품 질문 조회 (DB 상품만 - DummyJSON은 질문 미지원)
-  let questions = [];
+  let questions: any[] = [];
   if (product.category !== "smartphones") {
     // DB 상품만 조회
-    questions = await prisma.productQuestion.findMany({
-      where: { productId: product.id },
-      include: {
-        user: { select: { name: true } },
-        answers: {
-          include: { user: { select: { name: true } } },
-          orderBy: { createdAt: "asc" }
-        }
-      },
-      orderBy: { createdAt: "desc" }
-    });
+    const questionsResult = await db
+      .select({
+        id: productQuestions.id,
+        content: productQuestions.content,
+        isSecret: productQuestions.isSecret,
+        createdAt: productQuestions.createdAt,
+        userName: users.name,
+      })
+      .from(productQuestions)
+      .leftJoin(users, eq(productQuestions.userId, users.id))
+      .where(eq(productQuestions.productId, product.id))
+      .orderBy(desc(productQuestions.createdAt));
+
+    // Get answers for each question
+    questions = await Promise.all(
+      questionsResult.map(async (q) => {
+        const answersResult = await db
+          .select({
+            id: productAnswers.id,
+            content: productAnswers.content,
+            createdAt: productAnswers.createdAt,
+            userName: users.name,
+          })
+          .from(productAnswers)
+          .leftJoin(users, eq(productAnswers.userId, users.id))
+          .where(eq(productAnswers.questionId, q.id))
+          .orderBy(asc(productAnswers.createdAt));
+
+        return {
+          ...q,
+          user: { name: q.userName },
+          answers: answersResult.map((a) => ({
+            ...a,
+            user: { name: a.userName },
+          })),
+        };
+      })
+    );
   }
 
   const regularPrice = product?.price;

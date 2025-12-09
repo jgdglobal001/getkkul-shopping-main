@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db, orders } from "@/lib/db";
+import { eq } from "drizzle-orm";
 
 export async function DELETE(request: NextRequest) {
   try {
@@ -22,12 +23,14 @@ export async function DELETE(request: NextRequest) {
 
     for (const orderId of orderIds) {
       try {
-        // Try to delete from Prisma orders table
-        await prisma.order.delete({
-          where: { id: orderId }
-        });
+        // Try to delete from orders table
+        const deleted = await db.delete(orders).where(eq(orders.id, orderId)).returning();
 
-        results.deleted.push(orderId);
+        if (deleted.length > 0) {
+          results.deleted.push(orderId);
+        } else {
+          results.notFound.push(orderId);
+        }
       } catch (error) {
         console.error(`Error deleting order ${orderId}:`, error);
         results.errors.push({

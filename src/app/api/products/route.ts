@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db, products } from "@/lib/db";
+import { eq, desc, ilike, and, count, sql } from "drizzle-orm";
 
 export async function GET(request: NextRequest) {
   try {
@@ -8,32 +9,35 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get("limit") || "12");
     const category = searchParams.get("category") || "";
 
-    const skip = (page - 1) * limit;
+    const offset = (page - 1) * limit;
 
     // 검색 조건 구성
-    const where: any = {
-      isActive: true,
-    };
+    const conditions = [eq(products.isActive, true)];
 
     if (category && category !== "smartphones") {
-      where.category = { contains: category, mode: "insensitive" };
+      conditions.push(ilike(products.category, `%${category}%`));
     }
 
     // 상품 목록 조회
-    const [products, totalCount] = await Promise.all([
-      prisma.product.findMany({
-        where,
-        skip,
-        take: limit,
-        orderBy: { createdAt: "desc" },
-      }),
-      prisma.product.count({ where }),
+    const [productList, countResult] = await Promise.all([
+      db
+        .select()
+        .from(products)
+        .where(and(...conditions))
+        .orderBy(desc(products.createdAt))
+        .limit(limit)
+        .offset(offset),
+      db
+        .select({ count: count() })
+        .from(products)
+        .where(and(...conditions)),
     ]);
 
+    const totalCount = countResult[0]?.count || 0;
     const totalPages = Math.ceil(totalCount / limit);
 
     return NextResponse.json({
-      products,
+      products: productList,
       totalPages,
       currentPage: page,
       totalCount,

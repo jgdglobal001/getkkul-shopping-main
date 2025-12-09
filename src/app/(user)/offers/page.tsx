@@ -5,7 +5,8 @@ import OffersPageHeader from "@/components/pages/offers/OffersPageHeader";
 import { ProductType } from "../../../../type";
 import OffersList from "@/components/pages/offers/OffersList";
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import { db, products } from "@/lib/db";
+import { eq, gt, desc, and } from "drizzle-orm";
 
 // 동적 렌더링 설정 (DB 쿼리 때문에)
 export const dynamic = "force-dynamic";
@@ -29,13 +30,11 @@ const OffersPage = async ({ searchParams }: OffersPageProps) => {
   const params = await searchParams;
 
   // DB에서 할인 상품 조회
-  const dbProducts = await prisma.product.findMany({
-    where: {
-      isActive: true,
-      discountPercentage: { gt: 0 },
-    },
-    orderBy: { createdAt: "desc" },
-  });
+  const dbProducts = await db
+    .select()
+    .from(products)
+    .where(and(eq(products.isActive, true), gt(products.discountPercentage, 0)))
+    .orderBy(desc(products.createdAt));
 
   let products = [...dbProducts];
   const offersProducts = products;

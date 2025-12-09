@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Prisma, prisma } from "@/lib/prisma";
+import { db, users, orders } from "@/lib/db";
+import { eq } from "drizzle-orm";
 import {
   ORDER_STATUSES,
   PAYMENT_STATUSES,
   PAYMENT_METHODS,
 } from "@/lib/orderStatus";
+
+function generateId() {
+  return `${Date.now().toString(36)}${Math.random().toString(36).substr(2, 9)}`;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,7 +26,6 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify payment with Toss API
-    // Use API individual integration keys (not widget keys)
     const clientKey = process.env.TOSS_CLIENT_KEY;
     const secretKey = process.env.TOSS_SECRET_KEY;
 
@@ -66,28 +70,41 @@ export async function POST(request: NextRequest) {
     const paymentData = await tossResponse.json();
 
     // Find or create user
-    let user = await prisma.user.findUnique({
-      where: { email: userEmail },
-    });
+    let userResult = await db.select().from(users).where(eq(users.email, userEmail)).limit(1);
+    let user = userResult[0];
 
     if (!user) {
-      user = await prisma.user.create({
-        data: {
-          email: userEmail,
-          name: paymentData.customerName || "Guest Customer",
-        },
-      });
+      const newUser = await db.insert(users).values({
+        id: generateId(),
+        email: userEmail,
+        name: paymentData.customerName || "Guest Customer",
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }).returning();
+      user = newUser[0];
     }
 
-    // Update or create order
-    const order = await prisma.order.upsert({
-      where: { orderId },
-      update: {
-        paymentStatus: PAYMENT_STATUSES.PAID,
-        status: ORDER_STATUSES.CONFIRMED,
-        paymentMethod: PAYMENT_METHODS.TOSS,
-      },
-      create: {
+    // Check if order exists
+    const existingOrder = await db.select().from(orders).where(eq(orders.orderId, orderId)).limit(1);
+
+    let order;
+    if (existingOrder.length > 0) {
+      // Update existing order
+      const updated = await db
+        .update(orders)
+        .set({
+          paymentStatus: PAYMENT_STATUSES.PAID,
+          status: ORDER_STATUSES.CONFIRMED,
+          paymentMethod: PAYMENT_METHODS.TOSS,
+          updatedAt: new Date(),
+        })
+        .where(eq(orders.orderId, orderId))
+        .returning();
+      order = updated[0];
+    } else {
+      // Create new order
+      const created = await db.insert(orders).values({
+        id: generateId(),
         orderId,
         userId: user.id,
         userEmail,
@@ -95,9 +112,12 @@ export async function POST(request: NextRequest) {
         paymentStatus: PAYMENT_STATUSES.PAID,
         paymentMethod: PAYMENT_METHODS.TOSS,
         totalAmount: amount / 100, // Toss sends amount in cents
-        shippingAddress: Prisma.JsonNull,
-      },
-    });
+        shippingAddress: null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }).returning();
+      order = created[0];
+    }
 
     return NextResponse.json({
       success: true,

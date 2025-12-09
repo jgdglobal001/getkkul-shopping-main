@@ -1,275 +1,260 @@
-2025-12-09T02:42:17.398506768Z	Cloning repository...
-2025-12-09T02:42:18.230579724Z	From https://github.com/jgdglobal001/getkkul-shopping-main
-2025-12-09T02:42:20.282930511Z	Checking for configuration in a Wrangler configuration file (BETA)
-2025-12-09T02:42:26.599679467Z	npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
-2025-12-09T02:42:26.650318841Z	npm warn deprecated @types/bcryptjs@3.0.0: This is a stub types definition. bcryptjs provides its own type definitions, so you do not need this installed.
-2025-12-09T02:42:51.606556221Z	
-2025-12-09T02:42:51.606563287Z	120 packages are looking for funding
-2025-12-09T02:42:51.606568468Z	  run `npm fund` for details
-2025-12-09T02:42:51.614145085Z	
-2025-12-09T02:42:51.614468764Z	1 moderate severity vulnerability
-2025-12-09T02:42:51.614643707Z	
-2025-12-09T02:42:51.614676746Z	To address all issues, run:
-2025-12-09T02:42:51.614778867Z	  npm audit fix --force
-2025-12-09T02:42:51.616266362Z	
-2025-12-09T02:42:51.61628903Z	Run `npm audit` for details.
-2025-12-09T02:42:51.650807856Z	Executing user command: npm run cf:build
-2025-12-09T02:42:52.067301152Z	
-2025-12-09T02:42:52.067661581Z	> shofy@0.1.0 cf:build
-2025-12-09T02:42:52.068045776Z	> npx @opennextjs/cloudflare build
-2025-12-09T02:42:52.068359752Z	
-2025-12-09T02:42:54.444397099Z	
-2025-12-09T02:42:54.444775008Z	┌─────────────────────────────┐
-2025-12-09T02:42:56.224801331Z	[dotenv@17.2.3] injecting env (0) from .env.local -- tip: 🗂️ backup and recover secrets: https://dotenvx.com/ops
-2025-12-09T02:42:56.224851731Z	Loaded Prisma config from prisma.config.ts.
-2025-12-09T02:42:56.224856225Z	
-2025-12-09T02:42:56.397535533Z	Prisma config detected, skipping environment variable loading.
-2025-12-09T02:42:56.397958609Z	Prisma schema loaded from prisma/schema.prisma
-2025-12-09T02:42:56.799694941Z	
-2025-12-09T02:42:56.800189313Z	✔ Generated Prisma Client (v6.18.0) to ./node_modules/@prisma/client in 203ms
-2025-12-09T02:42:56.800527888Z	
-2025-12-09T02:42:56.800549255Z	Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
-2025-12-09T02:42:56.800992781Z	
-2025-12-09T02:42:56.801101578Z	Tip: Interested in query caching in just a few lines of code? Try Accelerate today! https://pris.ly/tip-3-accelerate
-2025-12-09T02:42:56.801412199Z	
-2025-12-09T02:42:56.801471198Z	┌─────────────────────────────────────────────────────────┐
-2025-12-09T02:42:56.801570572Z	│  Update available 6.18.0 -> 7.1.0                       │
-2025-12-09T02:42:56.801701678Z	│                                                         │
-2025-12-09T02:42:56.801773022Z	│  This is a major update - please follow the guide at    │
-2025-12-09T02:42:56.80185062Z	│  https://pris.ly/d/major-version-upgrade                │
-2025-12-09T02:42:56.801981101Z	│                                                         │
-2025-12-09T02:42:56.802099372Z	│  Run the following to update                            │
-2025-12-09T02:42:56.802179902Z	│    npm i --save-dev prisma@latest                       │
-2025-12-09T02:42:56.802228436Z	│    npm i @prisma/client@latest                          │
-2025-12-09T02:42:56.802410341Z	└─────────────────────────────────────────────────────────┘
-2025-12-09T02:42:56.821097503Z	
-2025-12-09T02:42:56.821415999Z	> shofy@0.1.0 build
-2025-12-09T02:42:56.821494303Z	> next build
-2025-12-09T02:42:56.821610208Z	
-2025-12-09T02:42:57.533558895Z	⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
-2025-12-09T02:42:57.538017662Z	Attention: Next.js now collects completely anonymous telemetry regarding usage.
-2025-12-09T02:42:57.538091275Z	This information is used to shape Next.js' roadmap and prioritize features.
-2025-12-09T02:42:57.538259729Z	You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
-2025-12-09T02:42:57.538936329Z	https://nextjs.org/telemetry
-2025-12-09T02:42:57.538956112Z	
-2025-12-09T02:42:57.605974812Z	   ▲ Next.js 15.4.8
-2025-12-09T02:42:57.6063243Z	
-2025-12-09T02:42:57.677785325Z	   Creating an optimized production build ...
-2025-12-09T02:43:28.334889296Z	   Skipping validation of types
-2025-12-09T02:43:28.335164631Z	   Linting ...
-2025-12-09T02:43:28.434516355Z	 ⨯ ESLint must be installed in order to run during builds: npm install --save-dev eslint
-2025-12-09T02:43:28.65869293Z	   Collecting page data ...
-2025-12-09T02:43:28.334889296Z	   Skipping validation of types
-2025-12-09T02:43:28.335164631Z	   Linting ...
-2025-12-09T02:43:28.434516355Z	 ⨯ ESLint must be installed in order to run during builds: npm install --save-dev eslint
-2025-12-09T02:43:28.65869293Z	   Collecting page data ...
-2025-12-09T02:43:32.979445774Z	   Generating static pages (0/71) ...
-2025-12-09T02:43:34.401006318Z	   Generating static pages (17/71) 
-2025-12-09T02:43:34.674322193Z	   Generating static pages (35/71) 
-2025-12-09T02:43:34.735106461Z	카테고리 API 오류: 404
-2025-12-09T02:43:34.843287068Z	   Generating static pages (53/71) 
-2025-12-09T02:43:35.289451328Z	 ✓ Generating static pages (71/71)
-2025-12-09T02:43:36.611950648Z	   Collecting build traces ...
-2025-12-09T02:43:36.611950648Z	   Collecting build traces ...
-2025-12-09T02:43:54.185156628Z	┌ ƒ /                                       4.06 kB         164 kB
-2025-12-09T02:43:54.185184194Z	├ ○ /_not-found                               252 B        99.8 kB
-2025-12-09T02:43:54.185297028Z	├ ƒ /about                                    169 B         103 kB
-2025-12-09T02:43:54.185311825Z	├ ƒ /account                                   7 kB         154 kB
-2025-12-09T02:43:54.185423862Z	├ ƒ /account/addresses                      4.96 kB         131 kB
-2025-12-09T02:43:54.185602179Z	├ ƒ /account/admin                          3.21 kB         122 kB
-2025-12-09T02:43:54.185655316Z	├ ƒ /account/admin/categories               2.97 kB         122 kB
-2025-12-09T02:43:54.185927712Z	├ ƒ /account/admin/inquiries                1.99 kB         126 kB
-2025-12-09T02:43:54.185950974Z	├ ƒ /account/admin/products                 3.27 kB         127 kB
-2025-12-09T02:43:54.186598491Z	├ ƒ /account/admin/products/[id]            2.97 kB         127 kB
-2025-12-09T02:43:54.186626232Z	├ ƒ /account/admin/products/[id]/edit         144 B         135 kB
-2025-12-09T02:43:54.186632501Z	├ ƒ /account/admin/products/new               144 B         135 kB
-2025-12-09T02:43:54.186637772Z	├ ƒ /account/notifications                  1.18 kB         117 kB
-2025-12-09T02:43:54.186642466Z	├ ƒ /account/orders                         6.52 kB         145 kB
-2025-12-09T02:43:54.186647319Z	├ ƒ /account/orders/[id]                    5.62 kB         144 kB
-2025-12-09T02:43:54.18680389Z	├ ƒ /account/payment                          794 B         120 kB
-2025-12-09T02:43:54.186909389Z	├ ƒ /account/profile                          252 B        99.8 kB
-2025-12-09T02:43:54.186923196Z	├ ƒ /account/reviews                        3.84 kB         142 kB
-2025-12-09T02:43:54.187082294Z	├ ƒ /account/settings                       3.03 kB         136 kB
-2025-12-09T02:43:54.187207652Z	├ ƒ /api/admin/analytics                      252 B        99.8 kB
-2025-12-09T02:43:54.187328683Z	├ ƒ /api/admin/categories                     252 B        99.8 kB
-2025-12-09T02:43:54.187741426Z	├ ƒ /api/admin/categories/[id]                252 B        99.8 kB
-2025-12-09T02:43:54.18785889Z	├ ƒ /api/admin/categories/migrate             252 B        99.8 kB
-2025-12-09T02:43:54.187873604Z	├ ƒ /api/admin/dashboard/recent-orders        252 B        99.8 kB
-2025-12-09T02:43:54.187878333Z	├ ƒ /api/admin/dashboard/stats                252 B        99.8 kB
-2025-12-09T02:43:54.187899772Z	├ ƒ /api/admin/inquiries                      252 B        99.8 kB
-2025-12-09T02:43:54.18811286Z	├ ƒ /api/admin/inquiries/[id]                 252 B        99.8 kB
-2025-12-09T02:43:54.188122103Z	├ ƒ /api/admin/orders                         252 B        99.8 kB
-2025-12-09T02:43:54.18818556Z	├ ƒ /api/admin/orders/[id]                    252 B        99.8 kB
-2025-12-09T02:43:54.188357478Z	├ ƒ /api/admin/orders/bulk-delete             252 B        99.8 kB
-2025-12-09T02:43:54.188365248Z	├ ƒ /api/admin/orders/bulk-delete-selected    252 B        99.8 kB
-2025-12-09T02:43:54.18869961Z	├ ƒ /api/admin/products                       252 B        99.8 kB
-2025-12-09T02:43:54.188711418Z	├ ƒ /api/admin/products/[id]                  252 B        99.8 kB
-2025-12-09T02:43:54.188865692Z	├ ƒ /api/admin/setup                          252 B        99.8 kB
-2025-12-09T02:43:54.185156628Z	┌ ƒ /                                       4.06 kB         164 kB
-2025-12-09T02:43:54.185184194Z	├ ○ /_not-found                               252 B        99.8 kB
-2025-12-09T02:43:54.185297028Z	├ ƒ /about                                    169 B         103 kB
-2025-12-09T02:43:54.185311825Z	├ ƒ /account                                   7 kB         154 kB
-2025-12-09T02:43:54.185423862Z	├ ƒ /account/addresses                      4.96 kB         131 kB
-2025-12-09T02:43:54.185602179Z	├ ƒ /account/admin                          3.21 kB         122 kB
-2025-12-09T02:43:54.185655316Z	├ ƒ /account/admin/categories               2.97 kB         122 kB
-2025-12-09T02:43:54.185927712Z	├ ƒ /account/admin/inquiries                1.99 kB         126 kB
-2025-12-09T02:43:54.185950974Z	├ ƒ /account/admin/products                 3.27 kB         127 kB
-2025-12-09T02:43:54.186598491Z	├ ƒ /account/admin/products/[id]            2.97 kB         127 kB
-2025-12-09T02:43:54.186626232Z	├ ƒ /account/admin/products/[id]/edit         144 B         135 kB
-2025-12-09T02:43:54.186632501Z	├ ƒ /account/admin/products/new               144 B         135 kB
-2025-12-09T02:43:54.186637772Z	├ ƒ /account/notifications                  1.18 kB         117 kB
-2025-12-09T02:43:54.186642466Z	├ ƒ /account/orders                         6.52 kB         145 kB
-2025-12-09T02:43:54.186647319Z	├ ƒ /account/orders/[id]                    5.62 kB         144 kB
-2025-12-09T02:43:54.18680389Z	├ ƒ /account/payment                          794 B         120 kB
-2025-12-09T02:43:54.186909389Z	├ ƒ /account/profile                          252 B        99.8 kB
-2025-12-09T02:43:54.186923196Z	├ ƒ /account/reviews                        3.84 kB         142 kB
-2025-12-09T02:43:54.187082294Z	├ ƒ /account/settings                       3.03 kB         136 kB
-2025-12-09T02:43:54.187207652Z	├ ƒ /api/admin/analytics                      252 B        99.8 kB
-2025-12-09T02:43:54.187328683Z	├ ƒ /api/admin/categories                     252 B        99.8 kB
-2025-12-09T02:43:54.187741426Z	├ ƒ /api/admin/categories/[id]                252 B        99.8 kB
-2025-12-09T02:43:54.18785889Z	├ ƒ /api/admin/categories/migrate             252 B        99.8 kB
-2025-12-09T02:43:54.187873604Z	├ ƒ /api/admin/dashboard/recent-orders        252 B        99.8 kB
-2025-12-09T02:43:54.187878333Z	├ ƒ /api/admin/dashboard/stats                252 B        99.8 kB
-2025-12-09T02:43:54.187899772Z	├ ƒ /api/admin/inquiries                      252 B        99.8 kB
-2025-12-09T02:43:54.18811286Z	├ ƒ /api/admin/inquiries/[id]                 252 B        99.8 kB
-2025-12-09T02:43:54.188122103Z	├ ƒ /api/admin/orders                         252 B        99.8 kB
-2025-12-09T02:43:54.18818556Z	├ ƒ /api/admin/orders/[id]                    252 B        99.8 kB
-2025-12-09T02:43:54.188357478Z	├ ƒ /api/admin/orders/bulk-delete             252 B        99.8 kB
-2025-12-09T02:43:54.188365248Z	├ ƒ /api/admin/orders/bulk-delete-selected    252 B        99.8 kB
-2025-12-09T02:43:54.18869961Z	├ ƒ /api/admin/products                       252 B        99.8 kB
-2025-12-09T02:43:54.188711418Z	├ ƒ /api/admin/products/[id]                  252 B        99.8 kB
-2025-12-09T02:43:54.188865692Z	├ ƒ /api/admin/setup                          252 B        99.8 kB
-2025-12-09T02:43:54.18888208Z	├ ƒ /api/admin/stats                          252 B        99.8 kB
-2025-12-09T02:43:54.18890609Z	├ ƒ /api/admin/users                          252 B        99.8 kB
-2025-12-09T02:43:54.18899363Z	├ ƒ /api/admin/users/bulk-delete              252 B        99.8 kB
-2025-12-09T02:43:54.189151585Z	├ ƒ /api/auth/[...nextauth]                   252 B        99.8 kB
-2025-12-09T02:43:54.189171079Z	├ ƒ /api/auth/register                        252 B        99.8 kB
-2025-12-09T02:43:54.189266357Z	├ ƒ /api/auth/update-password                 252 B        99.8 kB
-2025-12-09T02:43:54.189486298Z	├ ƒ /api/categories                           252 B        99.8 kB
-2025-12-09T02:43:54.189493055Z	├ ƒ /api/checkout                             252 B        99.8 kB
-2025-12-09T02:43:54.189667868Z	├ ƒ /api/orders                               252 B        99.8 kB
-2025-12-09T02:43:54.189689232Z	├ ƒ /api/orders/place                         252 B        99.8 kB
-2025-12-09T02:43:54.189806014Z	├ ƒ /api/orders/process                       252 B        99.8 kB
-2025-12-09T02:43:54.18993673Z	├ ƒ /api/orders/toss-confirm                  252 B        99.8 kB
-2025-12-09T02:43:54.190148814Z	├ ƒ /api/orders/toss-webhook                  252 B        99.8 kB
-2025-12-09T02:43:54.190202168Z	├ ƒ /api/orders/update-payment                252 B        99.8 kB
-2025-12-09T02:43:54.190225857Z	├ ƒ /api/product-questions                    252 B        99.8 kB
-2025-12-09T02:43:54.190466965Z	├ ƒ /api/products                             252 B        99.8 kB
-2025-12-09T02:43:54.190481583Z	├ ƒ /api/products/search                      252 B        99.8 kB
-2025-12-09T02:43:54.190809348Z	├ ƒ /api/user/[id]                            252 B        99.8 kB
-2025-12-09T02:43:54.190824025Z	├ ƒ /api/user/delete-address                  252 B        99.8 kB
-2025-12-09T02:43:54.19082952Z	├ ƒ /api/user/orders                          252 B        99.8 kB
-2025-12-09T02:43:54.190975977Z	├ ƒ /api/user/profile                         252 B        99.8 kB
-2025-12-09T02:43:54.190989837Z	├ ƒ /api/user/upload-image                    252 B        99.8 kB
-2025-12-09T02:43:54.191099614Z	├ ○ /auth/error                             1.29 kB         104 kB
-2025-12-09T02:43:54.191422884Z	├ ○ /auth/register                          2.35 kB         125 kB
-2025-12-09T02:43:54.191436642Z	├ ○ /auth/signin                            2.35 kB         125 kB
-2025-12-09T02:43:54.191445444Z	├ ƒ /cancel                                   648 B         111 kB
-2025-12-09T02:43:54.191768952Z	├ ƒ /cart                                   5.87 kB         171 kB
-2025-12-09T02:43:54.191789338Z	├ ƒ /categories                             4.58 kB         132 kB
-2025-12-09T02:43:54.191794437Z	├ ƒ /checkout                               7.12 kB         145 kB
-2025-12-09T02:43:54.191819193Z	├ ƒ /contact                                  252 B        99.8 kB
-2025-12-09T02:43:54.192086242Z	├ ƒ /customer-service                         169 B         103 kB
-2025-12-09T02:43:54.192101615Z	├ ○ /dashboard                              1.08 kB         104 kB
-2025-12-09T02:43:54.192106842Z	├ ○ /delivery                                 564 B         100 kB
-2025-12-09T02:43:54.19228467Z	├ ○ /delivery-dashboard                     3.71 kB         111 kB
-2025-12-09T02:43:54.192328979Z	├ ƒ /faqs                                   4.86 kB         115 kB
-2025-12-09T02:43:54.192448052Z	├ ƒ /favorite                               3.59 kB         142 kB
-2025-12-09T02:43:54.19256325Z	├ ○ /icon.png                                   0 B            0 B
-2025-12-09T02:43:54.192680011Z	├ ƒ /inquiry                                  252 B        99.8 kB
-2025-12-09T02:43:54.192725298Z	├ ƒ /offers                                 2.72 kB         199 kB
-2025-12-09T02:43:54.192886702Z	├ ƒ /orders/[id]                              252 B        99.8 kB
-2025-12-09T02:43:54.192904922Z	├ ○ /packer-dashboard                       5.64 kB         124 kB
-2025-12-09T02:43:54.193131998Z	├ ○ /payment/fail                           2.06 kB         108 kB
-2025-12-09T02:43:54.193158692Z	├ ○ /payment/success                         2.4 kB         112 kB
-2025-12-09T02:43:54.193300776Z	├ ƒ /privacy-policy                           252 B        99.8 kB
-2025-12-09T02:43:54.193331582Z	├ ƒ /products                               5.81 kB         200 kB
-2025-12-09T02:43:54.193422012Z	├ ƒ /products/[id]                          7.31 kB         169 kB
-2025-12-09T02:43:54.193549798Z	├ ƒ /success                                3.83 kB         134 kB
-2025-12-09T02:43:54.193973135Z	├ ƒ /terms-of-service                         252 B        99.8 kB
-2025-12-09T02:43:54.194062826Z	├ ○ /unauthorized                           2.16 kB         119 kB
-2025-12-09T02:43:54.194069878Z	└ ○ /user-dashboard                         4.19 kB         120 kB
-2025-12-09T02:43:54.194084186Z	+ First Load JS shared by all               99.6 kB
-2025-12-09T02:43:54.194091161Z	  ├ chunks/4bd1b696-602635ee57868870.js     54.1 kB
-2025-12-09T02:43:54.194217943Z	  ├ chunks/5964-455cec4068509000.js         43.5 kB
-2025-12-09T02:43:54.194294133Z	  └ other shared chunks (total)             1.93 kB
-2025-12-09T02:43:54.194302376Z	
-2025-12-09T02:43:54.194425844Z	
-2025-12-09T02:43:54.19453177Z	○  (Static)   prerendered as static content
-2025-12-09T02:43:54.194659422Z	ƒ  (Dynamic)  server-rendered on demand
-2025-12-09T02:43:54.19482679Z	
-2025-12-09T02:43:54.23529177Z	
-2025-12-09T02:43:54.235336223Z	> shofy@0.1.0 postbuild
-2025-12-09T02:43:54.23534329Z	> next-sitemap
-2025-12-09T02:43:54.235348709Z	
-2025-12-09T02:43:54.360081685Z	✨ [next-sitemap] Loading next-sitemap config: file:///opt/buildhome/repo/next-sitemap.config.js
-2025-12-09T02:43:54.367306402Z	✅ [next-sitemap] Generation completed
-2025-12-09T02:43:54.367981268Z	┌───────────────┬────────┐
-2025-12-09T02:43:54.368352652Z	│ (index)       │ Values │
-2025-12-09T02:43:54.368559562Z	├───────────────┼────────┤
-2025-12-09T02:43:54.368704043Z	│ indexSitemaps │ 1      │
-2025-12-09T02:43:54.36901502Z	│ sitemaps      │ 1      │
-2025-12-09T02:43:54.369035689Z	└───────────────┴────────┘
-2025-12-09T02:43:54.369042551Z	-----------------------------------------------------
-2025-12-09T02:43:54.369130219Z	 SITEMAP INDICES 
-2025-12-09T02:43:54.369221133Z	-----------------------------------------------------
-2025-12-09T02:43:54.369370118Z	
-2025-12-09T02:43:54.369473369Z	   ○ https://shofy.reactbd.com/sitemap.xml
-2025-12-09T02:43:54.369599233Z	
-2025-12-09T02:43:54.369687859Z	
-2025-12-09T02:43:54.369732526Z	-----------------------------------------------------
-2025-12-09T02:43:54.369891471Z	 SITEMAPS 
-2025-12-09T02:43:54.36996632Z	-----------------------------------------------------
-2025-12-09T02:43:54.370040223Z	
-2025-12-09T02:43:54.370099393Z	   ○ https://shofy.reactbd.com/sitemap-0.xml
-2025-12-09T02:43:54.370179929Z	
-2025-12-09T02:43:54.37036375Z	
-2025-12-09T02:43:54.381742687Z	
-2025-12-09T02:43:54.381987463Z	┌──────────────────────────────┐
-2025-12-09T02:43:54.38208459Z	│ OpenNext — Generating bundle │
-2025-12-09T02:43:54.382266478Z	└──────────────────────────────┘
-2025-12-09T02:43:54.382279658Z	
-2025-12-09T02:43:54.447458257Z	Bundling middleware function...
-2025-12-09T02:43:54.474838204Z	Bundling static assets...
-2025-12-09T02:43:54.525253995Z	Bundling cache assets...
-2025-12-09T02:43:54.572942793Z	Building server function: default...
-2025-12-09T02:43:59.097203458Z	Applying code patches: 4.047s
-2025-12-09T02:43:59.615077345Z	# copyPackageTemplateFiles
-2025-12-09T02:43:59.617717905Z	[35m⚙️ Bundling the OpenNext server...
-2025-12-09T02:43:59.618293736Z	[0m
-2025-12-09T02:44:01.504095539Z	OpenNext build complete.
-2025-12-09T02:44:01.593900672Z	Finished
-2025-12-09T02:44:02.573427069Z	Checking for configuration in a Wrangler configuration file (BETA)
-2025-12-09T02:44:02.573849419Z	
-2025-12-09T02:44:02.574568294Z	Found wrangler.toml file. Reading build configuration...
-2025-12-09T02:44:01.504095539Z	OpenNext build complete.
-2025-12-09T02:44:01.593900672Z	Finished
-2025-12-09T02:44:02.573427069Z	Checking for configuration in a Wrangler configuration file (BETA)
-2025-12-09T02:44:02.573849419Z	
-2025-12-09T02:44:02.574568294Z	Found wrangler.toml file. Reading build configuration...
-2025-12-09T02:44:03.681046073Z	Note: No functions dir at /functions found. Skipping.
-2025-12-09T02:44:03.681288296Z	Validating asset output directory
-2025-12-09T02:44:06.574770005Z	Deploying your site to Cloudflare's global network...
-2025-12-09T02:44:08.241271793Z	Parsed 12 valid redirect rules.
-2025-12-09T02:44:08.241852411Z	Found invalid redirect lines:
-2025-12-09T02:44:08.241992017Z	  - #24: /* /index.html 200
-2025-12-09T02:44:08.242001739Z	    Infinite loop detected in this rule and has been ignored. This will cause a redirect to strip `.html` or `/index` and end up triggering this rule again. Please fix or remove this rule to silence this warning.
-2025-12-09T02:44:08.242153422Z	Info: the redirect rule /login → 301 /auth/signin could be made more performant by bringing it above any lines with splats or placeholders.
-2025-12-09T02:44:08.242209257Z	Info: the redirect rule /register → 301 /auth/register could be made more performant by bringing it above any lines with splats or placeholders.
-2025-12-09T02:44:08.242389182Z	Info: the redirect rule /signup → 301 /auth/register could be made more performant by bringing it above any lines with splats or placeholders.
-2025-12-09T02:44:08.242401279Z	Info: the redirect rule /dashboard → 301 /user-dashboard could be made more performant by bringing it above any lines with splats or placeholders.
-2025-12-09T02:44:08.242649557Z	Info: the redirect rule /profile → 301 /account could be made more performant by bringing it above any lines with splats or placeholders.
-2025-12-09T02:44:08.242675227Z	Info: the redirect rule /admin-dashboard/ → 301 /admin-dashboard could be made more performant by bringing it above any lines with splats or placeholders.
-2025-12-09T02:44:08.242812894Z	Info: the redirect rule /user-dashboard/ → 301 /user-dashboard could be made more performant by bringing it above any lines with splats or placeholders.
-2025-12-09T02:44:08.242826841Z	Info: the redirect rule /account-dashboard/ → 301 /account-dashboard could be made more performant by bringing it above any lines with splats or placeholders.
-2025-12-09T02:44:08.243251659Z	Info: the redirect rule /packer-dashboard/ → 301 /packer-dashboard could be made more performant by bringing it above any lines with splats or placeholders.
-2025-12-09T02:44:08.243305185Z	Info: the redirect rule /delivery-dashboard/ → 301 /delivery-dashboard could be made more performant by bringing it above any lines with splats or placeholders.
-2025-12-09T02:44:08.243312716Z	Parsed 5 valid header rules.
-2025-12-09T02:44:09.662131973Z	Uploading... (157/159)
-2025-12-09T02:44:10.186063826Z	Uploading... (158/159)
-2025-12-09T02:44:10.344638351Z	Uploading... (159/159)
-2025-12-09T02:44:10.344968731Z	✨ Success! Uploaded 2 files (157 already uploaded) (1.12 sec)
-2025-12-09T02:44:10.34498743Z	
-2025-12-09T02:44:10.672905279Z	✨ Upload complete!
-2025-12-09T02:44:14.472389Z	Success: Assets published!
-2025-12-09T02:44:15.986601Z	Success: Your site was deployed!
+2025-12-09T02:49:40.624093695Z	Cloning repository...
+2025-12-09T02:49:41.383812034Z	From https://github.com/jgdglobal001/getkkul-shopping-main
+2025-12-09T02:49:41.384232872Z	 * branch            de1ad7d09e3a0f5be786159d0e79169f55eec220 -> FETCH_HEAD
+2025-12-09T02:49:41.384251916Z	
+2025-12-09T02:49:41.459388056Z	HEAD is now at de1ad7d Fix: wrangler.toml에 pages_build_output_dir 추가
+2025-12-09T02:49:41.459713986Z	
+2025-12-09T02:49:41.538431286Z	
+2025-12-09T02:49:41.539065973Z	Using v2 root directory strategy
+2025-12-09T02:49:41.561580687Z	Success: Finished cloning repository files
+2025-12-09T02:49:43.283182323Z	Checking for configuration in a Wrangler configuration file (BETA)
+2025-12-09T02:49:43.283976208Z	
+2025-12-09T02:49:43.284916084Z	Found wrangler.toml file. Reading build configuration...
+2025-12-09T02:49:43.2916823Z	pages_build_output_dir: .open-next
+2025-12-09T02:49:43.291705177Z	Build environment variables: 
+2025-12-09T02:49:43.291929196Z	  - NODE_ENV: production
+2025-12-09T02:49:44.399027657Z	Successfully read wrangler.toml file.
+2025-12-09T02:49:44.466043253Z	Detected the following tools from environment: npm@10.9.2, nodejs@22.16.0
+2025-12-09T02:49:44.466766755Z	Installing project dependencies: npm clean-install --progress=false
+2025-12-09T02:49:49.389409292Z	npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+2025-12-09T02:49:49.472489428Z	npm warn deprecated @types/bcryptjs@3.0.0: This is a stub types definition. bcryptjs provides its own type definitions, so you do not need this installed.
+2025-12-09T02:50:11.916207128Z	
+2025-12-09T02:50:11.916399109Z	added 1080 packages, and audited 1081 packages in 27s
+2025-12-09T02:50:11.916520134Z	
+2025-12-09T02:50:11.916635719Z	120 packages are looking for funding
+2025-12-09T02:50:11.916810366Z	  run `npm fund` for details
+2025-12-09T02:50:11.924771559Z	
+2025-12-09T02:50:11.924928842Z	1 moderate severity vulnerability
+2025-12-09T02:50:11.925151341Z	
+2025-12-09T02:50:11.925166898Z	To address all issues, run:
+2025-12-09T02:50:11.92563288Z	  npm audit fix --force
+2025-12-09T02:50:11.925788182Z	
+2025-12-09T02:50:11.925972734Z	Run `npm audit` for details.
+2025-12-09T02:50:11.961264838Z	Executing user command: npm run cf:build
+2025-12-09T02:50:12.343522196Z	
+2025-12-09T02:50:12.344069316Z	> shofy@0.1.0 cf:build
+2025-12-09T02:50:12.344399031Z	> npx @opennextjs/cloudflare build
+2025-12-09T02:50:12.344690851Z	
+2025-12-09T02:50:14.609347983Z	
+2025-12-09T02:50:14.609622954Z	┌─────────────────────────────┐
+2025-12-09T02:50:14.609749981Z	│ OpenNext — Cloudflare build │
+2025-12-09T02:50:14.609890657Z	└─────────────────────────────┘
+2025-12-09T02:50:14.610000406Z	
+2025-12-09T02:50:14.734201163Z	App directory: /opt/buildhome/repo
+2025-12-09T02:50:14.734469221Z	Next.js version : 15.4.8
+2025-12-09T02:50:14.734856697Z	@opennextjs/cloudflare version: 1.14.4
+2025-12-09T02:50:14.734987041Z	@opennextjs/aws version: 3.9.4
+2025-12-09T02:50:14.737410757Z	
+2025-12-09T02:50:14.73743584Z	┌─────────────────────────────────┐
+2025-12-09T02:50:14.737554637Z	│ OpenNext — Building Next.js app │
+2025-12-09T02:50:14.7379065Z	└─────────────────────────────────┘
+2025-12-09T02:50:14.737918864Z	
+2025-12-09T02:50:14.918847431Z	
+2025-12-09T02:50:14.919075859Z	> shofy@0.1.0 prebuild
+2025-12-09T02:50:14.919120259Z	> prisma generate
+2025-12-09T02:50:14.919281369Z	
+2025-12-09T02:50:16.182238051Z	[dotenv@17.2.3] injecting env (0) from .env.local -- tip: 📡 add observability to secrets: https://dotenvx.com/ops
+2025-12-09T02:50:16.1867009Z	Loaded Prisma config from prisma.config.ts.
+2025-12-09T02:50:16.187026039Z	
+2025-12-09T02:50:16.398768686Z	Prisma config detected, skipping environment variable loading.
+2025-12-09T02:50:16.399445506Z	Prisma schema loaded from prisma/schema.prisma
+2025-12-09T02:50:16.744325806Z	
+2025-12-09T02:50:16.744703231Z	✔ Generated Prisma Client (v6.18.0) to ./node_modules/@prisma/client in 169ms
+2025-12-09T02:50:16.744937689Z	
+2025-12-09T02:50:16.745112439Z	Start by importing your Prisma Client (See: https://pris.ly/d/importing-client)
+2025-12-09T02:50:16.745336132Z	
+2025-12-09T02:50:16.745483577Z	Tip: Need your database queries to be 1000x faster? Accelerate offers you that and more: https://pris.ly/tip-2-accelerate
+2025-12-09T02:50:16.745705912Z	
+2025-12-09T02:50:16.746063627Z	┌─────────────────────────────────────────────────────────┐
+2025-12-09T02:50:16.746079071Z	│  Update available 6.18.0 -> 7.1.0                       │
+2025-12-09T02:50:16.746479855Z	│                                                         │
+2025-12-09T02:50:16.746499175Z	│  This is a major update - please follow the guide at    │
+2025-12-09T02:50:16.746730721Z	│  https://pris.ly/d/major-version-upgrade                │
+2025-12-09T02:50:16.747066642Z	│                                                         │
+2025-12-09T02:50:16.747111113Z	│  Run the following to update                            │
+2025-12-09T02:50:16.747297979Z	│    npm i --save-dev prisma@latest                       │
+2025-12-09T02:50:16.747308592Z	│    npm i @prisma/client@latest                          │
+2025-12-09T02:50:16.747428696Z	└─────────────────────────────────────────────────────────┘
+2025-12-09T02:50:16.763576715Z	
+2025-12-09T02:50:16.763751702Z	> shofy@0.1.0 build
+2025-12-09T02:50:16.763956578Z	> next build
+2025-12-09T02:50:16.763968187Z	
+2025-12-09T02:50:17.444813453Z	⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+2025-12-09T02:50:17.448773991Z	Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2025-12-09T02:50:17.448990414Z	This information is used to shape Next.js' roadmap and prioritize features.
+2025-12-09T02:50:17.449261142Z	You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2025-12-09T02:50:17.449279615Z	https://nextjs.org/telemetry
+2025-12-09T02:50:17.449426316Z	
+2025-12-09T02:50:17.516615269Z	   ▲ Next.js 15.4.8
+2025-12-09T02:50:17.516949075Z	
+2025-12-09T02:50:17.582478427Z	   Creating an optimized production build ...
+2025-12-09T02:50:46.291920628Z	 ✓ Compiled successfully in 24.0s
+2025-12-09T02:50:46.297245931Z	   Skipping validation of types
+2025-12-09T02:50:46.297397745Z	   Linting ...
+2025-12-09T02:50:46.396985128Z	 ⨯ ESLint must be installed in order to run during builds: npm install --save-dev eslint
+2025-12-09T02:50:46.622857594Z	   Collecting page data ...
+2025-12-09T02:50:50.736547909Z	   Generating static pages (0/71) ...
+2025-12-09T02:50:52.048944365Z	   Generating static pages (17/71) 
+2025-12-09T02:50:52.276711271Z	   Generating static pages (35/71) 
+2025-12-09T02:50:52.416580893Z	   Generating static pages (53/71) 
+2025-12-09T02:50:52.594554364Z	카테고리 페칭 실패: TypeError: fetch failed
+2025-12-09T02:50:52.595097297Z	    at async n (.next/server/app/(user)/categories/page.js:1:1812) {
+2025-12-09T02:50:52.595185981Z	  [cause]: [AggregateError: ] { code: 'ECONNREFUSED' }
+2025-12-09T02:50:52.595273943Z	}
+2025-12-09T02:50:52.845737357Z	 ✓ Generating static pages (71/71)
+2025-12-09T02:50:54.095336957Z	   Finalizing page optimization ...
+2025-12-09T02:50:54.095378532Z	   Collecting build traces ...
+2025-12-09T02:51:10.206442739Z	
+2025-12-09T02:51:10.211587303Z	Route (app)                                    Size  First Load JS
+2025-12-09T02:51:10.211801193Z	┌ ƒ /                                       4.06 kB         164 kB
+2025-12-09T02:51:10.212048644Z	├ ○ /_not-found                               252 B        99.8 kB
+2025-12-09T02:51:10.212074599Z	├ ƒ /about                                    169 B         103 kB
+2025-12-09T02:51:10.212232198Z	├ ƒ /account                                   7 kB         154 kB
+2025-12-09T02:51:10.21232102Z	├ ƒ /account/addresses                      4.96 kB         131 kB
+2025-12-09T02:51:10.212485723Z	├ ƒ /account/admin                          3.21 kB         122 kB
+2025-12-09T02:51:10.212507809Z	├ ƒ /account/admin/categories               2.97 kB         122 kB
+2025-12-09T02:51:10.21270731Z	├ ƒ /account/admin/inquiries                1.99 kB         126 kB
+2025-12-09T02:51:10.212770278Z	├ ƒ /account/admin/products                 3.27 kB         127 kB
+2025-12-09T02:51:10.212872741Z	├ ƒ /account/admin/products/[id]            2.97 kB         127 kB
+2025-12-09T02:51:10.213149993Z	├ ƒ /account/admin/products/[id]/edit         144 B         135 kB
+2025-12-09T02:51:10.213163815Z	├ ƒ /account/admin/products/new               144 B         135 kB
+2025-12-09T02:51:10.213169514Z	├ ƒ /account/notifications                  1.18 kB         117 kB
+2025-12-09T02:51:10.213253453Z	├ ƒ /account/orders                         6.52 kB         145 kB
+2025-12-09T02:51:10.213454069Z	├ ƒ /account/orders/[id]                    5.62 kB         144 kB
+2025-12-09T02:51:10.213464662Z	├ ƒ /account/payment                          794 B         120 kB
+2025-12-09T02:51:10.213581526Z	├ ƒ /account/profile                          252 B        99.8 kB
+2025-12-09T02:51:10.213756486Z	├ ƒ /account/reviews                        3.84 kB         142 kB
+2025-12-09T02:51:10.213768979Z	├ ƒ /account/settings                       3.03 kB         136 kB
+2025-12-09T02:51:10.214004932Z	├ ƒ /api/admin/analytics                      252 B        99.8 kB
+2025-12-09T02:51:10.214014346Z	├ ƒ /api/admin/categories                     252 B        99.8 kB
+2025-12-09T02:51:10.214682511Z	├ ƒ /api/admin/categories/[id]                252 B        99.8 kB
+2025-12-09T02:51:10.214697554Z	├ ƒ /api/admin/categories/migrate             252 B        99.8 kB
+2025-12-09T02:51:10.214706527Z	├ ƒ /api/admin/dashboard/recent-orders        252 B        99.8 kB
+2025-12-09T02:51:10.214711146Z	├ ƒ /api/admin/dashboard/stats                252 B        99.8 kB
+2025-12-09T02:51:10.214715756Z	├ ƒ /api/admin/inquiries                      252 B        99.8 kB
+2025-12-09T02:51:10.214720282Z	├ ƒ /api/admin/inquiries/[id]                 252 B        99.8 kB
+2025-12-09T02:51:10.214724856Z	├ ƒ /api/admin/orders                         252 B        99.8 kB
+2025-12-09T02:51:10.214875321Z	├ ƒ /api/admin/orders/[id]                    252 B        99.8 kB
+2025-12-09T02:51:10.214912452Z	├ ƒ /api/admin/orders/bulk-delete             252 B        99.8 kB
+2025-12-09T02:51:10.21506513Z	├ ƒ /api/admin/orders/bulk-delete-selected    252 B        99.8 kB
+2025-12-09T02:51:10.215404343Z	├ ƒ /api/admin/products                       252 B        99.8 kB
+2025-12-09T02:51:10.215423366Z	├ ƒ /api/admin/products/[id]                  252 B        99.8 kB
+2025-12-09T02:51:10.215429493Z	├ ƒ /api/admin/setup                          252 B        99.8 kB
+2025-12-09T02:51:10.215521501Z	├ ƒ /api/admin/stats                          252 B        99.8 kB
+2025-12-09T02:51:10.215545789Z	├ ƒ /api/admin/users                          252 B        99.8 kB
+2025-12-09T02:51:10.215886031Z	├ ƒ /api/admin/users/bulk-delete              252 B        99.8 kB
+2025-12-09T02:51:10.21589905Z	├ ƒ /api/auth/[...nextauth]                   252 B        99.8 kB
+2025-12-09T02:51:10.215960574Z	├ ƒ /api/auth/register                        252 B        99.8 kB
+2025-12-09T02:51:10.216023853Z	├ ƒ /api/auth/update-password                 252 B        99.8 kB
+2025-12-09T02:51:10.216097506Z	├ ƒ /api/categories                           252 B        99.8 kB
+2025-12-09T02:51:10.216427168Z	├ ƒ /api/checkout                             252 B        99.8 kB
+2025-12-09T02:51:10.216439774Z	├ ƒ /api/orders                               252 B        99.8 kB
+2025-12-09T02:51:10.216582766Z	├ ƒ /api/orders/place                         252 B        99.8 kB
+2025-12-09T02:51:10.216626792Z	├ ƒ /api/orders/process                       252 B        99.8 kB
+2025-12-09T02:51:10.216795949Z	├ ƒ /api/orders/toss-confirm                  252 B        99.8 kB
+2025-12-09T02:51:10.21695235Z	├ ƒ /api/orders/toss-webhook                  252 B        99.8 kB
+2025-12-09T02:51:10.217030424Z	├ ƒ /api/orders/update-payment                252 B        99.8 kB
+2025-12-09T02:51:10.217310918Z	├ ƒ /api/product-questions                    252 B        99.8 kB
+2025-12-09T02:51:10.217317551Z	├ ƒ /api/products                             252 B        99.8 kB
+2025-12-09T02:51:10.217438599Z	├ ƒ /api/products/search                      252 B        99.8 kB
+2025-12-09T02:51:10.217558941Z	├ ƒ /api/user/[id]                            252 B        99.8 kB
+2025-12-09T02:51:10.217589556Z	├ ƒ /api/user/delete-address                  252 B        99.8 kB
+2025-12-09T02:51:10.217737515Z	├ ƒ /api/user/orders                          252 B        99.8 kB
+2025-12-09T02:51:10.217920315Z	├ ƒ /api/user/profile                         252 B        99.8 kB
+2025-12-09T02:51:10.217936386Z	├ ƒ /api/user/upload-image                    252 B        99.8 kB
+2025-12-09T02:51:10.218043853Z	├ ○ /auth/error                             1.29 kB         104 kB
+2025-12-09T02:51:10.218166928Z	├ ○ /auth/register                          2.35 kB         125 kB
+2025-12-09T02:51:10.218559564Z	├ ○ /auth/signin                            2.35 kB         125 kB
+2025-12-09T02:51:10.218574732Z	├ ƒ /cancel                                   648 B         111 kB
+2025-12-09T02:51:10.218580392Z	├ ƒ /cart                                   5.92 kB         172 kB
+2025-12-09T02:51:10.218591713Z	├ ƒ /categories                             4.58 kB         132 kB
+2025-12-09T02:51:10.218678302Z	├ ƒ /checkout                               7.09 kB         145 kB
+2025-12-09T02:51:10.218788483Z	├ ƒ /contact                                  252 B        99.8 kB
+2025-12-09T02:51:10.218896731Z	├ ƒ /customer-service                         169 B         103 kB
+2025-12-09T02:51:10.219258628Z	├ ○ /dashboard                              1.08 kB         104 kB
+2025-12-09T02:51:10.219272159Z	├ ○ /delivery                                 564 B         100 kB
+2025-12-09T02:51:10.219277364Z	├ ○ /delivery-dashboard                     3.71 kB         111 kB
+2025-12-09T02:51:10.21936021Z	├ ƒ /faqs                                   4.86 kB         115 kB
+2025-12-09T02:51:10.219422159Z	├ ƒ /favorite                               3.59 kB         142 kB
+2025-12-09T02:51:10.219555796Z	├ ○ /icon.png                                   0 B            0 B
+2025-12-09T02:51:10.219619106Z	├ ƒ /inquiry                                  252 B        99.8 kB
+2025-12-09T02:51:10.219725317Z	├ ƒ /offers                                 2.72 kB         199 kB
+2025-12-09T02:51:10.219902902Z	├ ƒ /orders/[id]                              252 B        99.8 kB
+2025-12-09T02:51:10.220232702Z	├ ○ /packer-dashboard                       5.64 kB         124 kB
+2025-12-09T02:51:10.220253736Z	├ ○ /payment/fail                           2.06 kB         108 kB
+2025-12-09T02:51:10.220264508Z	├ ○ /payment/success                         2.4 kB         112 kB
+2025-12-09T02:51:10.220312344Z	├ ƒ /privacy-policy                           252 B        99.8 kB
+2025-12-09T02:51:10.220346043Z	├ ƒ /products                               5.81 kB         200 kB
+2025-12-09T02:51:10.220351052Z	├ ƒ /products/[id]                          7.31 kB         169 kB
+2025-12-09T02:51:10.220468155Z	├ ƒ /success                                3.83 kB         134 kB
+2025-12-09T02:51:10.220571695Z	├ ƒ /terms-of-service                         252 B        99.8 kB
+2025-12-09T02:51:10.22065795Z	├ ○ /unauthorized                           2.16 kB         119 kB
+2025-12-09T02:51:10.220753576Z	└ ○ /user-dashboard                         4.19 kB         120 kB
+2025-12-09T02:51:10.22085509Z	+ First Load JS shared by all               99.6 kB
+2025-12-09T02:51:10.221100125Z	  ├ chunks/4bd1b696-602635ee57868870.js     54.1 kB
+2025-12-09T02:51:10.22110861Z	  ├ chunks/5964-455cec4068509000.js         43.5 kB
+2025-12-09T02:51:10.221174186Z	  └ other shared chunks (total)             1.93 kB
+2025-12-09T02:51:10.221246319Z	
+2025-12-09T02:51:10.221298069Z	
+2025-12-09T02:51:10.221370187Z	○  (Static)   prerendered as static content
+2025-12-09T02:51:10.221437525Z	ƒ  (Dynamic)  server-rendered on demand
+2025-12-09T02:51:10.221558735Z	
+2025-12-09T02:51:10.244150031Z	
+2025-12-09T02:51:10.244500336Z	> shofy@0.1.0 postbuild
+2025-12-09T02:51:10.244510441Z	> next-sitemap
+2025-12-09T02:51:10.244756936Z	
+2025-12-09T02:51:10.353746596Z	✨ [next-sitemap] Loading next-sitemap config: file:///opt/buildhome/repo/next-sitemap.config.js
+2025-12-09T02:51:10.360448933Z	✅ [next-sitemap] Generation completed
+2025-12-09T02:51:10.361248678Z	┌───────────────┬────────┐
+2025-12-09T02:51:10.361265053Z	│ (index)       │ Values │
+2025-12-09T02:51:10.361446727Z	├───────────────┼────────┤
+2025-12-09T02:51:10.361744312Z	│ indexSitemaps │ 1      │
+2025-12-09T02:51:10.361759403Z	│ sitemaps      │ 1      │
+2025-12-09T02:51:10.361876199Z	└───────────────┴────────┘
+2025-12-09T02:51:10.362183586Z	-----------------------------------------------------
+2025-12-09T02:51:10.362196196Z	 SITEMAP INDICES 
+2025-12-09T02:51:10.362199809Z	-----------------------------------------------------
+2025-12-09T02:51:10.362207156Z	
+2025-12-09T02:51:10.362347646Z	   ○ https://shofy.reactbd.com/sitemap.xml
+2025-12-09T02:51:10.362359343Z	
+2025-12-09T02:51:10.362516688Z	
+2025-12-09T02:51:10.362537282Z	-----------------------------------------------------
+2025-12-09T02:51:10.362616682Z	 SITEMAPS 
+2025-12-09T02:51:10.362722048Z	-----------------------------------------------------
+2025-12-09T02:51:10.362949233Z	
+2025-12-09T02:51:10.362962404Z	   ○ https://shofy.reactbd.com/sitemap-0.xml
+2025-12-09T02:51:10.363141166Z	
+2025-12-09T02:51:10.363304523Z	
+2025-12-09T02:51:10.373381962Z	
+2025-12-09T02:51:10.37374114Z	┌──────────────────────────────┐
+2025-12-09T02:51:10.373902568Z	│ OpenNext — Generating bundle │
+2025-12-09T02:51:10.374107683Z	└──────────────────────────────┘
+2025-12-09T02:51:10.37411875Z	
+2025-12-09T02:51:10.432212214Z	Bundling middleware function...
+2025-12-09T02:51:10.458441558Z	Bundling static assets...
+2025-12-09T02:51:10.493449491Z	Bundling cache assets...
+2025-12-09T02:51:10.535883305Z	Building server function: default...
+2025-12-09T02:51:14.772649483Z	Applying code patches: 3.766s
+2025-12-09T02:51:15.300740345Z	# copyPackageTemplateFiles
+2025-12-09T02:51:15.303094456Z	[35m⚙️ Bundling the OpenNext server...
+2025-12-09T02:51:15.303516745Z	[0m
+2025-12-09T02:51:17.33445835Z	[35mWorker saved in `.open-next/worker.js` 🚀
+2025-12-09T02:51:17.334751057Z	[0m
+2025-12-09T02:51:17.334857902Z	OpenNext build complete.
+2025-12-09T02:51:17.40669984Z	Finished
+2025-12-09T02:51:18.313891519Z	Checking for configuration in a Wrangler configuration file (BETA)
+2025-12-09T02:51:18.314366303Z	
+2025-12-09T02:51:18.314983449Z	Found wrangler.toml file. Reading build configuration...
+2025-12-09T02:51:18.32198027Z	pages_build_output_dir: .open-next
+2025-12-09T02:51:18.322177462Z	Build environment variables: 
+2025-12-09T02:51:18.32237663Z	  - NODE_ENV: production
+2025-12-09T02:51:19.421628077Z	Successfully read wrangler.toml file.
+2025-12-09T02:51:19.422706902Z	Note: No functions dir at /functions found. Skipping.
+2025-12-09T02:51:19.422730253Z	Validating asset output directory
+2025-12-09T02:51:24.894090757Z	Uploading... (154/431)
+2025-12-09T02:51:26.438784318Z	Uploading... (246/431)
+2025-12-09T02:51:27.16019712Z	Uploading... (338/431)
+2025-12-09T02:51:29.968212548Z	✨ Success! Uploaded 277 files (154 already uploaded) (5.41 sec)
+2025-12-09T02:51:29.968488767Z	
+2025-12-09T02:51:35.43463Z	Success: Assets published!
+2025-12-09T02:51:37.86833Z	Success: Your site was deployed!

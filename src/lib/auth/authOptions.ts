@@ -2,7 +2,6 @@ import { type NextAuthConfig } from "next-auth";
 import Google from "next-auth/providers/google";
 import Kakao from "./providers/kakao";
 import Naver from "./providers/naver";
-import { prisma } from "../prisma";
 import { findUserByEmail, createUser } from "../prisma/userService";
 
 export const authConfig: NextAuthConfig = {
@@ -136,7 +135,7 @@ export const authConfig: NextAuthConfig = {
         session.user.email = token.email as string;
         session.user.name = token.name as string; // ✅ 토큰에서 이름 가져오기
 
-        // Fetch the latest user data from Prisma to get the correct role and updated info
+        // Fetch the latest user data from database to get the correct role and updated info
         try {
           const user = await findUserByEmail(session.user.email!);
           if (user) {
@@ -147,11 +146,11 @@ export const authConfig: NextAuthConfig = {
             session.user.role = (token.role as string) || "user";
           }
         } catch (error) {
-          console.error("Error fetching user data from Prisma:", error);
+          console.error("Error fetching user data from database:", error);
           session.user.role = (token.role as string) || "user";
         }
 
-        // Ensure image is properly passed through if not from Firestore
+        // Ensure image is properly passed through if not from database
         if (token.picture && !session.user.image) {
           session.user.image = token.picture as string;
         }

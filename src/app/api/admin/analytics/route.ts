@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "../../../../../auth";
-import { prisma } from "@/lib/prisma";
+import { db, users, orders } from "@/lib/db";
+import { eq, desc } from "drizzle-orm";
 
 export async function GET(request: NextRequest) {
   try {
@@ -11,9 +12,8 @@ export async function GET(request: NextRequest) {
     }
 
     // Check if user is admin
-    const user = await prisma.user.findUnique({
-      where: { email: session.user.email }
-    });
+    const userResult = await db.select().from(users).where(eq(users.email, session.user.email)).limit(1);
+    const user = userResult[0];
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
@@ -27,15 +27,21 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch recent orders for analytics
-    const orders = await prisma.order.findMany({
-      orderBy: { createdAt: "desc" },
-      take: 100,
-      include: {
-        user: {
-          select: { name: true, email: true }
-        }
-      }
-    });
+    const ordersResult = await db
+      .select({
+        order: orders,
+        userName: users.name,
+        userEmail: users.email,
+      })
+      .from(orders)
+      .leftJoin(users, eq(orders.userId, users.id))
+      .orderBy(desc(orders.createdAt))
+      .limit(100);
+
+    const ordersData = ordersResult.map(r => ({
+      ...r.order,
+      user: { name: r.userName, email: r.userEmail }
+    }));
 
     // Calculate analytics data
     const currentDate = new Date();
@@ -45,7 +51,7 @@ export async function GET(request: NextRequest) {
     // Monthly revenue data for the past 12 months
     const monthlyRevenue = Array.from({ length: 12 }, (_, index) => {
       const date = new Date(currentYear, currentMonth - index, 1);
-      const monthOrders = orders.filter((order: any) => {
+      const monthOrders = ordersData.filter((order: any) => {
         const orderDate = new Date(order.createdAt);
         return (
           orderDate.getMonth() === date.getMonth() &&
@@ -54,7 +60,7 @@ export async function GET(request: NextRequest) {
       });
 
       const revenue = monthOrders.reduce(
-        (sum: number, order: any) => sum + (order.amount || 0),
+        (sum: number, order: any) => sum + (order.totalAmount || 0),
         0
       );
 
@@ -69,7 +75,7 @@ export async function GET(request: NextRequest) {
     }).reverse();
 
     // Order status distribution
-    const statusDistribution = orders.reduce(
+    const statusDistribution = ordersData.reduce(
       (acc: Record<string, number>, order: any) => {
         const status = order.status || "pending";
         acc[status] = (acc[status] || 0) + 1;
@@ -79,24 +85,24 @@ export async function GET(request: NextRequest) {
     );
 
     // Recent activity (last 10 orders)
-    const recentActivity = orders.slice(0, 10).map((order: any) => ({
+    const recentActivity = ordersData.slice(0, 10).map((order: any) => ({
       id: order.id,
       type: "order",
       description: `Order #${order.id.slice(0, 8)} - ${order.status}`,
-      amount: order.amount || 0,
+      amount: order.totalAmount || 0,
       timestamp: order.createdAt,
       status: order.status || "pending",
     }));
 
     // Calculate totals
-    const totalRevenue = orders.reduce(
-      (sum: number, order: any) => sum + (order.amount || 0),
+    const totalRevenue = ordersData.reduce(
+      (sum: number, order: any) => sum + (order.totalAmount || 0),
       0
     );
-    const totalOrders = orders.length;
+    const totalOrders = ordersData.length;
 
     // This month's data
-    const thisMonthOrders = orders.filter((order: any) => {
+    const thisMonthOrders = ordersData.filter((order: any) => {
       const orderDate = new Date(order.createdAt);
       return (
         orderDate.getMonth() === currentMonth &&
@@ -104,12 +110,12 @@ export async function GET(request: NextRequest) {
       );
     });
     const thisMonthRevenue = thisMonthOrders.reduce(
-      (sum: number, order: any) => sum + (order.amount || 0),
+      (sum: number, order: any) => sum + (order.totalAmount || 0),
       0
     );
 
     // Growth calculations (comparing to last month)
-    const lastMonthOrders = orders.filter((order: any) => {
+    const lastMonthOrders = ordersData.filter((order: any) => {
       const orderDate = new Date(order.createdAt);
       const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
       const year = currentMonth === 0 ? currentYear - 1 : currentYear;
@@ -118,7 +124,7 @@ export async function GET(request: NextRequest) {
       );
     });
     const lastMonthRevenue = lastMonthOrders.reduce(
-      (sum: number, order: any) => sum + (order.amount || 0),
+      (sum: number, order: any) => sum + (order.totalAmount || 0),
       0
     );
 

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db, users } from "@/lib/db";
+import { inArray } from "drizzle-orm";
 
 export async function DELETE(request: NextRequest) {
   try {
@@ -12,14 +13,11 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    // Use Prisma transaction for bulk delete with cascade
-    const deletedUsers = await prisma.$transaction(
-      userIds.map((userId: string) =>
-        prisma.user.delete({
-          where: { id: userId }
-        })
-      )
-    );
+    // Delete users (cascade is handled by DB foreign keys)
+    const deletedUsers = await db
+      .delete(users)
+      .where(inArray(users.id, userIds))
+      .returning();
 
     return NextResponse.json({
       message: `Successfully deleted ${deletedUsers.length} users and their related data`,

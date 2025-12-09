@@ -1136,7 +1136,7 @@ export default function AdminOrdersClient() {
               <div className="mt-4 bg-yellow-50 border border-yellow-200 rounded-lg p-3">
                 <p className="text-sm text-yellow-800">
                   <strong>Warning:</strong> This will delete the orders from
-                  both the user accounts and the orders collection in Firestore.
+                  both the user accounts and the orders collection in the database.
                 </p>
               </div>
             </div>

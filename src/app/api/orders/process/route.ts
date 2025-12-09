@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
-import { prisma } from "@/lib/prisma";
+import { db, users, orders, orderItems } from "@/lib/db";
+import { eq, and } from "drizzle-orm";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "sk_test_dummy");
+
+function generateId() {
+  return `${Date.now().toString(36)}${Math.random().toString(36).substr(2, 9)}`;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -27,13 +32,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Find user in Firestore first
-    const user = await prisma.user.findUnique({
-      where: { email },
-      include: {
-        orders: true
-      }
-    });
+    // Find user
+    const userResult = await db.select().from(users).where(eq(users.email, email)).limit(1);
+    const user = userResult[0];
 
     if (!user) {
       return NextResponse.json(
@@ -43,12 +44,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Check if order already exists to prevent duplicates
-    const existingOrder = await prisma.order.findFirst({
-      where: {
-        userId: user.id,
-        orderId: sessionId
-      }
-    });
+    const existingOrderResult = await db
+      .select()
+      .from(orders)
+      .where(and(eq(orders.userId, user.id), eq(orders.orderId, sessionId)))
+      .limit(1);
+    const existingOrder = existingOrderResult[0];
 
     if (existingOrder) {
       return NextResponse.json({
@@ -110,40 +111,43 @@ export async function POST(request: NextRequest) {
       updatedAt: new Date().toISOString(),
     };
 
-    // Create order in Prisma
-    const order = await prisma.order.create({
-      data: {
-        orderId: orderData.orderId,
-        userId: user.id,
-        userEmail: email,
-        status: orderData.status,
-        paymentStatus: orderData.paymentStatus,
-        paymentMethod: orderData.paymentMethod,
-        totalAmount: parseFloat(orderData.amount),
-        shippingAddress: orderData.shippingAddress ? JSON.stringify(orderData.shippingAddress) : null,
-        orderItems: {
-          create: orderData.items.map((item: any) => ({
-            productId: item.id || "",
-            title: item.name || "",
-            quantity: item.quantity || 1,
-            price: item.price || 0,
-            image: item.images?.[0] || "",
-          }))
-        }
-      },
-      include: {
-        orderItems: true
-      }
+    // Create order
+    const newOrderId = generateId();
+    await db.insert(orders).values({
+      id: newOrderId,
+      orderId: orderData.orderId,
+      userId: user.id,
+      userEmail: email,
+      status: orderData.status,
+      paymentStatus: orderData.paymentStatus,
+      paymentMethod: orderData.paymentMethod,
+      totalAmount: parseFloat(orderData.amount),
+      shippingAddress: orderData.shippingAddress ? JSON.stringify(orderData.shippingAddress) : null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
+
+    // Create order items
+    for (const item of orderData.items) {
+      await db.insert(orderItems).values({
+        id: generateId(),
+        orderId: newOrderId,
+        productId: item.id || "",
+        title: item.name || "",
+        quantity: item.quantity || 1,
+        price: item.price || 0,
+        image: item.images?.[0] || "",
+      });
+    }
 
     return NextResponse.json({
       success: true,
       message: "Order processed successfully",
       order: {
-        id: order.orderId,
-        amount: order.totalAmount,
-        status: order.status,
-        items: order.orderItems.length,
+        id: orderData.orderId,
+        amount: parseFloat(orderData.amount),
+        status: orderData.status,
+        items: orderData.items.length,
       },
     });
   } catch (error) {

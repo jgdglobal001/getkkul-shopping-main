@@ -5,7 +5,11 @@ import {
   PAYMENT_STATUSES,
   PAYMENT_METHODS,
 } from "@/lib/orderStatus";
-import { prisma } from "@/lib/prisma";
+import { db, orders, orderItems } from "@/lib/db";
+
+function generateId() {
+  return `${Date.now().toString(36)}${Math.random().toString(36).substr(2, 9)}`;
+}
 
 export const POST = async (request: NextRequest) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "sk_test_dummy");
@@ -108,7 +112,7 @@ export const POST = async (request: NextRequest) => {
       customer_email: email,
     });
 
-    // Create order in Prisma database
+    // Create order in database
     const totalAmount = orderAmount ||
       Math.round(
         extractingItems.reduce(
@@ -118,26 +122,32 @@ export const POST = async (request: NextRequest) => {
         ) / 100
       );
 
-    const order = await prisma.order.create({
-      data: {
-        orderId: orderId || `ORD-${Date.now()}`,
-        status: ORDER_STATUSES.PENDING,
-        paymentStatus: PAYMENT_STATUSES.PENDING,
-        paymentMethod: PAYMENT_METHODS.ONLINE,
-        totalAmount: totalAmount,
-        shippingAddress: shippingAddress ? JSON.stringify(shippingAddress) : null,
-        userEmail: email,
-        orderItems: {
-          create: extractingItems.map((item: any) => ({
-            productId: item.price_data.product_data.metadata.productId || "",
-            title: item.price_data.product_data.name || "",
-            quantity: item.quantity || 1,
-            price: (item.price_data.unit_amount || 0) / 100,
-            image: item.price_data.product_data.images?.[0] || "",
-          }))
-        }
-      }
+    const newOrderId = generateId();
+    await db.insert(orders).values({
+      id: newOrderId,
+      orderId: orderId || `ORD-${Date.now()}`,
+      status: ORDER_STATUSES.PENDING,
+      paymentStatus: PAYMENT_STATUSES.PENDING,
+      paymentMethod: PAYMENT_METHODS.ONLINE,
+      totalAmount: totalAmount,
+      shippingAddress: shippingAddress ? JSON.stringify(shippingAddress) : null,
+      userEmail: email,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     });
+
+    // Create order items
+    for (const item of extractingItems) {
+      await db.insert(orderItems).values({
+        id: generateId(),
+        orderId: newOrderId,
+        productId: item.price_data.product_data.metadata.productId || "",
+        title: item.price_data.product_data.name || "",
+        quantity: item.quantity || 1,
+        price: (item.price_data.unit_amount || 0) / 100,
+        image: item.price_data.product_data.images?.[0] || "",
+      });
+    }
 
     return NextResponse.json({
       message: "Checkout session created successfully!",

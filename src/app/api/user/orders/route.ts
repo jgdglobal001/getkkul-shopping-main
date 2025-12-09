@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "../../../../../auth";
-import { prisma } from "@/lib/prisma";
+import { db, orders, orderItems, products } from "@/lib/db";
+import { eq, desc } from "drizzle-orm";
 
 export async function GET(request: NextRequest) {
   try {
@@ -13,27 +14,31 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Get user's orders from Prisma
-    const orders = await prisma.order.findMany({
-      where: { userId: session.user.id },
-      orderBy: { createdAt: "desc" },
-      include: {
-        orderItems: {
-          include: {
-            product: true
-          }
-        }
-      }
-    });
+    // Get user's orders from Drizzle
+    const orderList = await db
+      .select()
+      .from(orders)
+      .where(eq(orders.userId, session.user.id))
+      .orderBy(desc(orders.createdAt));
 
-    const transformedOrders = orders.map((order) => ({
-      id: order.id,
-      ...order,
-      createdAt: order.createdAt.toISOString(),
-      updatedAt: order.updatedAt.toISOString(),
-    }));
+    // Get order items for each order
+    const ordersWithItems = await Promise.all(
+      orderList.map(async (order) => {
+        const items = await db
+          .select()
+          .from(orderItems)
+          .where(eq(orderItems.orderId, order.id));
 
-    return NextResponse.json(transformedOrders);
+        return {
+          ...order,
+          orderItems: items,
+          createdAt: order.createdAt?.toISOString() || new Date().toISOString(),
+          updatedAt: order.updatedAt?.toISOString() || new Date().toISOString(),
+        };
+      })
+    );
+
+    return NextResponse.json(ordersWithItems);
   } catch (error) {
     console.error("Error fetching user orders:", error);
     return NextResponse.json(

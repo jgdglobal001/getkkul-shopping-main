@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db, users, orders, orderItems } from "@/lib/db";
+import { eq } from "drizzle-orm";
+
+function generateId() {
+  return `${Date.now().toString(36)}${Math.random().toString(36).substr(2, 9)}`;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,51 +19,62 @@ export async function POST(request: NextRequest) {
     }
 
     // Find the user by email
-    const user = await prisma.user.findUnique({
-      where: { email: customerEmail }
-    });
+    const userResult = await db
+      .select()
+      .from(users)
+      .where(eq(users.email, customerEmail))
+      .limit(1);
 
+    const user = userResult[0];
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    // Generate a unique order ID
+    // Generate unique IDs
+    const newOrderId = generateId();
     const orderId = `ORD-${Date.now()}-${Math.random()
       .toString(36)
       .substr(2, 9)
       .toUpperCase()}`;
 
-    // Create the order in Prisma
-    const order = await prisma.order.create({
-      data: {
+    // Create the order in Drizzle
+    const newOrder = await db
+      .insert(orders)
+      .values({
+        id: newOrderId,
         orderId: orderId,
         userId: user.id,
         status: status,
         paymentStatus: "pending",
         paymentMethod: "online",
         totalAmount: parseFloat(totalAmount) || 0,
-        shippingAddress: shippingAddress ? JSON.stringify(shippingAddress) : null,
-        orderItems: {
-          create: items?.map((item: any) => ({
-            productId: item.productId || item.id || "",
-            title: item.title || item.name || "",
-            quantity: item.quantity || 1,
-            price: item.price || 0,
-            total: (item.total || item.price * item.quantity) || 0,
-            image: item.image || "",
-          })) || []
-        }
-      },
-      include: {
-        orderItems: true
-      }
-    });
+        shippingAddress: shippingAddress || {},
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .returning();
+
+    // Create order items
+    const orderItemsData = items?.map((item: any) => ({
+      id: generateId(),
+      orderId: newOrderId,
+      productId: item.productId || item.id || "",
+      title: item.title || item.name || "",
+      quantity: item.quantity || 1,
+      price: item.price || 0,
+      total: (item.total || item.price * item.quantity) || 0,
+      image: item.image || "",
+    })) || [];
+
+    if (orderItemsData.length > 0) {
+      await db.insert(orderItems).values(orderItemsData);
+    }
 
     return NextResponse.json({
       message: "Order placed successfully",
       success: true,
       orderId: orderId,
-      order: order,
+      order: newOrder[0],
     });
   } catch (error) {
     console.error("Error placing order:", error);

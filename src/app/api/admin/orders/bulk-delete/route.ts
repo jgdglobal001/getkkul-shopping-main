@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hasPermission } from "@/lib/rbac/roles";
-import { prisma } from "@/lib/prisma";
+import { db, orders } from "@/lib/db";
+import { inArray } from "drizzle-orm";
 
 export async function DELETE(request: NextRequest) {
   try {
@@ -15,14 +16,11 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    // Use Prisma transaction for bulk delete
-    const deletedOrders = await prisma.$transaction(
-      orderIds.map((orderId: string) =>
-        prisma.order.delete({
-          where: { id: orderId }
-        })
-      )
-    );
+    // Delete orders
+    const deletedOrders = await db
+      .delete(orders)
+      .where(inArray(orders.id, orderIds))
+      .returning();
 
     return NextResponse.json({
       success: true,

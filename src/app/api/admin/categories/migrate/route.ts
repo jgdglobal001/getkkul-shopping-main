@@ -1,5 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db, categories } from "@/lib/db";
+import { count } from "drizzle-orm";
+
+function generateId() {
+  return `${Date.now().toString(36)}${Math.random().toString(36).substr(2, 9)}`;
+}
 
 // 더미 카테고리 데이터 (기존 구조 유지)
 const dummyCategories = [
@@ -202,7 +207,8 @@ export async function POST(request: NextRequest) {
     // 마이그레이션은 관리자 권한 없이 실행 가능 (한 번만 실행되도록 보호됨)
 
     // 기존 카테고리 확인
-    const existingCount = await prisma.category.count();
+    const existingCountResult = await db.select({ count: count() }).from(categories);
+    const existingCount = existingCountResult[0]?.count || 0;
 
     if (existingCount > 0) {
       return NextResponse.json(
@@ -214,17 +220,18 @@ export async function POST(request: NextRequest) {
     // 더미 카테고리를 DB에 저장
     const createdCategories = await Promise.all(
       dummyCategories.map((category) =>
-        prisma.category.create({
-          data: {
-            name: category.name,
-            slug: category.slug,
-            description: category.description,
-            image: category.image,
-            icon: category.icon,
-            order: category.order,
-            isActive: true,
-          },
-        })
+        db.insert(categories).values({
+          id: generateId(),
+          name: category.name,
+          slug: category.slug,
+          description: category.description,
+          image: category.image,
+          icon: category.icon,
+          order: category.order,
+          isActive: true,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }).returning()
       )
     );
 
@@ -232,7 +239,7 @@ export async function POST(request: NextRequest) {
       {
         message: `${createdCategories.length}개의 카테고리가 마이그레이션되었습니다`,
         count: createdCategories.length,
-        categories: createdCategories,
+        categories: createdCategories.map(c => c[0]),
       },
       { status: 201 }
     );

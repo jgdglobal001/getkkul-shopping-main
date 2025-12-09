@@ -1,51 +1,58 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db, products, productOptions, productVariants } from "@/lib/db";
+import { eq, desc, ilike, and, or, count } from "drizzle-orm";
+
+function generateId() {
+  return `${Date.now().toString(36)}${Math.random().toString(36).substr(2, 9)}`;
+}
 
 export async function GET(request: NextRequest) {
   try {
-    // 임시로 관리자 권한 확인 생략 - 실제 운영에서는 권한 확인 필요
-    // TODO: NextAuth v5 auth 함수로 권한 확인 구현
-
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get("page") || "1");
     const limit = parseInt(searchParams.get("limit") || "12");
     const search = searchParams.get("search") || "";
     const category = searchParams.get("category") || "";
 
-    const skip = (page - 1) * limit;
+    const offset = (page - 1) * limit;
 
-    // 검색 조건 구성
-    const where: any = {
-      isActive: true, // 활성 상품만
-    };
+    // Build conditions
+    const conditions = [eq(products.isActive, true)];
 
     if (search) {
-      where.OR = [
-        { title: { contains: search, mode: "insensitive" } },
-        { sku: { contains: search, mode: "insensitive" } },
-        { brand: { contains: search, mode: "insensitive" } },
-      ];
+      conditions.push(
+        or(
+          ilike(products.title, `%${search}%`),
+          ilike(products.sku, `%${search}%`),
+          ilike(products.brand, `%${search}%`)
+        )!
+      );
     }
 
     if (category) {
-      where.category = { contains: category, mode: "insensitive" };
+      conditions.push(ilike(products.category, `%${category}%`));
     }
 
     // 상품 목록 조회
-    const [products, totalCount] = await Promise.all([
-      prisma.product.findMany({
-        where,
-        skip,
-        take: limit,
-        orderBy: { createdAt: "desc" },
-      }),
-      prisma.product.count({ where }),
+    const [productList, countResult] = await Promise.all([
+      db
+        .select()
+        .from(products)
+        .where(and(...conditions))
+        .orderBy(desc(products.createdAt))
+        .limit(limit)
+        .offset(offset),
+      db
+        .select({ count: count() })
+        .from(products)
+        .where(and(...conditions)),
     ]);
 
+    const totalCount = countResult[0]?.count || 0;
     const totalPages = Math.ceil(totalCount / limit);
 
     return NextResponse.json({
-      products,
+      products: productList,
       totalPages,
       currentPage: page,
       totalCount,
@@ -62,11 +69,8 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    // 임시로 관리자 권한 확인 생략 - 실제 운영에서는 권한 확인 필요
-    // TODO: NextAuth v5 auth 함수로 권한 확인 구현
-
     const body = await request.json();
-    
+
     // 필수 필드 검증
     const requiredFields = ["title", "description", "price", "category", "sku"];
     for (const field of requiredFields) {
@@ -79,20 +83,26 @@ export async function POST(request: NextRequest) {
     }
 
     // SKU 중복 확인
-    const existingProduct = await prisma.product.findUnique({
-      where: { sku: body.sku },
-    });
+    const existingProduct = await db
+      .select()
+      .from(products)
+      .where(eq(products.sku, body.sku))
+      .limit(1);
 
-    if (existingProduct) {
+    if (existingProduct.length > 0) {
       return NextResponse.json(
         { error: "이미 존재하는 SKU입니다" },
         { status: 400 }
       );
     }
 
-    // 상품 생성 (옵션 및 variants 포함)
-    const product = await prisma.product.create({
-      data: {
+    const productId = generateId();
+
+    // 상품 생성
+    const newProduct = await db
+      .insert(products)
+      .values({
+        id: productId,
         title: body.title,
         description: body.description,
         price: parseFloat(body.price),
@@ -110,70 +120,49 @@ export async function POST(request: NextRequest) {
         isActive: body.isActive !== undefined ? body.isActive : true,
         minimumOrderQuantity: body.minimumOrderQuantity ? parseInt(body.minimumOrderQuantity) : 1,
         availabilityStatus: body.availabilityStatus || "In Stock",
-        // ⭐ 옵션 시스템
         hasOptions: body.hasOptions || false,
-        // 옵션 정의 생성
-        options: body.hasOptions && body.options?.length > 0 ? {
-          create: body.options.map((opt: any, index: number) => ({
-            name: opt.name,
-            values: opt.values || [],
-            order: index,
-          })),
-        } : undefined,
-        // 옵션 조합(variants) 생성
-        variants: body.hasOptions && body.variants?.length > 0 ? {
-          create: body.variants.map((v: any) => ({
-            optionCombination: v.optionCombination,
-            sku: v.sku || null,
-            price: parseFloat(v.price),
-            originalPrice: v.originalPrice ? parseFloat(v.originalPrice) : null,
-            stock: parseInt(v.stock) || 0,
-            isActive: v.isActive !== undefined ? v.isActive : true,
-            image: v.image || null,
-            barcode: v.barcode || null,
-            modelNumber: v.modelNumber || null,
-          })),
-        } : undefined,
-        // ⭐ 필수 표기 정보
         productName: body.productName || null,
         modelNumber: body.modelNumber || null,
-        size: body.size || null,
-        material: body.material || null,
-        releaseDate: body.releaseDate || null,
-        manufacturer: body.manufacturer || null,
-        madeInCountry: body.madeInCountry || null,
-        warrantyStandard: body.warrantyStandard || null,
-        asResponsible: body.asResponsible || null,
-        kcCertification: body.kcCertification || null,
-        color: body.color || null,
-        productComposition: body.productComposition || null,
-        detailedSpecs: body.detailedSpecs || null,
-        // ⭐ 배송 정보
-        shippingMethod: body.shippingMethod || null,
-        shippingCost: body.shippingCost || null,
-        bundleShipping: body.bundleShipping || null,
-        shippingPeriod: body.shippingPeriod || null,
-        // ⭐ 교환/반품 정보
-        exchangeReturnCost: body.exchangeReturnCost || null,
-        exchangeReturnDeadline: body.exchangeReturnDeadline || null,
-        exchangeReturnLimitations: body.exchangeReturnLimitations || null,
-        clothingLimitations: body.clothingLimitations || null,
-        foodLimitations: body.foodLimitations || null,
-        electronicsLimitations: body.electronicsLimitations || null,
-        autoLimitations: body.autoLimitations || null,
-        mediaLimitations: body.mediaLimitations || null,
-        // ⭐ 판매자 정보
-        sellerName: body.sellerName || null,
-        sellerPhone: body.sellerPhone || null,
-        sellerLegalNotice: body.sellerLegalNotice || null,
-      },
-      include: {
-        options: true,
-        variants: true,
-      },
-    });
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      })
+      .returning();
 
-    return NextResponse.json(product, { status: 201 });
+    // 옵션 생성
+    if (body.hasOptions && body.options?.length > 0) {
+      await db.insert(productOptions).values(
+        body.options.map((opt: any, index: number) => ({
+          id: generateId(),
+          productId,
+          name: opt.name,
+          values: opt.values || [],
+          order: index,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }))
+      );
+    }
+
+    // variants 생성
+    if (body.hasOptions && body.variants?.length > 0) {
+      await db.insert(productVariants).values(
+        body.variants.map((v: any) => ({
+          id: generateId(),
+          productId,
+          optionCombination: v.optionCombination,
+          sku: v.sku || null,
+          price: parseFloat(v.price),
+          originalPrice: v.originalPrice ? parseFloat(v.originalPrice) : null,
+          stock: parseInt(v.stock) || 0,
+          isActive: v.isActive !== undefined ? v.isActive : true,
+          image: v.image || null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }))
+      );
+    }
+
+    return NextResponse.json(newProduct[0], { status: 201 });
 
   } catch (error) {
     console.error("상품 생성 오류:", error);

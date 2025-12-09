@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db, orders } from "@/lib/db";
+import { eq, or } from "drizzle-orm";
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,17 +19,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Find the order by orderId
-    const order = await prisma.order.findFirst({
-      where: {
-        OR: [
-          { id: orderId },
-          { orderId: orderId }
-        ]
-      },
-      include: {
-        user: true
-      }
-    });
+    const orderResult = await db
+      .select()
+      .from(orders)
+      .where(or(eq(orders.id, orderId), eq(orders.orderId, orderId)))
+      .limit(1);
+    const order = orderResult[0];
 
     if (!order) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
@@ -40,19 +36,18 @@ export async function POST(request: NextRequest) {
     }
 
     // Update the order
-    const updatedOrder = await prisma.order.update({
-      where: { id: order.id },
-      data: {
-        paymentStatus: paymentStatus,
-        ...(status && { status }),
-        updatedAt: new Date(),
-      }
-    });
+    const updateData: any = {
+      paymentStatus: paymentStatus,
+      updatedAt: new Date(),
+    };
+    if (status) updateData.status = status;
+
+    const updatedOrders = await db.update(orders).set(updateData).where(eq(orders.id, order.id)).returning();
 
     return NextResponse.json({
       message: "Order updated successfully",
       success: true,
-      order: updatedOrder,
+      order: updatedOrders[0],
     });
   } catch (error) {
     console.error("Error updating order:", error);

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { hash, compare } from "bcryptjs";
-import { prisma } from "@/lib/prisma";
+import { db, users } from "@/lib/db";
+import { eq } from "drizzle-orm";
 
 export async function PUT(request: NextRequest) {
   try {
@@ -23,10 +24,9 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    // Find user in Prisma
-    const user = await prisma.user.findUnique({
-      where: { email }
-    });
+    // Find user
+    const userResult = await db.select().from(users).where(eq(users.email, email)).limit(1);
+    const user = userResult[0];
 
     if (!user) {
       return NextResponse.json(
@@ -56,14 +56,11 @@ export async function PUT(request: NextRequest) {
     // Hash new password
     const hashedPassword = await hash(newPassword, 12);
 
-    // Update password in Prisma
-    await prisma.user.update({
-      where: { email },
-      data: {
-        password: hashedPassword,
-        updatedAt: new Date(),
-      }
-    });
+    // Update password
+    await db.update(users).set({
+      password: hashedPassword,
+      updatedAt: new Date(),
+    }).where(eq(users.email, email));
 
     return NextResponse.json({
       success: true,

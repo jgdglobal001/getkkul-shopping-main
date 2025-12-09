@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "../../../../../auth";
-import { prisma } from "@/lib/prisma";
+import { db, users, addresses, cartItems, wishlistItems, orders, orderItems, products } from "@/lib/db";
+import { eq } from "drizzle-orm";
+
+function generateId() {
+  return `${Date.now().toString(36)}${Math.random().toString(36).substr(2, 9)}`;
+}
 
 export async function GET(request: NextRequest) {
   try {
@@ -34,31 +39,9 @@ export async function GET(request: NextRequest) {
     const emailParam = searchParams.get("email");
     const email = emailParam || session.user.email;
 
-    const user = await prisma.user.findUnique({
-      where: { email: email },
-      include: {
-        addresses: true,
-        cartItems: {
-          include: {
-            product: true,
-          },
-        },
-        wishlist: {
-          include: {
-            product: true,
-          },
-        },
-        orders: {
-          include: {
-            orderItems: {
-              include: {
-                product: true,
-              },
-            },
-          },
-        },
-      },
-    });
+    // Get user
+    const userResult = await db.select().from(users).where(eq(users.email, email)).limit(1);
+    const user = userResult[0];
 
     if (!user) {
       console.log("User not found for email:", email);
@@ -83,18 +66,33 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Get related data
+    const [userAddresses, userCartItems, userWishlist, userOrders] = await Promise.all([
+      db.select().from(addresses).where(eq(addresses.userId, user.id)),
+      db.select().from(cartItems).where(eq(cartItems.userId, user.id)),
+      db.select().from(wishlistItems).where(eq(wishlistItems.userId, user.id)),
+      db.select().from(orders).where(eq(orders.userId, user.id)),
+    ]);
+
+    // Get order items for each order
+    const ordersWithItems = await Promise.all(
+      userOrders.map(async (order) => {
+        const items = await db.select().from(orderItems).where(eq(orderItems.orderId, order.id));
+        return { ...order, orderItems: items };
+      })
+    );
+
     // Transform data to match expected format
-    const transformedOrders = (user.orders || []).map((order: any) => ({
+    const transformedOrders = ordersWithItems.map((order) => ({
       id: order.id,
       orderId: order.orderId,
-      amount: order.totalAmount.toString(),
+      amount: order.totalAmount?.toString() || "0",
       currency: order.currency,
       status: order.status,
       paymentStatus: order.paymentStatus,
-      createdAt: order.createdAt.toISOString(),
+      createdAt: order.createdAt?.toISOString() || new Date().toISOString(),
       customerEmail: user.email,
       customerName: user.name,
-      // Transform orderItems to items for frontend compatibility
       items: (order.orderItems || []).map((item: any) => ({
         id: item.id,
         name: item.title,
@@ -112,20 +110,20 @@ export async function GET(request: NextRequest) {
       image: user.image,
       role: user.role,
       emailVerified: user.emailVerified,
-      createdAt: user.createdAt.toISOString(),
-      updatedAt: user.updatedAt.toISOString(),
+      createdAt: user.createdAt?.toISOString() || new Date().toISOString(),
+      updatedAt: user.updatedAt?.toISOString() || new Date().toISOString(),
       profile: {
         firstName: user.firstName || "",
         lastName: user.lastName || "",
         phone: user.phone || "",
-        addresses: user.addresses || [],
+        addresses: userAddresses || [],
       },
       preferences: {
         newsletter: user.newsletter,
         notifications: user.notifications,
       },
-      cart: user.cartItems || [],
-      wishlist: user.wishlist || [],
+      cart: userCartItems || [],
+      wishlist: userWishlist || [],
       orders: transformedOrders,
     };
 
@@ -153,9 +151,8 @@ export async function PUT(request: NextRequest) {
     // Use provided email or session email
     const userEmail = email || session.user.email;
 
-    const user = await prisma.user.findUnique({
-      where: { email: userEmail },
-    });
+    const userResult = await db.select().from(users).where(eq(users.email, userEmail)).limit(1);
+    const user = userResult[0];
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
@@ -165,9 +162,9 @@ export async function PUT(request: NextRequest) {
     if (updateAddress) {
       const { id, ...updateData } = updateAddress;
 
-      await prisma.address.update({
-        where: { id },
-        data: {
+      await db
+        .update(addresses)
+        .set({
           recipientName: updateData.recipientName,
           phone: updateData.phone,
           zipCode: updateData.zipCode,
@@ -176,13 +173,12 @@ export async function PUT(request: NextRequest) {
           deliveryRequest: updateData.deliveryRequest || "문 앞",
           entranceCode: updateData.entranceCode || null,
           isDefault: updateData.isDefault || false,
-        },
-      });
+          updatedAt: new Date(),
+        })
+        .where(eq(addresses.id, id));
 
       // Fetch all addresses for this user
-      const allAddresses = await prisma.address.findMany({
-        where: { userId: user.id },
-      });
+      const allAddresses = await db.select().from(addresses).where(eq(addresses.userId, user.id));
 
       return NextResponse.json({
         success: true,
@@ -194,32 +190,29 @@ export async function PUT(request: NextRequest) {
     if (addAddress) {
       // If this is the first address, make it default
       let isDefault = addAddress.isDefault || false;
-      const existingAddresses = await prisma.address.findMany({
-        where: { userId: user.id },
-      });
+      const existingAddresses = await db.select().from(addresses).where(eq(addresses.userId, user.id));
       if (existingAddresses.length === 0) {
         isDefault = true;
       }
 
       // Create the address
-      await prisma.address.create({
-        data: {
-          recipientName: addAddress.recipientName,
-          phone: addAddress.phone,
-          zipCode: addAddress.zipCode,
-          address: addAddress.address,
-          detailAddress: addAddress.detailAddress,
-          deliveryRequest: addAddress.deliveryRequest || "문 앞",
-          entranceCode: addAddress.entranceCode || null,
-          isDefault: isDefault,
-          userId: user.id,
-        },
+      await db.insert(addresses).values({
+        id: generateId(),
+        recipientName: addAddress.recipientName,
+        phone: addAddress.phone,
+        zipCode: addAddress.zipCode,
+        address: addAddress.address,
+        detailAddress: addAddress.detailAddress,
+        deliveryRequest: addAddress.deliveryRequest || "문 앞",
+        entranceCode: addAddress.entranceCode || null,
+        isDefault: isDefault,
+        userId: user.id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
       });
 
       // Fetch all addresses for this user
-      const allAddresses = await prisma.address.findMany({
-        where: { userId: user.id },
-      });
+      const allAddresses = await db.select().from(addresses).where(eq(addresses.userId, user.id));
 
       return NextResponse.json({
         success: true,
@@ -254,13 +247,12 @@ export async function PUT(request: NextRequest) {
       updateData.notifications = notifications;
     }
 
-    const updatedUser = await prisma.user.update({
-      where: { id: user.id },
-      data: updateData,
-      include: {
-        addresses: true,
-      },
-    });
+    await db.update(users).set(updateData).where(eq(users.id, user.id));
+
+    // Fetch updated user and addresses
+    const updatedUserResult = await db.select().from(users).where(eq(users.id, user.id)).limit(1);
+    const updatedUser = updatedUserResult[0];
+    const userAddresses = await db.select().from(addresses).where(eq(addresses.userId, user.id));
 
     return NextResponse.json({
       success: true,
@@ -273,7 +265,7 @@ export async function PUT(request: NextRequest) {
           firstName: updatedUser.firstName,
           lastName: updatedUser.lastName,
           phone: updatedUser.phone,
-          addresses: updatedUser.addresses,
+          addresses: userAddresses,
         },
         preferences: {
           newsletter: updatedUser.newsletter,

@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Prisma, prisma } from "@/lib/prisma";
+import { db, users, orders } from "@/lib/db";
+import { eq } from "drizzle-orm";
 import {
   ORDER_STATUSES,
   PAYMENT_STATUSES,
   PAYMENT_METHODS,
 } from "@/lib/orderStatus";
+
+function generateId() {
+  return `${Date.now().toString(36)}${Math.random().toString(36).substr(2, 9)}`;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,22 +26,15 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify payment with Toss API
-    // Use API individual integration keys (not widget keys)
     const clientKey = process.env.TOSS_CLIENT_KEY;
     const secretKey = process.env.TOSS_SECRET_KEY;
 
     console.log("=== Toss Payment Verification ===");
     console.log("Client Key exists:", !!clientKey);
     console.log("Secret Key exists:", !!secretKey);
-    console.log("Client Key (first 20 chars):", clientKey?.substring(0, 20));
-    console.log("Secret Key (first 20 chars):", secretKey?.substring(0, 20));
-    console.log("Request data:", { orderId, paymentKey: paymentKey?.substring(0, 20) + "...", amount });
 
     if (!clientKey || !secretKey) {
-      console.error("Toss API keys not configured:", {
-        clientKey: !!clientKey,
-        secretKey: !!secretKey,
-      });
+      console.error("Toss API keys not configured");
       return NextResponse.json(
         { success: false, error: "Toss API keys not configured" },
         { status: 500 }
@@ -49,9 +47,7 @@ export async function POST(request: NextRequest) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Basic ${Buffer.from(`${secretKey}:`).toString(
-            "base64"
-          )}`,
+          Authorization: `Basic ${Buffer.from(`${secretKey}:`).toString("base64")}`,
         },
         body: JSON.stringify({
           paymentKey,
@@ -63,12 +59,7 @@ export async function POST(request: NextRequest) {
 
     if (!tossResponse.ok) {
       const errorData = await tossResponse.json();
-      console.error("Toss payment verification failed:", {
-        status: tossResponse.status,
-        error: errorData,
-        clientKey: clientKey?.substring(0, 20) + "...",
-        secretKey: secretKey?.substring(0, 20) + "...",
-      });
+      console.error("Toss payment verification failed:", errorData);
       return NextResponse.json(
         { success: false, error: errorData.message || "Payment verification failed", details: errorData },
         { status: 400 }
@@ -78,48 +69,66 @@ export async function POST(request: NextRequest) {
     const paymentData = await tossResponse.json();
 
     // Find or create user
-    let user = await prisma.user.findUnique({
-      where: { email: userEmail },
-    });
+    const userResult = await db.select().from(users).where(eq(users.email, userEmail)).limit(1);
+    let user = userResult[0];
 
     if (!user) {
-      user = await prisma.user.create({
-        data: {
-          email: userEmail,
-          name: paymentData.customerName || "Guest Customer",
-        },
+      const newUserId = generateId();
+      await db.insert(users).values({
+        id: newUserId,
+        email: userEmail,
+        name: paymentData.customerName || "Guest Customer",
+        createdAt: new Date(),
+        updatedAt: new Date(),
       });
+      const newUserResult = await db.select().from(users).where(eq(users.id, newUserId)).limit(1);
+      user = newUserResult[0];
     }
 
-    // Update or create order
-    const order = await prisma.order.upsert({
-      where: { orderId },
-      update: {
+    // Check if order exists
+    const existingOrderResult = await db.select().from(orders).where(eq(orders.orderId, orderId)).limit(1);
+    const existingOrder = existingOrderResult[0];
+
+    let order;
+    if (existingOrder) {
+      // Update existing order
+      await db.update(orders).set({
         paymentStatus: PAYMENT_STATUSES.PAID,
         status: ORDER_STATUSES.CONFIRMED,
         paymentMethod: PAYMENT_METHODS.TOSS,
         userId: user.id,
-      },
-      create: {
+        updatedAt: new Date(),
+      }).where(eq(orders.orderId, orderId));
+
+      const updatedResult = await db.select().from(orders).where(eq(orders.orderId, orderId)).limit(1);
+      order = updatedResult[0];
+    } else {
+      // Create new order
+      const newId = generateId();
+      await db.insert(orders).values({
+        id: newId,
         orderId,
         userId: user.id,
         userEmail,
         status: ORDER_STATUSES.CONFIRMED,
         paymentStatus: PAYMENT_STATUSES.PAID,
         paymentMethod: PAYMENT_METHODS.TOSS,
-        totalAmount: amount / 100, // Toss sends amount in cents
-        shippingAddress: Prisma.JsonNull,
-      },
-    });
+        totalAmount: amount / 100,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      const newOrderResult = await db.select().from(orders).where(eq(orders.id, newId)).limit(1);
+      order = newOrderResult[0];
+    }
 
     return NextResponse.json({
       success: true,
       message: "Payment confirmed successfully",
       order: {
-        id: order.orderId,
-        amount: order.totalAmount,
-        status: order.status,
-        paymentStatus: order.paymentStatus,
+        id: order?.orderId,
+        amount: order?.totalAmount,
+        status: order?.status,
+        paymentStatus: order?.paymentStatus,
       },
     });
   } catch (error) {

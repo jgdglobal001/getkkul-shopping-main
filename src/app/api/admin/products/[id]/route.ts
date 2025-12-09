@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db, products, productOptions, productVariants, cartItems, wishlistItems, orderItems } from "@/lib/db";
+import { eq, asc } from "drizzle-orm";
 
 interface RouteParams {
   params: Promise<{ id: string }>;
@@ -7,33 +8,10 @@ interface RouteParams {
 
 export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
-    // 임시로 관리자 권한 확인 생략 - 실제 운영에서는 권한 확인 필요
-    // TODO: NextAuth v5 auth 함수로 권한 확인 구현
-
     const { id } = await params;
 
-    const product = await prisma.product.findUnique({
-      where: { id },
-      include: {
-        // ⭐ 옵션 시스템
-        options: {
-          orderBy: { order: 'asc' },
-        },
-        variants: {
-          where: { isActive: true },
-          orderBy: { createdAt: 'asc' },
-        },
-        cartItems: {
-          select: { id: true, quantity: true, userId: true },
-        },
-        wishlistItems: {
-          select: { id: true, userId: true },
-        },
-        orderItems: {
-          select: { id: true, quantity: true, orderId: true },
-        },
-      },
-    });
+    const productResult = await db.select().from(products).where(eq(products.id, id)).limit(1);
+    const product = productResult[0];
 
     if (!product) {
       return NextResponse.json(
@@ -42,7 +20,23 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    return NextResponse.json(product);
+    // Get related data
+    const [options, variants, cart, wishlist, orderItemsList] = await Promise.all([
+      db.select().from(productOptions).where(eq(productOptions.productId, id)).orderBy(asc(productOptions.order)),
+      db.select().from(productVariants).where(eq(productVariants.productId, id)).orderBy(asc(productVariants.createdAt)),
+      db.select({ id: cartItems.id, quantity: cartItems.quantity, userId: cartItems.userId }).from(cartItems).where(eq(cartItems.productId, id)),
+      db.select({ id: wishlistItems.id, userId: wishlistItems.userId }).from(wishlistItems).where(eq(wishlistItems.productId, id)),
+      db.select({ id: orderItems.id, quantity: orderItems.quantity, orderId: orderItems.orderId }).from(orderItems).where(eq(orderItems.productId, id)),
+    ]);
+
+    return NextResponse.json({
+      ...product,
+      options,
+      variants: variants.filter(v => v.isActive),
+      cartItems: cart,
+      wishlistItems: wishlist,
+      orderItems: orderItemsList,
+    });
 
   } catch (error) {
     console.error("상품 조회 오류:", error);
@@ -53,18 +47,18 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
   }
 }
 
+function generateId() {
+  return `${Date.now().toString(36)}${Math.random().toString(36).substr(2, 9)}`;
+}
+
 export async function PUT(request: NextRequest, { params }: RouteParams) {
   try {
-    // 임시로 관리자 권한 확인 생략 - 실제 운영에서는 권한 확인 필요
-    // TODO: NextAuth v5 auth 함수로 권한 확인 구현
-
     const { id } = await params;
     const body = await request.json();
 
     // 상품 존재 확인
-    const existingProduct = await prisma.product.findUnique({
-      where: { id },
-    });
+    const existingResult = await db.select().from(products).where(eq(products.id, id)).limit(1);
+    const existingProduct = existingResult[0];
 
     if (!existingProduct) {
       return NextResponse.json(
@@ -75,11 +69,8 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
     // SKU 중복 확인 (자신 제외)
     if (body.sku && body.sku !== existingProduct.sku) {
-      const duplicateSku = await prisma.product.findUnique({
-        where: { sku: body.sku },
-      });
-
-      if (duplicateSku) {
+      const duplicateResult = await db.select().from(products).where(eq(products.sku, body.sku)).limit(1);
+      if (duplicateResult[0]) {
         return NextResponse.json(
           { error: "이미 존재하는 SKU입니다" },
           { status: 400 }
@@ -87,115 +78,74 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       }
     }
 
-    // 옵션 시스템 업데이트를 위해 트랜잭션 사용
-    const updatedProduct = await prisma.$transaction(async (tx) => {
-      // 기존 옵션과 variants 삭제 (hasOptions가 변경되었거나 옵션이 있는 경우)
-      if (body.hasOptions !== undefined) {
-        await tx.productOption.deleteMany({ where: { productId: id } });
-        await tx.productVariant.deleteMany({ where: { productId: id } });
-      }
+    // 기존 옵션과 variants 삭제 (hasOptions가 변경되었거나 옵션이 있는 경우)
+    if (body.hasOptions !== undefined) {
+      await db.delete(productOptions).where(eq(productOptions.productId, id));
+      await db.delete(productVariants).where(eq(productVariants.productId, id));
+    }
 
-      // 상품 업데이트
-      const product = await tx.product.update({
-        where: { id },
-        data: {
-          title: body.title || existingProduct.title,
-          description: body.description || existingProduct.description,
-          price: body.price !== undefined ? parseFloat(body.price) : existingProduct.price,
-          discountPercentage: body.discountPercentage !== undefined ? parseFloat(body.discountPercentage) : existingProduct.discountPercentage,
-          rating: body.rating !== undefined ? parseFloat(body.rating) : existingProduct.rating,
-          stock: body.stock !== undefined ? parseInt(body.stock) : existingProduct.stock,
-          brand: body.brand !== undefined ? body.brand : existingProduct.brand,
-          category: body.category || existingProduct.category,
-          thumbnail: body.thumbnail || existingProduct.thumbnail,
-          images: body.images || existingProduct.images,
-          detailImages: body.detailImages || existingProduct.detailImages,
-          tags: body.tags || existingProduct.tags,
-          sku: body.sku || existingProduct.sku,
-          meta: body.meta !== undefined ? body.meta : existingProduct.meta,
-          isActive: body.isActive !== undefined ? body.isActive : existingProduct.isActive,
-          minimumOrderQuantity: body.minimumOrderQuantity ? parseInt(body.minimumOrderQuantity) : existingProduct.minimumOrderQuantity,
-          availabilityStatus: body.availabilityStatus || existingProduct.availabilityStatus,
-          // ⭐ 옵션 시스템
-          hasOptions: body.hasOptions !== undefined ? body.hasOptions : existingProduct.hasOptions,
-          // ⭐ 필수 표기 정보
-          productName: body.productName !== undefined ? body.productName : existingProduct.productName,
-          modelNumber: body.modelNumber !== undefined ? body.modelNumber : existingProduct.modelNumber,
-          size: body.size !== undefined ? body.size : existingProduct.size,
-          material: body.material !== undefined ? body.material : existingProduct.material,
-          releaseDate: body.releaseDate !== undefined ? body.releaseDate : existingProduct.releaseDate,
-          manufacturer: body.manufacturer !== undefined ? body.manufacturer : existingProduct.manufacturer,
-          madeInCountry: body.madeInCountry !== undefined ? body.madeInCountry : existingProduct.madeInCountry,
-          warrantyStandard: body.warrantyStandard !== undefined ? body.warrantyStandard : existingProduct.warrantyStandard,
-          asResponsible: body.asResponsible !== undefined ? body.asResponsible : existingProduct.asResponsible,
-          kcCertification: body.kcCertification !== undefined ? body.kcCertification : existingProduct.kcCertification,
-          color: body.color !== undefined ? body.color : existingProduct.color,
-          productComposition: body.productComposition !== undefined ? body.productComposition : existingProduct.productComposition,
-          detailedSpecs: body.detailedSpecs !== undefined ? body.detailedSpecs : existingProduct.detailedSpecs,
-          // ⭐ 배송 정보
-          shippingMethod: body.shippingMethod !== undefined ? body.shippingMethod : existingProduct.shippingMethod,
-          shippingCost: body.shippingCost !== undefined ? body.shippingCost : existingProduct.shippingCost,
-          bundleShipping: body.bundleShipping !== undefined ? body.bundleShipping : existingProduct.bundleShipping,
-          shippingPeriod: body.shippingPeriod !== undefined ? body.shippingPeriod : existingProduct.shippingPeriod,
-          // ⭐ 교환/반품 정보
-          exchangeReturnCost: body.exchangeReturnCost !== undefined ? body.exchangeReturnCost : existingProduct.exchangeReturnCost,
-          exchangeReturnDeadline: body.exchangeReturnDeadline !== undefined ? body.exchangeReturnDeadline : existingProduct.exchangeReturnDeadline,
-          exchangeReturnLimitations: body.exchangeReturnLimitations !== undefined ? body.exchangeReturnLimitations : existingProduct.exchangeReturnLimitations,
-          clothingLimitations: body.clothingLimitations !== undefined ? body.clothingLimitations : existingProduct.clothingLimitations,
-          foodLimitations: body.foodLimitations !== undefined ? body.foodLimitations : existingProduct.foodLimitations,
-          electronicsLimitations: body.electronicsLimitations !== undefined ? body.electronicsLimitations : existingProduct.electronicsLimitations,
-          autoLimitations: body.autoLimitations !== undefined ? body.autoLimitations : existingProduct.autoLimitations,
-          mediaLimitations: body.mediaLimitations !== undefined ? body.mediaLimitations : existingProduct.mediaLimitations,
-          // ⭐ 판매자 정보
-          sellerName: body.sellerName !== undefined ? body.sellerName : existingProduct.sellerName,
-          sellerPhone: body.sellerPhone !== undefined ? body.sellerPhone : existingProduct.sellerPhone,
-          sellerLegalNotice: body.sellerLegalNotice !== undefined ? body.sellerLegalNotice : existingProduct.sellerLegalNotice,
-        },
-      });
+    // 상품 업데이트
+    await db.update(products).set({
+      title: body.title || existingProduct.title,
+      description: body.description || existingProduct.description,
+      price: body.price !== undefined ? parseFloat(body.price) : existingProduct.price,
+      discountPercentage: body.discountPercentage !== undefined ? parseFloat(body.discountPercentage) : existingProduct.discountPercentage,
+      rating: body.rating !== undefined ? parseFloat(body.rating) : existingProduct.rating,
+      stock: body.stock !== undefined ? parseInt(body.stock) : existingProduct.stock,
+      brand: body.brand !== undefined ? body.brand : existingProduct.brand,
+      category: body.category || existingProduct.category,
+      thumbnail: body.thumbnail || existingProduct.thumbnail,
+      images: body.images || existingProduct.images,
+      tags: body.tags || existingProduct.tags,
+      sku: body.sku || existingProduct.sku,
+      isActive: body.isActive !== undefined ? body.isActive : existingProduct.isActive,
+      hasOptions: body.hasOptions !== undefined ? body.hasOptions : existingProduct.hasOptions,
+      updatedAt: new Date(),
+    }).where(eq(products.id, id));
 
-      // 새 옵션 생성
-      if (body.hasOptions && body.options?.length > 0) {
-        await tx.productOption.createMany({
-          data: body.options.map((opt: any, index: number) => ({
-            productId: id,
-            name: opt.name,
-            values: opt.values || [],
-            order: index,
-          })),
+    // 새 옵션 생성
+    if (body.hasOptions && body.options?.length > 0) {
+      for (let i = 0; i < body.options.length; i++) {
+        const opt = body.options[i];
+        await db.insert(productOptions).values({
+          id: generateId(),
+          productId: id,
+          name: opt.name,
+          values: opt.values || [],
+          order: i,
         });
       }
+    }
 
-      // 새 variants 생성
-      if (body.hasOptions && body.variants?.length > 0) {
-        await tx.productVariant.createMany({
-          data: body.variants.map((v: any) => ({
-            productId: id,
-            optionCombination: v.optionCombination,
-            sku: v.sku || null,
-            price: parseFloat(v.price),
-            originalPrice: v.originalPrice ? parseFloat(v.originalPrice) : null,
-            stock: parseInt(v.stock) || 0,
-            isActive: v.isActive !== undefined ? v.isActive : true,
-            image: v.image || null,
-            barcode: v.barcode || null,
-            modelNumber: v.modelNumber || null,
-          })),
+    // 새 variants 생성
+    if (body.hasOptions && body.variants?.length > 0) {
+      for (const v of body.variants) {
+        await db.insert(productVariants).values({
+          id: generateId(),
+          productId: id,
+          optionCombination: v.optionCombination,
+          sku: v.sku || null,
+          price: parseFloat(v.price),
+          originalPrice: v.originalPrice ? parseFloat(v.originalPrice) : null,
+          stock: parseInt(v.stock) || 0,
+          isActive: v.isActive !== undefined ? v.isActive : true,
+          image: v.image || null,
+          createdAt: new Date(),
+          updatedAt: new Date(),
         });
       }
-
-      return product;
-    });
+    }
 
     // 업데이트된 상품 조회 (옵션 포함)
-    const productWithOptions = await prisma.product.findUnique({
-      where: { id },
-      include: {
-        options: { orderBy: { order: 'asc' } },
-        variants: { where: { isActive: true } },
-      },
-    });
+    const updatedProduct = await db.select().from(products).where(eq(products.id, id)).limit(1);
+    const options = await db.select().from(productOptions).where(eq(productOptions.productId, id)).orderBy(asc(productOptions.order));
+    const variants = await db.select().from(productVariants).where(eq(productVariants.productId, id));
 
-    return NextResponse.json(productWithOptions);
+    return NextResponse.json({
+      ...updatedProduct[0],
+      options,
+      variants: variants.filter(v => v.isActive),
+    });
 
   } catch (error) {
     console.error("상품 수정 오류:", error);
@@ -208,14 +158,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
 
 export async function DELETE(request: NextRequest, { params }: RouteParams) {
   try {
-    // 임시로 관리자 권한 확인 생략 - 실제 운영에서는 권한 확인 필요
-    // TODO: NextAuth v5 auth 함수로 권한 확인 구현
-
     const { id } = await params;
 
-    await prisma.product.delete({
-      where: { id },
-    });
+    await db.delete(products).where(eq(products.id, id));
 
     return NextResponse.json({ message: "상품이 삭제되었습니다" });
   } catch (error) {

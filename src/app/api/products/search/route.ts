@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db, products } from "@/lib/db";
+import { eq, desc, ilike, or, and, sql } from "drizzle-orm";
 
 export async function GET(request: NextRequest) {
   try {
@@ -9,32 +10,36 @@ export async function GET(request: NextRequest) {
 
     if (!query.trim()) {
       // 검색어 없으면 최신 상품 반환
-      const products = await prisma.product.findMany({
-        where: { isActive: true },
-        orderBy: { createdAt: "desc" },
-        take: limit,
-      });
-      return NextResponse.json({ products });
+      const productList = await db
+        .select()
+        .from(products)
+        .where(eq(products.isActive, true))
+        .orderBy(desc(products.createdAt))
+        .limit(limit);
+      return NextResponse.json({ products: productList });
     }
 
-    // DB에서 검색 (제목, 설명, 브랜드, 카테고리, 태그)
-    const products = await prisma.product.findMany({
-      where: {
-        isActive: true,
-        OR: [
-          { title: { contains: query, mode: "insensitive" } },
-          { description: { contains: query, mode: "insensitive" } },
-          { brand: { contains: query, mode: "insensitive" } },
-          { category: { contains: query, mode: "insensitive" } },
-          { tags: { hasSome: [query] } },
-          { sku: { contains: query, mode: "insensitive" } },
-        ],
-      },
-      orderBy: { createdAt: "desc" },
-      take: limit,
-    });
+    // DB에서 검색 (제목, 설명, 브랜드, 카테고리, SKU)
+    const productList = await db
+      .select()
+      .from(products)
+      .where(
+        and(
+          eq(products.isActive, true),
+          or(
+            ilike(products.title, `%${query}%`),
+            ilike(products.description, `%${query}%`),
+            ilike(products.brand, `%${query}%`),
+            ilike(products.category, `%${query}%`),
+            ilike(products.sku, `%${query}%`),
+            sql`${query} = ANY(${products.tags})`
+          )
+        )
+      )
+      .orderBy(desc(products.createdAt))
+      .limit(limit);
 
-    return NextResponse.json({ products });
+    return NextResponse.json({ products: productList });
   } catch (error) {
     console.error("검색 오류:", error);
     return NextResponse.json(

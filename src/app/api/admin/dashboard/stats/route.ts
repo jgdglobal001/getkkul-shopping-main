@@ -1,89 +1,64 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db, users, orders, products } from "@/lib/db";
+import { eq, count, sql, or, gte, and } from "drizzle-orm";
 
 export async function GET(request: NextRequest) {
   try {
-    // 임시로 관리자 권한 확인 생략 - 실제 운영에서는 권한 확인 필요
-    // TODO: NextAuth v5 auth 함수로 권한 확인 구현
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
 
     // 병렬로 모든 통계 데이터 가져오기
     const [
-      totalUsers,
-      totalOrders,
-      totalProducts,
-      pendingOrders,
-      completedOrders,
-      todayOrders,
-      monthlyRevenue,
-      totalRevenue
+      userCount,
+      orderCount,
+      productCount,
+      pendingCount,
+      completedCount,
+      todayCount,
+      monthlyRevenueResult,
+      totalRevenueResult
     ] = await Promise.all([
       // 총 사용자 수
-      prisma.user.count(),
-      
+      db.select({ count: count() }).from(users),
+
       // 총 주문 수
-      prisma.order.count(),
-      
-      // 총 상품 수 (임시로 설정, 실제 상품 테이블이 있다면 수정)
-      Promise.resolve(156),
-      
+      db.select({ count: count() }).from(orders),
+
+      // 총 상품 수
+      db.select({ count: count() }).from(products),
+
       // 처리 대기 주문
-      prisma.order.count({
-        where: {
-          status: {
-            in: ["pending", "processing"]
-          }
-        }
-      }),
-      
+      db.select({ count: count() }).from(orders).where(
+        or(eq(orders.status, "pending"), eq(orders.status, "processing"))
+      ),
+
       // 완료된 주문
-      prisma.order.count({
-        where: {
-          status: "completed"
-        }
-      }),
-      
+      db.select({ count: count() }).from(orders).where(eq(orders.status, "completed")),
+
       // 오늘 주문 수
-      prisma.order.count({
-        where: {
-          createdAt: {
-            gte: new Date(new Date().setHours(0, 0, 0, 0))
-          }
-        }
-      }),
-      
+      db.select({ count: count() }).from(orders).where(gte(orders.createdAt, today)),
+
       // 이번 달 매출
-      prisma.order.aggregate({
-        where: {
-          status: "completed",
-          createdAt: {
-            gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1)
-          }
-        },
-        _sum: {
-          totalAmount: true
-        }
-      }),
-      
+      db.select({ total: sql<number>`COALESCE(SUM(${orders.totalAmount}), 0)` })
+        .from(orders)
+        .where(and(eq(orders.status, "completed"), gte(orders.createdAt, monthStart))),
+
       // 총 매출
-      prisma.order.aggregate({
-        where: {
-          status: "completed"
-        },
-        _sum: {
-          totalAmount: true
-        }
-      })
+      db.select({ total: sql<number>`COALESCE(SUM(${orders.totalAmount}), 0)` })
+        .from(orders)
+        .where(eq(orders.status, "completed"))
     ]);
 
     const stats = {
-      totalUsers,
-      totalOrders,
-      totalProducts,
-      pendingOrders,
-      completedOrders,
-      todayOrders,
-      monthlyRevenue: monthlyRevenue._sum.totalAmount || 0,
-      totalRevenue: totalRevenue._sum.totalAmount || 0
+      totalUsers: userCount[0]?.count || 0,
+      totalOrders: orderCount[0]?.count || 0,
+      totalProducts: productCount[0]?.count || 0,
+      pendingOrders: pendingCount[0]?.count || 0,
+      completedOrders: completedCount[0]?.count || 0,
+      todayOrders: todayCount[0]?.count || 0,
+      monthlyRevenue: monthlyRevenueResult[0]?.total || 0,
+      totalRevenue: totalRevenueResult[0]?.total || 0
     };
 
     return NextResponse.json(stats);

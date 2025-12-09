@@ -48,7 +48,7 @@ export function canAccessAdminPanel(user: PrismaUser | null): boolean {
   return hasAnyRole(user, [USER_ROLES.ADMIN, USER_ROLES.ACCOUNT]);
 }
 
-export function canManageOrders(user: FirestoreUser | null): boolean {
+export function canManageOrders(user: PrismaUser | null): boolean {
   return hasAnyRole(user, [
     USER_ROLES.ADMIN,
     USER_ROLES.ACCOUNT,
@@ -56,7 +56,7 @@ export function canManageOrders(user: FirestoreUser | null): boolean {
   ]);
 }
 
-export function canAccessDelivery(user: FirestoreUser | null): boolean {
+export function canAccessDelivery(user: PrismaUser | null): boolean {
   return hasAnyRole(user, [
     USER_ROLES.ADMIN,
     USER_ROLES.DELIVERYMAN,
@@ -64,7 +64,7 @@ export function canAccessDelivery(user: FirestoreUser | null): boolean {
   ]);
 }
 
-export function getUserDisplayRole(user: FirestoreUser | null): string {
+export function getUserDisplayRole(user: PrismaUser | null): string {
   if (!user) return "Guest";
 
   const roleDisplayMap: Record<string, string> = {

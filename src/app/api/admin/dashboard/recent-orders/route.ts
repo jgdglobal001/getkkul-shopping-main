@@ -1,26 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db, orders, users } from "@/lib/db";
+import { desc, eq } from "drizzle-orm";
 
 export async function GET(request: NextRequest) {
   try {
-    // 임시로 관리자 권한 확인 생략 - 실제 운영에서는 권한 확인 필요
-    // TODO: NextAuth v5 auth 함수로 권한 확인 구현
-
-    // 최근 주문 5개 가져오기
-    const recentOrders = await prisma.order.findMany({
-      take: 5,
-      orderBy: {
-        createdAt: "desc"
-      },
-      include: {
-        user: {
-          select: {
-            name: true,
-            email: true
-          }
-        }
-      }
-    });
+    // 최근 주문 5개 가져오기 (user 정보 포함)
+    const recentOrders = await db
+      .select({
+        id: orders.id,
+        totalAmount: orders.totalAmount,
+        status: orders.status,
+        createdAt: orders.createdAt,
+        userName: users.name,
+        userEmail: users.email,
+      })
+      .from(orders)
+      .leftJoin(users, eq(orders.userId, users.id))
+      .orderBy(desc(orders.createdAt))
+      .limit(5);
 
     // 주문이 없는 경우 더미 데이터 제공
     if (recentOrders.length === 0) {
@@ -58,10 +55,10 @@ export async function GET(request: NextRequest) {
     const formattedOrders = recentOrders.map((order) => ({
       id: order.id,
       orderId: `ORD-${order.id.slice(-8).toUpperCase()}`,
-      customerName: order.user?.name || order.user?.email || "알 수 없음",
+      customerName: order.userName || order.userEmail || "알 수 없음",
       amount: order.totalAmount,
-      status: getKoreanStatus(order.status),
-      createdAt: order.createdAt.toISOString()
+      status: getKoreanStatus(order.status || "pending"),
+      createdAt: order.createdAt?.toISOString() || new Date().toISOString()
     }));
 
     return NextResponse.json(formattedOrders);
