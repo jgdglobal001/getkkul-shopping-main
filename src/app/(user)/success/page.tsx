@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+﻿export const runtime = 'edge';
 
 "use client";
 
@@ -108,13 +108,13 @@ const SuccessPage = () => {
           {/* Success Message */}
           <div className="text-center mb-8">
             <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              ?�� 결제 ?�료!
+              ?럦 寃곗젣 ?꾨즺!
             </h1>
             <p className="text-lg text-gray-600 mb-2">
-              <span className="font-semibold text-theme-color">겟�??�핑</span>?�서 구매?�주?�서 감사?�니??
+              <span className="font-semibold text-theme-color">寃잕??쇳븨</span>?먯꽌 援щℓ?댁＜?붿꽌 媛먯궗?⑸땲??
             </p>
             <p className="text-gray-500">
-              주문???�인?�었?�며 �?처리???�정?�니??
+              二쇰Ц???뺤씤?섏뿀?쇰ŉ 怨?泥섎━???덉젙?낅땲??
             </p>
           </div>
 
@@ -140,7 +140,7 @@ const SuccessPage = () => {
                 <div className="flex justify-between">
                   <span className="text-gray-600">Status:</span>
                   <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
-                    ?�인??
+                    ?뺤씤??
                   </span>
                 </div>
               </div>
@@ -151,12 +151,12 @@ const SuccessPage = () => {
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <Link href="/account/orders">
               <button className="bg-theme-color text-white px-8 py-3 rounded-md font-medium hover:bg-theme-color/90 transition-colors duration-200 w-52">
-                ??주문 보기
+                ??二쇰Ц 蹂닿린
               </button>
             </Link>
             <Link href="/">
               <button className="border border-gray-300 text-gray-700 px-8 py-3 rounded-md font-medium hover:bg-gray-50 transition-colors duration-200 w-52">
-                ?�핑 계속?�기
+                ?쇳븨 怨꾩냽?섍린
               </button>
             </Link>
           </div>

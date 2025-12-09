@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+﻿export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { db, categories } from "@/lib/db";
@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
 
     if (!session?.user || session.user.role !== "admin") {
       return NextResponse.json(
-        { error: "관리자 권한???�요?�니?? },
+        { error: "愿由ъ옄 沅뚰븳???꾩슂?⑸땲?? },
         { status: 403 }
       );
     }
@@ -27,9 +27,9 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(result);
   } catch (error) {
-    console.error("카테고리 조회 ?�류:", error);
+    console.error("移댄뀒怨좊━ 議고쉶 ?ㅻ쪟:", error);
     return NextResponse.json(
-      { error: "카테고리�?조회?�는 �??�류가 발생?�습?�다" },
+      { error: "移댄뀒怨좊━瑜?議고쉶?섎뒗 以??ㅻ쪟媛 諛쒖깮?덉뒿?덈떎" },
       { status: 500 }
     );
   }
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
 
     if (!session?.user || session.user.role !== "admin") {
       return NextResponse.json(
-        { error: "관리자 권한???�요?�니?? },
+        { error: "愿由ъ옄 沅뚰븳???꾩슂?⑸땲?? },
         { status: 403 }
       );
     }
@@ -51,7 +51,7 @@ export async function POST(request: NextRequest) {
 
     if (!name || !slug) {
       return NextResponse.json(
-        { error: "카테고리 ?�름�??�러그는 ?�수?�니?? },
+        { error: "移댄뀒怨좊━ ?대쫫怨??щ윭洹몃뒗 ?꾩닔?낅땲?? },
         { status: 400 }
       );
     }
@@ -74,18 +74,18 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(category[0], { status: 201 });
   } catch (error: any) {
-    console.error("카테고리 ?�성 ?�류:", error);
+    console.error("移댄뀒怨좊━ ?앹꽦 ?ㅻ쪟:", error);
 
     // Check for unique constraint violation
     if (error.message?.includes("unique") || error.code === "23505") {
       return NextResponse.json(
-        { error: "?��? 존재?�는 카테고리?�니?? },
+        { error: "?대? 議댁옱?섎뒗 移댄뀒怨좊━?낅땲?? },
         { status: 400 }
       );
     }
 
     return NextResponse.json(
-      { error: "카테고리�??�성?�는 �??�류가 발생?�습?�다" },
+      { error: "移댄뀒怨좊━瑜??앹꽦?섎뒗 以??ㅻ쪟媛 諛쒖깮?덉뒿?덈떎" },
       { status: 500 }
     );
   }

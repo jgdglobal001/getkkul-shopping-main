@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+﻿export const runtime = 'edge';
 
 import AdminProtectedRoute from "@/components/AdminProtectedRoute";
 import ProductFormClient from "@/components/admin/ProductFormClient";
@@ -11,7 +11,7 @@ export default async function EditProductPage({ params }: EditProductPageProps) 
   const { id } = await params;
 
   return (
-    <AdminProtectedRoute loadingMessage="상품 수정 권한을 확인하는 중...">
+    <AdminProtectedRoute loadingMessage="?곹뭹 ?섏젙 沅뚰븳???뺤씤?섎뒗 以?..">
       <ProductFormClient mode="edit" productId={id} />
     </AdminProtectedRoute>
   );

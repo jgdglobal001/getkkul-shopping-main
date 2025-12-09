@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+﻿export const runtime = 'edge';
 
 import Container from "@/components/Container";
 import { getData } from "../helpers";
@@ -10,13 +10,13 @@ import Link from "next/link";
 import { db, products } from "@/lib/db";
 import { eq, gt, desc, and } from "drizzle-orm";
 
-// ?�적 ?�더�??�정 (DB 쿼리 ?�문??
+// ?숈쟻 ?뚮뜑留??ㅼ젙 (DB 荑쇰━ ?뚮Ц??
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "?��? ?�품 - Getkkul-shopping",
+  title: "?밴? ?곹뭹 - Getkkul-shopping",
   description:
-    "최고???�품?�을 ?��?�?만나보세?? ?�자?�품, ?�션, 뷰티 ???�양??카테고리?�서 ???�인 ?�택???�리?�요!",
+    "理쒓퀬???곹뭹?ㅼ쓣 ?밴?濡?留뚮굹蹂댁꽭?? ?꾩옄?쒗뭹, ?⑥뀡, 酉고떚 ???ㅼ뼇??移댄뀒怨좊━?먯꽌 ???좎씤 ?쒗깮???꾨━?몄슂!",
 };
 
 interface OffersPageProps {
@@ -31,7 +31,7 @@ const OffersPage = async ({ searchParams }: OffersPageProps) => {
   // Await searchParams for Next.js 15 compatibility
   const params = await searchParams;
 
-  // DB?�서 ?�인 ?�품 조회
+  // DB?먯꽌 ?좎씤 ?곹뭹 議고쉶
   const dbProducts = await db
     .select()
     .from(products)

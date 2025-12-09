@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+﻿export const runtime = 'edge';
 
 import Container from "@/components/Container";
 import InfiniteCategoryGrid from "@/components/pages/categories/InfiniteCategoryGrid";
@@ -10,23 +10,23 @@ import koTranslations from "@/locales/ko.json";
 import koExtendedTranslations from "@/locales/ko-extended.json";
 
 export const metadata: Metadata = {
-  title: "?�품 카테고리 | Getkkul-shopping",
+  title: "?곹뭹 移댄뀒怨좊━ | Getkkul-shopping",
   description:
-    "?�자?�품, ?�션, ?�데�? 뷰티 ???�양???�품 카테고리�??�러보세?? ?�하???�품???�게 찾을 ???�습?�다.",
+    "?꾩옄?쒗뭹, ?⑥뀡, ?덈뜲肄? 酉고떚 ???ㅼ뼇???곹뭹 移댄뀒怨좊━瑜??섎윭蹂댁꽭?? ?먰븯???곹뭹???쎄쾶 李얠쓣 ???덉뒿?덈떎.",
   keywords: [
-    "?�품 카테고리",
-    "?�자?�품",
-    "?�션",
-    "?�데�?,
-    "뷰티 ?�품",
-    "?�류",
-    "?�세?�리",
-    "카테고리�??�핑",
+    "?곹뭹 移댄뀒怨좊━",
+    "?꾩옄?쒗뭹",
+    "?⑥뀡",
+    "?덈뜲肄?,
+    "酉고떚 ?쒗뭹",
+    "?섎쪟",
+    "?≪꽭?쒕━",
+    "移댄뀒怨좊━蹂??쇳븨",
   ],
   openGraph: {
-    title: "?�품 카테고리 | Getkkul-shopping",
+    title: "?곹뭹 移댄뀒怨좊━ | Getkkul-shopping",
     description:
-      "?�양???�품 카테고리�??�러보세?? ?�하???�품???�게 찾을 ???�습?�다.",
+      "?ㅼ뼇???곹뭹 移댄뀒怨좊━瑜??섎윭蹂댁꽭?? ?먰븯???곹뭹???쎄쾶 李얠쓣 ???덉뒿?덈떎.",
     url: "/categories",
     siteName: "Getkkul-shopping",
     type: "website",
@@ -73,13 +73,13 @@ export default async function CategoriesPage() {
     });
 
     if (!categoriesResponse.ok) {
-      console.error(`카테고리 API ?�류: ${categoriesResponse.status}`);
+      console.error(`移댄뀒怨좊━ API ?ㅻ쪟: ${categoriesResponse.status}`);
       categoriesData = [];
     } else {
       categoriesData = await categoriesResponse.json();
     }
   } catch (error) {
-    console.error("카테고리 ?�칭 ?�패:", error);
+    console.error("移댄뀒怨좊━ ?섏묶 ?ㅽ뙣:", error);
     categoriesData = [];
   }
 

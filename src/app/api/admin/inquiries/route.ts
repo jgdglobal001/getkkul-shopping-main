@@ -1,18 +1,18 @@
-export const runtime = 'edge';
+﻿export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { db, productQuestions, productAnswers, products, users } from "@/lib/db";
 import { eq, desc, and } from "drizzle-orm";
 
-// GET: 모든 고객 문의 조회 (관리자??
+// GET: 紐⑤뱺 怨좉컼 臾몄쓽 議고쉶 (愿由ъ옄??
 export async function GET(request: NextRequest) {
   try {
     const session = await auth();
 
     if (!session?.user?.email || session.user.role !== "admin") {
       return NextResponse.json(
-        { error: "관리자 권한???�요?�니?? },
+        { error: "愿由ъ옄 沅뚰븳???꾩슂?⑸땲?? },
         { status: 403 }
       );
     }
@@ -77,9 +77,9 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(inquiries);
   } catch (error) {
-    console.error("문의 조회 ?�류:", error);
+    console.error("臾몄쓽 議고쉶 ?ㅻ쪟:", error);
     return NextResponse.json(
-      { error: "문의 조회 �??�류가 발생?�습?�다" },
+      { error: "臾몄쓽 議고쉶 以??ㅻ쪟媛 諛쒖깮?덉뒿?덈떎" },
       { status: 500 }
     );
   }

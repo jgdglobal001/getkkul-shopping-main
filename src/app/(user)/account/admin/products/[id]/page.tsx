@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+﻿export const runtime = 'edge';
 
 import AdminProtectedRoute from "@/components/AdminProtectedRoute";
 import ProductDetailClient from "@/components/admin/ProductDetailClient";
@@ -11,7 +11,7 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
   const { id } = await params;
 
   return (
-    <AdminProtectedRoute loadingMessage="상품 정보를 확인하는 중...">
+    <AdminProtectedRoute loadingMessage="?곹뭹 ?뺣낫瑜??뺤씤?섎뒗 以?..">
       <ProductDetailClient productId={id} />
     </AdminProtectedRoute>
   );

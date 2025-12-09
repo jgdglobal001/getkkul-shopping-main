@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+﻿export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "../../../../../auth";
@@ -17,7 +17,7 @@ export async function GET(
 
     const { id } = await params;
 
-    // 사용자는 자신의 데이터만 조회할 수 있음
+    // ?ъ슜?먮뒗 ?먯떊???곗씠?곕쭔 議고쉶?????덉쓬
     if (session.user.id !== id) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }

@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+﻿export const runtime = 'edge';
 
 import OrdersList from "@/components/account/OrdersList";
 import ProtectedRoute from "@/components/ProtectedRoute";

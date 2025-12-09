@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+ï»¿export const runtime = 'edge';
 
 "use client";
 
@@ -222,7 +222,7 @@ export default function UserDashboard() {
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <div className="h-8 w-8 text-indigo-600 text-2xl flex items-center justify-center">
-                  ?“¦
+                  ?ë²€
                 </div>
               </div>
               <div className="ml-4">
@@ -274,7 +274,7 @@ export default function UserDashboard() {
             <div className="flex items-center">
               <div className="flex-shrink-0">
                 <div className="h-8 w-8 text-blue-600 text-2xl flex items-center justify-center">
-                  ?’°
+                  ?ë®¥
                 </div>
               </div>
               <div className="ml-4">
@@ -381,7 +381,7 @@ export default function UserDashboard() {
                               unoptimized
                             />
                           ) : (
-                            <span className="text-2xl">?“¦</span>
+                            <span className="text-2xl">?ë²€</span>
                           )}
                         </div>
                         <div>
@@ -435,7 +435,7 @@ export default function UserDashboard() {
         {filteredOrders.length === 0 && (
           <div className="text-center py-12 bg-white rounded-lg shadow">
             <div className="mx-auto h-12 w-12 text-gray-400 text-4xl flex items-center justify-center">
-              ?“¦
+              ?ë²€
             </div>
             <h3 className="mt-2 text-sm font-medium text-gray-900">
               No orders found
@@ -471,7 +471,7 @@ export default function UserDashboard() {
                 onClick={() => setSelectedOrder(null)}
                 className="text-gray-400 hover:text-gray-600 text-2xl"
               >
-                Ã—
+                íšž
               </button>
             </div>
 
@@ -555,7 +555,7 @@ export default function UserDashboard() {
                                 unoptimized
                               />
                             ) : (
-                              <span className="text-xl">?“¦</span>
+                              <span className="text-xl">?ë²€</span>
                             )}
                           </div>
                           <div>

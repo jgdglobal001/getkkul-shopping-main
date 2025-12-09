@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+﻿export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { db, products, productOptions, productVariants, cartItems, wishlistItems, orderItems } from "@/lib/db";
@@ -17,7 +17,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
     if (!product) {
       return NextResponse.json(
-        { error: "상품을 찾을 수 없습니다" },
+        { error: "?곹뭹??李얠쓣 ???놁뒿?덈떎" },
         { status: 404 }
       );
     }
@@ -41,9 +41,9 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     });
 
   } catch (error) {
-    console.error("상품 조회 오류:", error);
+    console.error("?곹뭹 議고쉶 ?ㅻ쪟:", error);
     return NextResponse.json(
-      { error: "상품 조회 중 오류가 발생했습니다" },
+      { error: "?곹뭹 議고쉶 以??ㅻ쪟媛 諛쒖깮?덉뒿?덈떎" },
       { status: 500 }
     );
   }
@@ -58,35 +58,35 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     const { id } = await params;
     const body = await request.json();
 
-    // 상품 존재 확인
+    // ?곹뭹 議댁옱 ?뺤씤
     const existingResult = await db.select().from(products).where(eq(products.id, id)).limit(1);
     const existingProduct = existingResult[0];
 
     if (!existingProduct) {
       return NextResponse.json(
-        { error: "상품을 찾을 수 없습니다" },
+        { error: "?곹뭹??李얠쓣 ???놁뒿?덈떎" },
         { status: 404 }
       );
     }
 
-    // SKU 중복 확인 (자신 제외)
+    // SKU 以묐났 ?뺤씤 (?먯떊 ?쒖쇅)
     if (body.sku && body.sku !== existingProduct.sku) {
       const duplicateResult = await db.select().from(products).where(eq(products.sku, body.sku)).limit(1);
       if (duplicateResult[0]) {
         return NextResponse.json(
-          { error: "이미 존재하는 SKU입니다" },
+          { error: "?대? 議댁옱?섎뒗 SKU?낅땲?? },
           { status: 400 }
         );
       }
     }
 
-    // 기존 옵션과 variants 삭제 (hasOptions가 변경되었거나 옵션이 있는 경우)
+    // 湲곗〈 ?듭뀡怨?variants ??젣 (hasOptions媛 蹂寃쎈릺?덇굅???듭뀡???덈뒗 寃쎌슦)
     if (body.hasOptions !== undefined) {
       await db.delete(productOptions).where(eq(productOptions.productId, id));
       await db.delete(productVariants).where(eq(productVariants.productId, id));
     }
 
-    // 상품 업데이트
+    // ?곹뭹 ?낅뜲?댄듃
     await db.update(products).set({
       title: body.title || existingProduct.title,
       description: body.description || existingProduct.description,
@@ -105,7 +105,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       updatedAt: new Date(),
     }).where(eq(products.id, id));
 
-    // 새 옵션 생성
+    // ???듭뀡 ?앹꽦
     if (body.hasOptions && body.options?.length > 0) {
       for (let i = 0; i < body.options.length; i++) {
         const opt = body.options[i];
@@ -119,7 +119,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       }
     }
 
-    // 새 variants 생성
+    // ??variants ?앹꽦
     if (body.hasOptions && body.variants?.length > 0) {
       for (const v of body.variants) {
         await db.insert(productVariants).values({
@@ -138,7 +138,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       }
     }
 
-    // 업데이트된 상품 조회 (옵션 포함)
+    // ?낅뜲?댄듃???곹뭹 議고쉶 (?듭뀡 ?ы븿)
     const updatedProduct = await db.select().from(products).where(eq(products.id, id)).limit(1);
     const options = await db.select().from(productOptions).where(eq(productOptions.productId, id)).orderBy(asc(productOptions.order));
     const variants = await db.select().from(productVariants).where(eq(productVariants.productId, id));
@@ -150,9 +150,9 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     });
 
   } catch (error) {
-    console.error("상품 수정 오류:", error);
+    console.error("?곹뭹 ?섏젙 ?ㅻ쪟:", error);
     return NextResponse.json(
-      { error: "상품 수정 중 오류가 발생했습니다" },
+      { error: "?곹뭹 ?섏젙 以??ㅻ쪟媛 諛쒖깮?덉뒿?덈떎" },
       { status: 500 }
     );
   }
@@ -164,11 +164,11 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
 
     await db.delete(products).where(eq(products.id, id));
 
-    return NextResponse.json({ message: "상품이 삭제되었습니다" });
+    return NextResponse.json({ message: "?곹뭹????젣?섏뿀?듬땲?? });
   } catch (error) {
-    console.error("상품 삭제 오류:", error);
+    console.error("?곹뭹 ??젣 ?ㅻ쪟:", error);
     return NextResponse.json(
-      { error: "상품 삭제 중 오류가 발생했습니다" },
+      { error: "?곹뭹 ??젣 以??ㅻ쪟媛 諛쒖깮?덉뒿?덈떎" },
       { status: 500 }
     );
   }

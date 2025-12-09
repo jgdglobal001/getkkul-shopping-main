@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+﻿export const runtime = 'edge';
 
 "use client";
 
@@ -181,7 +181,7 @@ const OrderTrackingPage = () => {
       <ProtectedRoute loadingMessage={t('account.loading_order_details')}>
         <Container className="py-8">
           <div className="text-center">
-            <div className="text-6xl mb-4">📦</div>
+            <div className="text-6xl mb-4">?벀</div>
             <h1 className="text-2xl font-bold text-gray-900 mb-2">
               {t('account.order_not_found')}
             </h1>

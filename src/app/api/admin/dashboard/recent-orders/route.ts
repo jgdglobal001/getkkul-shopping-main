@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+﻿export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { db, orders, users } from "@/lib/db";
@@ -6,7 +6,7 @@ import { desc, eq } from "drizzle-orm";
 
 export async function GET(request: NextRequest) {
   try {
-    // 최근 주문 5�?가?�오�?(user ?�보 ?�함)
+    // 理쒓렐 二쇰Ц 5媛?媛?몄삤湲?(user ?뺣낫 ?ы븿)
     const recentOrders = await db
       .select({
         id: orders.id,
@@ -21,31 +21,31 @@ export async function GET(request: NextRequest) {
       .orderBy(desc(orders.createdAt))
       .limit(5);
 
-    // 주문???�는 경우 ?��? ?�이???�공
+    // 二쇰Ц???녿뒗 寃쎌슦 ?붾? ?곗씠???쒓났
     if (recentOrders.length === 0) {
       const dummyOrders = [
         {
           id: "dummy-1",
           orderId: "ORD-DEMO-001",
-          customerName: "김철수 (?�모)",
+          customerName: "源泥좎닔 (?곕え)",
           amount: 89000,
-          status: "배송�?,
+          status: "諛곗넚以?,
           createdAt: new Date().toISOString()
         },
         {
           id: "dummy-2",
           orderId: "ORD-DEMO-002",
-          customerName: "?�영??(?�모)",
+          customerName: "?댁쁺??(?곕え)",
           amount: 156000,
-          status: "?�료",
+          status: "?꾨즺",
           createdAt: new Date(Date.now() - 86400000).toISOString()
         },
         {
           id: "dummy-3",
           orderId: "ORD-DEMO-003",
-          customerName: "박�???(?�모)",
+          customerName: "諛뺣???(?곕え)",
           amount: 234000,
-          status: "처리�?,
+          status: "泥섎━以?,
           createdAt: new Date(Date.now() - 172800000).toISOString()
         }
       ];
@@ -53,11 +53,11 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(dummyOrders);
     }
 
-    // ?�답 ?�식??맞게 변??
+    // ?묐떟 ?뺤떇??留욊쾶 蹂??
     const formattedOrders = recentOrders.map((order) => ({
       id: order.id,
       orderId: `ORD-${order.id.slice(-8).toUpperCase()}`,
-      customerName: order.userName || order.userEmail || "?????�음",
+      customerName: order.userName || order.userEmail || "?????놁쓬",
       amount: order.totalAmount,
       status: getKoreanStatus(order.status || "pending"),
       createdAt: order.createdAt?.toISOString() || new Date().toISOString()
@@ -66,24 +66,24 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(formattedOrders);
 
   } catch (error) {
-    console.error("최근 주문 조회 ?�류:", error);
+    console.error("理쒓렐 二쇰Ц 議고쉶 ?ㅻ쪟:", error);
     return NextResponse.json(
-      { error: "최근 주문 ?�이?��? 가?�오??�??�류가 발생?�습?�다" },
+      { error: "理쒓렐 二쇰Ц ?곗씠?곕? 媛?몄삤??以??ㅻ쪟媛 諛쒖깮?덉뒿?덈떎" },
       { status: 500 }
     );
   }
 }
 
-// 주문 ?�태�??�국?�로 변??
+// 二쇰Ц ?곹깭瑜??쒓뎅?대줈 蹂??
 function getKoreanStatus(status: string): string {
   const statusMap: { [key: string]: string } = {
-    pending: "처리�?,
-    processing: "처리�?, 
-    shipped: "배송�?,
-    delivered: "?�료",
-    completed: "?�료",
-    cancelled: "취소",
-    refunded: "?�불"
+    pending: "泥섎━以?,
+    processing: "泥섎━以?, 
+    shipped: "諛곗넚以?,
+    delivered: "?꾨즺",
+    completed: "?꾨즺",
+    cancelled: "痍⑥냼",
+    refunded: "?섎텋"
   };
   
   return statusMap[status] || status;

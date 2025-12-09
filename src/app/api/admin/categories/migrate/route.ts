@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+﻿export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { db, categories } from "@/lib/db";
@@ -8,14 +8,14 @@ function generateId() {
   return `${Date.now().toString(36)}${Math.random().toString(36).substr(2, 9)}`;
 }
 
-// ?��? 카테고리 ?�이??(기존 구조 ?��?)
+// ?붾? 移댄뀒怨좊━ ?곗씠??(湲곗〈 援ъ“ ?좎?)
 const dummyCategories = [
   {
     name: "Beauty",
     slug: "beauty",
     description: "Explore premium beauty products and cosmetics",
     image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=300&fit=crop",
-    icon: "?��",
+    icon: "?뭵",
     order: 1,
   },
   {
@@ -23,7 +23,7 @@ const dummyCategories = [
     slug: "fragrances",
     description: "Discover luxurious fragrances and perfumes",
     image: "https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&h=300&fit=crop",
-    icon: "?��",
+    icon: "?뙵",
     order: 2,
   },
   {
@@ -31,7 +31,7 @@ const dummyCategories = [
     slug: "furniture",
     description: "Transform your space with stylish furniture",
     image: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop",
-    icon: "?��",
+    icon: "?첄",
     order: 3,
   },
   {
@@ -39,7 +39,7 @@ const dummyCategories = [
     slug: "groceries",
     description: "Fresh groceries and everyday essentials",
     image: "https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&h=300&fit=crop",
-    icon: "?��",
+    icon: "?썟",
     order: 4,
   },
   {
@@ -47,7 +47,7 @@ const dummyCategories = [
     slug: "home-decoration",
     description: "Beautiful decor items for your home",
     image: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=300&fit=crop",
-    icon: "?��",
+    icon: "?룧",
     order: 5,
   },
   {
@@ -55,7 +55,7 @@ const dummyCategories = [
     slug: "kitchen-accessories",
     description: "Essential tools for your kitchen",
     image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=300&fit=crop",
-    icon: "?��",
+    icon: "?뜵",
     order: 6,
   },
   {
@@ -63,7 +63,7 @@ const dummyCategories = [
     slug: "laptops",
     description: "High-performance laptops and computers",
     image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&h=300&fit=crop",
-    icon: "?��",
+    icon: "?뮲",
     order: 7,
   },
   {
@@ -71,7 +71,7 @@ const dummyCategories = [
     slug: "mens-shirts",
     description: "Stylish shirts for the modern man",
     image: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=400&h=300&fit=crop",
-    icon: "?��",
+    icon: "?몦",
     order: 8,
   },
   {
@@ -79,7 +79,7 @@ const dummyCategories = [
     slug: "mens-shoes",
     description: "Comfortable and fashionable footwear",
     image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=300&fit=crop",
-    icon: "?��",
+    icon: "?몶",
     order: 9,
   },
   {
@@ -95,7 +95,7 @@ const dummyCategories = [
     slug: "mobile-accessories",
     description: "Accessories for your mobile devices",
     image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=300&fit=crop",
-    icon: "?��",
+    icon: "?벑",
     order: 11,
   },
   {
@@ -103,7 +103,7 @@ const dummyCategories = [
     slug: "motorcycle",
     description: "Motorcycle gear and accessories",
     image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop",
-    icon: "?���?,
+    icon: "?룏截?,
     order: 12,
   },
   {
@@ -111,7 +111,7 @@ const dummyCategories = [
     slug: "skin-care",
     description: "Premium skincare products",
     image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=300&fit=crop",
-    icon: "?��",
+    icon: "?㎢",
     order: 13,
   },
   {
@@ -119,7 +119,7 @@ const dummyCategories = [
     slug: "smartphones",
     description: "Latest smartphones and devices",
     image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=400&h=300&fit=crop",
-    icon: "?��",
+    icon: "?벒",
     order: 14,
   },
   {
@@ -135,7 +135,7 @@ const dummyCategories = [
     slug: "sunglasses",
     description: "Stylish eyewear and sunglasses",
     image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=300&fit=crop",
-    icon: "?��",
+    icon: "?삇",
     order: 16,
   },
   {
@@ -143,7 +143,7 @@ const dummyCategories = [
     slug: "tablets",
     description: "Tablets and digital accessories",
     image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&h=300&fit=crop",
-    icon: "?��",
+    icon: "?벑",
     order: 17,
   },
   {
@@ -151,7 +151,7 @@ const dummyCategories = [
     slug: "tops",
     description: "Trendy tops and casual wear",
     image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=300&fit=crop",
-    icon: "?��",
+    icon: "?몧",
     order: 18,
   },
   {
@@ -159,7 +159,7 @@ const dummyCategories = [
     slug: "vehicle",
     description: "Automotive accessories and parts",
     image: "https://images.unsplash.com/photo-1552820728-8ac41f1ce891?w=400&h=300&fit=crop",
-    icon: "?��",
+    icon: "?슅",
     order: 19,
   },
   {
@@ -167,7 +167,7 @@ const dummyCategories = [
     slug: "womens-bags",
     description: "Fashionable bags and handbags",
     image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&h=300&fit=crop",
-    icon: "?��",
+    icon: "?몴",
     order: 20,
   },
   {
@@ -175,7 +175,7 @@ const dummyCategories = [
     slug: "womens-dresses",
     description: "Elegant dresses for every occasion",
     image: "https://images.unsplash.com/photo-1595777707802-221b42c0bbb2?w=400&h=300&fit=crop",
-    icon: "?��",
+    icon: "?몭",
     order: 21,
   },
   {
@@ -183,7 +183,7 @@ const dummyCategories = [
     slug: "womens-jewellery",
     description: "Beautiful jewelry and accessories",
     image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&h=300&fit=crop",
-    icon: "?��",
+    icon: "?뭿",
     order: 22,
   },
   {
@@ -191,7 +191,7 @@ const dummyCategories = [
     slug: "womens-shoes",
     description: "Stylish footwear for women",
     image: "https://images.unsplash.com/photo-1543163521-9efcc06b9cb5?w=400&h=300&fit=crop",
-    icon: "?��",
+    icon: "?몺",
     order: 23,
   },
   {
@@ -206,20 +206,20 @@ const dummyCategories = [
 
 export async function POST(request: NextRequest) {
   try {
-    // 마이그레?�션?� 관리자 권한 ?�이 ?�행 가??(??번만 ?�행?�도�?보호??
+    // 留덉씠洹몃젅?댁뀡? 愿由ъ옄 沅뚰븳 ?놁씠 ?ㅽ뻾 媛??(??踰덈쭔 ?ㅽ뻾?섎룄濡?蹂댄샇??
 
-    // 기존 카테고리 ?�인
+    // 湲곗〈 移댄뀒怨좊━ ?뺤씤
     const existingCountResult = await db.select({ count: count() }).from(categories);
     const existingCount = existingCountResult[0]?.count || 0;
 
     if (existingCount > 0) {
       return NextResponse.json(
-        { error: "?��? 카테고리가 존재?�니?? 마이그레?�션???�시 ?�행?????�습?�다." },
+        { error: "?대? 移댄뀒怨좊━媛 議댁옱?⑸땲?? 留덉씠洹몃젅?댁뀡???ㅼ떆 ?ㅽ뻾?????놁뒿?덈떎." },
         { status: 400 }
       );
     }
 
-    // ?��? 카테고리�?DB???�??
+    // ?붾? 移댄뀒怨좊━瑜?DB?????
     const createdCategories = await Promise.all(
       dummyCategories.map((category) =>
         db.insert(categories).values({
@@ -239,17 +239,17 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        message: `${createdCategories.length}개의 카테고리가 마이그레?�션?�었?�니??,
+        message: `${createdCategories.length}媛쒖쓽 移댄뀒怨좊━媛 留덉씠洹몃젅?댁뀡?섏뿀?듬땲??,
         count: createdCategories.length,
         categories: createdCategories.map(c => c[0]),
       },
       { status: 201 }
     );
   } catch (error) {
-    console.error("카테고리 마이그레?�션 ?�류:", error);
-    const errorMessage = error instanceof Error ? error.message : "?????�는 ?�류";
+    console.error("移댄뀒怨좊━ 留덉씠洹몃젅?댁뀡 ?ㅻ쪟:", error);
+    const errorMessage = error instanceof Error ? error.message : "?????녿뒗 ?ㅻ쪟";
     return NextResponse.json(
-      { error: `카테고리 마이그레?�션 �??�류가 발생?�습?�다: ${errorMessage}` },
+      { error: `移댄뀒怨좊━ 留덉씠洹몃젅?댁뀡 以??ㅻ쪟媛 諛쒖깮?덉뒿?덈떎: ${errorMessage}` },
       { status: 500 }
     );
   }

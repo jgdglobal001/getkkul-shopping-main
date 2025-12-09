@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+﻿export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
@@ -9,7 +9,7 @@ function generateId() {
   return `${Date.now().toString(36)}${Math.random().toString(36).substr(2, 9)}`;
 }
 
-// GET: ?�품??모든 질문 조회
+// GET: ?곹뭹??紐⑤뱺 吏덈Ц 議고쉶
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
 
     if (!productId) {
       return NextResponse.json(
-        { error: "productId가 ?�요?�니?? },
+        { error: "productId媛 ?꾩슂?⑸땲?? },
         { status: 400 }
       );
     }
@@ -69,22 +69,22 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(questionsWithAnswers);
   } catch (error) {
-    console.error("질문 조회 ?�류:", error);
+    console.error("吏덈Ц 議고쉶 ?ㅻ쪟:", error);
     return NextResponse.json(
-      { error: "질문 조회 �??�류가 발생?�습?�다" },
+      { error: "吏덈Ц 議고쉶 以??ㅻ쪟媛 諛쒖깮?덉뒿?덈떎" },
       { status: 500 }
     );
   }
 }
 
-// POST: ?�로??질문 ?�성
+// POST: ?덈줈??吏덈Ц ?묒꽦
 export async function POST(request: NextRequest) {
   try {
     const session = await auth();
 
     if (!session?.user?.email) {
       return NextResponse.json(
-        { error: "로그?�이 ?�요?�니?? },
+        { error: "濡쒓렇?몄씠 ?꾩슂?⑸땲?? },
         { status: 401 }
       );
     }
@@ -94,12 +94,12 @@ export async function POST(request: NextRequest) {
 
     if (!productId || !question) {
       return NextResponse.json(
-        { error: "productId?� question???�요?�니?? },
+        { error: "productId? question???꾩슂?⑸땲?? },
         { status: 400 }
       );
     }
 
-    // ?�용??조회
+    // ?ъ슜??議고쉶
     const userResult = await db
       .select()
       .from(users)
@@ -109,12 +109,12 @@ export async function POST(request: NextRequest) {
     const user = userResult[0];
     if (!user) {
       return NextResponse.json(
-        { error: "?�용?��? 찾을 ???�습?�다" },
+        { error: "?ъ슜?먮? 李얠쓣 ???놁뒿?덈떎" },
         { status: 404 }
       );
     }
 
-    // 질문 ?�성
+    // 吏덈Ц ?앹꽦
     const newQuestion = await db
       .insert(productQuestions)
       .values({
@@ -137,9 +137,9 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("질문 ?�성 ?�류:", error);
+    console.error("吏덈Ц ?묒꽦 ?ㅻ쪟:", error);
     return NextResponse.json(
-      { error: "질문 ?�성 �??�류가 발생?�습?�다" },
+      { error: "吏덈Ц ?묒꽦 以??ㅻ쪟媛 諛쒖깮?덉뒿?덈떎" },
       { status: 500 }
     );
   }

@@ -1,11 +1,11 @@
-export const runtime = 'edge';
+﻿export const runtime = 'edge';
 
 import ReviewsClient from "@/components/account/ReviewsClient";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function ReviewsPage() {
   return (
-    <ProtectedRoute loadingMessage="리뷰�?불러?�는 �?..">
+    <ProtectedRoute loadingMessage="由щ럭瑜?遺덈윭?ㅻ뒗 以?..">
       <ReviewsClient />
     </ProtectedRoute>
   );

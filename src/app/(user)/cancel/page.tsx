@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+﻿export const runtime = 'edge';
 
 import Container from "@/components/Container";
 import Title from "@/components/Title";

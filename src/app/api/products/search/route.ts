@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+﻿export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { db, products } from "@/lib/db";
@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get("limit") || "10");
 
     if (!query.trim()) {
-      // 검?�어 ?�으�?최신 ?�품 반환
+      // 寃?됱뼱 ?놁쑝硫?理쒖떊 ?곹뭹 諛섑솚
       const productList = await db
         .select()
         .from(products)
@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ products: productList });
     }
 
-    // DB?�서 검??(?�목, ?�명, 브랜?? 카테고리, SKU)
+    // DB?먯꽌 寃??(?쒕ぉ, ?ㅻ챸, 釉뚮옖?? 移댄뀒怨좊━, SKU)
     const productList = await db
       .select()
       .from(products)
@@ -43,9 +43,9 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ products: productList });
   } catch (error) {
-    console.error("검???�류:", error);
+    console.error("寃???ㅻ쪟:", error);
     return NextResponse.json(
-      { error: "검??�??�류가 발생?�습?�다" },
+      { error: "寃??以??ㅻ쪟媛 諛쒖깮?덉뒿?덈떎" },
       { status: 500 }
     );
   }
