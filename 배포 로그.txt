@@ -1,349 +1,612 @@
-2025-12-09T07:26:50.113245Z	Cloning repository...
-2025-12-09T07:26:50.890313Z	From https://github.com/jgdglobal001/getkkul-shopping-main
-2025-12-09T07:26:50.890766Z	 * branch            ddcc1459fef74e46f8313e98d23e0f307e735b44 -> FETCH_HEAD
-2025-12-09T07:26:50.890874Z	
-2025-12-09T07:26:50.966167Z	HEAD is now at ddcc145 Fix: Restore files and add edge runtime correctly with Node.js script
-2025-12-09T07:26:50.966556Z	
-2025-12-09T07:26:51.043133Z	
-2025-12-09T07:26:51.043597Z	Using v2 root directory strategy
-2025-12-09T07:26:51.065922Z	Success: Finished cloning repository files
-2025-12-09T07:26:52.769919Z	Checking for configuration in a Wrangler configuration file (BETA)
-2025-12-09T07:26:52.771412Z	
-2025-12-09T07:26:52.772626Z	Found wrangler.toml file. Reading build configuration...
-2025-12-09T07:26:52.779611Z	pages_build_output_dir: .vercel/output/static
-2025-12-09T07:26:52.779801Z	Build environment variables: 
-2025-12-09T07:26:52.780086Z	  - NODE_ENV: production
-2025-12-09T07:26:53.958619Z	Successfully read wrangler.toml file.
-2025-12-09T07:26:54.024717Z	Detected the following tools from environment: npm@10.9.2, nodejs@22.16.0
-2025-12-09T07:26:54.025277Z	Installing project dependencies: npm clean-install --progress=false
-2025-12-09T07:26:59.09127Z	npm warn deprecated @types/bcryptjs@3.0.0: This is a stub types definition. bcryptjs provides its own type definitions, so you do not need this installed.
-2025-12-09T07:26:59.14102Z	npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
-2025-12-09T07:27:25.055973Z	
-2025-12-09T07:27:25.056563Z	added 1096 packages, and audited 1097 packages in 31s
-2025-12-09T07:27:25.056696Z	
-2025-12-09T07:27:25.056798Z	120 packages are looking for funding
-2025-12-09T07:27:25.056948Z	  run `npm fund` for details
-2025-12-09T07:27:25.065439Z	
-2025-12-09T07:27:25.065842Z	1 moderate severity vulnerability
-2025-12-09T07:27:25.065972Z	
-2025-12-09T07:27:25.066431Z	To address all issues, run:
-2025-12-09T07:27:25.066547Z	  npm audit fix --force
-2025-12-09T07:27:25.066662Z	
-2025-12-09T07:27:25.066779Z	Run `npm audit` for details.
-2025-12-09T07:27:25.108076Z	Executing user command: npm run cf:build
-2025-12-09T07:27:25.495586Z	
-2025-12-09T07:27:25.495821Z	> shofy@0.1.0 cf:build
-2025-12-09T07:27:25.495903Z	> npx @cloudflare/next-on-pages
-2025-12-09T07:27:25.495975Z	
-2025-12-09T07:27:26.67902Z	npm warn exec The following package was not found and will be installed: @cloudflare/next-on-pages@1.13.16
-2025-12-09T07:27:38.656806Z	npm warn deprecated path-match@1.2.4: This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions
-2025-12-09T07:27:39.471443Z	npm warn deprecated @cloudflare/next-on-pages@1.13.16: Please use the OpenNext adapter instead: https://opennext.js.org/cloudflare
-2025-12-09T07:27:45.377055Z	⚡️ @cloudflare/next-on-pages CLI v.1.13.16
-2025-12-09T07:27:45.547744Z	⚡️ Detected Package Manager: npm (10.9.2)
-2025-12-09T07:27:45.548106Z	⚡️ Preparing project...
-2025-12-09T07:27:45.550914Z	⚡️ Project is ready
-2025-12-09T07:27:45.551147Z	⚡️ Building project...
-2025-12-09T07:27:46.520709Z	▲  npm warn exec The following package was not found and will be installed: vercel@49.1.2
-2025-12-09T07:27:54.156401Z	▲  npm warn deprecated path-match@1.2.4: This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions
-2025-12-09T07:27:56.772594Z	▲  Vercel CLI 49.1.2
-2025-12-09T07:27:56.776934Z	▲  > NOTE: The Vercel CLI now collects telemetry regarding usage of the CLI.
-2025-12-09T07:27:56.777128Z	▲  > This information is used to shape the CLI roadmap and prioritize features.
-2025-12-09T07:27:56.777423Z	▲  > You can learn more, including how to opt-out if you'd not like to participate in this program, by visiting the following URL:
-2025-12-09T07:27:56.777578Z	▲  > https://vercel.com/docs/cli/about-telemetry
-2025-12-09T07:27:56.867513Z	▲  WARN! Build not running on Vercel. System environment variables will not be available.
-2025-12-09T07:27:57.0843Z	▲  Installing dependencies...
-2025-12-09T07:28:01.399643Z	▲  added 217 packages in 4s
-2025-12-09T07:28:01.400072Z	▲  228 packages are looking for funding
-2025-12-09T07:28:01.400296Z	▲  run `npm fund` for details
-2025-12-09T07:28:01.412578Z	▲  Detected Next.js version: 15.4.8
-2025-12-09T07:28:01.421012Z	▲  Running "npm run build"
-2025-12-09T07:28:01.606605Z	▲  > shofy@0.1.0 build
-2025-12-09T07:28:01.606835Z	▲  > next build
-2025-12-09T07:28:02.317215Z	▲  Attention: Next.js now collects completely anonymous telemetry regarding usage.
-2025-12-09T07:28:02.317509Z	▲  This information is used to shape Next.js' roadmap and prioritize features.
-2025-12-09T07:28:02.317636Z	▲  You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
-2025-12-09T07:28:02.317742Z	▲  https://nextjs.org/telemetry
-2025-12-09T07:28:02.317883Z	▲  
-2025-12-09T07:28:02.382318Z	▲  ▲ Next.js 15.4.8
-2025-12-09T07:28:02.382635Z	▲  
-2025-12-09T07:28:02.455628Z	▲  Creating an optimized production build ...
-2025-12-09T07:28:31.820185Z	▲  Failed to compile.
-2025-12-09T07:28:31.820895Z	▲  ./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(public)%2Ffaqs%2Fpage&page=%2F(public)%2Ffaqs%2Fpage&pagePath=private-next-app-dir%2F(public)%2Ffaqs%2Fpage.tsx&appDir=%2Fopt%2Fbuildhome%2Frepo%2Fsrc%2Fapp&appPaths=%2F(public)%2Ffaqs%2Fpage&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!./src/app/(public)/faqs/page.tsx?__next_edge_ssr_entry__
-2025-12-09T07:28:31.82112Z	▲  Error:   [31mx[0m The "use client" directive must be placed before other expressions. Move it to the top of the file to resolve this issue.
-2025-12-09T07:28:31.82129Z	▲    ,-[[36;1;4m/opt/buildhome/repo/src/app/(public)/faqs/page.tsx[0m:3:1]
-2025-12-09T07:28:31.821424Z	▲  [2m1[0m | export const runtime = 'edge';
-2025-12-09T07:28:31.821542Z	▲  [2m2[0m | 
-2025-12-09T07:28:31.821681Z	▲  [2m3[0m | "use client";
-2025-12-09T07:28:31.821808Z	▲    : [35;1m^^^^^^^^^^^^^[0m
-2025-12-09T07:28:31.821916Z	▲  [2m4[0m | 
-2025-12-09T07:28:31.822036Z	▲  [2m5[0m | import Container from "@/components/Container";
-2025-12-09T07:28:31.822159Z	▲  [2m6[0m | import Title from "@/components/Title";
-2025-12-09T07:28:31.822269Z	▲    `----
-2025-12-09T07:28:31.822384Z	▲   [31mx[0m You're importing a component that needs `useState`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
-2025-12-09T07:28:31.822514Z	▲   [31m|[0m
-2025-12-09T07:28:31.822637Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
-2025-12-09T07:28:31.822765Z	▲   [31m|[0m
-2025-12-09T07:28:31.822885Z	▲  
-2025-12-09T07:28:31.823007Z	▲     ,-[[36;1;4m/opt/buildhome/repo/src/app/(public)/faqs/page.tsx[0m:8:1]
-2025-12-09T07:28:31.823122Z	▲  [2m 5[0m | import Container from "@/components/Container";
-2025-12-09T07:28:31.823258Z	▲  [2m 6[0m | import Title from "@/components/Title";
-2025-12-09T07:28:31.823386Z	▲  [2m 7[0m | import { Metadata } from "next";
-2025-12-09T07:28:31.823491Z	▲  [2m 8[0m | import { useState } from "react";
-2025-12-09T07:28:31.823597Z	▲     : [35;1m         ^^^^^^^^[0m
-2025-12-09T07:28:31.823698Z	▲  [2m 9[0m | import {
-2025-12-09T07:28:31.823801Z	▲  [2m10[0m |   FiChevronDown,
-2025-12-09T07:28:31.823912Z	▲  [2m11[0m |   FiChevronRight,
-2025-12-09T07:28:31.824024Z	▲     `----
-2025-12-09T07:28:31.824153Z	▲  
-2025-12-09T07:28:31.824272Z	▲  Import trace for requested module:
-2025-12-09T07:28:31.824396Z	▲  ./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(public)%2Ffaqs%2Fpage&page=%2F(public)%2Ffaqs%2Fpage&pagePath=private-next-app-dir%2F(public)%2Ffaqs%2Fpage.tsx&appDir=%2Fopt%2Fbuildhome%2Frepo%2Fsrc%2Fapp&appPaths=%2F(public)%2Ffaqs%2Fpage&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!./src/app/(public)/faqs/page.tsx?__next_edge_ssr_entry__
-2025-12-09T07:28:31.824577Z	▲  
-2025-12-09T07:28:31.824844Z	▲  ./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(user)%2Faccount%2Forders%2F%5Bid%5D%2Fpage&page=%2F(user)%2Faccount%2Forders%2F%5Bid%5D%2Fpage&pagePath=private-next-app-dir%2F(user)%2Faccount%2Forders%2F%5Bid%5D%2Fpage.tsx&appDir=%2Fopt%2Fbuildhome%2Frepo%2Fsrc%2Fapp&appPaths=%2F(user)%2Faccount%2Forders%2F%5Bid%5D%2Fpage&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!./src/app/(user)/account/orders/[id]/page.tsx?__next_edge_ssr_entry__
-2025-12-09T07:28:31.82504Z	▲  Error:   [31mx[0m The "use client" directive must be placed before other expressions. Move it to the top of the file to resolve this issue.
-2025-12-09T07:28:31.825279Z	▲    ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/account/orders/[id]/page.tsx[0m:3:1]
-2025-12-09T07:28:31.825434Z	▲  [2m1[0m | export const runtime = 'edge';
-2025-12-09T07:28:31.825599Z	▲  [2m2[0m | 
-2025-12-09T07:28:31.825741Z	▲  [2m3[0m | "use client";
-2025-12-09T07:28:31.826002Z	▲    : [35;1m^^^^^^^^^^^^^[0m
-2025-12-09T07:28:31.826099Z	▲  [2m4[0m | 
-2025-12-09T07:28:31.826226Z	▲  [2m5[0m | import { useEffect, useState, useCallback } from "react";
-2025-12-09T07:28:31.826376Z	▲  [2m6[0m | import { useSession } from "next-auth/react";
-2025-12-09T07:28:31.82652Z	▲    `----
-2025-12-09T07:28:31.826651Z	▲   [31mx[0m You're importing a component that needs `useEffect`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
-2025-12-09T07:28:31.826784Z	▲   [31m|[0m
-2025-12-09T07:28:31.827579Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
-2025-12-09T07:28:31.827748Z	▲   [31m|[0m
-2025-12-09T07:28:31.827894Z	▲  
-2025-12-09T07:28:31.82802Z	▲    ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/account/orders/[id]/page.tsx[0m:5:1]
-2025-12-09T07:28:31.828152Z	▲  [2m2[0m | 
-2025-12-09T07:28:31.828276Z	▲  [2m3[0m | "use client";
-2025-12-09T07:28:31.828387Z	▲  [2m4[0m | 
-2025-12-09T07:28:31.828529Z	▲  [2m5[0m | import { useEffect, useState, useCallback } from "react";
-2025-12-09T07:28:31.828652Z	▲    : [35;1m         ^^^^^^^^^[0m
-2025-12-09T07:28:31.828759Z	▲  [2m6[0m | import { useSession } from "next-auth/react";
-2025-12-09T07:28:31.828872Z	▲  [2m7[0m | import { useTranslation } from "react-i18next";
-2025-12-09T07:28:31.828976Z	▲  [2m8[0m | import Image from "next/image";
-2025-12-09T07:28:31.829094Z	▲    `----
-2025-12-09T07:28:31.829256Z	▲   [31mx[0m You're importing a component that needs `useState`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
-2025-12-09T07:28:31.829378Z	▲   [31m|[0m
-2025-12-09T07:28:31.829489Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
-2025-12-09T07:28:31.829714Z	▲   [31m|[0m
-2025-12-09T07:28:31.829839Z	▲  
-2025-12-09T07:28:31.82995Z	▲    ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/account/orders/[id]/page.tsx[0m:5:1]
-2025-12-09T07:28:31.830054Z	▲  [2m2[0m | 
-2025-12-09T07:28:31.830182Z	▲  [2m3[0m | "use client";
-2025-12-09T07:28:31.830287Z	▲  [2m4[0m | 
-2025-12-09T07:28:31.830396Z	▲  [2m5[0m | import { useEffect, useState, useCallback } from "react";
-2025-12-09T07:28:31.830512Z	▲    : [35;1m                    ^^^^^^^^[0m
-2025-12-09T07:28:31.830622Z	▲  [2m6[0m | import { useSession } from "next-auth/react";
-2025-12-09T07:28:31.830732Z	▲  [2m7[0m | import { useTranslation } from "react-i18next";
-2025-12-09T07:28:31.830841Z	▲  [2m8[0m | import Image from "next/image";
-2025-12-09T07:28:31.830944Z	▲    `----
-2025-12-09T07:28:31.831044Z	▲   [31mx[0m You're importing a component that needs `useParams`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
-2025-12-09T07:28:31.831187Z	▲   [31m|[0m
-2025-12-09T07:28:31.831294Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
-2025-12-09T07:28:31.831413Z	▲   [31m|[0m
-2025-12-09T07:28:31.831522Z	▲  
-2025-12-09T07:28:31.831621Z	▲     ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/account/orders/[id]/page.tsx[0m:9:1]
-2025-12-09T07:28:31.831729Z	▲  [2m 6[0m | import { useSession } from "next-auth/react";
-2025-12-09T07:28:31.831827Z	▲  [2m 7[0m | import { useTranslation } from "react-i18next";
-2025-12-09T07:28:31.831932Z	▲  [2m 8[0m | import Image from "next/image";
-2025-12-09T07:28:31.832033Z	▲  [2m 9[0m | import { useParams, useRouter } from "next/navigation";
-2025-12-09T07:28:31.832156Z	▲     : [35;1m         ^^^^^^^^^[0m
-2025-12-09T07:28:31.832271Z	▲  [2m10[0m | import Container from "@/components/Container";
-2025-12-09T07:28:31.832379Z	▲  [2m11[0m | import PriceFormat from "@/components/PriceFormat";
-2025-12-09T07:28:31.832495Z	▲  [2m12[0m | import ProtectedRoute from "@/components/ProtectedRoute";
-2025-12-09T07:28:31.832605Z	▲     `----
-2025-12-09T07:28:31.832721Z	▲   [31mx[0m You're importing a component that needs `useRouter`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
-2025-12-09T07:28:31.832827Z	▲   [31m|[0m
-2025-12-09T07:28:31.832935Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
-2025-12-09T07:28:31.833044Z	▲   [31m|[0m
-2025-12-09T07:28:31.833161Z	▲  
-2025-12-09T07:28:31.833268Z	▲     ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/account/orders/[id]/page.tsx[0m:9:1]
-2025-12-09T07:28:31.833379Z	▲  [2m 6[0m | import { useSession } from "next-auth/react";
-2025-12-09T07:28:31.833464Z	▲  [2m 7[0m | import { useTranslation } from "react-i18next";
-2025-12-09T07:28:31.833632Z	▲  [2m 8[0m | import Image from "next/image";
-2025-12-09T07:28:31.8337Z	▲  [2m 9[0m | import { useParams, useRouter } from "next/navigation";
-2025-12-09T07:28:31.834005Z	▲     : [35;1m                    ^^^^^^^^^[0m
-2025-12-09T07:28:31.834088Z	▲  [2m10[0m | import Container from "@/components/Container";
-2025-12-09T07:28:31.834271Z	▲  [2m11[0m | import PriceFormat from "@/components/PriceFormat";
-2025-12-09T07:28:31.834456Z	▲  [2m12[0m | import ProtectedRoute from "@/components/ProtectedRoute";
-2025-12-09T07:28:31.834615Z	▲     `----
-2025-12-09T07:28:31.834754Z	▲  
-2025-12-09T07:28:31.834835Z	▲  Import trace for requested module:
-2025-12-09T07:28:31.834959Z	▲  ./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(user)%2Faccount%2Forders%2F%5Bid%5D%2Fpage&page=%2F(user)%2Faccount%2Forders%2F%5Bid%5D%2Fpage&pagePath=private-next-app-dir%2F(user)%2Faccount%2Forders%2F%5Bid%5D%2Fpage.tsx&appDir=%2Fopt%2Fbuildhome%2Frepo%2Fsrc%2Fapp&appPaths=%2F(user)%2Faccount%2Forders%2F%5Bid%5D%2Fpage&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!./src/app/(user)/account/orders/[id]/page.tsx?__next_edge_ssr_entry__
-2025-12-09T07:28:31.83507Z	▲  
-2025-12-09T07:28:31.835263Z	▲  ./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(user)%2Fcheckout%2Fpage&page=%2F(user)%2Fcheckout%2Fpage&pagePath=private-next-app-dir%2F(user)%2Fcheckout%2Fpage.tsx&appDir=%2Fopt%2Fbuildhome%2Frepo%2Fsrc%2Fapp&appPaths=%2F(user)%2Fcheckout%2Fpage&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!./src/app/(user)/checkout/page.tsx?__next_edge_ssr_entry__
-2025-12-09T07:28:31.835359Z	▲  Error:   [31mx[0m The "use client" directive must be placed before other expressions. Move it to the top of the file to resolve this issue.
-2025-12-09T07:28:31.835525Z	▲    ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/checkout/page.tsx[0m:3:1]
-2025-12-09T07:28:31.835681Z	▲  [2m1[0m | export const runtime = 'edge';
-2025-12-09T07:28:31.835839Z	▲  [2m2[0m | 
-2025-12-09T07:28:31.835987Z	▲  [2m3[0m | "use client";
-2025-12-09T07:28:31.836122Z	▲    : [35;1m^^^^^^^^^^^^^[0m
-2025-12-09T07:28:31.836291Z	▲  [2m4[0m | 
-2025-12-09T07:28:31.83646Z	▲  [2m5[0m | import { useEffect, useState, useRef, useCallback } from "react";
-2025-12-09T07:28:31.836602Z	▲  [2m6[0m | import { useSession } from "next-auth/react";
-2025-12-09T07:28:31.836762Z	▲    `----
-2025-12-09T07:28:31.836979Z	▲   [31mx[0m You're importing a component that needs `useEffect`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
-2025-12-09T07:28:31.83713Z	▲   [31m|[0m
-2025-12-09T07:28:31.837248Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
-2025-12-09T07:28:31.837759Z	▲   [31m|[0m
-2025-12-09T07:28:31.837903Z	▲  
-2025-12-09T07:28:31.838009Z	▲    ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/checkout/page.tsx[0m:5:1]
-2025-12-09T07:28:31.838081Z	▲  [2m2[0m | 
-2025-12-09T07:28:31.838155Z	▲  [2m3[0m | "use client";
-2025-12-09T07:28:31.838253Z	▲  [2m4[0m | 
-2025-12-09T07:28:31.838323Z	▲  [2m5[0m | import { useEffect, useState, useRef, useCallback } from "react";
-2025-12-09T07:28:31.83839Z	▲    : [35;1m         ^^^^^^^^^[0m
-2025-12-09T07:28:31.83845Z	▲  [2m6[0m | import { useSession } from "next-auth/react";
-2025-12-09T07:28:31.838513Z	▲  [2m7[0m | import Image from "next/image";
-2025-12-09T07:28:31.838572Z	▲  [2m8[0m | import { useRouter, useSearchParams } from "next/navigation";
-2025-12-09T07:28:31.838648Z	▲    `----
-2025-12-09T07:28:31.83872Z	▲   [31mx[0m You're importing a component that needs `useState`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
-2025-12-09T07:28:31.838807Z	▲   [31m|[0m
-2025-12-09T07:28:31.838877Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
-2025-12-09T07:28:31.83894Z	▲   [31m|[0m
-2025-12-09T07:28:31.839004Z	▲  
-2025-12-09T07:28:31.839068Z	▲    ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/checkout/page.tsx[0m:5:1]
-2025-12-09T07:28:31.839131Z	▲  [2m2[0m | 
-2025-12-09T07:28:31.839222Z	▲  [2m3[0m | "use client";
-2025-12-09T07:28:31.839283Z	▲  [2m4[0m | 
-2025-12-09T07:28:31.839341Z	▲  [2m5[0m | import { useEffect, useState, useRef, useCallback } from "react";
-2025-12-09T07:28:31.839398Z	▲    : [35;1m                    ^^^^^^^^[0m
-2025-12-09T07:28:31.839461Z	▲  [2m6[0m | import { useSession } from "next-auth/react";
-2025-12-09T07:28:31.839528Z	▲  [2m7[0m | import Image from "next/image";
-2025-12-09T07:28:31.839585Z	▲  [2m8[0m | import { useRouter, useSearchParams } from "next/navigation";
-2025-12-09T07:28:31.839642Z	▲    `----
-2025-12-09T07:28:31.839807Z	▲   [31mx[0m You're importing a component that needs `useRef`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
-2025-12-09T07:28:31.839893Z	▲   [31m|[0m
-2025-12-09T07:28:31.839958Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
-2025-12-09T07:28:31.840016Z	▲   [31m|[0m
-2025-12-09T07:28:31.840074Z	▲  
-2025-12-09T07:28:31.84013Z	▲    ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/checkout/page.tsx[0m:5:1]
-2025-12-09T07:28:31.840209Z	▲  [2m2[0m | 
-2025-12-09T07:28:31.840269Z	▲  [2m3[0m | "use client";
-2025-12-09T07:28:31.840327Z	▲  [2m4[0m | 
-2025-12-09T07:28:31.84039Z	▲  [2m5[0m | import { useEffect, useState, useRef, useCallback } from "react";
-2025-12-09T07:28:31.840447Z	▲    : [35;1m                              ^^^^^^[0m
-2025-12-09T07:28:31.840504Z	▲  [2m6[0m | import { useSession } from "next-auth/react";
-2025-12-09T07:28:31.840564Z	▲  [2m7[0m | import Image from "next/image";
-2025-12-09T07:28:31.840621Z	▲  [2m8[0m | import { useRouter, useSearchParams } from "next/navigation";
-2025-12-09T07:28:31.840678Z	▲    `----
-2025-12-09T07:28:31.840743Z	▲   [31mx[0m You're importing a component that needs `useRouter`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
-2025-12-09T07:28:31.840804Z	▲   [31m|[0m
-2025-12-09T07:28:31.840868Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
-2025-12-09T07:28:31.840932Z	▲   [31m|[0m
-2025-12-09T07:28:31.840992Z	▲  
-2025-12-09T07:28:31.841055Z	▲     ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/checkout/page.tsx[0m:8:1]
-2025-12-09T07:28:31.841114Z	▲  [2m 5[0m | import { useEffect, useState, useRef, useCallback } from "react";
-2025-12-09T07:28:31.841194Z	▲  [2m 6[0m | import { useSession } from "next-auth/react";
-2025-12-09T07:28:31.841255Z	▲  [2m 7[0m | import Image from "next/image";
-2025-12-09T07:28:31.841314Z	▲  [2m 8[0m | import { useRouter, useSearchParams } from "next/navigation";
-2025-12-09T07:28:31.841372Z	▲     : [35;1m         ^^^^^^^^^[0m
-2025-12-09T07:28:31.84143Z	▲  [2m 9[0m | import { useTranslation } from "react-i18next";
-2025-12-09T07:28:31.841495Z	▲  [2m10[0m | import Container from "@/components/Container";
-2025-12-09T07:28:31.841561Z	▲  [2m11[0m | import PriceFormat from "@/components/PriceFormat";
-2025-12-09T07:28:31.841619Z	▲     `----
-2025-12-09T07:28:31.841684Z	▲   [31mx[0m You're importing a component that needs `useSearchParams`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
-2025-12-09T07:28:31.841758Z	▲   [31m|[0m
-2025-12-09T07:28:31.841823Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
-2025-12-09T07:28:31.841883Z	▲   [31m|[0m
-2025-12-09T07:28:31.84194Z	▲  
-2025-12-09T07:28:31.841999Z	▲     ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/checkout/page.tsx[0m:8:1]
-2025-12-09T07:28:31.842066Z	▲  [2m 5[0m | import { useEffect, useState, useRef, useCallback } from "react";
-2025-12-09T07:28:31.842122Z	▲  [2m 6[0m | import { useSession } from "next-auth/react";
-2025-12-09T07:28:31.842195Z	▲  [2m 7[0m | import Image from "next/image";
-2025-12-09T07:28:31.84226Z	▲  [2m 8[0m | import { useRouter, useSearchParams } from "next/navigation";
-2025-12-09T07:28:31.842319Z	▲     : [35;1m                    ^^^^^^^^^^^^^^^[0m
-2025-12-09T07:28:31.842377Z	▲  [2m 9[0m | import { useTranslation } from "react-i18next";
-2025-12-09T07:28:31.842449Z	▲  [2m10[0m | import Container from "@/components/Container";
-2025-12-09T07:28:31.842514Z	▲  [2m11[0m | import PriceFormat from "@/components/PriceFormat";
-2025-12-09T07:28:31.842577Z	▲     `----
-2025-12-09T07:28:31.84264Z	▲  
-2025-12-09T07:28:31.842705Z	▲  Import trace for requested module:
-2025-12-09T07:28:31.842766Z	▲  ./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(user)%2Fcheckout%2Fpage&page=%2F(user)%2Fcheckout%2Fpage&pagePath=private-next-app-dir%2F(user)%2Fcheckout%2Fpage.tsx&appDir=%2Fopt%2Fbuildhome%2Frepo%2Fsrc%2Fapp&appPaths=%2F(user)%2Fcheckout%2Fpage&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!./src/app/(user)/checkout/page.tsx?__next_edge_ssr_entry__
-2025-12-09T07:28:31.842838Z	▲  
-2025-12-09T07:28:31.842898Z	▲  ./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(user)%2Ffavorite%2Fpage&page=%2F(user)%2Ffavorite%2Fpage&pagePath=private-next-app-dir%2F(user)%2Ffavorite%2Fpage.tsx&appDir=%2Fopt%2Fbuildhome%2Frepo%2Fsrc%2Fapp&appPaths=%2F(user)%2Ffavorite%2Fpage&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!./src/app/(user)/favorite/page.tsx?__next_edge_ssr_entry__
-2025-12-09T07:28:31.842979Z	▲  Error:   [31mx[0m The "use client" directive must be placed before other expressions. Move it to the top of the file to resolve this issue.
-2025-12-09T07:28:31.843048Z	▲    ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/favorite/page.tsx[0m:3:1]
-2025-12-09T07:28:31.843111Z	▲  [2m1[0m | export const runtime = 'edge';
-2025-12-09T07:28:31.843187Z	▲  [2m2[0m | 
-2025-12-09T07:28:31.843248Z	▲  [2m3[0m | "use client";
-2025-12-09T07:28:31.843309Z	▲    : [35;1m^^^^^^^^^^^^^[0m
-2025-12-09T07:28:31.843365Z	▲  [2m4[0m | 
-2025-12-09T07:28:31.843424Z	▲  [2m5[0m | import React from "react";
-2025-12-09T07:28:31.843494Z	▲  [2m6[0m | import Image from "next/image";
-2025-12-09T07:28:31.843552Z	▲    `----
-2025-12-09T07:28:31.843611Z	▲  
-2025-12-09T07:28:31.843671Z	▲  Import trace for requested module:
-2025-12-09T07:28:31.843735Z	▲  ./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(user)%2Ffavorite%2Fpage&page=%2F(user)%2Ffavorite%2Fpage&pagePath=private-next-app-dir%2F(user)%2Ffavorite%2Fpage.tsx&appDir=%2Fopt%2Fbuildhome%2Frepo%2Fsrc%2Fapp&appPaths=%2F(user)%2Ffavorite%2Fpage&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!./src/app/(user)/favorite/page.tsx?__next_edge_ssr_entry__
-2025-12-09T07:28:31.843798Z	▲  
-2025-12-09T07:28:31.843855Z	▲  ./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(user)%2Fsuccess%2Fpage&page=%2F(user)%2Fsuccess%2Fpage&pagePath=private-next-app-dir%2F(user)%2Fsuccess%2Fpage.tsx&appDir=%2Fopt%2Fbuildhome%2Frepo%2Fsrc%2Fapp&appPaths=%2F(user)%2Fsuccess%2Fpage&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!./src/app/(user)/success/page.tsx?__next_edge_ssr_entry__
-2025-12-09T07:28:31.843915Z	▲  Error:   [31mx[0m The "use client" directive must be placed before other expressions. Move it to the top of the file to resolve this issue.
-2025-12-09T07:28:31.843973Z	▲    ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/success/page.tsx[0m:3:1]
-2025-12-09T07:28:31.84403Z	▲  [2m1[0m | export const runtime = 'edge';
-2025-12-09T07:28:31.844085Z	▲  [2m2[0m | 
-2025-12-09T07:28:31.844149Z	▲  [2m3[0m | "use client";
-2025-12-09T07:28:31.844208Z	▲    : [35;1m^^^^^^^^^^^^^[0m
-2025-12-09T07:28:31.844268Z	▲  [2m4[0m | 
-2025-12-09T07:28:31.844325Z	▲  [2m5[0m | import Container from "@/components/Container";
-2025-12-09T07:28:31.844381Z	▲  [2m6[0m | import OrderSummarySkeleton from "@/components/OrderSummarySkeleton";
-2025-12-09T07:28:31.844448Z	▲    `----
-2025-12-09T07:28:31.844511Z	▲   [31mx[0m You're importing a component that needs `useSearchParams`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
-2025-12-09T07:28:31.84457Z	▲   [31m|[0m
-2025-12-09T07:28:31.844635Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
-2025-12-09T07:28:31.844701Z	▲   [31m|[0m
-2025-12-09T07:28:31.844768Z	▲  
-2025-12-09T07:28:31.844833Z	▲     ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/success/page.tsx[0m:11:1]
-2025-12-09T07:28:31.844893Z	▲  [2m 8[0m | import ProtectedRoute from "@/components/ProtectedRoute";
-2025-12-09T07:28:31.844956Z	▲  [2m 9[0m | import { resetCart } from "@/redux/shofySlice";
-2025-12-09T07:28:31.845014Z	▲  [2m10[0m | import Link from "next/link";
-2025-12-09T07:28:31.845073Z	▲  [2m11[0m | import { redirect, useSearchParams } from "next/navigation";
-2025-12-09T07:28:31.84513Z	▲     : [35;1m                   ^^^^^^^^^^^^^^^[0m
-2025-12-09T07:28:31.845371Z	▲  [2m12[0m | import React, { useEffect, useState, useCallback } from "react";
-2025-12-09T07:28:31.845474Z	▲  [2m13[0m | import toast from "react-hot-toast";
-2025-12-09T07:28:31.84556Z	▲  [2m14[0m | import { useDispatch } from "react-redux";
-2025-12-09T07:28:31.84568Z	▲     `----
-2025-12-09T07:28:31.84589Z	▲   [31mx[0m You're importing a component that needs `useEffect`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
-2025-12-09T07:28:31.846001Z	▲   [31m|[0m
-2025-12-09T07:28:31.846106Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
-2025-12-09T07:28:31.846302Z	▲   [31m|[0m
-2025-12-09T07:28:31.846426Z	▲  
-2025-12-09T07:28:31.846527Z	▲     ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/success/page.tsx[0m:12:1]
-2025-12-09T07:28:31.846632Z	▲  [2m 9[0m | import { resetCart } from "@/redux/shofySlice";
-2025-12-09T07:28:31.846748Z	▲  [2m10[0m | import Link from "next/link";
-2025-12-09T07:28:31.846861Z	▲  [2m11[0m | import { redirect, useSearchParams } from "next/navigation";
-2025-12-09T07:28:31.846976Z	▲  [2m12[0m | import React, { useEffect, useState, useCallback } from "react";
-2025-12-09T07:28:31.847077Z	▲     : [35;1m                ^^^^^^^^^[0m
-2025-12-09T07:28:31.847192Z	▲  [2m13[0m | import toast from "react-hot-toast";
-2025-12-09T07:28:31.847286Z	▲  [2m14[0m | import { useDispatch } from "react-redux";
-2025-12-09T07:28:31.847375Z	▲  [2m15[0m | import { useSession } from "next-auth/react";
-2025-12-09T07:28:31.847464Z	▲     `----
-2025-12-09T07:28:31.847554Z	▲   [31mx[0m You're importing a component that needs `useState`. This React Hook only works in a Client Component. To fix, mark the file (or its parent) with the `"use client"` directive.
-2025-12-09T07:28:31.847645Z	▲   [31m|[0m
-2025-12-09T07:28:31.847741Z	▲   [31m|[0m  Learn more: https://nextjs.org/docs/app/api-reference/directives/use-client
-2025-12-09T07:28:31.84783Z	▲   [31m|[0m
-2025-12-09T07:28:31.847924Z	▲  
-2025-12-09T07:28:31.848021Z	▲     ,-[[36;1;4m/opt/buildhome/repo/src/app/(user)/success/page.tsx[0m:12:1]
-2025-12-09T07:28:31.84815Z	▲  [2m 9[0m | import { resetCart } from "@/redux/shofySlice";
-2025-12-09T07:28:31.848243Z	▲  [2m10[0m | import Link from "next/link";
-2025-12-09T07:28:31.848333Z	▲  [2m11[0m | import { redirect, useSearchParams } from "next/navigation";
-2025-12-09T07:28:31.848426Z	▲  [2m12[0m | import React, { useEffect, useState, useCallback } from "react";
-2025-12-09T07:28:31.848516Z	▲     : [35;1m                           ^^^^^^^^[0m
-2025-12-09T07:28:31.848624Z	▲  [2m13[0m | import toast from "react-hot-toast";
-2025-12-09T07:28:31.848741Z	▲  [2m14[0m | import { useDispatch } from "react-redux";
-2025-12-09T07:28:31.84882Z	▲  [2m15[0m | import { useSession } from "next-auth/react";
-2025-12-09T07:28:31.848885Z	▲     `----
-2025-12-09T07:28:31.849Z	▲  
-2025-12-09T07:28:31.849079Z	▲  Import trace for requested module:
-2025-12-09T07:28:31.84918Z	▲  ./node_modules/next/dist/build/webpack/loaders/next-app-loader/index.js?name=app%2F(user)%2Fsuccess%2Fpage&page=%2F(user)%2Fsuccess%2Fpage&pagePath=private-next-app-dir%2F(user)%2Fsuccess%2Fpage.tsx&appDir=%2Fopt%2Fbuildhome%2Frepo%2Fsrc%2Fapp&appPaths=%2F(user)%2Fsuccess%2Fpage&pageExtensions=tsx&pageExtensions=ts&pageExtensions=jsx&pageExtensions=js&basePath=&assetPrefix=&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D&isGlobalNotFoundEnabled=!./src/app/(user)/success/page.tsx?__next_edge_ssr_entry__
-2025-12-09T07:28:31.854967Z	▲  
-2025-12-09T07:28:31.855151Z	▲  > Build failed because of webpack errors
-2025-12-09T07:28:31.966304Z	▲  Error: Command "npm run build" exited with 1
-2025-12-09T07:28:32.106981Z	
-2025-12-09T07:28:32.107626Z	⚡️ The Vercel build (`npx vercel build`) command failed. For more details see the Vercel logs above.
-2025-12-09T07:28:32.107786Z	⚡️ If you need help solving the issue, refer to the Vercel or Next.js documentation or their repositories.
-2025-12-09T07:28:32.107878Z	
-2025-12-09T07:28:32.154537Z	Failed: Error while executing user command. Exited with error code: 1
-2025-12-09T07:28:32.163147Z	Failed: build command exited with code: 1
-2025-12-09T07:28:33.426396Z	Failed: error occurred while running build command
+2025-12-09T07:29:54.705047Z	Cloning repository...
+2025-12-09T07:29:55.468777Z	From https://github.com/jgdglobal001/getkkul-shopping-main
+2025-12-09T07:29:55.469385Z	 * branch            bff4e5c5f359a88d244b781276b946dcf48ba8f9 -> FETCH_HEAD
+2025-12-09T07:29:55.469573Z	
+2025-12-09T07:29:55.545774Z	HEAD is now at bff4e5c Fix: Move use client directive before edge runtime export
+2025-12-09T07:29:55.54616Z	
+2025-12-09T07:29:55.64056Z	
+2025-12-09T07:29:55.641222Z	Using v2 root directory strategy
+2025-12-09T07:29:55.663731Z	Success: Finished cloning repository files
+2025-12-09T07:29:57.665264Z	Checking for configuration in a Wrangler configuration file (BETA)
+2025-12-09T07:29:57.66591Z	
+2025-12-09T07:29:57.667375Z	Found wrangler.toml file. Reading build configuration...
+2025-12-09T07:29:57.673823Z	pages_build_output_dir: .vercel/output/static
+2025-12-09T07:29:57.673985Z	Build environment variables: 
+2025-12-09T07:29:57.674163Z	  - NODE_ENV: production
+2025-12-09T07:29:58.774369Z	Successfully read wrangler.toml file.
+2025-12-09T07:29:58.840636Z	Detected the following tools from environment: npm@10.9.2, nodejs@22.16.0
+2025-12-09T07:29:58.841218Z	Installing project dependencies: npm clean-install --progress=false
+2025-12-09T07:30:03.8375Z	npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+2025-12-09T07:30:03.919832Z	npm warn deprecated @types/bcryptjs@3.0.0: This is a stub types definition. bcryptjs provides its own type definitions, so you do not need this installed.
+2025-12-09T07:30:27.839434Z	
+2025-12-09T07:30:27.839756Z	added 1096 packages, and audited 1097 packages in 29s
+2025-12-09T07:30:27.8399Z	
+2025-12-09T07:30:27.840016Z	120 packages are looking for funding
+2025-12-09T07:30:27.84018Z	  run `npm fund` for details
+2025-12-09T07:30:27.847648Z	
+2025-12-09T07:30:27.8479Z	1 moderate severity vulnerability
+2025-12-09T07:30:27.84805Z	
+2025-12-09T07:30:27.848297Z	To address all issues, run:
+2025-12-09T07:30:27.84844Z	  npm audit fix --force
+2025-12-09T07:30:27.848607Z	
+2025-12-09T07:30:27.848742Z	Run `npm audit` for details.
+2025-12-09T07:30:27.887134Z	Executing user command: npm run cf:build
+2025-12-09T07:30:28.280649Z	
+2025-12-09T07:30:28.280985Z	> shofy@0.1.0 cf:build
+2025-12-09T07:30:28.281167Z	> npx @cloudflare/next-on-pages
+2025-12-09T07:30:28.28131Z	
+2025-12-09T07:30:29.362408Z	npm warn exec The following package was not found and will be installed: @cloudflare/next-on-pages@1.13.16
+2025-12-09T07:30:42.152514Z	npm warn deprecated path-match@1.2.4: This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions
+2025-12-09T07:30:42.926467Z	npm warn deprecated @cloudflare/next-on-pages@1.13.16: Please use the OpenNext adapter instead: https://opennext.js.org/cloudflare
+2025-12-09T07:30:48.864384Z	⚡️ @cloudflare/next-on-pages CLI v.1.13.16
+2025-12-09T07:30:49.045955Z	⚡️ Detected Package Manager: npm (10.9.2)
+2025-12-09T07:30:49.04626Z	⚡️ Preparing project...
+2025-12-09T07:30:49.049483Z	⚡️ Project is ready
+2025-12-09T07:30:49.049961Z	⚡️ Building project...
+2025-12-09T07:30:50.002904Z	▲  npm warn exec The following package was not found and will be installed: vercel@49.1.2
+2025-12-09T07:30:54.169943Z	▲  npm warn deprecated path-match@1.2.4: This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions
+2025-12-09T07:30:56.843084Z	▲  Vercel CLI 49.1.2
+2025-12-09T07:30:56.847541Z	▲  > NOTE: The Vercel CLI now collects telemetry regarding usage of the CLI.
+2025-12-09T07:30:56.847774Z	▲  > This information is used to shape the CLI roadmap and prioritize features.
+2025-12-09T07:30:56.847928Z	▲  > You can learn more, including how to opt-out if you'd not like to participate in this program, by visiting the following URL:
+2025-12-09T07:30:56.84866Z	▲  > https://vercel.com/docs/cli/about-telemetry
+2025-12-09T07:30:56.940679Z	▲  WARN! Build not running on Vercel. System environment variables will not be available.
+2025-12-09T07:30:57.163792Z	▲  Installing dependencies...
+2025-12-09T07:31:01.454762Z	▲  added 217 packages in 4s
+2025-12-09T07:31:01.455076Z	▲  228 packages are looking for funding
+2025-12-09T07:31:01.455279Z	▲  run `npm fund` for details
+2025-12-09T07:31:01.468275Z	▲  Detected Next.js version: 15.4.8
+2025-12-09T07:31:01.478773Z	▲  Running "npm run build"
+2025-12-09T07:31:01.668758Z	▲  > shofy@0.1.0 build
+2025-12-09T07:31:01.66905Z	▲  > next build
+2025-12-09T07:31:02.380383Z	▲  Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2025-12-09T07:31:02.380626Z	▲  This information is used to shape Next.js' roadmap and prioritize features.
+2025-12-09T07:31:02.381089Z	▲  You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2025-12-09T07:31:02.381264Z	▲  https://nextjs.org/telemetry
+2025-12-09T07:31:02.439497Z	▲  ▲ Next.js 15.4.8
+2025-12-09T07:31:02.439847Z	▲  
+2025-12-09T07:31:02.510133Z	▲  Creating an optimized production build ...
+2025-12-09T07:31:45.672988Z	▲  ✓ Compiled successfully in 38.0s
+2025-12-09T07:31:45.676948Z	▲  Skipping validation of types
+2025-12-09T07:31:45.677185Z	▲  Linting ...
+2025-12-09T07:31:49.912478Z	▲  ./src/components/admin/product-form/OptionsManager.tsx
+2025-12-09T07:31:49.912772Z	▲  35:6  Warning: React Hook useEffect has a missing dependency: 'formData.options'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+2025-12-09T07:31:49.913034Z	▲  
+2025-12-09T07:31:49.913201Z	▲  info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+2025-12-09T07:31:49.91518Z	▲  Collecting page data ...
+2025-12-09T07:31:51.102232Z	▲  ⚠ Using edge runtime on a page currently disables static generation for that page
+2025-12-09T07:31:53.392745Z	▲  Generating static pages (0/4) ...
+2025-12-09T07:31:54.268313Z	▲  Generating static pages (1/4) 
+2025-12-09T07:31:54.268677Z	▲  Generating static pages (2/4)
+2025-12-09T07:31:54.268898Z	▲  Generating static pages (3/4) 
+2025-12-09T07:31:54.269495Z	▲  ✓ Generating static pages (4/4)
+2025-12-09T07:31:54.710402Z	▲  Finalizing page optimization ...
+2025-12-09T07:31:54.710613Z	▲  Collecting build traces ...
+2025-12-09T07:32:00.591991Z	▲  
+2025-12-09T07:32:00.603984Z	▲  Route (app)                                    Size  First Load JS
+2025-12-09T07:32:00.604439Z	▲  ┌ ƒ /                                       4.06 kB         164 kB
+2025-12-09T07:32:00.604745Z	▲  ├ ○ /_not-found                               252 B        99.9 kB
+2025-12-09T07:32:00.604897Z	▲  ├ ƒ /about                                    169 B         103 kB
+2025-12-09T07:32:00.605392Z	▲  ├ ƒ /account                                   7 kB         154 kB
+2025-12-09T07:32:00.605631Z	▲  ├ ƒ /account/addresses                      4.96 kB         131 kB
+2025-12-09T07:32:00.605749Z	▲  ├ ƒ /account/admin                          3.21 kB         122 kB
+2025-12-09T07:32:00.605877Z	▲  ├ ƒ /account/admin/categories               2.97 kB         122 kB
+2025-12-09T07:32:00.606019Z	▲  ├ ƒ /account/admin/inquiries                1.99 kB         126 kB
+2025-12-09T07:32:00.606132Z	▲  ├ ƒ /account/admin/products                 3.27 kB         128 kB
+2025-12-09T07:32:00.606256Z	▲  ├ ƒ /account/admin/products/[id]            2.97 kB         127 kB
+2025-12-09T07:32:00.606357Z	▲  ├ ƒ /account/admin/products/[id]/edit         144 B         135 kB
+2025-12-09T07:32:00.606501Z	▲  ├ ƒ /account/admin/products/new               144 B         135 kB
+2025-12-09T07:32:00.606615Z	▲  ├ ƒ /account/notifications                  1.18 kB         117 kB
+2025-12-09T07:32:00.606727Z	▲  ├ ƒ /account/orders                         6.52 kB         145 kB
+2025-12-09T07:32:00.606836Z	▲  ├ ƒ /account/orders/[id]                    5.64 kB         144 kB
+2025-12-09T07:32:00.606934Z	▲  ├ ƒ /account/payment                          794 B         120 kB
+2025-12-09T07:32:00.607037Z	▲  ├ ƒ /account/profile                          252 B        99.9 kB
+2025-12-09T07:32:00.607134Z	▲  ├ ƒ /account/reviews                        3.84 kB         142 kB
+2025-12-09T07:32:00.607268Z	▲  ├ ƒ /account/settings                       3.03 kB         136 kB
+2025-12-09T07:32:00.607637Z	▲  ├ ƒ /api/admin/analytics                      252 B        99.9 kB
+2025-12-09T07:32:00.60776Z	▲  ├ ƒ /api/admin/categories                     252 B        99.9 kB
+2025-12-09T07:32:00.607914Z	▲  ├ ƒ /api/admin/categories/[id]                252 B        99.9 kB
+2025-12-09T07:32:00.608012Z	▲  ├ ƒ /api/admin/categories/migrate             252 B        99.9 kB
+2025-12-09T07:32:00.608107Z	▲  ├ ƒ /api/admin/dashboard/recent-orders        252 B        99.9 kB
+2025-12-09T07:32:00.608218Z	▲  ├ ƒ /api/admin/dashboard/stats                252 B        99.9 kB
+2025-12-09T07:32:00.608323Z	▲  ├ ƒ /api/admin/inquiries                      252 B        99.9 kB
+2025-12-09T07:32:00.608423Z	▲  ├ ƒ /api/admin/inquiries/[id]                 252 B        99.9 kB
+2025-12-09T07:32:00.60853Z	▲  ├ ƒ /api/admin/orders                         252 B        99.9 kB
+2025-12-09T07:32:00.608635Z	▲  ├ ƒ /api/admin/orders/[id]                    252 B        99.9 kB
+2025-12-09T07:32:00.608731Z	▲  ├ ƒ /api/admin/orders/bulk-delete             252 B        99.9 kB
+2025-12-09T07:32:00.608852Z	▲  ├ ƒ /api/admin/orders/bulk-delete-selected    252 B        99.9 kB
+2025-12-09T07:32:00.608958Z	▲  ├ ƒ /api/admin/products                       252 B        99.9 kB
+2025-12-09T07:32:00.609057Z	▲  ├ ƒ /api/admin/products/[id]                  252 B        99.9 kB
+2025-12-09T07:32:00.609171Z	▲  ├ ƒ /api/admin/setup                          252 B        99.9 kB
+2025-12-09T07:32:00.609275Z	▲  ├ ƒ /api/admin/stats                          252 B        99.9 kB
+2025-12-09T07:32:00.609372Z	▲  ├ ƒ /api/admin/users                          252 B        99.9 kB
+2025-12-09T07:32:00.6095Z	▲  ├ ƒ /api/admin/users/bulk-delete              252 B        99.9 kB
+2025-12-09T07:32:00.609594Z	▲  ├ ƒ /api/auth/[...nextauth]                   252 B        99.9 kB
+2025-12-09T07:32:00.609656Z	▲  ├ ƒ /api/auth/register                        252 B        99.9 kB
+2025-12-09T07:32:00.609749Z	▲  ├ ƒ /api/auth/update-password                 252 B        99.9 kB
+2025-12-09T07:32:00.609846Z	▲  ├ ƒ /api/categories                           252 B        99.9 kB
+2025-12-09T07:32:00.609929Z	▲  ├ ƒ /api/checkout                             252 B        99.9 kB
+2025-12-09T07:32:00.610039Z	▲  ├ ƒ /api/orders                               252 B        99.9 kB
+2025-12-09T07:32:00.61015Z	▲  ├ ƒ /api/orders/place                         252 B        99.9 kB
+2025-12-09T07:32:00.610256Z	▲  ├ ƒ /api/orders/process                       252 B        99.9 kB
+2025-12-09T07:32:00.610382Z	▲  ├ ƒ /api/orders/toss-confirm                  252 B        99.9 kB
+2025-12-09T07:32:00.610494Z	▲  ├ ƒ /api/orders/toss-webhook                  252 B        99.9 kB
+2025-12-09T07:32:00.61059Z	▲  ├ ƒ /api/orders/update-payment                252 B        99.9 kB
+2025-12-09T07:32:00.610691Z	▲  ├ ƒ /api/product-questions                    252 B        99.9 kB
+2025-12-09T07:32:00.610785Z	▲  ├ ƒ /api/products                             252 B        99.9 kB
+2025-12-09T07:32:00.610872Z	▲  ├ ƒ /api/products/search                      252 B        99.9 kB
+2025-12-09T07:32:00.610967Z	▲  ├ ƒ /api/user/[id]                            252 B        99.9 kB
+2025-12-09T07:32:00.611053Z	▲  ├ ƒ /api/user/delete-address                  252 B        99.9 kB
+2025-12-09T07:32:00.611166Z	▲  ├ ƒ /api/user/orders                          252 B        99.9 kB
+2025-12-09T07:32:00.611266Z	▲  ├ ƒ /api/user/profile                         252 B        99.9 kB
+2025-12-09T07:32:00.611349Z	▲  ├ ƒ /api/user/upload-image                    252 B        99.9 kB
+2025-12-09T07:32:00.61143Z	▲  ├ ƒ /auth/error                             1.31 kB         104 kB
+2025-12-09T07:32:00.611523Z	▲  ├ ƒ /auth/register                          2.35 kB         125 kB
+2025-12-09T07:32:00.611608Z	▲  ├ ƒ /auth/signin                            2.35 kB         125 kB
+2025-12-09T07:32:00.611705Z	▲  ├ ƒ /cancel                                   648 B         111 kB
+2025-12-09T07:32:00.611798Z	▲  ├ ƒ /cart                                   5.92 kB         172 kB
+2025-12-09T07:32:00.611882Z	▲  ├ ƒ /categories                             4.58 kB         132 kB
+2025-12-09T07:32:00.611976Z	▲  ├ ƒ /checkout                                7.1 kB         145 kB
+2025-12-09T07:32:00.612075Z	▲  ├ ƒ /contact                                  252 B        99.9 kB
+2025-12-09T07:32:00.612181Z	▲  ├ ƒ /customer-service                         169 B         103 kB
+2025-12-09T07:32:00.612278Z	▲  ├ ƒ /dashboard                              1.09 kB         104 kB
+2025-12-09T07:32:00.612359Z	▲  ├ ƒ /delivery                                 580 B         100 kB
+2025-12-09T07:32:00.612449Z	▲  ├ ƒ /delivery-dashboard                     3.73 kB         112 kB
+2025-12-09T07:32:00.612535Z	▲  ├ ƒ /faqs                                   4.88 kB         115 kB
+2025-12-09T07:32:00.612619Z	▲  ├ ƒ /favorite                                3.6 kB         142 kB
+2025-12-09T07:32:00.612703Z	▲  ├ ○ /icon.png                                   0 B            0 B
+2025-12-09T07:32:00.612781Z	▲  ├ ƒ /inquiry                                  252 B        99.9 kB
+2025-12-09T07:32:00.612865Z	▲  ├ ƒ /offers                                 2.72 kB         199 kB
+2025-12-09T07:32:00.612943Z	▲  ├ ƒ /orders/[id]                              252 B        99.9 kB
+2025-12-09T07:32:00.61303Z	▲  ├ ƒ /packer-dashboard                       5.66 kB         124 kB
+2025-12-09T07:32:00.613112Z	▲  ├ ƒ /payment/fail                           2.08 kB         108 kB
+2025-12-09T07:32:00.613221Z	▲  ├ ƒ /payment/success                        2.42 kB         112 kB
+2025-12-09T07:32:00.613302Z	▲  ├ ƒ /privacy-policy                           252 B        99.9 kB
+2025-12-09T07:32:00.613386Z	▲  ├ ƒ /products                               5.81 kB         200 kB
+2025-12-09T07:32:00.613498Z	▲  ├ ƒ /products/[id]                          7.31 kB         169 kB
+2025-12-09T07:32:00.613594Z	▲  ├ ƒ /success                                3.84 kB         134 kB
+2025-12-09T07:32:00.613686Z	▲  ├ ƒ /terms-of-service                         252 B        99.9 kB
+2025-12-09T07:32:00.613764Z	▲  ├ ƒ /unauthorized                           2.17 kB         119 kB
+2025-12-09T07:32:00.61384Z	▲  └ ƒ /user-dashboard                          4.2 kB         121 kB
+2025-12-09T07:32:00.613939Z	▲  + First Load JS shared by all               99.6 kB
+2025-12-09T07:32:00.614032Z	▲  ├ chunks/4bd1b696-602635ee57868870.js     54.1 kB
+2025-12-09T07:32:00.614236Z	▲  ├ chunks/5964-455cec4068509000.js         43.5 kB
+2025-12-09T07:32:00.61434Z	▲  └ other shared chunks (total)             1.95 kB
+2025-12-09T07:32:00.614432Z	▲  ○  (Static)   prerendered as static content
+2025-12-09T07:32:00.614527Z	▲  ƒ  (Dynamic)  server-rendered on demand
+2025-12-09T07:32:00.636681Z	▲  > shofy@0.1.0 postbuild
+2025-12-09T07:32:00.637128Z	▲  > next-sitemap
+2025-12-09T07:32:00.748534Z	▲  ✨ [next-sitemap] Loading next-sitemap config: file:///opt/buildhome/repo/next-sitemap.config.js
+2025-12-09T07:32:00.755213Z	▲  ✅ [next-sitemap] Generation completed
+2025-12-09T07:32:00.756008Z	▲  ┌───────────────┬────────┐
+2025-12-09T07:32:00.756213Z	▲  │ (index)       │ Values │
+2025-12-09T07:32:00.756365Z	▲  ├───────────────┼────────┤
+2025-12-09T07:32:00.756502Z	▲  │ indexSitemaps │ 1      │
+2025-12-09T07:32:00.756617Z	▲  │ sitemaps      │ 1      │
+2025-12-09T07:32:00.756736Z	▲  └───────────────┴────────┘
+2025-12-09T07:32:00.756847Z	▲  -----------------------------------------------------
+2025-12-09T07:32:00.756948Z	▲  SITEMAP INDICES 
+2025-12-09T07:32:00.75706Z	▲  -----------------------------------------------------
+2025-12-09T07:32:00.757201Z	▲  ○ https://shofy.reactbd.com/sitemap.xml
+2025-12-09T07:32:00.757307Z	▲  
+2025-12-09T07:32:00.757404Z	▲  -----------------------------------------------------
+2025-12-09T07:32:00.757517Z	▲  SITEMAPS 
+2025-12-09T07:32:00.757618Z	▲  -----------------------------------------------------
+2025-12-09T07:32:00.757732Z	▲  ○ https://shofy.reactbd.com/sitemap-0.xml
+2025-12-09T07:32:01.188833Z	▲  Traced Next.js server files in: 325.542ms
+2025-12-09T07:32:01.286943Z	▲  Created all serverless functions in: 97.812ms
+2025-12-09T07:32:13.345592Z	▲  Collected static files (public/, static/, .next/static): 17.637ms
+2025-12-09T07:32:14.159547Z	▲  Build Completed in .vercel/output [1m]
+2025-12-09T07:32:14.367532Z	⚡️ Completed `npx vercel build`.
+2025-12-09T07:32:57.536676Z	
+2025-12-09T07:32:57.536989Z	⚡️ Build Summary (@cloudflare/next-on-pages v1.13.16)
+2025-12-09T07:32:57.537168Z	⚡️ 
+2025-12-09T07:32:57.537297Z	⚡️ Edge Function Routes (82)
+2025-12-09T07:32:57.537419Z	⚡️   ┌ /
+2025-12-09T07:32:57.537537Z	⚡️   ├ /about
+2025-12-09T07:32:57.537646Z	⚡️   ├ /account
+2025-12-09T07:32:57.537749Z	⚡️   ├ /account/addresses
+2025-12-09T07:32:57.537855Z	⚡️   ├ /account/admin
+2025-12-09T07:32:57.537957Z	⚡️   ├ /account/admin/categories
+2025-12-09T07:32:57.538056Z	⚡️   ├ /account/admin/inquiries
+2025-12-09T07:32:57.538177Z	⚡️   ├ /account/admin/products
+2025-12-09T07:32:57.538274Z	⚡️   ├ /account/admin/products/[id]
+2025-12-09T07:32:57.538363Z	⚡️   ├ /account/admin/products/[id]/edit
+2025-12-09T07:32:57.538471Z	⚡️   ├ /account/admin/products/new
+2025-12-09T07:32:57.538567Z	⚡️   ├ /account/notifications
+2025-12-09T07:32:57.538768Z	⚡️   ├ /account/orders
+2025-12-09T07:32:57.538924Z	⚡️   ├ /account/orders/[id]
+2025-12-09T07:32:57.539109Z	⚡️   ├ /account/payment
+2025-12-09T07:32:57.539227Z	⚡️   ├ /account/profile
+2025-12-09T07:32:57.539394Z	⚡️   ├ /account/reviews
+2025-12-09T07:32:57.539555Z	⚡️   ├ /account/settings
+2025-12-09T07:32:57.539661Z	⚡️   ├ /api/admin/analytics
+2025-12-09T07:32:57.539765Z	⚡️   ├ /api/admin/categories
+2025-12-09T07:32:57.539864Z	⚡️   ├ /api/admin/categories/[id]
+2025-12-09T07:32:57.53997Z	⚡️   ├ /api/admin/categories/migrate
+2025-12-09T07:32:57.540096Z	⚡️   ├ /api/admin/dashboard/recent-orders
+2025-12-09T07:32:57.540384Z	⚡️   ├ /api/admin/dashboard/stats
+2025-12-09T07:32:57.54061Z	⚡️   ├ /api/admin/inquiries
+2025-12-09T07:32:57.540735Z	⚡️   ├ /api/admin/inquiries/[id]
+2025-12-09T07:32:57.540843Z	⚡️   ├ /api/admin/orders
+2025-12-09T07:32:57.54097Z	⚡️   ├ /api/admin/orders/[id]
+2025-12-09T07:32:57.541189Z	⚡️   ├ /api/admin/orders/bulk-delete
+2025-12-09T07:32:57.541378Z	⚡️   ├ /api/admin/orders/bulk-delete-selected
+2025-12-09T07:32:57.541533Z	⚡️   ├ /api/admin/products
+2025-12-09T07:32:57.541707Z	⚡️   ├ /api/admin/products/[id]
+2025-12-09T07:32:57.541823Z	⚡️   ├ /api/admin/setup
+2025-12-09T07:32:57.541951Z	⚡️   ├ /api/admin/stats
+2025-12-09T07:32:57.542077Z	⚡️   ├ /api/admin/users
+2025-12-09T07:32:57.542192Z	⚡️   ├ /api/admin/users/bulk-delete
+2025-12-09T07:32:57.542296Z	⚡️   ├ /api/auth/[...nextauth]
+2025-12-09T07:32:57.542388Z	⚡️   ├ /api/auth/register
+2025-12-09T07:32:57.5425Z	⚡️   ├ /api/auth/update-password
+2025-12-09T07:32:57.54265Z	⚡️   ├ /api/categories
+2025-12-09T07:32:57.542782Z	⚡️   ├ /api/checkout
+2025-12-09T07:32:57.542858Z	⚡️   ├ /api/orders
+2025-12-09T07:32:57.542995Z	⚡️   ├ /api/orders/place
+2025-12-09T07:32:57.543079Z	⚡️   ├ /api/orders/process
+2025-12-09T07:32:57.54328Z	⚡️   ├ /api/orders/toss-confirm
+2025-12-09T07:32:57.543398Z	⚡️   ├ /api/orders/toss-webhook
+2025-12-09T07:32:57.543509Z	⚡️   ├ /api/orders/update-payment
+2025-12-09T07:32:57.543635Z	⚡️   ├ /api/product-questions
+2025-12-09T07:32:57.543731Z	⚡️   ├ /api/products
+2025-12-09T07:32:57.543863Z	⚡️   ├ /api/products/search
+2025-12-09T07:32:57.543961Z	⚡️   ├ /api/user/[id]
+2025-12-09T07:32:57.544059Z	⚡️   ├ /api/user/delete-address
+2025-12-09T07:32:57.544218Z	⚡️   ├ /api/user/orders
+2025-12-09T07:32:57.544433Z	⚡️   ├ /api/user/profile
+2025-12-09T07:32:57.544581Z	⚡️   ├ /api/user/upload-image
+2025-12-09T07:32:57.544682Z	⚡️   ├ /auth/error
+2025-12-09T07:32:57.544935Z	⚡️   ├ /auth/register
+2025-12-09T07:32:57.545105Z	⚡️   ├ /auth/signin
+2025-12-09T07:32:57.545258Z	⚡️   ├ /cancel
+2025-12-09T07:32:57.545396Z	⚡️   ├ /cart
+2025-12-09T07:32:57.545564Z	⚡️   ├ /categories
+2025-12-09T07:32:57.545702Z	⚡️   ├ /checkout
+2025-12-09T07:32:57.545787Z	⚡️   ├ /contact
+2025-12-09T07:32:57.545878Z	⚡️   ├ /customer-service
+2025-12-09T07:32:57.545988Z	⚡️   ├ /dashboard
+2025-12-09T07:32:57.546096Z	⚡️   ├ /delivery
+2025-12-09T07:32:57.546268Z	⚡️   ├ /delivery-dashboard
+2025-12-09T07:32:57.546465Z	⚡️   ├ /faqs
+2025-12-09T07:32:57.546544Z	⚡️   ├ /favorite
+2025-12-09T07:32:57.546684Z	⚡️   ├ /inquiry
+2025-12-09T07:32:57.546825Z	⚡️   ├ /offers
+2025-12-09T07:32:57.547058Z	⚡️   ├ /orders/[id]
+2025-12-09T07:32:57.547256Z	⚡️   ├ /packer-dashboard
+2025-12-09T07:32:57.547339Z	⚡️   ├ /payment/fail
+2025-12-09T07:32:57.547402Z	⚡️   ├ /payment/success
+2025-12-09T07:32:57.547547Z	⚡️   ├ /privacy-policy
+2025-12-09T07:32:57.547856Z	⚡️   ├ /products
+2025-12-09T07:32:57.548018Z	⚡️   ├ /products/[id]
+2025-12-09T07:32:57.548118Z	⚡️   ├ /success
+2025-12-09T07:32:57.548279Z	⚡️   ├ /terms-of-service
+2025-12-09T07:32:57.548439Z	⚡️   ├ /unauthorized
+2025-12-09T07:32:57.548592Z	⚡️   └ /user-dashboard
+2025-12-09T07:32:57.548768Z	⚡️ 
+2025-12-09T07:32:57.54905Z	⚡️ Prerendered Routes (1)
+2025-12-09T07:32:57.549132Z	⚡️   - /icon.png
+2025-12-09T07:32:57.549425Z	⚡️ 
+2025-12-09T07:32:57.549518Z	⚡️ Wasm Files (1)
+2025-12-09T07:32:57.549678Z	⚡️   - wasm_c39b61d7ee62dac9882998c802f3feeffd883e60
+2025-12-09T07:32:57.549882Z	⚡️ 
+2025-12-09T07:32:57.549978Z	⚡️ Other Static Assets (166)
+2025-12-09T07:32:57.550069Z	⚡️   ┌ /_app.rsc.json
+2025-12-09T07:32:57.550182Z	⚡️   ├ /_document.rsc.json
+2025-12-09T07:32:57.550277Z	⚡️   ├ /_error.rsc.json
+2025-12-09T07:32:57.55037Z	⚡️   ├ /_redirects
+2025-12-09T07:32:57.550482Z	⚡️   └ ... 162 more
+2025-12-09T07:32:57.550583Z	
+2025-12-09T07:32:57.557404Z	⚡️ Build log saved to '.vercel/output/static/_worker.js/nop-build-log.json'
+2025-12-09T07:32:57.557998Z	⚡️ Generated '.vercel/output/static/_worker.js/index.js'.
+2025-12-09T07:32:57.558097Z	⚡️ Build completed in 43.19s
+2025-12-09T07:32:57.696964Z	Finished
+2025-12-09T07:32:58.656971Z	Checking for configuration in a Wrangler configuration file (BETA)
+2025-12-09T07:32:58.657928Z	
+2025-12-09T07:32:58.658709Z	Found wrangler.toml file. Reading build configuration...
+2025-12-09T07:32:58.665459Z	pages_build_output_dir: .vercel/output/static
+2025-12-09T07:32:58.665717Z	Build environment variables: 
+2025-12-09T07:32:58.665825Z	  - NODE_ENV: production
+2025-12-09T07:32:59.767279Z	Successfully read wrangler.toml file.
+2025-12-09T07:32:59.767995Z	Found _worker.js in output directory. Uploading.
+2025-12-09T07:32:59.773813Z	 ⛅️ wrangler 3.101.0
+2025-12-09T07:32:59.774072Z	-------------------
+2025-12-09T07:33:00.716905Z	Attaching additional modules:
+2025-12-09T07:33:00.751573Z	┌────────────────────────────────────────────────────────────────────────────────┬───────────────┬──────────────┐
+2025-12-09T07:33:00.751849Z	│ Name                                                                           │ Type          │ Size         │
+2025-12-09T07:33:00.75221Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.752427Z	│ __next-on-pages-dist__/cache/adaptor.js                                        │ esm           │ 2.29 KiB     │
+2025-12-09T07:33:00.75261Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.752806Z	│ __next-on-pages-dist__/cache/cache-api.js                                      │ esm           │ 0.43 KiB     │
+2025-12-09T07:33:00.752958Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.753098Z	│ __next-on-pages-dist__/cache/kv.js                                             │ esm           │ 0.35 KiB     │
+2025-12-09T07:33:00.75327Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.753391Z	│ __next-on-pages-dist__/functions/about.func.js                                 │ esm           │ 95.08 KiB    │
+2025-12-09T07:33:00.75352Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.753627Z	│ __next-on-pages-dist__/functions/account/addresses.func.js                     │ esm           │ 100.64 KiB   │
+2025-12-09T07:33:00.753728Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.753897Z	│ __next-on-pages-dist__/functions/account/admin/categories.func.js              │ esm           │ 103.84 KiB   │
+2025-12-09T07:33:00.754022Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.754126Z	│ __next-on-pages-dist__/functions/account/admin/inquiries.func.js               │ esm           │ 97.65 KiB    │
+2025-12-09T07:33:00.754248Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.754371Z	│ __next-on-pages-dist__/functions/account/admin/products/[id]/edit.func.js      │ esm           │ 93.01 KiB    │
+2025-12-09T07:33:00.754487Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.754605Z	│ __next-on-pages-dist__/functions/account/admin/products/[id].func.js           │ esm           │ 103.03 KiB   │
+2025-12-09T07:33:00.754729Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.754871Z	│ __next-on-pages-dist__/functions/account/admin/products/new.func.js            │ esm           │ 92.34 KiB    │
+2025-12-09T07:33:00.755012Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.755165Z	│ __next-on-pages-dist__/functions/account/admin/products.func.js                │ esm           │ 102.54 KiB   │
+2025-12-09T07:33:00.755309Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.755436Z	│ __next-on-pages-dist__/functions/account/admin.func.js                         │ esm           │ 105.95 KiB   │
+2025-12-09T07:33:00.755568Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.755703Z	│ __next-on-pages-dist__/functions/account/notifications.func.js                 │ esm           │ 96.66 KiB    │
+2025-12-09T07:33:00.75582Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.755942Z	│ __next-on-pages-dist__/functions/account/orders/[id].func.js                   │ esm           │ 103.50 KiB   │
+2025-12-09T07:33:00.756048Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.756163Z	│ __next-on-pages-dist__/functions/account/orders.func.js                        │ esm           │ 110.13 KiB   │
+2025-12-09T07:33:00.756277Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.756399Z	│ __next-on-pages-dist__/functions/account/payment.func.js                       │ esm           │ 93.65 KiB    │
+2025-12-09T07:33:00.75651Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.756636Z	│ __next-on-pages-dist__/functions/account/profile.func.js                       │ esm           │ 91.12 KiB    │
+2025-12-09T07:33:00.756766Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.756879Z	│ __next-on-pages-dist__/functions/account/reviews.func.js                       │ esm           │ 96.83 KiB    │
+2025-12-09T07:33:00.756989Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.757089Z	│ __next-on-pages-dist__/functions/account/settings.func.js                      │ esm           │ 96.57 KiB    │
+2025-12-09T07:33:00.757209Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.757335Z	│ __next-on-pages-dist__/functions/account.func.js                               │ esm           │ 109.00 KiB   │
+2025-12-09T07:33:00.757468Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.75758Z	│ __next-on-pages-dist__/functions/api/admin/analytics.func.js                   │ esm           │ 72.25 KiB    │
+2025-12-09T07:33:00.757703Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.757839Z	│ __next-on-pages-dist__/functions/api/admin/categories/[id].func.js             │ esm           │ 73.29 KiB    │
+2025-12-09T07:33:00.757966Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.758095Z	│ __next-on-pages-dist__/functions/api/admin/categories/migrate.func.js          │ esm           │ 75.64 KiB    │
+2025-12-09T07:33:00.758246Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.758381Z	│ __next-on-pages-dist__/functions/api/admin/categories.func.js                  │ esm           │ 71.75 KiB    │
+2025-12-09T07:33:00.758512Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.758639Z	│ __next-on-pages-dist__/functions/api/admin/dashboard/recent-orders.func.js     │ esm           │ 71.17 KiB    │
+2025-12-09T07:33:00.758787Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.758926Z	│ __next-on-pages-dist__/functions/api/admin/dashboard/stats.func.js             │ esm           │ 71.00 KiB    │
+2025-12-09T07:33:00.759052Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.759202Z	│ __next-on-pages-dist__/functions/api/admin/inquiries/[id].func.js              │ esm           │ 72.40 KiB    │
+2025-12-09T07:33:00.759327Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.759434Z	│ __next-on-pages-dist__/functions/api/admin/inquiries.func.js                   │ esm           │ 71.59 KiB    │
+2025-12-09T07:33:00.759537Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.759675Z	│ __next-on-pages-dist__/functions/api/admin/orders/[id].func.js                 │ esm           │ 71.40 KiB    │
+2025-12-09T07:33:00.759811Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.760095Z	│ __next-on-pages-dist__/functions/api/admin/orders/bulk-delete-selected.func.js │ esm           │ 70.40 KiB    │
+2025-12-09T07:33:00.760272Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.760529Z	│ __next-on-pages-dist__/functions/api/admin/orders/bulk-delete.func.js          │ esm           │ 70.05 KiB    │
+2025-12-09T07:33:00.760609Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.760826Z	│ __next-on-pages-dist__/functions/api/admin/orders.func.js                      │ esm           │ 71.55 KiB    │
+2025-12-09T07:33:00.760902Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.761038Z	│ __next-on-pages-dist__/functions/api/admin/products/[id].func.js               │ esm           │ 73.43 KiB    │
+2025-12-09T07:33:00.761184Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.761292Z	│ __next-on-pages-dist__/functions/api/admin/products.func.js                    │ esm           │ 72.44 KiB    │
+2025-12-09T07:33:00.761643Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.761803Z	│ __next-on-pages-dist__/functions/api/admin/setup.func.js                       │ esm           │ 69.85 KiB    │
+2025-12-09T07:33:00.761919Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.762195Z	│ __next-on-pages-dist__/functions/api/admin/stats.func.js                       │ esm           │ 70.31 KiB    │
+2025-12-09T07:33:00.762319Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.762537Z	│ __next-on-pages-dist__/functions/api/admin/users/bulk-delete.func.js           │ esm           │ 70.04 KiB    │
+2025-12-09T07:33:00.762679Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.762837Z	│ __next-on-pages-dist__/functions/api/admin/users.func.js                       │ esm           │ 71.00 KiB    │
+2025-12-09T07:33:00.76297Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.763073Z	│ __next-on-pages-dist__/functions/api/auth/[...nextauth].func.js                │ esm           │ 70.15 KiB    │
+2025-12-09T07:33:00.763235Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.763369Z	│ __next-on-pages-dist__/functions/api/auth/register.func.js                     │ esm           │ 70.56 KiB    │
+2025-12-09T07:33:00.763524Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.764428Z	│ __next-on-pages-dist__/functions/api/auth/update-password.func.js              │ esm           │ 70.82 KiB    │
+2025-12-09T07:33:00.764713Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.764797Z	│ __next-on-pages-dist__/functions/api/categories.func.js                        │ esm           │ 70.10 KiB    │
+2025-12-09T07:33:00.764998Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.765107Z	│ __next-on-pages-dist__/functions/api/checkout.func.js                          │ esm           │ 73.41 KiB    │
+2025-12-09T07:33:00.765307Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.765401Z	│ __next-on-pages-dist__/functions/api/orders/place.func.js                      │ esm           │ 70.60 KiB    │
+2025-12-09T07:33:00.765475Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.765686Z	│ __next-on-pages-dist__/functions/api/orders/process.func.js                    │ esm           │ 73.76 KiB    │
+2025-12-09T07:33:00.765844Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.765964Z	│ __next-on-pages-dist__/functions/api/orders/toss-confirm.func.js               │ esm           │ 71.94 KiB    │
+2025-12-09T07:33:00.76607Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.766202Z	│ __next-on-pages-dist__/functions/api/orders/toss-webhook.func.js               │ esm           │ 71.64 KiB    │
+2025-12-09T07:33:00.766273Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.766339Z	│ __next-on-pages-dist__/functions/api/orders/update-payment.func.js             │ esm           │ 70.31 KiB    │
+2025-12-09T07:33:00.766445Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.766658Z	│ __next-on-pages-dist__/functions/api/orders.func.js                            │ esm           │ 74.07 KiB    │
+2025-12-09T07:33:00.766791Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.76693Z	│ __next-on-pages-dist__/functions/api/product-questions.func.js                 │ esm           │ 72.26 KiB    │
+2025-12-09T07:33:00.767109Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.767265Z	│ __next-on-pages-dist__/functions/api/products/search.func.js                   │ esm           │ 70.29 KiB    │
+2025-12-09T07:33:00.767392Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.76753Z	│ __next-on-pages-dist__/functions/api/products.func.js                          │ esm           │ 70.26 KiB    │
+2025-12-09T07:33:00.767658Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.767789Z	│ __next-on-pages-dist__/functions/api/user/[id].func.js                         │ esm           │ 70.45 KiB    │
+2025-12-09T07:33:00.767907Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.768022Z	│ __next-on-pages-dist__/functions/api/user/delete-address.func.js               │ esm           │ 70.25 KiB    │
+2025-12-09T07:33:00.768984Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.769317Z	│ __next-on-pages-dist__/functions/api/user/orders.func.js                       │ esm           │ 70.71 KiB    │
+2025-12-09T07:33:00.769438Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.76969Z	│ __next-on-pages-dist__/functions/api/user/profile.func.js                      │ esm           │ 74.32 KiB    │
+2025-12-09T07:33:00.769833Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.770149Z	│ __next-on-pages-dist__/functions/api/user/upload-image.func.js                 │ esm           │ 68.74 KiB    │
+2025-12-09T07:33:00.770269Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.770835Z	│ __next-on-pages-dist__/functions/auth/error.func.js                            │ esm           │ 87.80 KiB    │
+2025-12-09T07:33:00.771151Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.771323Z	│ __next-on-pages-dist__/functions/auth/register.func.js                         │ esm           │ 86.95 KiB    │
+2025-12-09T07:33:00.771509Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.771665Z	│ __next-on-pages-dist__/functions/auth/signin.func.js                           │ esm           │ 86.89 KiB    │
+2025-12-09T07:33:00.771777Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.771915Z	│ __next-on-pages-dist__/functions/cancel.func.js                                │ esm           │ 90.48 KiB    │
+2025-12-09T07:33:00.772089Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.772239Z	│ __next-on-pages-dist__/functions/cart.func.js                                  │ esm           │ 113.03 KiB   │
+2025-12-09T07:33:00.77238Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.772494Z	│ __next-on-pages-dist__/functions/categories.func.js                            │ esm           │ 105.14 KiB   │
+2025-12-09T07:33:00.773385Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.773756Z	│ __next-on-pages-dist__/functions/checkout.func.js                              │ esm           │ 106.07 KiB   │
+2025-12-09T07:33:00.773855Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.773926Z	│ __next-on-pages-dist__/functions/contact.func.js                               │ esm           │ 96.97 KiB    │
+2025-12-09T07:33:00.774108Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.774271Z	│ __next-on-pages-dist__/functions/customer-service.func.js                      │ esm           │ 92.92 KiB    │
+2025-12-09T07:33:00.774368Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.774433Z	│ __next-on-pages-dist__/functions/dashboard.func.js                             │ esm           │ 85.74 KiB    │
+2025-12-09T07:33:00.775178Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.775458Z	│ __next-on-pages-dist__/functions/delivery-dashboard.func.js                    │ esm           │ 97.52 KiB    │
+2025-12-09T07:33:00.775551Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.775692Z	│ __next-on-pages-dist__/functions/delivery.func.js                              │ esm           │ 86.36 KiB    │
+2025-12-09T07:33:00.775857Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.776196Z	│ __next-on-pages-dist__/functions/faqs.func.js                                  │ esm           │ 103.95 KiB   │
+2025-12-09T07:33:00.776342Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.776537Z	│ __next-on-pages-dist__/functions/favorite.func.js                              │ esm           │ 96.29 KiB    │
+2025-12-09T07:33:00.776623Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.776687Z	│ __next-on-pages-dist__/functions/index.func.js                                 │ esm           │ 109.44 KiB   │
+2025-12-09T07:33:00.777217Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.777566Z	│ __next-on-pages-dist__/functions/inquiry.func.js                               │ esm           │ 101.78 KiB   │
+2025-12-09T07:33:00.777674Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.777749Z	│ __next-on-pages-dist__/functions/offers.func.js                                │ esm           │ 113.69 KiB   │
+2025-12-09T07:33:00.778272Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.778377Z	│ __next-on-pages-dist__/functions/orders/[id].func.js                           │ esm           │ 89.55 KiB    │
+2025-12-09T07:33:00.778743Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.778837Z	│ __next-on-pages-dist__/functions/packer-dashboard.func.js                      │ esm           │ 95.09 KiB    │
+2025-12-09T07:33:00.779459Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.779674Z	│ __next-on-pages-dist__/functions/payment/fail.func.js                          │ esm           │ 87.47 KiB    │
+2025-12-09T07:33:00.779814Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.779985Z	│ __next-on-pages-dist__/functions/payment/success.func.js                       │ esm           │ 88.24 KiB    │
+2025-12-09T07:33:00.780071Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.780191Z	│ __next-on-pages-dist__/functions/privacy-policy.func.js                        │ esm           │ 97.38 KiB    │
+2025-12-09T07:33:00.780372Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.78054Z	│ __next-on-pages-dist__/functions/products/[id].func.js                         │ esm           │ 133.95 KiB   │
+2025-12-09T07:33:00.780813Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.781011Z	│ __next-on-pages-dist__/functions/products.func.js                              │ esm           │ 115.28 KiB   │
+2025-12-09T07:33:00.781159Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.781314Z	│ __next-on-pages-dist__/functions/success.func.js                               │ esm           │ 95.57 KiB    │
+2025-12-09T07:33:00.781453Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.781585Z	│ __next-on-pages-dist__/functions/terms-of-service.func.js                      │ esm           │ 97.59 KiB    │
+2025-12-09T07:33:00.781711Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.781838Z	│ __next-on-pages-dist__/functions/unauthorized.func.js                          │ esm           │ 87.95 KiB    │
+2025-12-09T07:33:00.781982Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.78249Z	│ __next-on-pages-dist__/functions/user-dashboard.func.js                        │ esm           │ 98.57 KiB    │
+2025-12-09T07:33:00.782827Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.782958Z	│ __next-on-pages-dist__/manifest/88a389dd6c068190adb2efc795e4063c.js            │ esm           │ 0.37 KiB     │
+2025-12-09T07:33:00.783095Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.783275Z	│ __next-on-pages-dist__/wasm/wasm_c39b61d7ee62dac9882998c802f3feeffd883e60.wasm │ compiled-wasm │ 2243.12 KiB  │
+2025-12-09T07:33:00.783355Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.783478Z	│ __next-on-pages-dist__/webpack/12124.js                                        │ esm           │ 0.59 KiB     │
+2025-12-09T07:33:00.783722Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.783881Z	│ __next-on-pages-dist__/webpack/1bb29baca62882b58897f27bb3176515.js             │ esm           │ 120.77 KiB   │
+2025-12-09T07:33:00.784458Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.78471Z	│ __next-on-pages-dist__/webpack/1fe9d00aa4848eebf769dd7e418572aa.js             │ esm           │ 239.13 KiB   │
+2025-12-09T07:33:00.784843Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.784947Z	│ __next-on-pages-dist__/webpack/22433.js                                        │ esm           │ 11.92 KiB    │
+2025-12-09T07:33:00.785062Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.785188Z	│ __next-on-pages-dist__/webpack/30373.js                                        │ esm           │ 1.31 KiB     │
+2025-12-09T07:33:00.785319Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.785434Z	│ __next-on-pages-dist__/webpack/34559.js                                        │ esm           │ 0.50 KiB     │
+2025-12-09T07:33:00.785576Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.785696Z	│ __next-on-pages-dist__/webpack/34619.js                                        │ esm           │ 0.26 KiB     │
+2025-12-09T07:33:00.785812Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.786326Z	│ __next-on-pages-dist__/webpack/42091.js                                        │ esm           │ 0.99 KiB     │
+2025-12-09T07:33:00.786743Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.786846Z	│ __next-on-pages-dist__/webpack/42322.js                                        │ esm           │ 0.26 KiB     │
+2025-12-09T07:33:00.787037Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.787168Z	│ __next-on-pages-dist__/webpack/46105.js                                        │ esm           │ 0.70 KiB     │
+2025-12-09T07:33:00.787283Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.787401Z	│ __next-on-pages-dist__/webpack/47055.js                                        │ esm           │ 20.47 KiB    │
+2025-12-09T07:33:00.787513Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.787699Z	│ __next-on-pages-dist__/webpack/4774.js                                         │ esm           │ 2.46 KiB     │
+2025-12-09T07:33:00.787836Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.787947Z	│ __next-on-pages-dist__/webpack/47cb2bde095ae7afec918d114cdee81c.js             │ esm           │ 1.19 KiB     │
+2025-12-09T07:33:00.788055Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.788175Z	│ __next-on-pages-dist__/webpack/49705.js                                        │ esm           │ 2.31 KiB     │
+2025-12-09T07:33:00.788354Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.788465Z	│ __next-on-pages-dist__/webpack/54401.js                                        │ esm           │ 0.49 KiB     │
+2025-12-09T07:33:00.788586Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.788697Z	│ __next-on-pages-dist__/webpack/57f6ec9f336ee144fc2a910d7e789db9.js             │ esm           │ 0.10 KiB     │
+2025-12-09T07:33:00.788801Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.788918Z	│ __next-on-pages-dist__/webpack/58322.js                                        │ esm           │ 1.20 KiB     │
+2025-12-09T07:33:00.789172Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.789308Z	│ __next-on-pages-dist__/webpack/59597.js                                        │ esm           │ 0.14 KiB     │
+2025-12-09T07:33:00.78946Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.789605Z	│ __next-on-pages-dist__/webpack/5d6f29ab3b159a09035f7c47daf9c884.js             │ esm           │ 91.50 KiB    │
+2025-12-09T07:33:00.78974Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.789872Z	│ __next-on-pages-dist__/webpack/6133.js                                         │ esm           │ 0.21 KiB     │
+2025-12-09T07:33:00.790003Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.790131Z	│ __next-on-pages-dist__/webpack/63681.js                                        │ esm           │ 5.32 KiB     │
+2025-12-09T07:33:00.790271Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.790395Z	│ __next-on-pages-dist__/webpack/64190.js                                        │ esm           │ 0.99 KiB     │
+2025-12-09T07:33:00.790512Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.790639Z	│ __next-on-pages-dist__/webpack/67870.js                                        │ esm           │ 2.02 KiB     │
+2025-12-09T07:33:00.790785Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.790949Z	│ __next-on-pages-dist__/webpack/688.js                                          │ esm           │ 2.54 KiB     │
+2025-12-09T07:33:00.791089Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.791227Z	│ __next-on-pages-dist__/webpack/71476.js                                        │ esm           │ 0.54 KiB     │
+2025-12-09T07:33:00.791356Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.791493Z	│ __next-on-pages-dist__/webpack/71620.js                                        │ esm           │ 0.58 KiB     │
+2025-12-09T07:33:00.791621Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.791745Z	│ __next-on-pages-dist__/webpack/7694.js                                         │ esm           │ 0.57 KiB     │
+2025-12-09T07:33:00.791878Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.791998Z	│ __next-on-pages-dist__/webpack/83222.js                                        │ esm           │ 1.50 KiB     │
+2025-12-09T07:33:00.792115Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.792259Z	│ __next-on-pages-dist__/webpack/83583.js                                        │ esm           │ 7.17 KiB     │
+2025-12-09T07:33:00.792386Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.792513Z	│ __next-on-pages-dist__/webpack/83823.js                                        │ esm           │ 0.20 KiB     │
+2025-12-09T07:33:00.792629Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.793217Z	│ __next-on-pages-dist__/webpack/84320.js                                        │ esm           │ 23.76 KiB    │
+2025-12-09T07:33:00.793579Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.793743Z	│ __next-on-pages-dist__/webpack/84826.js                                        │ esm           │ 5.40 KiB     │
+2025-12-09T07:33:00.793876Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.793987Z	│ __next-on-pages-dist__/webpack/85342.js                                        │ esm           │ 1.59 KiB     │
+2025-12-09T07:33:00.794116Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.79424Z	│ __next-on-pages-dist__/webpack/89684.js                                        │ esm           │ 0.20 KiB     │
+2025-12-09T07:33:00.794355Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.794475Z	│ __next-on-pages-dist__/webpack/910a1ab07069d1f2b4559a84d9ea6499.js             │ esm           │ 264.46 KiB   │
+2025-12-09T07:33:00.794713Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.794794Z	│ __next-on-pages-dist__/webpack/94616.js                                        │ esm           │ 1.15 KiB     │
+2025-12-09T07:33:00.794921Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.795056Z	│ __next-on-pages-dist__/webpack/a0d8bd9d07384d1902c980b1166d52b2.js             │ esm           │ 3.82 KiB     │
+2025-12-09T07:33:00.795304Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.795552Z	│ __next-on-pages-dist__/webpack/aeb13d47d755feb020f0e788a5f99e9c.js             │ esm           │ 6.70 KiB     │
+2025-12-09T07:33:00.795794Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.795922Z	│ __next-on-pages-dist__/webpack/b48860fa73e02473ec49748b0ab8422e.js             │ esm           │ 7.32 KiB     │
+2025-12-09T07:33:00.796073Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.796249Z	│ __next-on-pages-dist__/webpack/ba4cc6e5612b893450be06625a2573f3.js             │ esm           │ 63.87 KiB    │
+2025-12-09T07:33:00.796377Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.796494Z	│ __next-on-pages-dist__/webpack/cd9d3aa2d34db0f3796cf513123b523f.js             │ esm           │ 56.34 KiB    │
+2025-12-09T07:33:00.796645Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.79675Z	│ __next-on-pages-dist__/webpack/ce4d4dcb175965ad829fc444e46b3fa5.js             │ esm           │ 0.19 KiB     │
+2025-12-09T07:33:00.797062Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.797195Z	│ __next-on-pages-dist__/webpack/dcd7c6755a26288904becbb735897125.js             │ esm           │ 21.13 KiB    │
+2025-12-09T07:33:00.7974Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.797579Z	│ __next-on-pages-dist__/webpack/e1f182f776392ab9fffa9a690636be28.js             │ esm           │ 184.98 KiB   │
+2025-12-09T07:33:00.797715Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.79808Z	│ __next-on-pages-dist__/webpack/e2276215ed038e1b00111ec81a20eb53.js             │ esm           │ 19.25 KiB    │
+2025-12-09T07:33:00.798404Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.798502Z	│ __next-on-pages-dist__/webpack/eba101652fc307c888d68adaca315dc3.js             │ esm           │ 188.84 KiB   │
+2025-12-09T07:33:00.798567Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.798639Z	│ __next-on-pages-dist__/webpack/edf216db7256139f9d31300c6344aafa.js             │ esm           │ 833.12 KiB   │
+2025-12-09T07:33:00.79876Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.799018Z	│ __next-on-pages-dist__/webpack/f80c53104201ab9272b6e9f05ce8e28a.js             │ esm           │ 108.82 KiB   │
+2025-12-09T07:33:00.799669Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.799924Z	│ __next-on-pages-dist__/webpack/fdc708bd8b6746b2147c39925548a28d.js             │ esm           │ 57.81 KiB    │
+2025-12-09T07:33:00.80001Z	├────────────────────────────────────────────────────────────────────────────────┼───────────────┼──────────────┤
+2025-12-09T07:33:00.800242Z	│ Total (136 modules)                                                            │               │ 11696.67 KiB │
+2025-12-09T07:33:00.800385Z	└────────────────────────────────────────────────────────────────────────────────┴───────────────┴──────────────┘
+2025-12-09T07:33:00.947113Z	✨ Compiled Worker successfully
+2025-12-09T07:33:02.207593Z	Found _routes.json in output directory. Uploading.
+2025-12-09T07:33:02.224768Z	Validating asset output directory
+2025-12-09T07:33:05.299545Z	Deploying your site to Cloudflare's global network...
+2025-12-09T07:33:11.303122Z	Parsed 7 valid redirect rules.
+2025-12-09T07:33:11.303575Z	Info: the redirect rule /login → 301 /auth/signin could be made more performant by bringing it above any lines with splats or placeholders.
+2025-12-09T07:33:11.303687Z	Info: the redirect rule /register → 301 /auth/register could be made more performant by bringing it above any lines with splats or placeholders.
+2025-12-09T07:33:11.303773Z	Info: the redirect rule /signup → 301 /auth/register could be made more performant by bringing it above any lines with splats or placeholders.
+2025-12-09T07:33:11.303835Z	Info: the redirect rule /dashboard → 301 /user-dashboard could be made more performant by bringing it above any lines with splats or placeholders.
+2025-12-09T07:33:11.303896Z	Info: the redirect rule /profile → 301 /account could be made more performant by bringing it above any lines with splats or placeholders.
+2025-12-09T07:33:11.303961Z	Parsed 6 valid header rules.
+2025-12-09T07:33:12.672551Z	Uploading... (133/167)
+2025-12-09T07:33:13.310732Z	Uploading... (144/167)
+2025-12-09T07:33:13.533262Z	Uploading... (155/167)
+2025-12-09T07:33:13.770608Z	Uploading... (167/167)
+2025-12-09T07:33:13.770825Z	✨ Success! Uploaded 34 files (133 already uploaded) (1.50 sec)
+2025-12-09T07:33:13.770916Z	
+2025-12-09T07:33:14.131393Z	✨ Upload complete!
+2025-12-09T07:33:18.638359Z	Success: Assets published!
+2025-12-09T07:33:21.756034Z	Error: Failed to publish your Function. Got error: Your Worker exceeded the size limit of 3 MiB. Please upgrade to a paid plan to deploy Workers up to 10 MiB. https://dash.cloudflare.com/f6d404fe14ecf641b1b6870650aa4ccb/workers/plans

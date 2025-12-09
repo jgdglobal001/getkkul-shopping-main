@@ -1,7 +1,5 @@
 "use client";
 
-export const runtime = 'edge';
-
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { FiAlertCircle } from "react-icons/fi";

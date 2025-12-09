@@ -1,5 +1,3 @@
-export const runtime = 'edge';
-
 import RegisterForm from "@/components/auth/RegisterForm";
 import Logo from "@/components/Logo";
 import { Metadata } from "next";

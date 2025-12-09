@@ -1,7 +1,5 @@
 "use client";
 
-export const runtime = 'edge';
-
 import Container from "@/components/Container";
 import Title from "@/components/Title";
 import { Metadata } from "next";
