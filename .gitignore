@@ -16,3 +16,8 @@ service-account.json
 /playwright-report/
 server.log
 test-results.txt
+
+# Cloudflare Pages / OpenNext
+/.open-next/
+/.wrangler/
+.dev.vars

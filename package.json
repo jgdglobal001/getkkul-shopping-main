@@ -10,15 +10,20 @@
     "lint": "next lint",
     "postbuild": "next-sitemap",
     "deploy:check": "./deploy-check.sh",
-    "deploy:cf": "wrangler pages deploy .next --project-name=shofy-commerce --compatibility-date=2024-08-20",
     "type-check": "tsc --noEmit",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
-    "test:debug": "playwright test --debug"
+    "test:debug": "playwright test --debug",
+    "cf:build": "npx @opennextjs/cloudflare build",
+    "cf:dev": "wrangler dev",
+    "cf:deploy": "npm run cf:build && wrangler deploy",
+    "cf:preview": "npm run cf:build && wrangler pages dev .open-next/assets --compatibility-flags=nodejs_compat_v2"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.0",
     "@headlessui/react": "^2.2.7",
+    "@neondatabase/serverless": "^1.0.2",
+    "@prisma/adapter-neon": "^7.1.0",
     "@prisma/client": "^6.18.0",
     "@reduxjs/toolkit": "^2.8.2",
     "@stripe/stripe-js": "^7.8.0",
@@ -30,7 +35,7 @@
     "framer-motion": "^12.23.12",
     "i18next": "^25.6.0",
     "i18next-browser-languagedetector": "^8.2.0",
-    "next": "15.4.6",
+    "next": "^15.4.8",
     "next-auth": "5.0.0-beta.29",
     "next-sitemap": "^4.2.3",
     "prisma": "^6.18.0",
@@ -44,9 +49,11 @@
     "react-redux": "^9.2.0",
     "redux-persist": "^6.0.0",
     "stripe": "^18.4.0",
-    "tailwind-merge": "^3.3.1"
+    "tailwind-merge": "^3.3.1",
+    "ws": "^8.18.3"
   },
   "devDependencies": {
+    "@opennextjs/cloudflare": "^1.14.4",
     "@playwright/test": "^1.56.1",
     "@tailwindcss/postcss": "^4.1.11",
     "@types/node": "^24.2.1",
@@ -56,6 +63,7 @@
     "eslint-config-next": "15.4.6",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.11",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.2",
+    "wrangler": "^4.53.0"
   }
 }
