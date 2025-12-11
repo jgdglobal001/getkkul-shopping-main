@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import Title from "../Title";
@@ -13,7 +13,6 @@ import { FiAlertCircle, FiLoader } from "react-icons/fi";
 import { FaSignInAlt } from "react-icons/fa";
 import Link from "next/link";
 import { resetCart } from "@/redux/shofySlice";
-import Script from "next/script";
 
 interface Props {
   cart: ProductType[];
@@ -27,7 +26,6 @@ const CartSummary = ({ cart }: Props) => {
   const [isFreeShipping, setIsFreeShipping] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(null);
   const [placing, setPlacing] = useState(false);
-  const [tossReady, setTossReady] = useState(false);
 
   const { data: session } = useSession();
   const router = useRouter();
@@ -72,19 +70,11 @@ const CartSummary = ({ cart }: Props) => {
       return;
     }
 
-    if (!tossReady) {
-      alert("결제 시스템을 준비 중입니다. 잠시 후 다시 시도해주세요.");
-      return;
-    }
-
     try {
       setPlacing(true);
-      const finalTotal = Math.round(totalAmt - discountAmt + shippingCost);
+      const finalTotal = totalAmt - discountAmt + shippingCost;
 
-      // Generate temporary order ID for Toss
-      const tempOrderId = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
-
-      // Store order data in sessionStorage for after payment success
+      // Prepare order data
       const orderData = {
         items: cart.map((item: ProductType) => ({
           id: item.id,
@@ -94,66 +84,47 @@ const CartSummary = ({ cart }: Props) => {
           image: item.thumbnail || item.images?.[0] || "",
           total: item.price * (1 - item.discountPercentage / 100) * item.quantity!,
         })),
-        totalAmount: finalTotal,
+        totalAmount: finalTotal.toString(),
+        currency: "USD",
+        status: "pending",
+        paymentStatus: "pending",
         customerEmail: session?.user?.email,
         customerName: session?.user?.name,
         shippingAddress: selectedAddress,
+        createdAt: new Date().toISOString(),
       };
-      sessionStorage.setItem('pendingOrder', JSON.stringify(orderData));
 
-      // Initialize Toss Payments and request payment directly
-      const tossClientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
-      if (!tossClientKey) {
-        throw new Error("결제 설정 오류: 클라이언트 키가 없습니다.");
-      }
-
-      const TossPayments = (window as any).TossPayments;
-      if (!TossPayments) {
-        throw new Error("결제 시스템 로드 실패. 페이지를 새로고침 해주세요.");
-      }
-
-      const tossPayments = TossPayments(tossClientKey);
-      const customerKey = session?.user?.id || session?.user?.email || `guest_${Date.now()}`;
-
-      // Request payment directly (no widget needed)
-      await tossPayments.requestPayment("카드", {
-        amount: finalTotal,
-        orderId: tempOrderId,
-        orderName: cart.length > 1
-          ? `${cart[0].title} 외 ${cart.length - 1}건`
-          : cart[0].title,
-        successUrl: `${window.location.origin}/payment/success`,
-        failUrl: `${window.location.origin}/payment/fail`,
-        customerEmail: session?.user?.email || "",
-        customerName: session?.user?.name || session?.user?.email?.split('@')[0] || "고객",
-        customerKey: customerKey,
+      // Create order first
+      const response = await fetch("/api/orders/place", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
       });
 
-    } catch (error: any) {
-      console.error("Payment error:", error);
-      if (error?.message?.includes("취소") || error?.code === "USER_CANCEL") {
-        console.log("사용자가 결제를 취소했습니다.");
+      if (response.ok) {
+        const result = await response.json();
+        // Clear cart after order is created
+        dispatch(resetCart());
+        // Go directly to checkout page with Toss Widget
+        router.push(`/checkout?orderId=${result.orderId}`);
       } else {
-        alert(`결제 오류: ${error?.message || "다시 시도해주세요."}`);
+        throw new Error("Failed to create order");
       }
+    } catch (error) {
+      console.error("Error creating order:", error);
+      alert(t("common.error_occurred"));
     } finally {
       setPlacing(false);
     }
   };
 
-  const isCheckoutDisabled = session?.user && (!selectedAddress || placing || !tossReady);
+  const isCheckoutDisabled = session?.user && (!selectedAddress || placing);
 
   return (
-    <>
-      {/* Load Toss Payments SDK */}
-      <Script
-        src="https://js.tosspayments.com/v2/standard"
-        onLoad={() => setTossReady(true)}
-        strategy="afterInteractive"
-      />
-
-      <section className="rounded-lg bg-gray-100 px-4 py-6 sm:p-10 lg:col-span-5 mt-16 lg:mt-0">
-        <Title>{t("cart.cart_summary")}</Title>
+    <section className="rounded-lg bg-gray-100 px-4 py-6 sm:p-10 lg:col-span-5 mt-16 lg:mt-0">
+      <Title>{t("cart.cart_summary")}</Title>
 
       {/* Show different content based on authentication status */}
       {session?.user ? (
@@ -279,18 +250,12 @@ const CartSummary = ({ cart }: Props) => {
             </>
           ) : !selectedAddress ? (
             t("cart.select_address_to_checkout")
-          ) : !tossReady ? (
-            <>
-              <FiLoader className="animate-spin mr-2" />
-              결제 준비 중...
-            </>
           ) : (
             t("cart.place_order")
           )}
         </Button>
       </div>
     </section>
-    </>
   );
 };
 
