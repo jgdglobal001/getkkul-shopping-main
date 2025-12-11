@@ -71,8 +71,8 @@ const ProductsPage = async ({ searchParams }: Props) => {
   const dummyData = await getData(`https://dummyjson.com/products/category/smartphones?limit=0`);
   const dummyProducts = dummyData?.products || [];
 
-  let products = [...dbProducts]; // DB 상품을 메인으로
-  const allProducts = [...products]; // Keep original for filters
+  let filteredProducts = [...dbProducts]; // DB 상품을 메인으로
+  const allProducts = [...filteredProducts]; // Keep original for filters
 
   // Extract unique brands from DB products only
   const uniqueBrands = [
@@ -81,32 +81,32 @@ const ProductsPage = async ({ searchParams }: Props) => {
 
   // 카테고리 필터링 - smartphones는 더미에서 가져오기
   if (params.category === "smartphones") {
-    products = dummyProducts;
+    filteredProducts = dummyProducts;
   } else if (params.category) {
     // 다른 카테고리는 DB에서만
     switch (params.category) {
       case "bestsellers":
-        products = getBestSellers(dbProducts);
+        filteredProducts = getBestSellers(dbProducts);
         break;
       case "new":
-        products = getNewArrivals(dbProducts);
+        filteredProducts = getNewArrivals(dbProducts);
         break;
       case "offers":
-        products = getOffers(dbProducts);
+        filteredProducts = getOffers(dbProducts);
         break;
       default:
-        products = getProductsByCategory(dbProducts, params.category);
+        filteredProducts = getProductsByCategory(dbProducts, params.category);
     }
   }
 
   // Filter by search term (DB에서만 검색)
   if (params.search) {
-    products = searchProducts(products, params.search);
+    filteredProducts = searchProducts(filteredProducts, params.search);
   }
 
   // Filter by brand
   if (params.brand) {
-    products = products.filter(
+    filteredProducts = filteredProducts.filter(
       (product: any) =>
         product.brand &&
         product.brand.toLowerCase().includes(params.brand!.toLowerCase())
@@ -117,14 +117,14 @@ const ProductsPage = async ({ searchParams }: Props) => {
   if (params.min_price || params.max_price) {
     const minPrice = params.min_price ? parseFloat(params.min_price) : 0;
     const maxPrice = params.max_price ? parseFloat(params.max_price) : Infinity;
-    products = products.filter(
+    filteredProducts = filteredProducts.filter(
       (product: any) => product.price >= minPrice && product.price <= maxPrice
     );
   }
 
   // Filter by color
   if (params.color) {
-    products = products.filter((product: any) => {
+    filteredProducts = filteredProducts.filter((product: any) => {
       const colorLower = params.color!.toLowerCase();
       // Check in tags
       if (product.tags && Array.isArray(product.tags)) {
@@ -172,11 +172,11 @@ const ProductsPage = async ({ searchParams }: Props) => {
           {params.category || params.search
             ? (() => {
                 const template = t("products.found_products", "{{count}}개 상품 찾음");
-                return template.replace("{{count}}", String(products.length));
+                return template.replace("{{count}}", String(filteredProducts.length));
               })()
             : (() => {
                 const template = t("products.discover_collection", "{{count}}개 상품의 전체 컬렉션 발견");
-                return template.replace("{{count}}", String(products.length));
+                return template.replace("{{count}}", String(filteredProducts.length));
               })()}
         </p>
 
@@ -221,7 +221,7 @@ const ProductsPage = async ({ searchParams }: Props) => {
         {/* Products Section */}
         <div className="flex-1 min-w-0">
           <InfiniteProductList
-            products={products}
+            products={filteredProducts}
             currentSort={params.sort || "default"}
           />
         </div>
