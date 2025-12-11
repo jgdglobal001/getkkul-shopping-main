@@ -23,9 +23,9 @@ import { notFound } from "next/navigation";
 export const dynamic = "force-dynamic";
 
 interface Props {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 const SingleProductPage = async ({ params }: Props) => {
