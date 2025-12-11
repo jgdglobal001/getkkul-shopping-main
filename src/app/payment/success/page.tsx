@@ -5,22 +5,38 @@ export const runtime = 'edge';
 import { useSearchParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState, useCallback } from "react";
+import { useDispatch } from "react-redux";
 import Link from "next/link";
 import { FiCheckCircle } from "react-icons/fi";
+import { resetCart } from "@/redux/shofySlice";
 
 export default function PaymentSuccess() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const dispatch = useDispatch();
   const { data: session } = useSession();
   const [loading, setLoading] = useState(true);
+  const [orderCreated, setOrderCreated] = useState(false);
 
   const paymentKey = searchParams.get("paymentKey");
   const orderId = searchParams.get("orderId");
   const amount = searchParams.get("amount");
 
-  const verifyPayment = useCallback(async () => {
+  const verifyAndCreateOrder = useCallback(async () => {
     try {
-      const response = await fetch("/api/orders/toss-confirm", {
+      // Get pending order data from sessionStorage
+      const pendingOrderStr = sessionStorage.getItem('pendingOrder');
+
+      if (!pendingOrderStr) {
+        console.error("No pending order found in sessionStorage");
+        setLoading(false);
+        return;
+      }
+
+      const pendingOrder = JSON.parse(pendingOrderStr);
+
+      // 1. Verify payment with Toss
+      const verifyResponse = await fetch("/api/orders/toss-confirm", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,31 +49,49 @@ export default function PaymentSuccess() {
         }),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error("Backend error response:", errorData);
+      if (!verifyResponse.ok) {
+        const errorData = await verifyResponse.json();
+        console.error("Payment verification failed:", errorData);
         throw new Error(errorData.error || "Payment verification failed");
+      }
+
+      // 2. Create order in database
+      const orderResponse = await fetch("/api/orders/place", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...pendingOrder,
+          orderId: orderId,
+          status: "confirmed",
+          paymentStatus: "paid",
+          paymentKey: paymentKey,
+        }),
+      });
+
+      if (!orderResponse.ok) {
+        console.error("Failed to create order in database");
+      } else {
+        setOrderCreated(true);
+        // Clear pending order from sessionStorage
+        sessionStorage.removeItem('pendingOrder');
+        // Clear cart
+        dispatch(resetCart());
       }
 
       setLoading(false);
     } catch (error) {
       console.error("Payment verification error:", error);
-      console.error("Full error details:", {
-        paymentKey,
-        orderId,
-        amount,
-        userEmail: session?.user?.email,
-      });
       setLoading(false);
     }
-  }, [orderId, paymentKey, amount, session?.user?.email]);
+  }, [orderId, paymentKey, amount, session?.user?.email, dispatch]);
 
   useEffect(() => {
-    // Verify payment on the backend
     if (paymentKey && orderId && amount && session?.user?.email) {
-      verifyPayment();
+      verifyAndCreateOrder();
     }
-  }, [paymentKey, orderId, amount, session?.user?.email, verifyPayment]);
+  }, [paymentKey, orderId, amount, session?.user?.email, verifyAndCreateOrder]);
 
   if (loading) {
     return (
