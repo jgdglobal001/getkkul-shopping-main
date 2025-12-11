@@ -138,7 +138,7 @@ export default function PaymentSuccess() {
           </Link>
           <Link
             href="/"
-            className="block w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-lg font-semibold hover:bg-gray-200 transition text-center border border-gray-300"
+            className="block w-full bg-pink-400 text-white py-3 px-4 rounded-lg font-semibold hover:bg-pink-500 transition text-center"
           >
             🛒 계속 쇼핑하기
           </Link>
