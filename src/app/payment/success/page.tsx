@@ -129,18 +129,18 @@ export default function PaymentSuccess() {
           </p>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-3">
           <Link
             href="/account/orders"
-            className="block w-full bg-primary text-white py-2 px-4 rounded font-semibold hover:bg-primary-dark transition"
+            className="block w-full bg-green-600 text-white py-3 px-4 rounded-lg font-semibold hover:bg-green-700 transition text-center"
           >
-            주문 확인
+            📋 주문 내역 확인
           </Link>
           <Link
             href="/"
-            className="block w-full bg-gray-200 text-gray-800 py-2 px-4 rounded font-semibold hover:bg-gray-300 transition"
+            className="block w-full bg-gray-100 text-gray-700 py-3 px-4 rounded-lg font-semibold hover:bg-gray-200 transition text-center border border-gray-300"
           >
-            계속 쇼핑
+            🛒 계속 쇼핑하기
           </Link>
         </div>
       </div>
