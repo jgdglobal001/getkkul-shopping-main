@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import Title from "../Title";
 import Button from "../ui/Button";
@@ -12,7 +11,6 @@ import { CiDeliveryTruck } from "react-icons/ci";
 import { FiAlertCircle, FiLoader, FiX } from "react-icons/fi";
 import { FaSignInAlt } from "react-icons/fa";
 import Link from "next/link";
-import { resetCart } from "@/redux/shofySlice";
 import Script from "next/script";
 
 interface Props {
@@ -39,7 +37,6 @@ const CartSummary = ({ cart }: Props) => {
 
   const { data: session } = useSession();
   const router = useRouter();
-  const dispatch = useDispatch();
 
   // Get free shipping threshold from environment
   const freeShippingThreshold =
@@ -188,8 +185,8 @@ const CartSummary = ({ cart }: Props) => {
         customerName: customerName,
       });
 
-      // Payment success will redirect, so clear cart
-      dispatch(resetCart());
+      // Note: Cart will be cleared in /payment/success page after payment verification
+      // Don't clear here - redirect happens and Redux state resets anyway
     } catch (error: any) {
       if (!error?.message?.includes("취소")) {
         alert(`결제 실패: ${error?.message || "다시 시도해주세요."}`);
