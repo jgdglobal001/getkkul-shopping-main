@@ -7,12 +7,12 @@ const checkConfig = (server: string): Config | {} => {
   switch (server) {
     case "production":
       config = {
-        baseUrl: "https://shofy.reactbd.com",
+        baseUrl: "https://www.getkkul.com",
       };
       break;
     case "local":
       config = {
-        baseUrl: "http://localhost:3000",
+        baseUrl: "http://localhost:3002",
       };
       break;
     default:
@@ -21,5 +21,5 @@ const checkConfig = (server: string): Config | {} => {
   return config;
 };
 
-export const selectServer = "local";
+export const selectServer = "production";
 export const config = checkConfig(selectServer) as Config;
