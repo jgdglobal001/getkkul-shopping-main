@@ -40,6 +40,38 @@ const CheckoutPage = () => {
   const existingOrderId = searchParams.get("orderId");
   const paymentCancelled = searchParams.get("cancelled");
 
+  // Define fetchExistingOrder BEFORE the useEffect that uses it
+  const fetchExistingOrder = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `/api/user/profile?email=${encodeURIComponent(
+          session?.user?.email || ""
+        )}`
+      );
+      const data = await response.json();
+
+      if (data.orders) {
+        const order = data.orders.find((o: any) => o.id === existingOrderId);
+        if (order) {
+          setExistingOrder(order);
+        } else {
+          // Order not found, redirect to orders page
+          router.push("/account/orders");
+        }
+      } else {
+        // No orders found, redirect to orders page
+        router.push("/account/orders");
+      }
+    } catch (error) {
+      console.error("Error fetching order:", error);
+      // On error, redirect to orders page
+      router.push("/account/orders");
+    } finally {
+      setLoading(false);
+    }
+  }, [session?.user?.email, existingOrderId, router]);
+
   useEffect(() => {
     // Always expect an order ID for this new flow
     if (existingOrderId) {
@@ -159,37 +191,6 @@ const CheckoutPage = () => {
       return () => clearTimeout(timer);
     }
   }, [paymentCancelled, existingOrderId, searchParams, router]);
-
-  const fetchExistingOrder = useCallback(async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(
-        `/api/user/profile?email=${encodeURIComponent(
-          session?.user?.email || ""
-        )}`
-      );
-      const data = await response.json();
-
-      if (data.orders) {
-        const order = data.orders.find((o: any) => o.id === existingOrderId);
-        if (order) {
-          setExistingOrder(order);
-        } else {
-          // Order not found, redirect to orders page
-          router.push("/account/orders");
-        }
-      } else {
-        // No orders found, redirect to orders page
-        router.push("/account/orders");
-      }
-    } catch (error) {
-      console.error("Error fetching order:", error);
-      // On error, redirect to orders page
-      router.push("/account/orders");
-    } finally {
-      setLoading(false);
-    }
-  }, [session?.user?.email, existingOrderId, router]);
 
   const handleCashOnDelivery = async () => {
     try {
