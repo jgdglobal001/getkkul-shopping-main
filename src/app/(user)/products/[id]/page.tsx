@@ -83,8 +83,8 @@ const SingleProductPage = async ({ params }: Props) => {
     const questionsResult = await db
       .select({
         id: productQuestions.id,
-        content: productQuestions.content,
-        isSecret: productQuestions.isSecret,
+        question: productQuestions.question,
+        isAnswered: productQuestions.isAnswered,
         createdAt: productQuestions.createdAt,
         userName: users.name,
       })
@@ -99,7 +99,7 @@ const SingleProductPage = async ({ params }: Props) => {
         const answersResult = await db
           .select({
             id: productAnswers.id,
-            content: productAnswers.content,
+            answer: productAnswers.answer,
             createdAt: productAnswers.createdAt,
             userName: users.name,
           })
