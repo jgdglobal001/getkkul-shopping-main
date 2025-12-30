@@ -34,36 +34,37 @@ export default function WelcomePage() {
   }, []);
 
   useEffect(() => {
-    // 세션 로딩 완료 후 신규 가입자 확인
+    // 세션 로딩 완료 후 처리
     if (status === "authenticated" && session?.user && !checkedRef.current) {
       checkedRef.current = true;
 
       // 방법 1: 세션에서 isNewUser 플래그 확인
       const userIsNewFromSession = (session.user as any).isNewUser === true;
 
-      // 방법 2: URL에서 신규 가입 여부 확인 (RegisterForm에서 callbackUrl로 왔으면 신규)
-      // 회원가입 페이지에서 OAuth 로그인하면 이 페이지로 오므로, 여기 온 것 자체가 신규 가입 시도
-      // 단, 기존 회원이 실수로 회원가입 페이지에서 로그인한 경우를 위해 세션 플래그 우선 확인
+      // 방법 2: sessionStorage에서 회원가입 시도 플래그 확인
+      const registerAttempt = sessionStorage.getItem('register_attempt');
 
-      // 방법 3: 사용자 생성일 확인 (10초 이내면 신규)
-      // 이 방법은 세션에 createdAt이 없으므로 사용 불가
+      // 방법 3: 이미 환영 페이지를 본 적 있는지 확인
+      const alreadyShown = sessionStorage.getItem('welcome_shown');
 
-      // 회원가입 페이지에서 왔다면 (callbackUrl이 /auth/welcome) 신규로 간주
-      // isNewUser 플래그가 세션 갱신 시 사라질 수 있으므로,
-      // 이 페이지에 도착한 것 자체를 신규 가입 완료로 처리
+      console.log('[Welcome] isNewUser from session:', userIsNewFromSession);
+      console.log('[Welcome] register_attempt:', registerAttempt);
+      console.log('[Welcome] alreadyShown:', alreadyShown);
+
       if (userIsNewFromSession) {
+        // 세션에서 신규 사용자로 확인됨
+        sessionStorage.removeItem('register_attempt');
+        sessionStorage.setItem('welcome_shown', 'true');
+        setIsNewUser(true);
+      } else if (registerAttempt && !alreadyShown) {
+        // 회원가입 페이지에서 왔고, 아직 환영 페이지 안 봄
+        sessionStorage.removeItem('register_attempt');
+        sessionStorage.setItem('welcome_shown', 'true');
         setIsNewUser(true);
       } else {
-        // 세션에 플래그가 없더라도, 이 페이지에 처음 방문한 거라면
-        // (sessionStorage 체크로 중복 방문 방지)
-        const alreadyShown = sessionStorage.getItem('welcome_shown');
-        if (!alreadyShown) {
-          sessionStorage.setItem('welcome_shown', 'true');
-          setIsNewUser(true);
-        } else {
-          // 이미 본 적 있으면 홈으로
-          router.replace("/");
-        }
+        // 기존 회원이거나 이미 환영 페이지를 본 경우
+        console.log('[Welcome] Redirecting to home');
+        router.replace("/");
       }
     }
   }, [status, session, router]);

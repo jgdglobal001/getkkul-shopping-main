@@ -140,16 +140,33 @@ export const authConfig: NextAuthConfig = {
       return token;
     },
     async redirect({ url, baseUrl }) {
-      // ✅ 신규 가입자는 welcome 페이지로, 기존 회원은 홈으로
+      console.log(`[Redirect] url: ${url}, baseUrl: ${baseUrl}`);
+
+      // ✅ 신규 가입자는 welcome 페이지로
       // callbackUrl이 /auth/welcome인 경우 (회원가입 페이지에서 온 경우)
-      // 신규 가입자인지는 클라이언트에서 확인 후 처리
       if (url.includes("/auth/welcome")) {
-        return url; // 회원가입 페이지에서 온 경우 welcome으로
+        console.log(`[Redirect] Going to welcome page: ${baseUrl}/auth/welcome`);
+        return `${baseUrl}/auth/welcome`;
       }
+
       // Allows relative callback URLs
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      if (url.startsWith("/")) {
+        const finalUrl = `${baseUrl}${url}`;
+        console.log(`[Redirect] Relative URL: ${finalUrl}`);
+        return finalUrl;
+      }
+
       // Allows callback URLs on the same origin
-      if (new URL(url).origin === baseUrl) return url;
+      try {
+        if (new URL(url).origin === baseUrl) {
+          console.log(`[Redirect] Same origin: ${url}`);
+          return url;
+        }
+      } catch (e) {
+        // Invalid URL
+      }
+
+      console.log(`[Redirect] Default to baseUrl: ${baseUrl}`);
       return baseUrl;
     },
     async session({ session, token }) {
