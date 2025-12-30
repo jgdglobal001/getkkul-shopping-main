@@ -75,14 +75,14 @@ const ProductCard = ({ product }: Props) => {
         {/* Stock Badge */}
         {product?.stock <= 5 && product?.stock > 0 && (
           <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-2 py-1 rounded-full text-xs font-semibold shadow-lg">
-            Only {product.stock} left!
+            {product.stock}개 남음!
           </div>
         )}
 
         {product?.stock === 0 && (
           <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
             <div className="bg-red-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-lg">
-              OUT OF STOCK
+              품절
             </div>
           </div>
         )}

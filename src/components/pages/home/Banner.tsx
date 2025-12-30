@@ -18,9 +18,9 @@ const Banner = async () => {
           </p>
           <Button
             href={banner?.buttonLink}
-            className="flex items-center gap-1 bg-theme-white text-black rounded-md w-32 px-0 justify-center text-sm font-semibold hover:bg-transparent hover:text-theme-white py-3 border border-transparent hover:border-white/40 duration-200"
+            className="flex items-center gap-1 bg-theme-white text-black rounded-md w-36 px-0 justify-center text-sm font-semibold hover:bg-transparent hover:text-theme-white py-3 border border-transparent hover:border-white/40 duration-200"
           >
-            Shop Now <GoArrowRight className="text-lg" />
+            지금 구매하기 <GoArrowRight className="text-lg" />
           </Button>
         </div>
         <div className="relative w-96 h-96">

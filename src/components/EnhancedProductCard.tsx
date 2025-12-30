@@ -46,7 +46,7 @@ const EnhancedProductCard = ({ product, view = "grid" }: Props) => {
             {product?.stock === 0 && (
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
                 <div className="bg-red-500 text-white px-3 py-2 rounded-lg font-bold text-sm">
-                  OUT OF STOCK
+                  품절
                 </div>
               </div>
             )}
@@ -120,7 +120,7 @@ const EnhancedProductCard = ({ product, view = "grid" }: Props) => {
 
               <div className="flex flex-col justify-between items-start md:items-end md:ml-6 w-full md:w-auto md:min-w-[140px]">
                 <div className="text-left md:text-right w-full md:w-auto">
-                  <p className="text-sm text-gray-500 mb-1">Availability</p>
+                  <p className="text-sm text-gray-500 mb-1">재고 상태</p>
                   <div className="flex items-center gap-2">
                     <div
                       className={`w-2 h-2 rounded-full ${
@@ -141,8 +141,8 @@ const EnhancedProductCard = ({ product, view = "grid" }: Props) => {
                       }`}
                     >
                       {product?.stock > 0
-                        ? `${product.stock} in stock`
-                        : "Out of stock"}
+                        ? `재고 ${product.stock}개`
+                        : "품절"}
                     </p>
                   </div>
                 </div>
@@ -190,14 +190,14 @@ const EnhancedProductCard = ({ product, view = "grid" }: Props) => {
         {/* Stock Badge */}
         {product?.stock <= 5 && product?.stock > 0 && (
           <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-2 py-1 rounded-full text-xs font-semibold shadow-lg">
-            Only {product.stock} left!
+            {product.stock}개 남음!
           </div>
         )}
 
         {product?.stock === 0 && (
           <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
             <div className="bg-red-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-lg">
-              OUT OF STOCK
+              품절
             </div>
           </div>
         )}
@@ -261,7 +261,7 @@ const EnhancedProductCard = ({ product, view = "grid" }: Props) => {
           {/* Stock Status */}
           {product?.stock > 0 && (
             <span className="text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full font-medium w-fit">
-              In Stock ({product.stock})
+              재고 {product.stock}개
             </span>
           )}
         </div>
