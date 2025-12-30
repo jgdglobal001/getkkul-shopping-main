@@ -35,38 +35,51 @@ export default function WelcomePage() {
 
   useEffect(() => {
     // 세션 로딩 완료 후 처리
-    if (status === "authenticated" && session?.user && !checkedRef.current) {
-      checkedRef.current = true;
+    async function checkNewUser() {
+      if (status === "authenticated" && session?.user && !checkedRef.current) {
+        checkedRef.current = true;
 
-      // 방법 1: 세션에서 isNewUser 플래그 확인
-      const userIsNewFromSession = (session.user as any).isNewUser === true;
+        // 방법 1: 세션에서 isNewUser 플래그 확인
+        const userIsNewFromSession = (session.user as any).isNewUser === true;
 
-      // 방법 2: sessionStorage에서 회원가입 시도 플래그 확인
-      const registerAttempt = sessionStorage.getItem('register_attempt');
+        console.log('[Welcome] isNewUser from session:', userIsNewFromSession);
 
-      // 방법 3: 이미 환영 페이지를 본 적 있는지 확인
-      const alreadyShown = sessionStorage.getItem('welcome_shown');
+        if (userIsNewFromSession) {
+          // 세션에서 신규 사용자로 확인됨
+          setIsNewUser(true);
+          return;
+        }
 
-      console.log('[Welcome] isNewUser from session:', userIsNewFromSession);
-      console.log('[Welcome] register_attempt:', registerAttempt);
-      console.log('[Welcome] alreadyShown:', alreadyShown);
+        // 방법 2: API 호출로 createdAt 확인 (1분 이내면 신규)
+        try {
+          const response = await fetch('/api/user/profile');
+          if (response.ok) {
+            const userData = await response.json();
+            const createdAt = new Date(userData.createdAt);
+            const now = new Date();
+            const diffInSeconds = (now.getTime() - createdAt.getTime()) / 1000;
 
-      if (userIsNewFromSession) {
-        // 세션에서 신규 사용자로 확인됨
-        sessionStorage.removeItem('register_attempt');
-        sessionStorage.setItem('welcome_shown', 'true');
-        setIsNewUser(true);
-      } else if (registerAttempt && !alreadyShown) {
-        // 회원가입 페이지에서 왔고, 아직 환영 페이지 안 봄
-        sessionStorage.removeItem('register_attempt');
-        sessionStorage.setItem('welcome_shown', 'true');
-        setIsNewUser(true);
-      } else {
-        // 기존 회원이거나 이미 환영 페이지를 본 경우
-        console.log('[Welcome] Redirecting to home');
+            console.log('[Welcome] createdAt:', createdAt);
+            console.log('[Welcome] diffInSeconds:', diffInSeconds);
+
+            // 60초 이내에 생성된 계정이면 신규 가입자
+            if (diffInSeconds < 60) {
+              console.log('[Welcome] New user detected by createdAt');
+              setIsNewUser(true);
+              return;
+            }
+          }
+        } catch (error) {
+          console.error('[Welcome] Error fetching profile:', error);
+        }
+
+        // 기존 회원이면 홈으로 리다이렉트
+        console.log('[Welcome] Redirecting to home - not a new user');
         router.replace("/");
       }
     }
+
+    checkNewUser();
   }, [status, session, router]);
 
   // Loading state

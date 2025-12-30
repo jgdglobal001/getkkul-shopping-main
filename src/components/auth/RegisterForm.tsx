@@ -1,30 +1,16 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 import Link from "next/link";
 import { FaGoogle } from "react-icons/fa";
 import { SiKakao, SiNaver } from "react-icons/si";
 import { toast } from "react-hot-toast";
 
 export default function RegisterForm() {
-  const router = useRouter();
-
-  // 회원가입 페이지에서 로그인 시도하면 sessionStorage에 표시
-  useEffect(() => {
-    // 회원가입 시도 플래그 설정 (이 페이지에 방문했다는 것 = 회원가입 의도)
-    sessionStorage.setItem('register_attempt', 'true');
-  }, []);
-
   const handleOAuthSignIn = async (provider: "google" | "kakao" | "naver") => {
     try {
       // callbackUrl을 /auth/welcome으로 설정
-      // redirect: false로 설정하면 signIn이 결과를 반환함
-      const result = await signIn(provider, {
-        callbackUrl: "/auth/welcome",
-        redirect: true
-      });
+      await signIn(provider, { callbackUrl: "/auth/welcome" });
     } catch (error) {
       toast.error("소셜 로그인에 실패했습니다");
     }

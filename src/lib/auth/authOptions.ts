@@ -143,8 +143,8 @@ export const authConfig: NextAuthConfig = {
       console.log(`[Redirect] url: ${url}, baseUrl: ${baseUrl}`);
 
       // ✅ 신규 가입자는 welcome 페이지로
-      // callbackUrl이 /auth/welcome인 경우 (회원가입 페이지에서 온 경우)
-      if (url.includes("/auth/welcome")) {
+      // callbackUrl이 /auth/welcome을 포함하는 경우
+      if (url.includes("/auth/welcome") || url.includes("callbackUrl=%2Fauth%2Fwelcome")) {
         console.log(`[Redirect] Going to welcome page: ${baseUrl}/auth/welcome`);
         return `${baseUrl}/auth/welcome`;
       }
