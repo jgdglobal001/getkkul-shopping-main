@@ -100,11 +100,6 @@ export const authConfig: NextAuthConfig = {
               (user as any).isNewUser = isNewUser;
             }
           }
-          // ✅ 신규 가입자면 무조건 /auth/welcome으로 리다이렉트
-          if ((user as any).isNewUser) {
-            console.log(`[OAuth SignIn] New user detected, redirecting to /auth/welcome`);
-            return "/auth/welcome";
-          }
         } catch (error) {
           console.error("Error handling OAuth user:", error);
           // Don't prevent sign-in, just log the error
