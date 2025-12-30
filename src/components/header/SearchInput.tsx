@@ -28,17 +28,21 @@ const SearchInput = () => {
 
   // Format price helper
   const formatPrice = (amount: number) => {
-    const convertedAmount = convertPrice(amount);
-    const noDecimalCurrencies = ["KRW", "CNY"];
+    // Assume DB products are in KRW by default to match PriceFormat/ProductPrice behavior
+    const convertedAmount = convertPrice(amount, "KRW");
+    const noDecimalCurrencies = ["KRW", "JPY", "CNY"];
     const useDecimals = !noDecimalCurrencies.includes(selectedCurrency);
     const locale = selectedCurrency === "KRW" ? "ko-KR" : "en-US";
+
+    // Round for currencies that don't use decimals to be safe
+    const finalAmount = !useDecimals ? Math.round(convertedAmount) : convertedAmount;
 
     return new Intl.NumberFormat(locale, {
       style: "currency",
       currency: selectedCurrency,
       minimumFractionDigits: useDecimals ? 2 : 0,
       maximumFractionDigits: useDecimals ? 2 : 0,
-    }).format(convertedAmount);
+    }).format(finalAmount);
   };
 
   // Effect to detect click outside
@@ -186,12 +190,12 @@ const SearchInput = () => {
                   >
                     <div
                       className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-sm ${index === 0
-                          ? "bg-yellow-400"
-                          : index === 1
-                            ? "bg-gray-400"
-                            : index === 2
-                              ? "bg-orange-400"
-                              : "bg-theme-color/60"
+                        ? "bg-yellow-400"
+                        : index === 1
+                          ? "bg-gray-400"
+                          : index === 2
+                            ? "bg-orange-400"
+                            : "bg-theme-color/60"
                         }`}
                     >
                       {index + 1}
