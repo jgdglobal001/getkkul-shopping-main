@@ -7,6 +7,7 @@ import { ProductType } from "../../../type";
 import Link from "next/link";
 import { CiSearch } from "react-icons/ci";
 import { useProductSearch } from "@/hooks/useProductSearch";
+import PriceFormat from "../PriceFormat";
 
 const SearchInput = () => {
   const [isInputFocused, setIsInputFocused] = useState(false);
@@ -125,9 +126,10 @@ const SearchInput = () => {
                       )}
                     </div>
                     {item?.price && (
-                      <span className="text-sm font-semibold text-theme-color">
-                        ${item.price}
-                      </span>
+                      <PriceFormat
+                        amount={item.price}
+                        className="text-sm font-semibold text-theme-color"
+                      />
                     )}
                   </Link>
                 ))}
@@ -155,7 +157,7 @@ const SearchInput = () => {
                     {t("common.trending_products")}
                   </p>
                 </div>
-                {suggestedProducts?.map((item: ProductType) => (
+                {suggestedProducts?.map((item: ProductType, index: number) => (
                   <Link
                     key={item?.id}
                     href={{
@@ -163,13 +165,22 @@ const SearchInput = () => {
                       query: { id: item?.id },
                     }}
                     onClick={handleProductClick}
-                    className="flex items-center gap-x-2 text-base font-medium hover:bg-light-text/30 px-3 py-1.5 border-b border-gray-100 last:border-b-0"
+                    className="flex items-center gap-x-2 text-base font-medium hover:bg-light-text/30 px-3 py-1.5 border-b border-gray-100 last:border-b-0 group"
                   >
-                    <div className="w-4 h-4 bg-gradient-to-r from-theme-color to-blue-600 rounded-full flex items-center justify-center">
-                      <div className="w-2 h-2 bg-white rounded-full"></div>
+                    <div
+                      className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-sm ${index === 0
+                        ? "bg-yellow-400"
+                        : index === 1
+                          ? "bg-gray-400"
+                          : index === 2
+                            ? "bg-orange-400"
+                            : "bg-theme-color/60"
+                        }`}
+                    >
+                      {index + 1}
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-gray-800 truncate">
+                      <p className="text-sm font-medium text-gray-800 truncate group-hover:text-theme-color transition-colors">
                         {item?.title}
                       </p>
                       {item?.category && (
@@ -179,9 +190,10 @@ const SearchInput = () => {
                       )}
                     </div>
                     {item?.price && (
-                      <span className="text-sm font-semibold text-theme-color">
-                        ${item.price}
-                      </span>
+                      <PriceFormat
+                        amount={item.price}
+                        className="text-sm font-semibold text-theme-color"
+                      />
                     )}
                   </Link>
                 ))}
