@@ -12,7 +12,9 @@ export default function SignInForm() {
 
   const handleOAuthSignIn = async (provider: "google" | "kakao" | "naver") => {
     try {
-      await signIn(provider, { callbackUrl: "/" });
+      // 모든 OAuth 로그인은 /auth/welcome으로 리다이렉트
+      // welcome 페이지에서 신규/기존 회원 판단 후 적절히 처리
+      await signIn(provider, { callbackUrl: "/auth/welcome" });
     } catch (error) {
       toast.error("소셜 로그인에 실패했습니다");
     }
