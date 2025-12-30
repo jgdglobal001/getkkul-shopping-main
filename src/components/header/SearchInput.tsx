@@ -7,12 +7,14 @@ import { ProductType } from "../../../type";
 import Link from "next/link";
 import { CiSearch } from "react-icons/ci";
 import { useProductSearch } from "@/hooks/useProductSearch";
-import PriceFormat from "../PriceFormat";
+import { useCurrency } from "@/contexts/CurrencyContext";
+import { twMerge } from "tailwind-merge";
 
 const SearchInput = () => {
   const [isInputFocused, setIsInputFocused] = useState(false);
   const searchContainerRef = useRef(null);
   const { t } = useTranslation();
+  const { selectedCurrency, convertPrice } = useCurrency();
 
   const {
     search,
@@ -23,6 +25,22 @@ const SearchInput = () => {
     hasSearched,
     clearSearch,
   } = useProductSearch({ debounceDelay: 300 });
+
+  // Format price helper
+  const formatPrice = (amount: number) => {
+    const convertedAmount = convertPrice(amount);
+    const noDecimalCurrencies = ["KRW", "CNY"];
+    const useDecimals = !noDecimalCurrencies.includes(selectedCurrency);
+    const locale = selectedCurrency === "KRW" ? "ko-KR" : "en-US";
+
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency: selectedCurrency,
+      minimumFractionDigits: useDecimals ? 2 : 0,
+      maximumFractionDigits: useDecimals ? 2 : 0,
+    }).format(convertedAmount);
+  };
+
   // Effect to detect click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -126,10 +144,9 @@ const SearchInput = () => {
                       )}
                     </div>
                     {item?.price && (
-                      <PriceFormat
-                        amount={item.price}
-                        className="text-sm font-semibold text-theme-color"
-                      />
+                      <span className="text-sm font-semibold text-theme-color">
+                        {formatPrice(item.price)}
+                      </span>
                     )}
                   </Link>
                 ))}
@@ -169,12 +186,12 @@ const SearchInput = () => {
                   >
                     <div
                       className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white shadow-sm ${index === 0
-                        ? "bg-yellow-400"
-                        : index === 1
-                          ? "bg-gray-400"
-                          : index === 2
-                            ? "bg-orange-400"
-                            : "bg-theme-color/60"
+                          ? "bg-yellow-400"
+                          : index === 1
+                            ? "bg-gray-400"
+                            : index === 2
+                              ? "bg-orange-400"
+                              : "bg-theme-color/60"
                         }`}
                     >
                       {index + 1}
@@ -190,10 +207,9 @@ const SearchInput = () => {
                       )}
                     </div>
                     {item?.price && (
-                      <PriceFormat
-                        amount={item.price}
-                        className="text-sm font-semibold text-theme-color"
-                      />
+                      <span className="text-sm font-semibold text-theme-color">
+                        {formatPrice(item.price)}
+                      </span>
                     )}
                   </Link>
                 ))}
