@@ -173,7 +173,10 @@ export const authConfig: NextAuthConfig = {
             session.user.name = user.name || session.user.name; // DB 이름 우선
             session.user.image = user.image || (token.picture as string);
           } else {
-            session.user.role = (token.role as string) || "user";
+            // ⚠️ DB에 유저가 없으면 세션 무효화 (삭제된 유저)
+            console.warn(`[Session] User not found in DB: ${session.user.email}`);
+            // 세션을 빈 객체로 반환하면 로그아웃 처리됨
+            return {} as any;
           }
         } catch (error) {
           console.error("Error fetching user data from database:", error);
