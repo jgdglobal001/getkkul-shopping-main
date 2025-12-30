@@ -12,7 +12,7 @@ export default function RegisterForm() {
 
   const handleOAuthSignIn = async (provider: "google" | "kakao" | "naver") => {
     try {
-      await signIn(provider, { callbackUrl: "/" });
+      await signIn(provider, { callbackUrl: "/auth/welcome" });
     } catch (error) {
       toast.error("소셜 로그인에 실패했습니다");
     }

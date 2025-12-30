@@ -55,9 +55,11 @@ export const authConfig: NextAuthConfig = {
           // If user has email, check if they exist and update if needed
           if (user.email) {
             let existingUser = await findUserByEmail(user.email);
+            let isNewUser = false;
 
             // If user doesn't exist, create them
             if (!existingUser) {
+              isNewUser = true;
               existingUser = await createUser({
                 name: user.name || "",
                 email: user.email,
@@ -67,19 +69,22 @@ export const authConfig: NextAuthConfig = {
               });
             }
 
-            // Store the user ID for later use
+            // Store the user ID and isNewUser flag for later use
             if (existingUser) {
               user.id = existingUser.id;
+              (user as any).isNewUser = isNewUser;
             }
           } else {
-            // ⚠️ If email is missing (e.g., user denied email permission), 
+            // ⚠️ If email is missing (e.g., user denied email permission),
             // generate a temporary email based on provider and provider ID
             // to ensure user creation and proper identification
             const tempEmail = `${account.provider}_${account.providerAccountId}@oauth.local`;
-            
+
             let existingUser = await findUserByEmail(tempEmail);
-            
+            let isNewUser = false;
+
             if (!existingUser) {
+              isNewUser = true;
               existingUser = await createUser({
                 name: user.name || `${account.provider} User`,
                 email: tempEmail,
@@ -92,6 +97,7 @@ export const authConfig: NextAuthConfig = {
             if (existingUser) {
               user.id = existingUser.id;
               user.email = tempEmail;
+              (user as any).isNewUser = isNewUser;
             }
           }
         } catch (error) {
@@ -111,6 +117,10 @@ export const authConfig: NextAuthConfig = {
         if (user.image) {
           token.picture = user.image;
         }
+        // ✅ 신규 가입자 플래그 저장
+        if ((user as any).isNewUser) {
+          token.isNewUser = true;
+        }
       }
 
       // Ensure we always have an ID for the token
@@ -129,11 +139,31 @@ export const authConfig: NextAuthConfig = {
 
       return token;
     },
+    async redirect({ url, baseUrl }) {
+      // ✅ 신규 가입자는 welcome 페이지로, 기존 회원은 홈으로
+      // callbackUrl이 /auth/welcome인 경우 (회원가입 페이지에서 온 경우)
+      // 신규 가입자인지는 클라이언트에서 확인 후 처리
+      if (url.includes("/auth/welcome")) {
+        return url; // 회원가입 페이지에서 온 경우 welcome으로
+      }
+      // Allows relative callback URLs
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      // Allows callback URLs on the same origin
+      if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
+    },
     async session({ session, token }) {
       if (token && session.user) {
         session.user.id = (token.id as string) || (token.sub as string);
         session.user.email = token.email as string;
         session.user.name = token.name as string; // ✅ 토큰에서 이름 가져오기
+
+        // ✅ 신규 가입자 플래그 세션에 추가
+        if (token.isNewUser) {
+          (session.user as any).isNewUser = true;
+          // 한 번 전달 후 토큰에서 삭제 (다음 세션부터는 false)
+          delete token.isNewUser;
+        }
 
         // Fetch the latest user data from database to get the correct role and updated info
         try {

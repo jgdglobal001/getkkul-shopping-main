@@ -1,6 +1,4 @@
 import Container from "../Container";
-import { LiaUser } from "react-icons/lia";
-import Link from "next/link";
 import SearchInput from "./SearchInput";
 import { auth } from "../../../auth";
 import MobileNavigation from "./MobileNavigation";
@@ -27,7 +25,7 @@ const MiddleHeader = async () => {
           {/* Cart & Favorite Icons */}
           <HeaderIcons />
         </div>
-        <MobileNavigation />
+        <MobileNavigation user={session?.user} />
       </Container>
     </div>
   );
