@@ -42,7 +42,7 @@ export default function Kakao<P extends KakaoProfile>(
     token: "https://kauth.kakao.com/oauth/token",
     userinfo: {
       url: "https://kapi.kakao.com/v2/user/me",
-      async request({ tokens, provider }) {
+      async request({ tokens, provider }: { tokens: any; provider: any }) {
         const response = await fetch(provider.userinfo?.url as string, {
           headers: {
             Authorization: `Bearer ${tokens.access_token}`,
@@ -62,11 +62,11 @@ export default function Kakao<P extends KakaoProfile>(
     },
     style: {
       logo: "/kakao-logo.svg",
-      logoDark: "/kakao-logo.svg",
       bg: "#FEE500",
       text: "#000000",
-      bgDark: "#FEE500",
-      textDark: "#000000",
+    },
+    client: {
+      token_endpoint_auth_method: "client_secret_post",
     },
     options,
   };
