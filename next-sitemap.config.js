@@ -1,28 +1,12 @@
 /** @type {import('next-sitemap').IConfig} */
 const config = {
-  siteUrl: "https://shofy.reactbd.com", // Your production domain
-  generateRobotsTxt: true, // Generate robots.txt file
-  sitemapSize: 7000, // Maximum number of URLs per sitemap file
-  changefreq: "daily", // Default change frequency for pages
-  priority: 0.7, // Default priority for pages
-  robotsTxtOptions: {
-    policies: [
-      {
-        userAgent: "*",
-        allow: "/",
-        disallow: ["/admin/*", "/dashboard/*"], // Disallow private or admin routes
-      },
-    ],
-  },
-  transform: async (config, path) => {
-    return {
-      loc: path, // URL path
-      changefreq: config.changefreq,
-      priority: path === "/" ? 1.0 : config.priority, // Higher priority for homepage
-      lastmod: new Date().toISOString(), // Last modified date
-      alternateRefs: [], // Add alternate language references if needed
-    };
-  },
+  siteUrl: "https://www.getkkul.com",
+  generateRobotsTxt: false, // public/robots.txt 사용
+  generateIndexSitemap: false, // 동적 sitemap.ts 사용
+  sitemapSize: 7000,
+  changefreq: "daily",
+  priority: 0.7,
+  exclude: ["/admin/*", "/dashboard/*", "/api/*", "/auth/*"],
 };
 
 module.exports = config;
