@@ -10,14 +10,14 @@ import Script from "next/script";
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.getkkul.com'),
   title: {
-    default: "겟꿀쇼핑 - 대한민국 대표 온라인 쇼핑몰",
-    template: "%s | 겟꿀쇼핑",
+    default: "겟꿀쇼핑 getkkul - 대한민국 대표 온라인 쇼핑몰",
+    template: "%s | 겟꿀쇼핑 getkkul",
   },
-  description: "최고의 상품을 최저가로! 겟꿀쇼핑에서 스마트한 쇼핑을 경험하세요. 무료배송, 빠른배송, 안전결제",
-  keywords: ["겟꿀쇼핑", "온라인쇼핑", "쇼핑몰", "최저가", "무료배송", "getkkul", "인터넷쇼핑"],
-  authors: [{ name: "겟꿀쇼핑" }],
-  creator: "겟꿀쇼핑",
-  publisher: "겟꿀쇼핑",
+  description: "겟꿀쇼핑 getkkul: 최고의 상품을 최저가로! 대한민국 대표 온라인 쇼핑몰에서 스마트한 쇼핑을 경험하세요. 무료배송, 빠른배송, 안전결제",
+  keywords: ["겟꿀쇼핑", "getkkul", "겟꿀", "온라인쇼핑", "쇼핑몰", "최저가", "무료배송", "인터넷쇼핑"],
+  authors: [{ name: "겟꿀쇼핑 getkkul" }],
+  creator: "겟꿀쇼핑 getkkul",
+  publisher: "겟꿀쇼핑 getkkul",
   formatDetection: {
     email: false,
     address: false,
@@ -32,22 +32,22 @@ export const metadata: Metadata = {
     type: "website",
     locale: "ko_KR",
     url: "https://www.getkkul.com",
-    siteName: "겟꿀쇼핑",
-    title: "겟꿀쇼핑 - 대한민국 대표 온라인 쇼핑몰",
-    description: "최고의 상품을 최저가로! 겟꿀쇼핑에서 스마트한 쇼핑을 경험하세요.",
+    siteName: "겟꿀쇼핑 getkkul",
+    title: "겟꿀쇼핑 getkkul - 대한민국 대표 온라인 쇼핑몰",
+    description: "최고의 상품을 최저가로! 겟꿀쇼핑 getkkul에서 스마트한 쇼핑을 경험하세요.",
     images: [
       {
         url: "/thumbnail.png",
         width: 1200,
         height: 630,
-        alt: "겟꿀쇼핑",
+        alt: "겟꿀쇼핑 getkkul",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "겟꿀쇼핑 - 대한민국 대표 온라인 쇼핑몰",
-    description: "최고의 상품을 최저가로! 겟꿀쇼핑에서 스마트한 쇼핑을 경험하세요.",
+    title: "겟꿀쇼핑 getkkul - 대한민국 대표 온라인 쇼핑몰",
+    description: "최고의 상품을 최저가로! 겟꿀쇼핑 getkkul에서 스마트한 쇼핑을 경험하세요.",
     images: ["/thumbnail.png"],
   },
   robots: {
@@ -81,6 +81,7 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "겟꿀쇼핑",
+    "alternateName": "getkkul",
     "url": "https://www.getkkul.com",
     "logo": "https://www.getkkul.com/getkkul-logo-fabicon1.png",
     "sameAs": [
