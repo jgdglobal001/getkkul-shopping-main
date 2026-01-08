@@ -24,9 +24,9 @@ export const metadata: Metadata = {
     telephone: false,
   },
   icons: {
-    icon: "/getkkul-logo-fabicon.png",
-    shortcut: "/getkkul-logo-fabicon.png",
-    apple: "/getkkul-logo-fabicon.png",
+    icon: "/getkkul-logo-fabicon1.png",
+    shortcut: "/getkkul-logo-fabicon1.png",
+    apple: "/getkkul-logo-fabicon1.png",
   },
   openGraph: {
     type: "website",
@@ -77,9 +77,45 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "겟꿀쇼핑",
+    "url": "https://www.getkkul.com",
+    "logo": "https://www.getkkul.com/getkkul-logo-fabicon1.png",
+    "sameAs": [
+      "https://www.instagram.com/getkkul",
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "+82-10-0000-0000",
+      "contactType": "customer service"
+    }
+  };
+
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "겟꿀쇼핑",
+    "url": "https://www.getkkul.com",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://www.getkkul.com/products?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  };
+
   return (
     <html lang="ko">
       <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
         <I18nProvider>
           <StateProvider>
             <AuthProvider>
