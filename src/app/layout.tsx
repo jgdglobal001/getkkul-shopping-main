@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import AuthProvider from "@/components/auth/AuthProvider";
 import { CurrencyProvider } from "@/contexts/CurrencyContext";
-import Head from "next/head";
 import PurchaseWidget from "@/components/PurchaseWidget";
 import StateProvider from "@/components/auth/StateProvider";
 import I18nProvider from "@/components/providers/I18nProvider";
@@ -63,8 +62,10 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    google: "ed4a8c2fc42ae331", // 구글 서치콘솔 인증 (기존 파일에서 추출)
-    // naver: "네이버서치어드바이저인증코드", // 나중에 추가
+    google: "ed4a8c2fc42ae331",
+    other: {
+      "naver-site-verification": "61b98c7285ab413cf1d86a504bce1328",
+    },
   },
   alternates: {
     canonical: "https://www.getkkul.com",
@@ -78,9 +79,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </Head>
       <body>
         <I18nProvider>
           <StateProvider>
