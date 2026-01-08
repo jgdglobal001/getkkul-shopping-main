@@ -23,11 +23,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  icons: {
-    icon: "/getkkul-logo-fabicon1.png",
-    shortcut: "/getkkul-logo-fabicon1.png",
-    apple: "/getkkul-logo-fabicon1.png",
-  },
+  // icons metadata is now handled automatically by src/app/icon.png
   openGraph: {
     type: "website",
     locale: "ko_KR",
