@@ -1,6 +1,8 @@
+export const runtime = 'edge';
+
 /**
  * 파트너 커미션 지급대행 API
- * 
+ *
  * 결제 완료 후 파트너에게 커미션을 지급합니다.
  * 내부 API로, toss-confirm에서 호출합니다.
  */

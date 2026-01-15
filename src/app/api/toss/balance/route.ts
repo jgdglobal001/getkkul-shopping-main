@@ -1,10 +1,12 @@
+export const runtime = 'edge';
+
 /**
  * 토스페이먼츠 정산 잔액 조회 API
- * 
+ *
  * 지급대행 전 잔액이 충분한지 확인합니다.
  * - availableAmount: 지급 가능한 금액
  * - pendingAmount: 아직 지급할 수 없는 금액 (정산 대기 중)
- * 
+ *
  * ⚠️ GET 요청이므로 JWE 암호화 불필요
  */
 
