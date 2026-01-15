@@ -3,7 +3,7 @@
 export const runtime = 'edge';
 
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Logo from "@/components/Logo";
@@ -13,10 +13,14 @@ import Confetti from "react-confetti";
 export default function WelcomePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [showConfetti, setShowConfetti] = useState(true);
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
   const [isNewUser, setIsNewUser] = useState<boolean | null>(null);
   const checkedRef = useRef(false);
+
+  // returnTo 파라미터: 로그인 전 원래 페이지 (파트너 링크 등)
+  const returnTo = searchParams.get("returnTo");
 
   useEffect(() => {
     // Get window size for confetti
@@ -87,9 +91,10 @@ export default function WelcomePage() {
           return;
         }
 
-        // 기존 회원이면 홈으로 리다이렉트
-        console.log('[Welcome] Redirecting to home - not a new user');
-        router.replace("/");
+        // 기존 회원이면 returnTo 또는 홈으로 리다이렉트
+        const redirectUrl = returnTo || "/";
+        console.log('[Welcome] Redirecting to', redirectUrl, '- not a new user');
+        router.replace(redirectUrl);
       }
 
       checkNewUser();
@@ -180,10 +185,10 @@ export default function WelcomePage() {
         {/* Action Buttons */}
         <div className="space-y-3">
           <Link
-            href="/"
+            href={returnTo || "/"}
             className="block w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-orange-600 hover:to-orange-700 transition-all duration-200 shadow-md hover:shadow-lg"
           >
-            🛒 쇼핑 시작하기
+            {returnTo ? "🛒 상품으로 돌아가기" : "🛒 쇼핑 시작하기"}
           </Link>
           <Link
             href="/account"

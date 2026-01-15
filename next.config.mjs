@@ -49,7 +49,7 @@ const nextConfig = {
   productionBrowserSourceMaps: false,
 
   // Edge Runtime에서 필요한 외부 패키지
-  serverExternalPackages: ["@prisma/client", "@neondatabase/serverless"],
+  serverExternalPackages: ["@neondatabase/serverless"],
 };
 
 export default nextConfig;

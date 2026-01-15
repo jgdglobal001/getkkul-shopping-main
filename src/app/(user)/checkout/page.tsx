@@ -146,11 +146,10 @@ const CheckoutPage = () => {
           currency: "KRW",
         });
 
-        // Render payment methods UI with variantKey
-        // Make sure this variantKey matches the one configured in your Toss dashboard
+        // Render payment methods UI with variantKey (라이브 위젯)
         await paymentWidget.renderPaymentMethods({
           selector: "#payment-widget",
-          variantKey: "getkkul-toss-widget",  // Configured in Toss dashboard
+          variantKey: "getkkul-live-toss",
         });
 
         // Store widget reference for later use

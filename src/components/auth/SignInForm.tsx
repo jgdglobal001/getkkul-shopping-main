@@ -1,7 +1,7 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { FaGoogle } from "react-icons/fa";
 import { SiKakao, SiNaver } from "react-icons/si";
@@ -9,12 +9,23 @@ import { toast } from "react-hot-toast";
 
 export default function SignInForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // URL에서 callbackUrl 파라미터 가져오기 (없으면 welcome 페이지로)
+  const callbackUrl = searchParams.get("callbackUrl") || "/auth/welcome";
 
   const handleOAuthSignIn = async (provider: "google" | "kakao" | "naver") => {
     try {
-      // 모든 OAuth 로그인은 /auth/welcome으로 리다이렉트
-      // welcome 페이지에서 신규/기존 회원 판단 후 적절히 처리
-      await signIn(provider, { callbackUrl: "/auth/welcome" });
+      // callbackUrl이 있으면 welcome 페이지에 전달, 없으면 직접 welcome으로
+      const finalCallbackUrl = callbackUrl !== "/auth/welcome"
+        ? `/auth/welcome?returnTo=${encodeURIComponent(callbackUrl)}`
+        : "/auth/welcome";
+
+      // 🔍 DEBUG: callbackUrl 확인
+      console.log("[SignInForm] callbackUrl from URL:", callbackUrl);
+      console.log("[SignInForm] finalCallbackUrl:", finalCallbackUrl);
+
+      await signIn(provider, { callbackUrl: finalCallbackUrl });
     } catch (error) {
       toast.error("소셜 로그인에 실패했습니다");
     }

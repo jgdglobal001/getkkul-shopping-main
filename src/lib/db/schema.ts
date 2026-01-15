@@ -233,6 +233,10 @@ export const orders = pgTable('orders', {
   tossReceipt: json('tossReceipt'),
   tossPaymentAttempts: integer('tossPaymentAttempts').default(0),
   lastTossAttempt: timestamp('lastTossAttempt', { mode: 'date' }),
+  // 파트너 정보 (지급대행용)
+  partnerRef: text('partnerRef'),
+  partnerSellerId: text('partnerSellerId'),
+  partnerLinkId: text('partnerLinkId'),
 });
 
 // Order Items
@@ -273,3 +277,41 @@ export const productAnswers = pgTable('product_answers', {
   updatedAt: timestamp('updatedAt', { mode: 'date' }).defaultNow(),
 });
 
+
+
+// Partner Links 테이블 (파트너스와 공유 - 커미션 추적용)
+export const partnerLinks = pgTable('partner_links', {
+  id: text('id').primaryKey(),
+  shortCode: text('shortCode').notNull().unique(),
+  partnerId: text('partnerId').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  productId: text('productId').notNull().references(() => products.id, { onDelete: 'cascade' }),
+  clickCount: integer('clickCount').notNull().default(0),
+  conversionCount: integer('conversionCount').notNull().default(0),
+  revenue: real('revenue').notNull().default(0),
+  createdAt: timestamp('createdAt', { mode: 'date' }).defaultNow(),
+  updatedAt: timestamp('updatedAt', { mode: 'date' }).defaultNow(),
+});
+
+// Business Registrations 테이블 (파트너스와 공유 - sellerId 조회용)
+export const businessRegistrations = pgTable('business_registrations', {
+  id: text('id').primaryKey(),
+  userId: text('userId').notNull().unique(),
+  businessName: text('businessName').notNull(),
+  representativeName: text('representativeName').notNull(),
+  businessNumber: text('businessNumber').notNull().unique(),
+  businessType: text('businessType'),
+  businessCategory: text('businessCategory'),
+  businessAddress: text('businessAddress'),
+  phoneNumber: text('phoneNumber'),
+  email: text('email'),
+  bankName: text('bankName'),
+  accountNumber: text('accountNumber'),
+  accountHolder: text('accountHolder'),
+  sellerId: text('sellerId').unique(),
+  tossStatus: text('tossStatus').default('pending'),
+  tossSubMerchantId: text('tossSubMerchantId'),
+  tossRegisteredAt: timestamp('tossRegisteredAt', { mode: 'date' }),
+  status: text('status').default('pending'),
+  createdAt: timestamp('createdAt', { mode: 'date' }).defaultNow(),
+  updatedAt: timestamp('updatedAt', { mode: 'date' }).defaultNow(),
+});

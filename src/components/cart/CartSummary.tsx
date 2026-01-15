@@ -12,6 +12,7 @@ import { FiAlertCircle, FiLoader, FiX } from "react-icons/fi";
 import { FaSignInAlt } from "react-icons/fa";
 import Link from "next/link";
 import Script from "next/script";
+import { getPartnerInfo } from "../PartnerRefTracker";
 
 interface Props {
   cart: ProductType[];
@@ -93,7 +94,7 @@ const CartSummary = ({ cart }: Props) => {
         await paymentWidget.setAmount({ value: amount, currency: "KRW" });
         await paymentWidget.renderPaymentMethods({
           selector: "#cart-payment-widget",
-          variantKey: "getkkul-toss-widget",
+          variantKey: "getkkul-live-toss",
         });
 
         paymentWidgetRef.current = paymentWidget;
@@ -128,6 +129,9 @@ const CartSummary = ({ cart }: Props) => {
       setPlacing(true);
       const finalTotal = Math.round(totalAmt - discountAmt + shippingCost);
 
+      // 파트너 정보 가져오기 (겟꿀 파트너스 연동)
+      const { partnerRef, linkId: partnerLinkId } = getPartnerInfo();
+
       // Create order first
       const orderData = {
         items: cart.map((item: ProductType) => ({
@@ -146,6 +150,9 @@ const CartSummary = ({ cart }: Props) => {
         customerName: session?.user?.name,
         shippingAddress: selectedAddress,
         createdAt: new Date().toISOString(),
+        // 파트너 정보 (지급대행용)
+        partnerRef: partnerRef || undefined,
+        partnerLinkId: partnerLinkId || undefined,
       };
 
       const response = await fetch("/api/orders/place", {

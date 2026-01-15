@@ -8,6 +8,7 @@ import { MdClose } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { signOut } from "next-auth/react";
+import { usePathname, useSearchParams } from "next/navigation";
 import {
   FaUser,
   FaBox,
@@ -33,6 +34,21 @@ const MobileNavigation = ({ user }: MobileNavigationProps) => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const { cart, favorite } = useSelector((state: StateType) => state?.shopy);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // 현재 URL을 callbackUrl로 사용 (쿼리 파라미터 포함)
+  const search = searchParams.toString();
+  const currentUrl = search ? `${pathname}?${search}` : pathname;
+
+  // auth 페이지가 아닌 경우에만 callbackUrl 추가
+  const isAuthPage = pathname.startsWith("/auth");
+  const signInUrl = isAuthPage
+    ? "/auth/signin"
+    : `/auth/signin?callbackUrl=${encodeURIComponent(currentUrl)}`;
+  const registerUrl = isAuthPage
+    ? "/auth/register"
+    : `/auth/register?callbackUrl=${encodeURIComponent(currentUrl)}`;
 
   const fallbackImage =
     "https://res.cloudinary.com/dlbqw7atu/image/upload/v1747734054/userImage_dhytay.png";
@@ -136,14 +152,14 @@ const MobileNavigation = ({ user }: MobileNavigationProps) => {
           ) : (
             <div className="p-4 border-b border-gray-100">
               <Link
-                href="/auth/signin"
+                href={signInUrl}
                 onClick={() => setIsOpen(false)}
                 className="block w-full py-2.5 px-4 bg-orange-500 text-white text-center rounded-lg font-medium hover:bg-orange-600 transition-colors"
               >
                 로그인
               </Link>
               <Link
-                href="/auth/register"
+                href={registerUrl}
                 onClick={() => setIsOpen(false)}
                 className="block w-full mt-2 py-2.5 px-4 border border-orange-500 text-orange-500 text-center rounded-lg font-medium hover:bg-orange-50 transition-colors"
               >

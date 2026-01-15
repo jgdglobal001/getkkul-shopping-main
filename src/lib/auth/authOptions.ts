@@ -142,11 +142,25 @@ export const authConfig: NextAuthConfig = {
     async redirect({ url, baseUrl }) {
       console.log(`[Redirect] url: ${url}, baseUrl: ${baseUrl}`);
 
-      // ✅ 신규 가입자는 welcome 페이지로
-      // callbackUrl이 /auth/welcome을 포함하는 경우
-      if (url.includes("/auth/welcome") || url.includes("callbackUrl=%2Fauth%2Fwelcome")) {
-        console.log(`[Redirect] Going to welcome page: ${baseUrl}/auth/welcome`);
-        return `${baseUrl}/auth/welcome`;
+      // ✅ welcome 페이지로 가는 경우 - returnTo 파라미터 유지!
+      if (url.includes("/auth/welcome")) {
+        try {
+          const urlObj = new URL(url, baseUrl);
+          const returnTo = urlObj.searchParams.get("returnTo");
+
+          if (returnTo) {
+            // returnTo 파라미터가 있으면 유지
+            const welcomeUrl = `${baseUrl}/auth/welcome?returnTo=${encodeURIComponent(returnTo)}`;
+            console.log(`[Redirect] Going to welcome page with returnTo: ${welcomeUrl}`);
+            return welcomeUrl;
+          } else {
+            console.log(`[Redirect] Going to welcome page: ${baseUrl}/auth/welcome`);
+            return `${baseUrl}/auth/welcome`;
+          }
+        } catch (e) {
+          console.log(`[Redirect] Going to welcome page (fallback): ${baseUrl}/auth/welcome`);
+          return `${baseUrl}/auth/welcome`;
+        }
       }
 
       // Allows relative callback URLs

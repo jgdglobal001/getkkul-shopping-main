@@ -1,4 +1,4 @@
-export const runtime = 'edge';
+﻿export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { db, users, orders, orderItems } from "@/lib/db";
@@ -11,7 +11,7 @@ function generateId() {
 export async function POST(request: NextRequest) {
   try {
     const orderData = await request.json();
-    const { customerEmail, items, totalAmount, shippingAddress, status = "pending" } = orderData;
+    const { customerEmail, items, totalAmount, shippingAddress, status = "pending", partnerRef, partnerLinkId } = orderData;
 
     if (!customerEmail) {
       return NextResponse.json(
@@ -53,6 +53,9 @@ export async function POST(request: NextRequest) {
         shippingAddress: shippingAddress || {},
         createdAt: new Date(),
         updatedAt: new Date(),
+        // 파트너 정보 (겟꿀 파트너스 지급대행용)
+        partnerRef: partnerRef || null,
+        partnerLinkId: partnerLinkId || null,
       })
       .returning();
 
@@ -86,3 +89,4 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+

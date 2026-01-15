@@ -2,8 +2,10 @@ export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { hasPermission } from "@/lib/rbac/roles";
-import { db, users, orders } from "@/lib/db";
-import { eq, desc } from "drizzle-orm";
+import { db, users, orders, orderItems, partnerLinks } from "@/lib/db";
+import { eq, desc, sql } from "drizzle-orm";
+import { calculatePartnerCommission } from "@/lib/partnerCommission";
+import { ORDER_STATUSES, PAYMENT_STATUSES } from "@/lib/orderStatus";
 
 export async function GET(request: NextRequest) {
   try {
@@ -87,6 +89,22 @@ export async function PUT(request: NextRequest) {
     if (status) updateFields.status = status;
     if (paymentStatus) updateFields.paymentStatus = paymentStatus;
 
+    // 🔄 환불/취소 시 파트너 커미션 회수 처리
+    const isRefundOrCancel =
+      status === ORDER_STATUSES.CANCELLED ||
+      paymentStatus === PAYMENT_STATUSES.REFUNDED;
+
+    // 기존 주문 정보 조회 (커미션 회수 필요 여부 확인)
+    let existingOrder = null;
+    if (isRefundOrCancel) {
+      const orderResult = await db
+        .select()
+        .from(orders)
+        .where(eq(orders.id, orderId))
+        .limit(1);
+      existingOrder = orderResult[0];
+    }
+
     // Try to update order
     try {
       const updatedOrders = await db.update(orders).set({
@@ -96,6 +114,51 @@ export async function PUT(request: NextRequest) {
 
       if (updatedOrders.length === 0) {
         return NextResponse.json({ error: "Order not found" }, { status: 404 });
+      }
+
+      // 🎯 환불/취소 시 파트너 커미션 회수
+      if (isRefundOrCancel && existingOrder?.partnerLinkId) {
+        try {
+          // 이미 취소/환불된 주문인지 확인
+          const wasAlreadyCancelledOrRefunded =
+            existingOrder.status === ORDER_STATUSES.CANCELLED ||
+            existingOrder.paymentStatus === PAYMENT_STATUSES.REFUNDED;
+
+          if (!wasAlreadyCancelledOrRefunded) {
+            console.log(`[CommissionRefund] Processing refund for partnerLinkId: ${existingOrder.partnerLinkId}`);
+
+            // 주문 아이템에서 총 상품 가격 계산
+            const items = await db
+              .select({ price: orderItems.price, quantity: orderItems.quantity })
+              .from(orderItems)
+              .where(eq(orderItems.orderId, existingOrder.id));
+
+            const totalProductPrice = items.reduce(
+              (sum, item) => sum + (item.price * item.quantity),
+              0
+            );
+
+            // 커미션 계산 (상품가격의 15%)
+            const commission = calculatePartnerCommission(totalProductPrice);
+
+            console.log(`[CommissionRefund] Deducting commission: ₩${commission}`);
+
+            // partner_links 테이블 업데이트: conversionCount -1, revenue -커미션
+            await db
+              .update(partnerLinks)
+              .set({
+                conversionCount: sql`GREATEST(${partnerLinks.conversionCount} - 1, 0)`,
+                revenue: sql`GREATEST(${partnerLinks.revenue} - ${commission}, 0)`,
+                updatedAt: new Date(),
+              })
+              .where(eq(partnerLinks.id, existingOrder.partnerLinkId));
+
+            console.log(`[CommissionRefund] Successfully deducted commission for linkId: ${existingOrder.partnerLinkId}`);
+          }
+        } catch (refundError) {
+          // 커미션 회수 실패해도 주문 업데이트는 성공 처리
+          console.error("[CommissionRefund] Failed to deduct commission:", refundError);
+        }
       }
 
       return NextResponse.json({

@@ -6,6 +6,7 @@ import PurchaseWidget from "@/components/PurchaseWidget";
 import StateProvider from "@/components/auth/StateProvider";
 import I18nProvider from "@/components/providers/I18nProvider";
 import Script from "next/script";
+import PartnerRefTracker from "@/components/PartnerRefTracker";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.getkkul.com'),
@@ -116,7 +117,10 @@ export default function RootLayout({
         <I18nProvider>
           <StateProvider>
             <AuthProvider>
-              <CurrencyProvider>{children}</CurrencyProvider>
+              <CurrencyProvider>
+                <PartnerRefTracker />
+                {children}
+              </CurrencyProvider>
               <PurchaseWidget />
             </AuthProvider>
           </StateProvider>

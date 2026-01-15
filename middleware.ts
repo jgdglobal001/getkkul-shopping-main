@@ -39,7 +39,11 @@ export async function middleware(request: any) {
   // Restrict protected routes to logged-in users
   if (protectedRoutes.some((route) => pathname.startsWith(route))) {
     if (!session?.user) {
-      return NextResponse.redirect(new URL("/auth/signin", request.url));
+      // 현재 URL을 callbackUrl로 전달 (쿼리 파라미터 포함)
+      const currentUrl = request.nextUrl.pathname + request.nextUrl.search;
+      const signInUrl = new URL("/auth/signin", request.url);
+      signInUrl.searchParams.set("callbackUrl", currentUrl);
+      return NextResponse.redirect(signInUrl);
     }
 
     // Check role-based access
@@ -74,7 +78,10 @@ export async function middleware(request: any) {
   // Handle success page - ensure user is logged in and has session_id
   if (pathname.startsWith("/success")) {
     if (!session?.user) {
-      return NextResponse.redirect(new URL("/auth/signin", request.url));
+      const currentUrl = request.nextUrl.pathname + request.nextUrl.search;
+      const signInUrl = new URL("/auth/signin", request.url);
+      signInUrl.searchParams.set("callbackUrl", currentUrl);
+      return NextResponse.redirect(signInUrl);
     }
 
     const sessionId = request.nextUrl.searchParams.get("session_id");
@@ -86,7 +93,10 @@ export async function middleware(request: any) {
   // Handle checkout page - ensure user is logged in
   if (pathname.startsWith("/checkout")) {
     if (!session?.user) {
-      return NextResponse.redirect(new URL("/auth/signin", request.url));
+      const currentUrl = request.nextUrl.pathname + request.nextUrl.search;
+      const signInUrl = new URL("/auth/signin", request.url);
+      signInUrl.searchParams.set("callbackUrl", currentUrl);
+      return NextResponse.redirect(signInUrl);
     }
   }
 

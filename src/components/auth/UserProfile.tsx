@@ -4,6 +4,7 @@ import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
 import {
   FaUser,
   FaSignOutAlt,
@@ -16,6 +17,12 @@ import {
 export default function UserProfile() {
   const { data: session, status } = useSession();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  // 현재 URL을 즉시 계산 (useEffect 대신 직접 계산)
+  const search = searchParams.toString();
+  const currentUrl = search ? `${pathname}?${search}` : pathname;
 
   if (status === "loading") {
     return (
@@ -26,17 +33,26 @@ export default function UserProfile() {
   }
 
   if (status === "unauthenticated") {
+    // 현재 URL을 callbackUrl로 전달 (auth 페이지가 아닌 경우에만)
+    const isAuthPage = pathname.startsWith("/auth");
+    const signInUrl = isAuthPage
+      ? "/auth/signin"
+      : `/auth/signin?callbackUrl=${encodeURIComponent(currentUrl)}`;
+    const registerUrl = isAuthPage
+      ? "/auth/register"
+      : `/auth/register?callbackUrl=${encodeURIComponent(currentUrl)}`;
+
     return (
       <div className="flex items-center gap-2">
         <Link
-          href="/auth/signin"
+          href={signInUrl}
           className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
         >
           로그인
         </Link>
         <span className="text-gray-300">|</span>
         <Link
-          href="/auth/register"
+          href={registerUrl}
           className="text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors"
         >
           회원가입

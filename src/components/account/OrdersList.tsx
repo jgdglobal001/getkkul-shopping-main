@@ -56,6 +56,8 @@ export default function OrdersList({
   const [selectedOrders, setSelectedOrders] = useState<string[]>([]);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [cancellingOrderId, setCancellingOrderId] = useState<string | null>(null);
+  const [showCancelConfirm, setShowCancelConfirm] = useState<string | null>(null);
 
   const fetchOrders = useCallback(async () => {
     try {
@@ -145,21 +147,64 @@ export default function OrdersList({
     setIsDeleting(true);
     setShowDeleteConfirm(false);
     try {
-      // Here you would implement the actual delete logic
-      // For now, just filter out the selected orders
-      const updatedOrders = orders.filter(
-        (order) => !selectedOrders.includes(order.id)
-      );
-      setOrders(updatedOrders);
-      setSelectedOrders([]);
-      onOrdersChange?.(updatedOrders);
+      // 실제 API 호출하여 주문 삭제
+      const response = await fetch('/api/admin/orders/bulk-delete', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderIds: selectedOrders }),
+      });
 
-      // In a real app, you would call an API to delete the orders
-      // await deleteOrders(selectedOrders);
+      const result = await response.json();
+
+      if (result.success) {
+        // 삭제 성공 - 목록에서 제거
+        const updatedOrders = orders.filter(
+          (order) => !selectedOrders.includes(order.id)
+        );
+        setOrders(updatedOrders);
+        setSelectedOrders([]);
+        onOrdersChange?.(updatedOrders);
+        alert(`${result.deletedCount}개의 주문이 삭제되었습니다.`);
+      } else {
+        alert(`삭제 실패: ${result.error}`);
+      }
     } catch (error) {
       console.error("Error deleting orders:", error);
+      alert('주문 삭제 중 오류가 발생했습니다.');
     } finally {
       setIsDeleting(false);
+    }
+  };
+
+  // 주문 취소 처리
+  const handleCancelOrder = async (orderId: string) => {
+    setCancellingOrderId(orderId);
+    setShowCancelConfirm(null);
+
+    try {
+      const response = await fetch('/api/orders/cancel', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderId,
+          cancelReason: '고객 요청에 의한 취소'
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        // 주문 목록 새로고침
+        await fetchOrders();
+        alert('주문이 성공적으로 취소되었습니다.');
+      } else {
+        alert(`취소 실패: ${result.error}`);
+      }
+    } catch (error) {
+      console.error('Order cancel error:', error);
+      alert('주문 취소 중 오류가 발생했습니다.');
+    } finally {
+      setCancellingOrderId(null);
     }
   };
 
@@ -569,6 +614,18 @@ export default function OrdersList({
                           Pay
                         </Link>
                       )}
+                      {/* 결제 완료된 주문 취소 버튼 */}
+                      {order.status.toLowerCase() !== "cancelled" &&
+                        order.paymentStatus.toLowerCase() === "paid" && (
+                          <button
+                            onClick={() => setShowCancelConfirm(order.id)}
+                            disabled={cancellingOrderId === order.id}
+                            className="inline-flex items-center justify-center px-2 py-1 text-xs font-medium rounded text-white bg-red-600 hover:bg-red-700 transition-colors disabled:opacity-50"
+                            title="Cancel Order"
+                          >
+                            {cancellingOrderId === order.id ? '...' : t("common.cancel") || '취소'}
+                          </button>
+                        )}
                     </div>
                   </td>
                 </tr>
@@ -682,6 +739,17 @@ export default function OrdersList({
                     {t("account.pay_now")}
                   </Link>
                 )}
+                {/* 결제 완료된 주문 취소 버튼 (모바일) */}
+                {order.status.toLowerCase() !== "cancelled" &&
+                  order.paymentStatus.toLowerCase() === "paid" && (
+                    <button
+                      onClick={() => setShowCancelConfirm(order.id)}
+                      disabled={cancellingOrderId === order.id}
+                      className="flex items-center justify-center px-3 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700 transition-colors whitespace-nowrap disabled:opacity-50"
+                    >
+                      {cancellingOrderId === order.id ? '취소중...' : t("common.cancel") || '주문취소'}
+                    </button>
+                  )}
               </div>
             </div>
           </div>
@@ -721,6 +789,43 @@ export default function OrdersList({
                 className="flex-1 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 disabled:opacity-50"
               >
                 {isDeleting ? t("common.deleting") : t("common.delete")}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Cancel Order Confirmation Modal */}
+      {showCancelConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black/50"
+            onClick={() => setShowCancelConfirm(null)}
+          ></div>
+          <div className="relative bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+            <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full">
+              <FiX className="w-6 h-6 text-red-600" />
+            </div>
+            <h3 className="text-lg font-medium text-gray-900 text-center mb-2">
+              주문 취소
+            </h3>
+            <p className="text-sm text-gray-500 text-center mb-6">
+              이 주문을 취소하시겠습니까?<br/>
+              결제가 취소되고 환불이 진행됩니다.
+            </p>
+            <div className="flex space-x-3">
+              <button
+                onClick={() => setShowCancelConfirm(null)}
+                className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+              >
+                닫기
+              </button>
+              <button
+                onClick={() => handleCancelOrder(showCancelConfirm)}
+                disabled={cancellingOrderId !== null}
+                className="flex-1 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 disabled:opacity-50"
+              >
+                {cancellingOrderId ? '취소 처리중...' : '주문 취소'}
               </button>
             </div>
           </div>
