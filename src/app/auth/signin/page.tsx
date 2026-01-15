@@ -1,5 +1,6 @@
 export const runtime = 'edge';
 
+import { Suspense } from "react";
 import SignInForm from "@/components/auth/SignInForm";
 import Logo from "@/components/Logo";
 import { Metadata } from "next";
@@ -26,7 +27,9 @@ export default function SignInPage() {
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-4 px-4 shadow-lg sm:rounded-lg sm:px-10">
-          <SignInForm />
+          <Suspense fallback={<div className="animate-pulse h-32 bg-gray-100 rounded" />}>
+            <SignInForm />
+          </Suspense>
         </div>
       </div>
     </div>

@@ -7,6 +7,7 @@ import StateProvider from "@/components/auth/StateProvider";
 import I18nProvider from "@/components/providers/I18nProvider";
 import Script from "next/script";
 import PartnerRefTracker from "@/components/PartnerRefTracker";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.getkkul.com'),
@@ -118,7 +119,9 @@ export default function RootLayout({
           <StateProvider>
             <AuthProvider>
               <CurrencyProvider>
-                <PartnerRefTracker />
+                <Suspense fallback={null}>
+                  <PartnerRefTracker />
+                </Suspense>
                 {children}
               </CurrencyProvider>
               <PurchaseWidget />

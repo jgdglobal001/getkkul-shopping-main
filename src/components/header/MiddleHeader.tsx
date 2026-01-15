@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Container from "../Container";
 import SearchInput from "./SearchInput";
 import { auth } from "../../../auth";
@@ -20,12 +21,16 @@ const MiddleHeader = async () => {
           {session?.user ? (
             <UserProfileDropdown user={session.user} />
           ) : (
-            <GuestProfileSection />
+            <Suspense fallback={null}>
+              <GuestProfileSection />
+            </Suspense>
           )}
           {/* Cart & Favorite Icons */}
           <HeaderIcons />
         </div>
-        <MobileNavigation user={session?.user} />
+        <Suspense fallback={null}>
+          <MobileNavigation user={session?.user} />
+        </Suspense>
       </Container>
     </div>
   );

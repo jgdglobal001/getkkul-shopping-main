@@ -1,5 +1,6 @@
 export const runtime = 'edge';
 
+import { Suspense } from "react";
 import RegisterForm from "@/components/auth/RegisterForm";
 import Logo from "@/components/Logo";
 import { Metadata } from "next";
@@ -26,7 +27,9 @@ export default function RegisterPage() {
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-4 px-4 shadow-lg sm:rounded-lg sm:px-10">
-          <RegisterForm />
+          <Suspense fallback={<div className="animate-pulse h-32 bg-gray-100 rounded" />}>
+            <RegisterForm />
+          </Suspense>
         </div>
       </div>
     </div>
