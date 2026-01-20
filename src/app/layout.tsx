@@ -25,7 +25,19 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  // icons metadata is now handled automatically by src/app/icon.png
+  // 파비콘 설정 - Google 검색결과에서 표시되도록 명시적 설정
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-48x48.png', sizes: '48x48', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+  },
+  manifest: '/manifest.json',
   openGraph: {
     type: "website",
     locale: "ko_KR",
