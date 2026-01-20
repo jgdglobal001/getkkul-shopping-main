@@ -50,7 +50,7 @@ const Breadcrumb = ({ t, category, search }: { t: any; category?: string; search
     {search && (
       <>
         <span>{t("products.breadcrumb_separator", "/")}</span>
-        <span className="text-gray-900 font-medium italic">"{search}"</span>
+        <span className="text-gray-900 font-medium italic">&quot;{search}&quot;</span>
       </>
     )}
   </nav>

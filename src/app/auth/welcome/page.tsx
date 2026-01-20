@@ -99,7 +99,7 @@ export default function WelcomePage() {
 
       checkNewUser();
     }
-  }, [status, session, router]);
+  }, [status, session, router, returnTo]);
 
   // Loading state
   if (status === "loading" || isNewUser === null) {
@@ -132,7 +132,7 @@ export default function WelcomePage() {
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center relative overflow-hidden">
         {/* Decorative Background */}
         <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-orange-400 via-yellow-400 to-orange-500"></div>
-        
+
         {/* Logo */}
         <div className="flex justify-center mb-6">
           <Logo />
