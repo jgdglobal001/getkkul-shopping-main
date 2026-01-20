@@ -72,12 +72,12 @@ const MobileNavigation = ({ user }: MobileNavigationProps) => {
   const adminMenuItems =
     user?.role === "admin"
       ? [
-          {
-            href: "/account/admin",
-            icon: FaShieldAlt,
-            label: t("common.admin_dashboard") || "Admin Dashboard",
-          },
-        ]
+        {
+          href: "/account/admin",
+          icon: FaShieldAlt,
+          label: t("common.admin_dashboard") || "Admin Dashboard",
+        },
+      ]
       : [];
 
   const allMenuItems = [...menuItems, ...adminMenuItems];
@@ -86,22 +86,18 @@ const MobileNavigation = ({ user }: MobileNavigationProps) => {
     <>
       {/* Header Icons for Mobile */}
       <div className="flex items-center gap-3 md:hidden">
-        {user && (
-          <>
-            <Link href="/favorite" className="text-xl relative">
-              <MdFavoriteBorder />
-              <span className="absolute -top-1 -right-1 text-[8px] font-medium w-3.5 h-3.5 bg-theme-color text-white rounded-full flex items-center justify-center">
-                {favorite?.length > 0 ? favorite?.length : "0"}
-              </span>
-            </Link>
-            <Link href="/cart" className="text-xl relative">
-              <BiShoppingBag />
-              <span className="absolute -top-1 -right-1 text-[8px] font-medium w-3.5 h-3.5 bg-theme-color text-white rounded-full flex items-center justify-center">
-                {cart?.length > 0 ? cart?.length : "0"}
-              </span>
-            </Link>
-          </>
-        )}
+        <Link href="/favorite" className="text-xl relative">
+          <MdFavoriteBorder />
+          <span className="absolute -top-1 -right-1 text-[8px] font-medium w-3.5 h-3.5 bg-theme-color text-white rounded-full flex items-center justify-center">
+            {favorite?.length > 0 ? favorite?.length : "0"}
+          </span>
+        </Link>
+        <Link href="/cart" className="text-xl relative">
+          <BiShoppingBag />
+          <span className="absolute -top-1 -right-1 text-[8px] font-medium w-3.5 h-3.5 bg-theme-color text-white rounded-full flex items-center justify-center">
+            {cart?.length > 0 ? cart?.length : "0"}
+          </span>
+        </Link>
         <div className="text-2xl text-gray-500 hover:text-theme-color duration-200 cursor-pointer">
           <RiMenu3Fill onClick={toggleMenu} />
         </div>
@@ -176,11 +172,10 @@ const MobileNavigation = ({ user }: MobileNavigationProps) => {
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 text-sm transition-colors ${
-                    item.label === (t("common.admin_dashboard") || "Admin Dashboard")
+                  className={`flex items-center gap-3 px-4 py-3 text-sm transition-colors ${item.label === (t("common.admin_dashboard") || "Admin Dashboard")
                       ? "text-red-600 hover:bg-red-50 border-t border-gray-100 mt-1"
                       : "text-gray-700 hover:bg-gray-50 hover:text-sky-color"
-                  }`}
+                    }`}
                 >
                   <item.icon className="w-5 h-5" />
                   {item.label}

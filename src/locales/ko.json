@@ -13,7 +13,37 @@
     "view_all_categories": "모든 카테고리 보기",
     "shop_now": "지금 구매",
     "all": "전체",
-    "filter": "필터"
+    "filter": "필터",
+    "brand": "브랜드",
+    "category": "카테고리",
+    "in_cart": "담김",
+    "adding": "담는 중...",
+    "added": "담기 완료!",
+    "out_of_stock": "품절"
+  },
+  "cart": {
+    "title": "장바구니",
+    "empty_cart_message": "장바구니가 비어 있습니다. 다양한 상품을 확인하고 담아보세요!",
+    "go_to_shopping": "쇼핑하러 가기",
+    "cart_summary": "주문 요약",
+    "sub_total": "상품 총액",
+    "discount": "할인 금액",
+    "shipping": "배송비",
+    "free": "무료",
+    "total_payment": "최종 결제 금액",
+    "login_to_order": "로그인 후 주문하기",
+    "placing_order": "주문 처리 중...",
+    "select_address_to_checkout": "배송지를 선택해주세요",
+    "place_order": "결제하기",
+    "please_select_address": "배송지를 선택해주세요.",
+    "login_required_to_place_order": "주문을 하려면 로그인이 필요합니다.",
+    "you_can_browse_and_add": "로그인 없이도 상품을 둘러보고 장바구니에 담을 수 있지만, 주문을 완료하려면 로그인이 필요합니다.",
+    "sign_in_to_continue": "로그인하여 계속하기",
+    "congratulations_free_shipping": "축하합니다! 무료 배송 혜택을 받으실 수 있습니다.",
+    "add_more_for_free_shipping": "무료 배송까지 ",
+    "add_more_for_free_shipping_suffix": " 남았습니다.",
+    "free_shipping_on_orders_over": " 이상 주문 시 무료 배송",
+    "free_shipping": "무료 배송"
   },
   "header": {
     "freeShipping": "{{amount}} 이상 주문 시 무료 배송"
@@ -221,7 +251,18 @@
     "sort_price_high": "가격: 높은순",
     "sort_name_asc": "이름: 가나다순",
     "sort_name_desc": "이름: 하바타순",
-    "sort_rating": "평점 높은순"
+    "sort_rating": "평점 높은순",
+    "in_stock": "재고 있음",
+    "you_are_saving": "총",
+    "upon_purchase": "만큼 절약하실 수 있습니다!"
+  },
+  "product": {
+    "in_stock": "재고 있음",
+    "you_are_saving": "총",
+    "upon_purchase": "만큼 절약하실 수 있습니다!",
+    "select_option": "옵션을 선택해주세요!",
+    "out_of_stock": "품절된 상품입니다!",
+    "max_stock_reached": "재고 수량을 초과할 수 없습니다!"
   },
   "offers": {
     "title": "특가 상품",

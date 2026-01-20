@@ -35,8 +35,8 @@ const TopHeader = ({
           {t("header.freeShipping", { amount: `₩${Number(freeShippingThreshold).toLocaleString()}` })}
         </p>
         <div className="hidden md:inline-flex items-center text-sm text-white gap-1">
-          <LanguageDropdown />
-          <CurrencyDropdown />
+          {/* <LanguageDropdown /> */}
+          {/* <CurrencyDropdown /> */}
           <SettingsDropdown />
         </div>
       </Container>

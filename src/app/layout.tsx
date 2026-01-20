@@ -87,8 +87,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const cookieStore = await cookies();
-  const lang = cookieStore.get("i18next")?.value || "ko";
+  /* const cookieStore = await cookies();
+  const lang = cookieStore.get("i18next")?.value || "ko"; */
+  const lang = "ko";
 
   const jsonLd = {
     "@context": "https://schema.org",

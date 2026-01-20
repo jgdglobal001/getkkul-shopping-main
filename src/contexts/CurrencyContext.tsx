@@ -36,17 +36,18 @@ export const CurrencyProvider: React.FC<{ children: React.ReactNode }> = ({
   const [exchangeRates, setExchangeRates] =
     useState<Record<CurrencyCode, number>>(mockExchangeRates);
 
-  // Load saved currency from localStorage
-  useEffect(() => {
+  // Load saved currency from localStorage - Disabled for KRW only
+  /* useEffect(() => {
     const savedCurrency = localStorage.getItem("selectedCurrency");
     if (savedCurrency && currencyData[savedCurrency as CurrencyCode]) {
       setSelectedCurrency(savedCurrency as CurrencyCode);
     }
-  }, []);
+  }, []); */
 
   const setCurrency = (currency: CurrencyCode) => {
-    setSelectedCurrency(currency);
-    localStorage.setItem("selectedCurrency", currency);
+    // Disabled changing currency - Force keep KRW
+    setSelectedCurrency("KRW");
+    localStorage.setItem("selectedCurrency", "KRW");
   };
 
   const convertPrice = (

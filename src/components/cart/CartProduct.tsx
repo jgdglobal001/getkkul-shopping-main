@@ -16,7 +16,7 @@ const CartProduct = ({ product }: { product: ProductType }) => {
   const dispatch = useDispatch();
   const handleRemoveProduct = () => {
     dispatch(removeFromCart(product?.id));
-    toast.success(`${product?.title.substring(0, 20)} 삭제되었습니다!`);
+    toast.success(`${product?.title.substring(0, 20)}... 상품이 삭제되었습니다.`);
   };
   return (
     <div className="flex py-6 sm:py-10">
@@ -79,9 +79,9 @@ const CartProduct = ({ product }: { product: ProductType }) => {
             <PriceFormat
               className="text-semibold text-green-500"
               amount={
-                product?.price *
-                (product?.discountPercentage / 100) *
-                product.quantity!
+                (product?.price || 0) *
+                ((product?.discountPercentage || 0) / 100) *
+                (product?.quantity || 0)
               }
             />{" "}
             {t("product.upon_purchase")}
