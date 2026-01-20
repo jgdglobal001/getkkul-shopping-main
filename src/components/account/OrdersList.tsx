@@ -79,7 +79,7 @@ export default function OrdersList({
       }
     } catch (err) {
       console.error("Error fetching orders:", err);
-      setError("Failed to load orders");
+      setError(t("account.error_loading_orders"));
     } finally {
       setLoading(false);
     }
@@ -164,13 +164,13 @@ export default function OrdersList({
         setOrders(updatedOrders);
         setSelectedOrders([]);
         onOrdersChange?.(updatedOrders);
-        alert(`${result.deletedCount}개의 주문이 삭제되었습니다.`);
+        alert(`${result.deletedCount}${t("orders.orders_deleted")}`);
       } else {
-        alert(`삭제 실패: ${result.error}`);
+        alert(`${t("orders.delete_failed")}: ${result.error}`);
       }
     } catch (error) {
       console.error("Error deleting orders:", error);
-      alert('주문 삭제 중 오류가 발생했습니다.');
+      alert(t("orders.order_delete_error"));
     } finally {
       setIsDeleting(false);
     }
@@ -187,7 +187,7 @@ export default function OrdersList({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           orderId,
-          cancelReason: '고객 요청에 의한 취소'
+          cancelReason: t("orders.customer_request_cancel")
         }),
       });
 
@@ -196,13 +196,13 @@ export default function OrdersList({
       if (result.success) {
         // 주문 목록 새로고침
         await fetchOrders();
-        alert('주문이 성공적으로 취소되었습니다.');
+        alert(t("orders.cancel_success"));
       } else {
-        alert(`취소 실패: ${result.error}`);
+        alert(`${t("orders.cancel_failed")}: ${result.error}`);
       }
     } catch (error) {
       console.error('Order cancel error:', error);
-      alert('주문 취소 중 오류가 발생했습니다.');
+      alert(t("orders.order_cancel_error"));
     } finally {
       setCancellingOrderId(null);
     }
@@ -510,9 +510,8 @@ export default function OrdersList({
               {orders.map((order) => (
                 <tr
                   key={order.id}
-                  className={`hover:bg-gray-50 ${
-                    selectedOrders.includes(order.id) ? "bg-blue-50" : ""
-                  }`}
+                  className={`hover:bg-gray-50 ${selectedOrders.includes(order.id) ? "bg-blue-50" : ""
+                    }`}
                 >
                   <td className="px-3 py-4 whitespace-nowrap">
                     <input
@@ -591,7 +590,7 @@ export default function OrdersList({
                       <button
                         onClick={() => openOrderModal(order)}
                         className="inline-flex items-center justify-center px-2 py-1 border border-gray-300 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 transition-colors"
-                        title="View Details"
+                        title={t("common.view")}
                       >
                         <FiEye className="w-3 h-3" />
                       </button>
@@ -600,18 +599,18 @@ export default function OrdersList({
                           <Link
                             href={`/account/orders/${order.id}`}
                             className="inline-flex items-center justify-center px-2 py-1 text-xs font-medium rounded text-white bg-blue-600 hover:bg-blue-700 transition-colors"
-                            title="Track Order"
+                            title={t("orders.track_order")}
                           >
-                            Track
+                            {t("orders.track_order")}
                           </Link>
                         )}
                       {order.paymentStatus.toLowerCase() === "pending" && (
                         <Link
                           href={`/checkout?orderId=${order.id}`}
                           className="inline-flex items-center justify-center px-2 py-1 text-xs font-medium rounded text-white bg-green-600 hover:bg-green-700 transition-colors"
-                          title="Complete Payment"
+                          title={t("orders.pay_now")}
                         >
-                          Pay
+                          {t("orders.pay_now")}
                         </Link>
                       )}
                       {/* 결제 완료된 주문 취소 버튼 */}
@@ -621,9 +620,9 @@ export default function OrdersList({
                             onClick={() => setShowCancelConfirm(order.id)}
                             disabled={cancellingOrderId === order.id}
                             className="inline-flex items-center justify-center px-2 py-1 text-xs font-medium rounded text-white bg-red-600 hover:bg-red-700 transition-colors disabled:opacity-50"
-                            title="Cancel Order"
+                            title={t("orders.cancel_order")}
                           >
-                            {cancellingOrderId === order.id ? '...' : t("common.cancel") || '취소'}
+                            {cancellingOrderId === order.id ? t("orders.cancelling") : t("orders.cancel_order")}
                           </button>
                         )}
                     </div>
@@ -640,11 +639,10 @@ export default function OrdersList({
         {orders.map((order) => (
           <div
             key={order.id}
-            className={`bg-white rounded-lg shadow border border-gray-200 p-4 ${
-              selectedOrders.includes(order.id)
-                ? "ring-2 ring-blue-500 bg-blue-50"
-                : ""
-            }`}
+            className={`bg-white rounded-lg shadow border border-gray-200 p-4 ${selectedOrders.includes(order.id)
+              ? "ring-2 ring-blue-500 bg-blue-50"
+              : ""
+              }`}
           >
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center space-x-3">
@@ -668,7 +666,7 @@ export default function OrdersList({
                   order.status
                 )}`}
               >
-                {order.status}
+                {t(`orders.status_${order.status.toLowerCase()}`)}
               </span>
             </div>
 
@@ -700,7 +698,7 @@ export default function OrdersList({
                   ))}
                 </div>
                 <span className="text-xs text-gray-600">
-                  {(order.items || []).length} item{(order.items || []).length !== 1 ? "s" : ""}
+                  {(order.items || []).length} {t("common.item_count", { count: (order.items || []).length })}
                 </span>
               </div>
               <div className="text-right">
@@ -712,7 +710,7 @@ export default function OrdersList({
 
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-2 sm:space-y-0">
               <div className="text-xs text-gray-500">
-                Payment: {order.paymentStatus}
+                {t("cart.payment")}: {t(`orders.payment_status_${order.paymentStatus.toLowerCase()}`)}
               </div>
               <div className="flex flex-wrap gap-2 justify-end">
                 <button
@@ -747,7 +745,7 @@ export default function OrdersList({
                       disabled={cancellingOrderId === order.id}
                       className="flex items-center justify-center px-3 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700 transition-colors whitespace-nowrap disabled:opacity-50"
                     >
-                      {cancellingOrderId === order.id ? '취소중...' : t("common.cancel") || '주문취소'}
+                      {cancellingOrderId === order.id ? t("orders.cancelling") : t("orders.cancel_order")}
                     </button>
                   )}
               </div>
@@ -760,77 +758,81 @@ export default function OrdersList({
       <OrderDetailsModal />
 
       {/* Delete Confirmation Modal */}
-      {showDeleteConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div
-            className="absolute inset-0 bg-black/50"
-            onClick={() => setShowDeleteConfirm(false)}
-          ></div>
-          <div className="relative bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-            <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full">
-              <FiTrash2 className="w-6 h-6 text-red-600" />
-            </div>
-            <h3 className="text-lg font-medium text-gray-900 text-center mb-2">
-              {t("account.delete_orders")}
-            </h3>
-            <p className="text-sm text-gray-500 text-center mb-6">
-              {t("account.delete_orders_confirm", { count: selectedOrders.length })}
-            </p>
-            <div className="flex space-x-3">
-              <button
-                onClick={() => setShowDeleteConfirm(false)}
-                className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-              >
-                {t("common.cancel")}
-              </button>
-              <button
-                onClick={handleDeleteSelected}
-                disabled={isDeleting}
-                className="flex-1 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 disabled:opacity-50"
-              >
-                {isDeleting ? t("common.deleting") : t("common.delete")}
-              </button>
+      {
+        showDeleteConfirm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div
+              className="absolute inset-0 bg-black/50"
+              onClick={() => setShowDeleteConfirm(false)}
+            ></div>
+            <div className="relative bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+              <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full">
+                <FiTrash2 className="w-6 h-6 text-red-600" />
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 text-center mb-2">
+                {t("account.delete_orders")}
+              </h3>
+              <p className="text-sm text-gray-500 text-center mb-6">
+                {t("account.delete_orders_confirm", { count: selectedOrders.length })}
+              </p>
+              <div className="flex space-x-3">
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                >
+                  {t("common.cancel")}
+                </button>
+                <button
+                  onClick={handleDeleteSelected}
+                  disabled={isDeleting}
+                  className="flex-1 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 disabled:opacity-50"
+                >
+                  {isDeleting ? t("common.deleting") : t("common.delete")}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )
+      }
 
       {/* Cancel Order Confirmation Modal */}
-      {showCancelConfirm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div
-            className="absolute inset-0 bg-black/50"
-            onClick={() => setShowCancelConfirm(null)}
-          ></div>
-          <div className="relative bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-            <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full">
-              <FiX className="w-6 h-6 text-red-600" />
-            </div>
-            <h3 className="text-lg font-medium text-gray-900 text-center mb-2">
-              주문 취소
-            </h3>
-            <p className="text-sm text-gray-500 text-center mb-6">
-              이 주문을 취소하시겠습니까?<br/>
-              결제가 취소되고 환불이 진행됩니다.
-            </p>
-            <div className="flex space-x-3">
-              <button
-                onClick={() => setShowCancelConfirm(null)}
-                className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-              >
-                닫기
-              </button>
-              <button
-                onClick={() => handleCancelOrder(showCancelConfirm)}
-                disabled={cancellingOrderId !== null}
-                className="flex-1 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 disabled:opacity-50"
-              >
-                {cancellingOrderId ? '취소 처리중...' : '주문 취소'}
-              </button>
+      {
+        showCancelConfirm && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div
+              className="absolute inset-0 bg-black/50"
+              onClick={() => setShowCancelConfirm(null)}
+            ></div>
+            <div className="relative bg-white rounded-lg shadow-xl max-w-md w-full p-6">
+              <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full">
+                <FiX className="w-6 h-6 text-red-600" />
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 text-center mb-2">
+                {t("orders.cancel_confirm_title")}
+              </h3>
+              <p className="text-sm text-gray-500 text-center mb-6">
+                {t("orders.cancel_confirm_message")}<br />
+                {t("orders.refund_info") || "결제가 취소되고 환불이 진행됩니다."}
+              </p>
+              <div className="flex space-x-3">
+                <button
+                  onClick={() => setShowCancelConfirm(null)}
+                  className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                >
+                  {t("common.close")}
+                </button>
+                <button
+                  onClick={() => handleCancelOrder(showCancelConfirm)}
+                  disabled={cancellingOrderId !== null}
+                  className="flex-1 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 disabled:opacity-50"
+                >
+                  {cancellingOrderId ? t("orders.cancelling") : t("orders.cancel_order")}
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </div>
+        )
+      }
+    </div >
   );
 }

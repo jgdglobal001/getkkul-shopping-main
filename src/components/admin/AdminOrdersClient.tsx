@@ -234,7 +234,7 @@ export default function AdminOrdersClient() {
       if (response.ok) {
         const statusInfo = getStatusDisplayInfo(newStatus);
         toast.success(
-          `Order status updated to ${t('account.' + statusInfo.label)}`
+          `Order status updated to ${t('orders.status_' + newStatus.toLowerCase())}`
         );
         await fetchOrders();
         setDeliveryNote("");
@@ -681,13 +681,12 @@ export default function AdminOrdersClient() {
                     </select>
                   ) : (
                     <span
-                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                        statusColors[
-                          order.status as keyof typeof statusColors
-                        ] || "bg-gray-100 text-gray-800"
-                      }`}
+                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColors[
+                        order.status as keyof typeof statusColors
+                      ] || "bg-gray-100 text-gray-800"
+                        }`}
                     >
-                      {order.status}
+                      {t('orders.status_' + order.status.toLowerCase())}
                     </span>
                   )}
                 </td>
@@ -708,11 +707,10 @@ export default function AdminOrdersClient() {
                   ) : (
                     <div>
                       <span
-                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          paymentStatusColors[
-                            order.paymentStatus as keyof typeof paymentStatusColors
-                          ] || "bg-gray-100 text-gray-800"
-                        }`}
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${paymentStatusColors[
+                          order.paymentStatus as keyof typeof paymentStatusColors
+                        ] || "bg-gray-100 text-gray-800"
+                          }`}
                       >
                         {order.paymentStatus || "Unknown"}
                       </span>
@@ -871,11 +869,10 @@ export default function AdminOrdersClient() {
                     </dt>
                     <dd className="text-sm text-gray-900">
                       <span
-                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          statusColors[
-                            viewOrderModal.status as keyof typeof statusColors
-                          ] || "bg-gray-100 text-gray-800"
-                        }`}
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColors[
+                          viewOrderModal.status as keyof typeof statusColors
+                        ] || "bg-gray-100 text-gray-800"
+                          }`}
                       >
                         {viewOrderModal.status}
                       </span>
@@ -917,11 +914,10 @@ export default function AdminOrdersClient() {
                     </dt>
                     <dd className="text-sm text-gray-900">
                       <span
-                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          paymentStatusColors[
-                            viewOrderModal.paymentStatus as keyof typeof paymentStatusColors
-                          ] || "bg-gray-100 text-gray-800"
-                        }`}
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${paymentStatusColors[
+                          viewOrderModal.paymentStatus as keyof typeof paymentStatusColors
+                        ] || "bg-gray-100 text-gray-800"
+                          }`}
                       >
                         {viewOrderModal.paymentStatus || "Unknown"}
                       </span>
@@ -950,8 +946,8 @@ export default function AdminOrdersClient() {
                         <div className="flex items-center space-x-3">
                           {item.images && item.images[0] && (
                             <Image
-                              src={item.images[0]}
-                              alt={item.name}
+                              src={item.images[0] || ""}
+                              alt={item.name || "Product Image"}
                               width={48}
                               height={48}
                               className="object-cover rounded"

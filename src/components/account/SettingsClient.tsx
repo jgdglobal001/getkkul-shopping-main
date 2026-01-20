@@ -37,10 +37,10 @@ export default function SettingsClient() {
             <div className="flex items-center justify-between py-3">
               <div>
                 <div className="font-medium text-gray-900">
-                  2단계 인증
+                  {t("account.two_factor_auth")}
                 </div>
                 <div className="text-sm text-gray-500">
-                  계정에 추가 보안 계층 추가
+                  {t("account.two_factor_auth_desc")}
                 </div>
               </div>
               <button className="px-4 py-2 text-theme-color border border-theme-color rounded-lg hover:bg-theme-color hover:text-white transition-colors">
@@ -50,9 +50,9 @@ export default function SettingsClient() {
 
             <div className="flex items-center justify-between py-3">
               <div>
-                <div className="font-medium text-gray-900">로그인 활동</div>
+                <div className="font-medium text-gray-900">{t("account.login_activity")}</div>
                 <div className="text-sm text-gray-500">
-                  최근 로그인 시도 및 활성 세션 보기
+                  {t("account.login_activity_desc")}
                 </div>
               </div>
               <button className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
@@ -62,9 +62,9 @@ export default function SettingsClient() {
 
             <div className="flex items-center justify-between py-3">
               <div>
-                <div className="font-medium text-gray-900">데이터 내보내기</div>
+                <div className="font-medium text-gray-900">{t("account.export_data")}</div>
                 <div className="text-sm text-gray-500">
-                  계정 데이터 사본 다운로드
+                  {t("account.export_data_desc")}
                 </div>
               </div>
               <button className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
@@ -77,22 +77,22 @@ export default function SettingsClient() {
         {/* Account Actions */}
         <div className="bg-white rounded-lg shadow p-8">
           <h3 className="text-lg font-medium text-gray-900 mb-4">
-            계정 작업
+            {t("account.account_actions")}
           </h3>
 
           <div className="space-y-4">
             <div className="flex items-center justify-between py-3">
               <div>
-                <div className="font-medium text-gray-900">로그아웃</div>
+                <div className="font-medium text-gray-900">{t("auth.logout")}</div>
                 <div className="text-sm text-gray-500">
-                  이 기기에서 계정 로그아웃
+                  {t("account.logout_desc")}
                 </div>
               </div>
               <button
                 onClick={() => signOut()}
                 className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
               >
-                로그아웃
+                {t("auth.logout")}
               </button>
             </div>
 
@@ -100,7 +100,7 @@ export default function SettingsClient() {
               <div>
                 <div className="font-medium text-red-600">{t("account.delete_account")}</div>
                 <div className="text-sm text-gray-500">
-                  계정 및 모든 관련 데이터 영구 삭제
+                  {t("account.delete_account_desc")}
                 </div>
               </div>
               <button
@@ -119,7 +119,7 @@ export default function SettingsClient() {
 
           <div className="space-y-2 text-sm text-gray-500">
             <div>{t("common.version")}: 1.0.0</div>
-            <div>마지막 업데이트: {new Date().toLocaleDateString('ko-KR')}</div>
+            <div>{t("account.last_updated")}: {new Date().toLocaleDateString('ko-KR')}</div>
             <div className="flex space-x-4">
               <a href="#" className="text-theme-color hover:underline">
                 {t("common.terms")}

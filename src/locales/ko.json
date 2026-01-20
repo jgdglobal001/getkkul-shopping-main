@@ -17,9 +17,33 @@
     "brand": "브랜드",
     "category": "카테고리",
     "in_cart": "담김",
-    "adding": "담는 중...",
-    "added": "담기 완료!",
-    "out_of_stock": "품절"
+    "adding_to_cart": "담는 중...",
+    "added_to_cart": "담기 완료!",
+    "out_of_stock": "품절",
+    "admin_dashboard": "관리자 대시보드",
+    "open": "열기",
+    "view": "보기",
+    "download": "다운로드",
+    "about": "정보",
+    "version": "버전",
+    "terms": "이용약관",
+    "privacy": "개인정보처리방침",
+    "support": "고객지원",
+    "actions": "작업",
+    "date": "날짜",
+    "quantity": "수량",
+    "unit_price": "단가",
+    "close": "닫기",
+    "delete": "삭제",
+    "delete_selected": "선택 삭제",
+    "deleting": "삭제 중...",
+    "start_shopping": "쇼핑 시작하기",
+    "try_again": "다시 시도",
+    "edit": "수정",
+    "optional": "선택사항",
+    "confirm": "확인",
+    "updating": "수정 중...",
+    "adding": "추가 중..."
   },
   "cart": {
     "title": "장바구니",
@@ -54,14 +78,19 @@
     "categories": "카테고리",
     "offers": "특가",
     "cart": "장바구니",
-    "orders": "주문내역"
+    "orders": "주문내역",
+    "menu": "메뉴"
   },
   "auth": {
     "login": "로그인",
     "logout": "로그아웃",
     "register": "회원가입",
     "guests": "게스트",
-    "sign_out": "로그아웃"
+    "sign_out": "로그아웃",
+    "view_profile": "프로필 보기",
+    "sign_out_of_account": "계정에서 로그아웃합니다",
+    "logout_success": "로그아웃되었습니다.",
+    "logout_error": "로그아웃 중 오류가 발생했습니다."
   },
   "home": {
     "shop_by_category": "카테고리별 쇼핑",

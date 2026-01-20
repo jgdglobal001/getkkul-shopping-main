@@ -6,18 +6,10 @@ import { useTranslation } from "react-i18next";
 import Sidebar from "./Sidebar";
 import AddressForm from "./AddressForm";
 import { getCountryByCode } from "./countryData";
-
-interface Address {
-  id?: string;
-  street: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  country: string;
-  isDefault?: boolean;
-}
+import { Address } from "../../../type";
 
 interface AddressManagementProps {
+
   addresses: Address[];
   onAddressesChange: (addresses: Address[]) => void;
 }
@@ -80,12 +72,12 @@ export default function AddressManagement({
       if (data.success) {
         setAddresses(updatedAddresses);
         onAddressesChange(updatedAddresses);
-        showMessage("Default address updated successfully!");
+        showMessage(t("account.default_address_updated"));
       } else {
-        showMessage(data.error || "Failed to update default address", true);
+        showMessage(data.error || t("account.failed_to_update_default"), true);
       }
     } catch (err) {
-      showMessage("Failed to update default address", true);
+      showMessage(t("account.failed_to_update_default"), true);
     }
     setLoading(false);
   };
@@ -114,12 +106,12 @@ export default function AddressManagement({
         setAddresses(data.addresses);
         onAddressesChange(data.addresses);
         setShowAddSidebar(false);
-        showMessage("Address added successfully!");
+        showMessage(t("account.address_added"));
       } else {
-        showMessage(data.error || "Failed to add address", true);
+        showMessage(data.error || t("account.failed_to_add_address"), true);
       }
     } catch (err) {
-      showMessage("Failed to add address", true);
+      showMessage(t("account.failed_to_add_address"), true);
     }
     setLoading(false);
   };
@@ -148,12 +140,12 @@ export default function AddressManagement({
         setShowEditSidebar(false);
         setEditingAddress(null);
         setEditingIndex(-1);
-        showMessage("Address updated successfully!");
+        showMessage(t("account.address_updated"));
       } else {
-        showMessage(data.error || "Failed to update address", true);
+        showMessage(data.error || t("account.failed_to_update_address"), true);
       }
     } catch (err) {
-      showMessage("Failed to update address", true);
+      showMessage(t("account.failed_to_update_address"), true);
     }
     setLoading(false);
   };
@@ -161,7 +153,7 @@ export default function AddressManagement({
   const handleDeleteAddress = async (index: number) => {
     if (!session?.user?.email) return;
 
-    if (!confirm("Are you sure you want to delete this address?")) return;
+    if (!confirm(t("account.delete_address_confirm"))) return;
 
     setLoading(true);
     try {
@@ -178,12 +170,12 @@ export default function AddressManagement({
       if (data.success) {
         setAddresses(data.addresses);
         onAddressesChange(data.addresses);
-        showMessage("Address deleted successfully!");
+        showMessage(t("account.address_deleted"));
       } else {
-        showMessage(data.error || "Failed to delete address", true);
+        showMessage(data.error || t("account.failed_to_delete_address"), true);
       }
     } catch (err) {
-      showMessage("Failed to delete address", true);
+      showMessage(t("account.failed_to_delete_address"), true);
     }
     setLoading(false);
   };
@@ -206,7 +198,10 @@ export default function AddressManagement({
       <div className="space-y-6">
         {/* Header */}
         <div className="flex justify-between items-center">
-          <h2 className="text-xl font-semibold">{t("account.manage_addresses")}</h2>
+          <div>
+            <h2 className="text-xl font-semibold">{t("account.manage_addresses")}</h2>
+            <p className="text-gray-500 text-sm">{t("account.manage_addresses_desc")}</p>
+          </div>
           <button
             onClick={() => setShowAddSidebar(true)}
             className="px-4 py-2 bg-theme-color text-white rounded-md hover:bg-theme-color/90 transition-colors"
@@ -261,16 +256,23 @@ export default function AddressManagement({
                       </span>
                     )}
                     <div className="text-gray-900">
-                      <p className="font-medium text-lg mb-1">
-                        {address.street}
+                      <p className="font-semibold text-base mb-1">
+                        {address.recipientName} ({address.phone})
                       </p>
-                      <p className="text-gray-600">
-                        {address.city}, {address.state} {address.zipCode}
+                      <p className="text-gray-700">
+                        {address.address}
                       </p>
-                      <p className="text-gray-600">
-                        {getCountryByCode(address.country)?.name ||
-                          address.country}
+                      <p className="text-gray-600 text-sm">
+                        {address.detailAddress}
                       </p>
+                      <p className="text-gray-500 text-xs mt-1">
+                        [{address.zipCode}]
+                      </p>
+                      {address.deliveryRequest && (
+                        <p className="text-gray-400 text-xs mt-2 italic">
+                          {t("account.delivery_request")}: {address.deliveryRequest}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="flex flex-col gap-2 ml-6">
@@ -286,7 +288,7 @@ export default function AddressManagement({
                         disabled={loading}
                         className="px-4 py-2 text-sm bg-green-50 text-green-600 rounded-md hover:bg-green-100 disabled:opacity-50 transition-colors"
                       >
-                        {t("account.set_default")}
+                        {t("account.set_as_default")}
                       </button>
                     )}
                     <button

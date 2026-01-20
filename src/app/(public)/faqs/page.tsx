@@ -123,7 +123,8 @@ const faqCategories = [
       {
         question: "상품이 할인될 때 알림을 받을 수 있나요?",
         answer:
-          "네! 상품을 위시리스트에 추가하고 가격 인하 알림을 활성화할 수 있습니다. 또한 뉴스레터를 구독하여 판매 및 특별 프로모션 업데이트를 받을 수 있습니다.",
+          "네! 상품을 관심 상품에 추가하고 가격 인하 알림을 활성화할 수 있습니다. 또한 뉴스레터를 구독하여 판매 및 특별 프로모션 업데이트를 받을 수 있습니다.",
+
       },
     ],
   },
@@ -185,11 +186,10 @@ export default function FAQsPage() {
                 <button
                   key={category.id}
                   onClick={() => setActiveCategory(category.id)}
-                  className={`w-full text-left p-3 rounded-lg transition-colors duration-200 flex items-center gap-3 ${
-                    activeCategory === category.id
+                  className={`w-full text-left p-3 rounded-lg transition-colors duration-200 flex items-center gap-3 ${activeCategory === category.id
                       ? "bg-theme-color text-theme-white"
                       : "bg-light-bg text-gray-700 hover:bg-theme-color/10"
-                  }`}
+                    }`}
                 >
                   <span className="text-lg">{category.icon}</span>
                   <span className="font-medium">{category.title}</span>

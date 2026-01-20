@@ -22,6 +22,7 @@ import {
   FiMessageCircle,
 } from "react-icons/fi";
 import { useSession } from "next-auth/react";
+import { useTranslation } from "react-i18next";
 
 interface Stats {
   totalUsers: number;
@@ -45,6 +46,7 @@ interface RecentOrder {
 
 export default function AdminDashboardClient() {
   const { data: session } = useSession();
+  const { t } = useTranslation();
   const [stats, setStats] = useState<Stats>({
     totalUsers: 0,
     totalOrders: 0,
@@ -370,7 +372,7 @@ export default function AdminDashboardClient() {
                   <div className="flex items-center justify-between mb-2">
                     <span className="font-medium text-gray-900">{order.orderId}</span>
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(order.status)}`}>
-                      {order.status}
+                      {t('orders.status_' + order.status.toLowerCase())}
                     </span>
                   </div>
                   <div className="text-sm text-gray-600">

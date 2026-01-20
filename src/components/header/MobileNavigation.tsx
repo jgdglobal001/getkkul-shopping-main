@@ -152,14 +152,14 @@ const MobileNavigation = ({ user }: MobileNavigationProps) => {
                 onClick={() => setIsOpen(false)}
                 className="block w-full py-2.5 px-4 bg-orange-500 text-white text-center rounded-lg font-medium hover:bg-orange-600 transition-colors"
               >
-                로그인
+                {t("auth.login")}
               </Link>
               <Link
                 href={registerUrl}
                 onClick={() => setIsOpen(false)}
                 className="block w-full mt-2 py-2.5 px-4 border border-orange-500 text-orange-500 text-center rounded-lg font-medium hover:bg-orange-50 transition-colors"
               >
-                회원가입
+                {t("auth.register")}
               </Link>
             </div>
           )}
@@ -173,8 +173,8 @@ const MobileNavigation = ({ user }: MobileNavigationProps) => {
                   href={item.href}
                   onClick={() => setIsOpen(false)}
                   className={`flex items-center gap-3 px-4 py-3 text-sm transition-colors ${item.label === (t("common.admin_dashboard") || "Admin Dashboard")
-                      ? "text-red-600 hover:bg-red-50 border-t border-gray-100 mt-1"
-                      : "text-gray-700 hover:bg-gray-50 hover:text-sky-color"
+                    ? "text-red-600 hover:bg-red-50 border-t border-gray-100 mt-1"
+                    : "text-gray-700 hover:bg-gray-50 hover:text-sky-color"
                     }`}
                 >
                   <item.icon className="w-5 h-5" />

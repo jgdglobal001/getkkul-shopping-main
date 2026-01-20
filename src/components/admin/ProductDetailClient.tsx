@@ -151,7 +151,7 @@ const ProductDetailClient = ({ productId }: ProductDetailClientProps) => {
             <FiArrowLeft className="w-5 h-5" />
             상품 관리로 돌아가기
           </Link>
-          
+
           <div className="flex gap-2">
             <Link
               href={`/account/admin/products/${productId}/edit`}
@@ -179,7 +179,7 @@ const ProductDetailClient = ({ productId }: ProductDetailClientProps) => {
             </span>
           )}
         </div>
-        
+
         <div className="flex items-center gap-4 text-sm text-gray-600">
           <span>SKU: {product.sku}</span>
           <span>•</span>
@@ -214,9 +214,8 @@ const ProductDetailClient = ({ productId }: ProductDetailClientProps) => {
                 <button
                   key={index}
                   onClick={() => setSelectedImage(image)}
-                  className={`aspect-square rounded-lg overflow-hidden border-2 transition-colors relative ${
-                    selectedImage === image ? "border-theme-color" : "border-gray-200"
-                  }`}
+                  className={`aspect-square rounded-lg overflow-hidden border-2 transition-colors relative ${selectedImage === image ? "border-theme-color" : "border-gray-200"
+                    }`}
                 >
                   <Image
                     src={image}
@@ -239,7 +238,7 @@ const ProductDetailClient = ({ productId }: ProductDetailClientProps) => {
               <FiDollarSign className="w-5 h-5 text-green-600" />
               <h2 className="text-xl font-semibold text-gray-900">가격 정보</h2>
             </div>
-            
+
             <div className="space-y-3">
               <div className="flex items-center gap-4">
                 <span className="text-2xl font-bold text-theme-color">
@@ -256,16 +255,15 @@ const ProductDetailClient = ({ productId }: ProductDetailClientProps) => {
                   </>
                 )}
               </div>
-              
+
               <div className="flex items-center gap-4 text-sm text-gray-600">
                 <div className="flex items-center gap-1">
                   <FiStar className="w-4 h-4 text-yellow-400" />
                   <span>{product.rating}</span>
                 </div>
                 <span>•</span>
-                <span className={`font-medium ${
-                  product.stock > 0 ? "text-green-600" : "text-red-600"
-                }`}>
+                <span className={`font-medium ${product.stock > 0 ? "text-green-600" : "text-red-600"
+                  }`}>
                   재고 {product.stock}개
                 </span>
                 <span>•</span>
@@ -280,7 +278,7 @@ const ProductDetailClient = ({ productId }: ProductDetailClientProps) => {
               <FiPackage className="w-5 h-5 text-blue-600" />
               <h2 className="text-xl font-semibold text-gray-900">판매 통계</h2>
             </div>
-            
+
             <div className="grid grid-cols-3 gap-4">
               <div className="text-center">
                 <div className="flex items-center justify-center gap-1 mb-1">
@@ -294,7 +292,7 @@ const ProductDetailClient = ({ productId }: ProductDetailClientProps) => {
               <div className="text-center">
                 <div className="flex items-center justify-center gap-1 mb-1">
                   <FiHeart className="w-4 h-4 text-gray-600" />
-                  <span className="text-sm text-gray-600">위시리스트</span>
+                  <span className="text-sm text-gray-600">관심 상품</span>
                 </div>
                 <span className="text-lg font-semibold text-gray-900">
                   {product.wishlistItems?.length || 0}
@@ -319,7 +317,7 @@ const ProductDetailClient = ({ productId }: ProductDetailClientProps) => {
                 <FiTag className="w-5 h-5 text-purple-600" />
                 <h2 className="text-xl font-semibold text-gray-900">태그</h2>
               </div>
-              
+
               <div className="flex flex-wrap gap-2">
                 {product.tags.map((tag, index) => (
                   <span
@@ -354,22 +352,22 @@ const ProductDetailClient = ({ productId }: ProductDetailClientProps) => {
             <FiSettings className="w-5 h-5 text-gray-600" />
             <h2 className="text-xl font-semibold text-gray-900">상세 스펙</h2>
           </div>
-          
+
           <div className="space-y-3">
 
-            
+
             <div className="flex justify-between">
               <span className="text-gray-600">최소 주문 수량:</span>
               <span className="font-medium">{product.minimumOrderQuantity}개</span>
             </div>
-            
+
             <div className="flex justify-between">
               <span className="text-gray-600">등록일:</span>
               <span className="font-medium">
                 {new Date(product.createdAt).toLocaleDateString('ko-KR')}
               </span>
             </div>
-            
+
             <div className="flex justify-between">
               <span className="text-gray-600">수정일:</span>
               <span className="font-medium">

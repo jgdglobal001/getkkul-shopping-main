@@ -40,7 +40,7 @@ export default function NotificationsClient() {
                     {t("account.email_notifications")}
                   </div>
                   <div className="text-sm text-gray-500">
-                    {t("account.email_notifications")}를 통해 주문 업데이트 및 계정 알림을 받으세요
+                    {t("account.email_notifications_desc")}
                   </div>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
@@ -60,7 +60,7 @@ export default function NotificationsClient() {
                     {t("account.sms_notifications")}
                   </div>
                   <div className="text-sm text-gray-500">
-                    문자 메시지로 중요한 업데이트를 받으세요
+                    {t("account.sms_notifications_desc")}
                   </div>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
@@ -78,7 +78,7 @@ export default function NotificationsClient() {
                 <div>
                   <div className="font-medium text-gray-900">{t("account.order_updates")}</div>
                   <div className="text-sm text-gray-500">
-                    주문 상태, 배송 및 배달에 대한 알림
+                    {t("account.order_updates_desc")}
                   </div>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
@@ -98,7 +98,7 @@ export default function NotificationsClient() {
                     {t("account.promotions")}
                   </div>
                   <div className="text-sm text-gray-500">
-                    특별 거래, 할인 및 프로모션 콘텐츠
+                    {t("account.promotions_desc")}
                   </div>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">

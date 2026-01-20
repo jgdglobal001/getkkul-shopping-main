@@ -4,8 +4,6 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Container from "../Container";
 import ShippingModal from "../ShippingModal";
-import LanguageDropdown from "./LanguageDropdown";
-import CurrencyDropdown from "./CurrencyDropdown";
 import SettingsDropdown from "./SettingsDropdown";
 
 const TopHeader = ({
@@ -35,8 +33,6 @@ const TopHeader = ({
           {t("header.freeShipping", { amount: `₩${Number(freeShippingThreshold).toLocaleString()}` })}
         </p>
         <div className="hidden md:inline-flex items-center text-sm text-white gap-1">
-          {/* <LanguageDropdown /> */}
-          {/* <CurrencyDropdown /> */}
           <SettingsDropdown />
         </div>
       </Container>

@@ -18,38 +18,20 @@ const mergedKo = {
   }, {} as Record<string, any>)
 };
 
-const resources = {
-  ko: {
-    translation: mergedKo
-  },
-  en: {
-    translation: en
-  },
-  zh: {
-    translation: zh
-  }
-};
-
 i18n
-  // .use(LanguageDetector)
   .use(initReactI18next)
   .init({
-    resources,
+    resources: {
+      ko: {
+        translation: mergedKo
+      }
+    },
     lng: 'ko',
     fallbackLng: 'ko',
     debug: process.env.NODE_ENV === 'development',
-
     interpolation: {
-      escapeValue: false, // React는 기본적으로 XSS 보호
+      escapeValue: false,
     },
-
-    detection: {
-      order: ['cookie', 'localStorage', 'navigator', 'htmlTag'],
-      caches: ['cookie', 'localStorage'],
-      lookupCookie: 'i18next',
-      lookupLocalStorage: 'i18nextLng',
-    },
-
     react: {
       useSuspense: false,
     }

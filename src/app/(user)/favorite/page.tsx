@@ -14,29 +14,31 @@ import { FaHeart, FaShoppingCart, FaEye, FaTrash } from "react-icons/fa";
 import { MdFavoriteBorder, MdFavorite } from "react-icons/md";
 import toast from "react-hot-toast";
 import PriceFormat from "@/components/PriceFormat";
+import { useTranslation } from "react-i18next";
 
 const FavoritePage = () => {
+  const { t } = useTranslation();
   const { favorite } = useSelector((state: StateType) => state?.shopy);
   const { data: session } = useSession();
   const dispatch = useDispatch();
 
-  const handleRemoveFromFavorite = (productId: number) => {
+  const handleRemoveFromFavorite = (productId: string | number) => {
     const product = favorite.find((item) => item.id === productId);
     if (product) {
       dispatch(addToFavorite(product)); // This will remove it due to toggle logic
-      toast.success("Removed from favorites");
+      toast.success(t("wishlist.removed_success"));
     }
   };
 
   const handleAddToCart = (product: any) => {
     dispatch(addToCart(product));
-    toast.success("Added to cart successfully!");
+    toast.success(t("wishlist.added_to_cart_success"));
   };
 
   const handleClearAllFavorites = () => {
-    if (window.confirm("Are you sure you want to clear all favorites?")) {
+    if (window.confirm(t("wishlist.clear_all_confirm"))) {
       dispatch(resetFavorite());
-      toast.success("All favorites cleared");
+      toast.success(t("wishlist.cleared_success"));
     }
   };
 
@@ -48,16 +50,16 @@ const FavoritePage = () => {
           <div className="text-center py-20">
             <MdFavoriteBorder className="mx-auto h-20 w-20 text-gray-300 mb-6" />
             <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              Sign In Required
+              {t("wishlist.sign_in_required")}
             </h1>
             <p className="text-gray-600 mb-8 text-lg">
-              Please sign in to view your favorite products
+              {t("wishlist.sign_in_desc")}
             </p>
             <Link
               href="/auth/signin"
               className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-theme-color hover:bg-theme-color/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-color transition-colors duration-200"
             >
-              Sign In
+              {t("wishlist.sign_in_button")}
             </Link>
           </div>
         </div>
@@ -71,10 +73,9 @@ const FavoritePage = () => {
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">My Favorites</h1>
+            <h1 className="text-3xl font-bold text-gray-900">{t("wishlist.title")}</h1>
             <p className="text-gray-600 mt-2">
-              {favorite?.length || 0} item{favorite?.length !== 1 ? "s" : ""} in
-              your favorites
+              {t("wishlist.items_count", { count: favorite?.length || 0 })}
             </p>
           </div>
           {favorite?.length > 0 && (
@@ -83,7 +84,7 @@ const FavoritePage = () => {
               className="text-red-600 hover:text-red-700 font-medium flex items-center gap-2 transition-colors duration-200"
             >
               <FaTrash className="h-4 w-4" />
-              Clear All
+              {t("wishlist.clear_all")}
             </button>
           )}
         </div>
@@ -95,17 +96,16 @@ const FavoritePage = () => {
               <MdFavoriteBorder className="mx-auto h-24 w-24 text-gray-300" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              No favorites yet
+              {t("wishlist.empty_title")}
             </h2>
-            <p className="text-gray-600 mb-8 text-lg max-w-md mx-auto">
-              Start adding products to your favorites by clicking the heart icon
-              on any product
+            <p className="text-gray-600 mb-8 text-lg max-w-2xl mx-auto break-keep">
+              {t("wishlist.empty_desc")}
             </p>
             <Link
               href="/products"
               className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-theme-color hover:bg-theme-color/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-color transition-colors duration-200"
             >
-              Browse Products
+              {t("wishlist.browse_products")}
             </Link>
           </div>
         ) : (
@@ -141,14 +141,14 @@ const FavoritePage = () => {
                     <button
                       onClick={() => handleRemoveFromFavorite(product.id)}
                       className="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-red-50 hover:text-red-500 transition-colors duration-200"
-                      title="Remove from favorites"
+                      title={t("wishlist.remove_tooltip")}
                     >
                       <MdFavorite className="h-4 w-4 text-red-500" />
                     </button>
                     <Link
                       href={`/products/${product.id}`}
                       className="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-blue-50 hover:text-blue-500 transition-colors duration-200"
-                      title="View details"
+                      title={t("wishlist.view_details_tooltip")}
                     >
                       <FaEye className="h-4 w-4" />
                     </Link>
@@ -192,14 +192,13 @@ const FavoritePage = () => {
                   <button
                     onClick={() => handleAddToCart(product)}
                     disabled={product.stock === 0}
-                    className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium transition-colors duration-200 ${
-                      product.stock === 0
-                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                        : "bg-theme-color text-white hover:bg-theme-color/90"
-                    }`}
+                    className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium transition-colors duration-200 ${product.stock === 0
+                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                      : "bg-theme-color text-white hover:bg-theme-color/90"
+                      }`}
                   >
                     <FaShoppingCart className="h-4 w-4" />
-                    {product.stock === 0 ? "Out of Stock" : "Add to Cart"}
+                    {product.stock === 0 ? t("common.out_of_stock") : t("common.add_to_cart")}
                   </button>
                 </div>
               </div>
@@ -214,7 +213,7 @@ const FavoritePage = () => {
               href="/products"
               className="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-theme-color transition-colors duration-200"
             >
-              Continue Shopping
+              {t("wishlist.continue_shopping")}
             </Link>
           </div>
         )}

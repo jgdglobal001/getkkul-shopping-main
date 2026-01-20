@@ -116,19 +116,19 @@ export default function AddressForm({
     const newErrors: Record<string, string> = {};
 
     if (!formData.recipientName.trim()) {
-      newErrors.recipientName = "받는사람은 필수입니다";
+      newErrors.recipientName = t("account.recipient_required");
     }
     if (!formData.phone.trim()) {
-      newErrors.phone = "전화번호는 필수입니다";
+      newErrors.phone = t("account.phone_required");
     }
     if (!formData.zipCode.trim()) {
-      newErrors.zipCode = "우편번호는 필수입니다";
+      newErrors.zipCode = t("account.zipcode_required");
     }
     if (!formData.address.trim()) {
-      newErrors.address = "주소는 필수입니다";
+      newErrors.address = t("account.address_required");
     }
     if (!formData.detailAddress.trim()) {
-      newErrors.detailAddress = "상세주소는 필수입니다";
+      newErrors.detailAddress = t("account.detail_address_required");
     }
 
     setErrors(newErrors);
@@ -149,17 +149,16 @@ export default function AddressForm({
         {/* 받는사람 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            받는사람 *
+            {t("account.recipient_name")} *
           </label>
           <input
             type="text"
             name="recipientName"
             value={formData.recipientName}
             onChange={handleInputChange}
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${
-              errors.recipientName ? "border-red-500" : "border-gray-300"
-            }`}
-            placeholder="받는사람 이름"
+            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${errors.recipientName ? "border-red-500" : "border-gray-300"
+              }`}
+            placeholder={t("account.recipient_placeholder")}
           />
           {errors.recipientName && (
             <p className="text-red-500 text-sm mt-1">{errors.recipientName}</p>
@@ -169,16 +168,15 @@ export default function AddressForm({
         {/* 전화번호 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            전화번호 *
+            {t("account.phone_number")} *
           </label>
           <input
             type="tel"
             name="phone"
             value={formData.phone}
             onChange={handleInputChange}
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${
-              errors.phone ? "border-red-500" : "border-gray-300"
-            }`}
+            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${errors.phone ? "border-red-500" : "border-gray-300"
+              }`}
             placeholder="010-0000-0000"
           />
           {errors.phone && (
@@ -194,21 +192,21 @@ export default function AddressForm({
             className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-theme-color hover:bg-theme-color/90 text-white font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
           >
             <FiMapPin className="text-lg" />
-            주소 검색
+            {t("account.search_address")}
           </button>
         </div>
 
         {/* 우편번호 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            우편번호 *
+            {t("account.zipcode")} *
           </label>
           <input
             type="text"
             value={formData.zipCode}
             readOnly
             className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-600"
-            placeholder="주소 검색 후 자동 입력"
+            placeholder={t("account.search_address_first")}
           />
           {errors.zipCode && (
             <p className="text-red-500 text-sm mt-1">{errors.zipCode}</p>
@@ -218,14 +216,14 @@ export default function AddressForm({
         {/* 주소 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            주소 *
+            {t("account.address")} *
           </label>
           <input
             type="text"
             value={formData.address}
             readOnly
             className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-600"
-            placeholder="주소 검색 후 자동 입력"
+            placeholder={t("account.search_address_first")}
           />
           {errors.address && (
             <p className="text-red-500 text-sm mt-1">{errors.address}</p>
@@ -235,17 +233,16 @@ export default function AddressForm({
         {/* 상세주소 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            상세주소 *
+            {t("account.detail_address")} *
           </label>
           <input
             type="text"
             name="detailAddress"
             value={formData.detailAddress}
             onChange={handleInputChange}
-            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${
-              errors.detailAddress ? "border-red-500" : "border-gray-300"
-            }`}
-            placeholder="예: 101호, 아파트 이름 등"
+            className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${errors.detailAddress ? "border-red-500" : "border-gray-300"
+              }`}
+            placeholder={t("account.detail_address_placeholder")}
           />
           {errors.detailAddress && (
             <p className="text-red-500 text-sm mt-1">{errors.detailAddress}</p>
@@ -255,7 +252,7 @@ export default function AddressForm({
         {/* 배송 요청사항 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            배송 요청사항
+            {t("account.delivery_request")}
           </label>
           <button
             type="button"
@@ -269,7 +266,7 @@ export default function AddressForm({
         {/* 공동현관 출입번호 */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
-            공동현관 출입번호 (선택사항)
+            {t("account.entrance_code")} ({t("common.optional")})
           </label>
           <input
             type="text"
@@ -277,10 +274,10 @@ export default function AddressForm({
             value={formData.entranceCode}
             onChange={handleInputChange}
             className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color"
-            placeholder="예: 1234"
+            placeholder={t("account.entrance_code_placeholder")}
           />
           <p className="text-xs text-gray-500 mt-1">
-            입력된 공동현관 출입번호는 배송을 위해 필요한 기간 동안 보관합니다.
+            {t("account.entrance_code_notice")}
           </p>
         </div>
 
@@ -296,7 +293,7 @@ export default function AddressForm({
                 className="mr-2 h-4 w-4 text-theme-color focus:ring-theme-color border-gray-300 rounded"
               />
               <span className="text-sm text-gray-700">
-                기본 배송지로 설정
+                {t("account.set_as_default")}
               </span>
             </label>
           </div>
@@ -309,7 +306,7 @@ export default function AddressForm({
             onClick={onCancel}
             className="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors"
           >
-            취소
+            {t("common.cancel")}
           </button>
           <button
             type="submit"
@@ -337,12 +334,10 @@ export default function AddressForm({
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                {isEdit ? "수정 중..." : "추가 중..."}
+                {t(isEdit ? "common.updating" : "common.adding")}
               </span>
-            ) : isEdit ? (
-              "주소 수정"
             ) : (
-              "주소 추가"
+              t(isEdit ? "account.edit_address" : "account.add_address")
             )}
           </button>
         </div>
@@ -353,7 +348,7 @@ export default function AddressForm({
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden">
             <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="text-lg font-semibold">주소 검색</h3>
+              <h3 className="text-lg font-semibold">{t("account.search_address")}</h3>
               <button
                 onClick={() => setShowPostcodeModal(false)}
                 className="text-gray-400 hover:text-gray-600"
@@ -376,7 +371,7 @@ export default function AddressForm({
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-md w-full">
             <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="text-lg font-semibold">배송 요청사항</h3>
+              <h3 className="text-lg font-semibold">{t("account.delivery_request")}</h3>
               <button
                 onClick={() => setShowDeliveryModal(false)}
                 className="text-gray-400 hover:text-gray-600"
@@ -386,7 +381,7 @@ export default function AddressForm({
             </div>
             <div className="p-6 space-y-3">
               <p className="text-sm text-gray-600 mb-4">
-                사회적 거리두기를 위해, 모든 배송을 비대면으로 진행합니다.
+                {t("account.delivery_request_notice")}
               </p>
 
               {[
@@ -413,7 +408,7 @@ export default function AddressForm({
                 onClick={() => setShowDeliveryModal(false)}
                 className="w-full mt-4 px-4 py-2 bg-theme-color text-white rounded-lg hover:bg-theme-color/90 transition-colors"
               >
-                확인
+                {t("common.confirm")}
               </button>
             </div>
           </div>
