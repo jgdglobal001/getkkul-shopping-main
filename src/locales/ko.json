@@ -291,7 +291,8 @@
     "upon_purchase": "만큼 절약하실 수 있습니다!",
     "select_option": "옵션을 선택해주세요!",
     "out_of_stock": "품절된 상품입니다!",
-    "max_stock_reached": "재고 수량을 초과할 수 없습니다!"
+    "max_stock_reached": "재고 수량을 초과할 수 없습니다!",
+    "discount_message": " 할인"
   },
   "offers": {
     "title": "특가 상품",

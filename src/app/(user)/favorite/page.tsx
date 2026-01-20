@@ -188,18 +188,29 @@ const FavoritePage = () => {
                     </div>
                   </div>
 
-                  {/* Add to Cart Button */}
-                  <button
-                    onClick={() => handleAddToCart(product)}
-                    disabled={product.stock === 0}
-                    className={`w-full flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium transition-colors duration-200 ${product.stock === 0
-                      ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                      : "bg-theme-color text-white hover:bg-theme-color/90"
-                      }`}
-                  >
-                    <FaShoppingCart className="h-4 w-4" />
-                    {product.stock === 0 ? t("common.out_of_stock") : t("common.add_to_cart")}
-                  </button>
+                  {/* Action Buttons */}
+                  <div className="flex gap-2">
+                    {/* Add to Cart Button */}
+                    <button
+                      onClick={() => handleAddToCart(product)}
+                      disabled={product.stock === 0}
+                      className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium transition-colors duration-200 ${product.stock === 0
+                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                        : "bg-theme-color text-white hover:bg-theme-color/90"
+                        }`}
+                    >
+                      <FaShoppingCart className="h-4 w-4" />
+                      {product.stock === 0 ? t("common.out_of_stock") : t("common.add_to_cart")}
+                    </button>
+                    {/* Remove from Favorite Button */}
+                    <button
+                      onClick={() => handleRemoveFromFavorite(product.id)}
+                      className="px-3 py-2 rounded-md border border-red-200 text-red-500 hover:bg-red-50 hover:border-red-300 transition-colors duration-200"
+                      title={t("wishlist.remove_tooltip")}
+                    >
+                      <FaTrash className="h-4 w-4" />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}

@@ -15,6 +15,7 @@ import ProductRequiredInfo from "@/components/ProductRequiredInfo";
 import ProductDetailTabs from "@/components/ProductDetailTabs";
 import ProductDetailsInfo from "@/components/ProductDetailsInfo";
 import ProductPurchaseSection from "@/components/ProductPurchaseSection";
+import ProductActionButtons from "@/components/ProductActionButtons";
 import { db, products, productOptions, productVariants, productQuestions, productAnswers, users } from "@/lib/db";
 import { eq, and, ne, asc, desc } from "drizzle-orm";
 import { notFound } from "next/navigation";
@@ -130,7 +131,11 @@ const SingleProductPage = async ({ params }: Props) => {
         <ProductImages thumbnail={product?.thumbnail} images={product?.images} />
         {/* Product Details */}
         <div className="flex flex-col gap-4">
-          <h2 className="text-3xl font-bold">{product?.title}</h2>
+          {/* 상품 제목 + 찜하기/공유 버튼 */}
+          <div className="flex items-start justify-between gap-4">
+            <h2 className="text-3xl font-bold flex-1">{product?.title}</h2>
+            <ProductActionButtons product={product} />
+          </div>
           <div className="flex items-center justify-between">
             <ProductPrice
               regularPrice={regularPrice}

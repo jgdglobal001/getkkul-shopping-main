@@ -198,6 +198,15 @@
         "address": "Room 2201, M-dong, 32 Songdogwahak-ro, Yeonsu-gu, Incheon (Songdo-dong, Songdo Technopark IT Center)",
         "copyright": "© 2025 Getkkul. All rights reserved."
     },
+    "product": {
+        "in_stock": "In Stock",
+        "you_are_saving": "You're saving",
+        "upon_purchase": "on this purchase!",
+        "select_option": "Please select an option!",
+        "out_of_stock": "This product is out of stock!",
+        "max_stock_reached": "Cannot exceed stock quantity!",
+        "discount_message": " discount"
+    },
     "products": {
         "all_products": "All Products",
         "product_header": "Products",
