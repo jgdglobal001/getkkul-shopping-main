@@ -1,3 +1,4 @@
+export const runtime = "edge";
 import Button from "@/components/ui/Button";
 import { FiLock, FiExternalLink, FiArrowLeft } from "react-icons/fi";
 import { MdError } from "react-icons/md";
