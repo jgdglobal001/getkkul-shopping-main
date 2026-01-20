@@ -7,48 +7,19 @@ import { getCategoriesWithCounts } from "../helpers/productHelpers";
 import { Metadata } from "next";
 import Link from "next/link";
 import koTranslations from "@/locales/ko.json";
-import koExtendedTranslations from "@/locales/ko-extended.json";
-
-export const metadata: Metadata = {
-  title: "상품 카테고리 | Getkkul-shopping",
-  description:
-    "전자제품, 패션, 홈데코, 뷰티 등 다양한 상품 카테고리를 둘러보세요. 원하는 상품을 쉽게 찾을 수 있습니다.",
-  keywords: [
-    "상품 카테고리",
-    "전자제품",
-    "패션",
-    "홈데코",
-    "뷰티 제품",
-    "의류",
-    "액세서리",
-    "카테고리별 쇼핑",
-  ],
-  openGraph: {
-    title: "상품 카테고리 | Getkkul-shopping",
-    description:
-      "다양한 상품 카테고리를 둘러보세요. 원하는 상품을 쉽게 찾을 수 있습니다.",
-    url: "/categories",
-    siteName: "Getkkul-shopping",
-    type: "website",
-  },
-  alternates: {
-    canonical: "/categories",
-  },
-};
+import enTranslations from "@/locales/en.json";
+import zhTranslations from "@/locales/zh.json";
+import { cookies } from "next/headers";
 
 // Helper function to get translations
-const getT = () => {
-  const merged = { ...koTranslations };
-  Object.keys(koExtendedTranslations).forEach(key => {
-    merged[key as keyof typeof merged] = {
-      ...(merged[key as keyof typeof merged] || {}),
-      ...koExtendedTranslations[key as keyof typeof koExtendedTranslations]
-    };
-  });
-  
-  return (key: string, defaultValue: string = ''): string => {
-    const keys = key.split('.');
-    let value: any = merged;
+const getT = (lang: string) => {
+  let translations: any = koTranslations;
+  if (lang === "en") translations = enTranslations;
+  if (lang === "zh") translations = zhTranslations;
+
+  return (key: string, defaultValue: string = ""): string => {
+    const keys = key.split(".");
+    let value: any = translations;
     for (const k of keys) {
       value = value?.[k];
     }
@@ -56,18 +27,51 @@ const getT = () => {
   };
 };
 
+export async function generateMetadata(): Promise<Metadata> {
+  const cookieStore = await cookies();
+  const lang = cookieStore.get("i18next")?.value || "ko";
+  const t = getT(lang);
+
+  return {
+    title: `${t("categories.page_title")} | Getkkul-shopping`,
+    description: t("categories.page_description"),
+    keywords: [
+      t("categories.page_title"),
+      "전자제품",
+      "패션",
+      "홈데코",
+      "뷰티 제품",
+      "의류",
+      "액세서리",
+      "카테고리별 쇼핑",
+    ],
+    openGraph: {
+      title: `${t("categories.page_title")} | Getkkul-shopping`,
+      description: t("categories.page_description"),
+      url: "/categories",
+      siteName: "Getkkul-shopping",
+      type: "website",
+    },
+    alternates: {
+      canonical: "/categories",
+    },
+  };
+}
+
 export default async function CategoriesPage() {
-  const t = getT();
+  const cookieStore = await cookies();
+  const lang = cookieStore.get("i18next")?.value || "ko";
+  const t = getT(lang);
 
   // Fetch categories from our database API
   let categoriesData = [];
-  
+
   try {
     // Server Components require absolute URL
-    const baseUrl = process.env.NEXTAUTH_URL || 
+    const baseUrl = process.env.NEXTAUTH_URL ||
       (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3002");
-    
-    const categoriesResponse = await fetch(`${baseUrl}/api/categories`, { 
+
+    const categoriesResponse = await fetch(`${baseUrl}/api/categories`, {
       next: { revalidate: 0 }, // No caching - always fetch fresh data
       headers: { 'Content-Type': 'application/json' }
     });

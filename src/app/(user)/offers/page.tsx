@@ -9,15 +9,28 @@ import OffersList from "@/components/pages/offers/OffersList";
 import Link from "next/link";
 import { db, products as productsTable } from "@/lib/db";
 import { eq, gt, desc, and } from "drizzle-orm";
+import { cookies } from "next/headers";
+
+import ko from "@/locales/ko.json";
+import en from "@/locales/en.json";
+import zh from "@/locales/zh.json";
+
+const translations = { ko, en, zh } as const;
+type Locale = keyof typeof translations;
+
+export async function generateMetadata() {
+  const cookieStore = await cookies();
+  const lang = (cookieStore.get("i18next")?.value as Locale) || "ko";
+  const dict = translations[lang] || translations.ko;
+
+  return {
+    title: `${dict.offers.title} - Getkkul-shopping`,
+    description: dict.offers.description.replace("{{discount}}", "50"),
+  };
+}
 
 // 동적 렌더링 설정 (DB 쿼리 때문에)
 export const dynamic = "force-dynamic";
-
-export const metadata = {
-  title: "특가 상품 - Getkkul-shopping",
-  description:
-    "최고의 상품들을 특가로 만나보세요! 전자제품, 패션, 뷰티 등 다양한 카테고리에서 큰 할인 혜택을 누리세요!",
-};
 
 interface OffersPageProps {
   searchParams: Promise<{
@@ -113,15 +126,16 @@ const OffersPage = async ({ searchParams }: OffersPageProps) => {
 
   // Calculate savings statistics
   const totalProducts = offersProducts.length;
-  const averageDiscount =
-    offersProducts.reduce(
-      (sum: number, product: ProductType) => sum + product.discountPercentage,
+  const averageDiscount = totalProducts > 0
+    ? offersProducts.reduce(
+      (sum: number, product: ProductType) => sum + (product.discountPercentage || 0),
       0
-    ) / totalProducts;
+    ) / totalProducts
+    : 0;
 
-  const maxDiscount = Math.max(
-    ...offersProducts.map((p: ProductType) => p.discountPercentage)
-  );
+  const maxDiscount = totalProducts > 0
+    ? Math.max(...offersProducts.map((p: ProductType) => p.discountPercentage || 0))
+    : 0;
 
   return (
     <Container className="py-10">

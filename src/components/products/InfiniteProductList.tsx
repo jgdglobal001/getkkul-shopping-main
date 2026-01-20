@@ -108,12 +108,12 @@ const InfiniteProductList = ({
   const sortedProducts = sortProducts(displayedProducts);
 
   const sortOptions = [
-    { value: "default", label: "기본 정렬" },
-    { value: "price-low", label: "가격: 낮은순" },
-    { value: "price-high", label: "가격: 높은순" },
-    { value: "name-asc", label: "이름: 가나다순" },
-    { value: "name-desc", label: "이름: 하바타순" },
-    { value: "rating", label: "평점 높은순" },
+    { value: "default", label: t("categories.sort_default", "Default Sort") },
+    { value: "price-low", label: t("categories.sort_price_low", "Price: Low to High") },
+    { value: "price-high", label: t("categories.sort_price_high", "Price: High to Low") },
+    { value: "name-asc", label: t("categories.sort_name_asc", "Name: A to Z") },
+    { value: "name-desc", label: t("categories.sort_name_desc", "Name: Z to A") },
+    { value: "rating", label: t("categories.sort_rating", "Highest Rating") },
   ];
 
   return (
@@ -154,22 +154,20 @@ const InfiniteProductList = ({
           <div className="flex items-center gap-2">
             <button
               onClick={() => setViewMode("grid")}
-              className={`p-2 rounded ${
-                viewMode === "grid"
+              className={`p-2 rounded ${viewMode === "grid"
                   ? "bg-blue-500 text-white"
                   : "bg-gray-200 text-gray-600 hover:bg-gray-300"
-              }`}
+                }`}
               title={t("products.grid_view")}
             >
               <BsGridFill className="w-4 h-4" />
             </button>
             <button
               onClick={() => setViewMode("list")}
-              className={`p-2 rounded ${
-                viewMode === "list"
+              className={`p-2 rounded ${viewMode === "list"
                   ? "bg-blue-500 text-white"
                   : "bg-gray-200 text-gray-600 hover:bg-gray-300"
-              }`}
+                }`}
               title={t("products.list_view")}
             >
               <ImList className="w-4 h-4" />

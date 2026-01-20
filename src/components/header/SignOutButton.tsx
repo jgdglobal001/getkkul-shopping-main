@@ -60,7 +60,7 @@ const SignOutButton = ({ session }: Props) => {
           href={"/auth/signin"}
           className="hover:text-theme-color duration-300 cursor-pointer"
         >
-          {t("common.please_login_to_view_cart")}
+          {t("auth.login")}
         </Link>
       )}
     </div>

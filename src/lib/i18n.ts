@@ -6,15 +6,14 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import ko from '../locales/ko.json';
 import koExtended from '../locales/ko-extended.json';
 // TODO: Add English and Chinese translations
-// import en from '../locales/en.json';
-// import enExtended from '../locales/en-extended.json';
-// import zhCn from '../locales/zh-cn.json';
+import en from '../locales/en.json';
+import zh from '../locales/zh.json';
 
 // ko-extended.json 병합
 const mergedKo = {
   ...ko,
   ...Object.keys(koExtended).reduce((acc, key) => {
-    acc[key] = { ...ko[key], ...koExtended[key] };
+    acc[key] = { ...(ko as any)[key], ...(koExtended as any)[key] };
     return acc;
   }, {} as Record<string, any>)
 };
@@ -22,14 +21,13 @@ const mergedKo = {
 const resources = {
   ko: {
     translation: mergedKo
+  },
+  en: {
+    translation: en
+  },
+  zh: {
+    translation: zh
   }
-  // TODO: Add more languages
-  // en: {
-  //   translation: mergedEn
-  // },
-  // 'zh-CN': {
-  //   translation: mergedZhCn
-  // }
 };
 
 i18n
@@ -38,19 +36,19 @@ i18n
   .init({
     resources,
     fallbackLng: 'ko',
-    lng: 'ko', // 기본 언어를 한국어로 설정
     debug: process.env.NODE_ENV === 'development',
-    
+
     interpolation: {
       escapeValue: false, // React는 기본적으로 XSS 보호
     },
-    
+
     detection: {
-      order: ['localStorage', 'navigator', 'htmlTag'],
-      caches: ['localStorage'],
+      order: ['cookie', 'localStorage', 'navigator', 'htmlTag'],
+      caches: ['cookie', 'localStorage'],
+      lookupCookie: 'i18next',
       lookupLocalStorage: 'i18nextLng',
     },
-    
+
     react: {
       useSuspense: false,
     }

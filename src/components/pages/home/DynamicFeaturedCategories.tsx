@@ -72,13 +72,13 @@ interface EnhancedCategory extends ApiCategory {
 
 const DynamicFeaturedCategories: React.FC = async () => {
   try {
-    // Fetch categories and all products data
+    // Fetch categories and a limited set of products to estimate counts (much faster than fetching all)
     const [categoriesData, allProductsData] = await Promise.all([
       getData(`https://dummyjson.com/products/categories`),
-      getData(`https://dummyjson.com/products?limit=0`), // Fetch all products
+      getData(`https://dummyjson.com/products?limit=100&select=category`), // Only fetch category field and limit to 100
     ]);
 
-    // Get categories with product counts
+    // Get categories with product counts based on the sample
     const categoriesWithCounts = getCategoriesWithCounts(
       allProductsData?.products || []
     );
@@ -99,9 +99,7 @@ const DynamicFeaturedCategories: React.FC = async () => {
               categoryImages[categorySlug] ||
               "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=200&h=200&fit=crop&crop=center",
             itemCount: categoryCount,
-            description:
-              category.description ||
-              `${category.name} 카테고리의 상품들을 발견하세요.`,
+            description: `${category.name} 카테고리의 상품들`,
           };
         }) || [];
 
@@ -112,10 +110,10 @@ const DynamicFeaturedCategories: React.FC = async () => {
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            카테고리별 쇼핑
+            Shop by Category
           </h2>
           <p className="text-gray-600">
-            현재 카테고리를 로드할 수 없습니다. 나중에 다시 시도해주세요.
+            Unable to load categories at this time.
           </p>
         </div>
       </section>

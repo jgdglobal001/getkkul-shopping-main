@@ -8,6 +8,7 @@ import I18nProvider from "@/components/providers/I18nProvider";
 import Script from "next/script";
 import PartnerRefTracker from "@/components/PartnerRefTracker";
 import { Suspense } from "react";
+import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.getkkul.com'),
@@ -25,7 +26,6 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  // 파비콘 설정 - Google 검색결과에서 표시되도록 명시적 설정
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },
@@ -82,11 +82,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const lang = cookieStore.get("i18next")?.value || "ko";
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -117,7 +120,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="ko">
+    <html lang={lang} suppressHydrationWarning>
       <body>
         <script
           type="application/ld+json"

@@ -1,12 +1,29 @@
-"use client";
 import { useSearchParams, useRouter } from "next/navigation";
 import { FaTimes, FaUndo } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
+import { useCurrency } from "@/contexts/CurrencyContext";
 
 const ActiveFilters = () => {
+  const { t } = useTranslation();
+  const { selectedCurrency, convertPrice } = useCurrency();
   const searchParams = useSearchParams();
   const router = useRouter();
 
   const activeFilters = [];
+
+  // Format price helper
+  const formatPriceLabel = (amount: number) => {
+    const noDecimalCurrencies = ["KRW", "JPY", "CNY"];
+    const useDecimals = !noDecimalCurrencies.includes(selectedCurrency);
+    const locale = selectedCurrency === "KRW" ? "ko-KR" : "en-US";
+
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency: selectedCurrency,
+      minimumFractionDigits: useDecimals ? 2 : 0,
+      maximumFractionDigits: useDecimals ? 2 : 0,
+    }).format(Math.round(amount));
+  };
 
   // Check for active filters
   const category = searchParams.get("category");
@@ -17,25 +34,30 @@ const ActiveFilters = () => {
   const search = searchParams.get("search");
 
   if (category) {
+    const translationKey = `categories.${category.replace(/-/g, "_")}_name`;
+    const translatedName = t(translationKey);
+    const displayValue = category === "bestsellers"
+      ? t("categories.bestsellers", "Best Sellers")
+      : category === "new"
+        ? t("categories.new_arrivals", "New Arrivals")
+        : category === "offers"
+          ? t("categories.special_offers", "Special Offers")
+          : translatedName === translationKey
+            ? category.charAt(0).toUpperCase() + category.slice(1)
+            : translatedName;
+
     activeFilters.push({
       type: "category",
-      label: "Category",
+      label: t("home.filters", "필터"),
       value: category,
-      displayValue:
-        category === "bestsellers"
-          ? "Best Sellers"
-          : category === "new"
-          ? "New Arrivals"
-          : category === "offers"
-          ? "Special Offers"
-          : category.charAt(0).toUpperCase() + category.slice(1),
+      displayValue,
     });
   }
 
   if (brand) {
     activeFilters.push({
       type: "brand",
-      label: "Brand",
+      label: t("filters.shop_by_brand", "Brand"),
       value: brand,
       displayValue: brand,
     });
@@ -44,25 +66,33 @@ const ActiveFilters = () => {
   if (color) {
     activeFilters.push({
       type: "color",
-      label: "Color",
+      label: t("filters.shop_by_color", "Color"),
       value: color,
       displayValue: color,
     });
   }
 
   if (minPrice || maxPrice) {
+    const min = minPrice ? parseFloat(minPrice) : 0;
+    const max = maxPrice ? parseFloat(maxPrice) : Infinity;
+
+    // Convert internal KRW values to selected currency
+    const displayMin = convertPrice(min, "KRW");
+    const displayMax = max === Infinity ? Infinity : convertPrice(max, "KRW");
+
     activeFilters.push({
       type: "price",
-      label: "Price",
-      value: `${minPrice || 0}-${maxPrice || "∞"}`,
-      displayValue: `$${minPrice || 0} - $${maxPrice || "∞"}`,
+      label: t("filters.shop_by_price", "Price"),
+      value: `${min}-${max}`,
+      displayValue: `${formatPriceLabel(displayMin)} - ${displayMax === Infinity ? "∞" : formatPriceLabel(displayMax)
+        }`,
     });
   }
 
   if (search) {
     activeFilters.push({
       type: "search",
-      label: "Search",
+      label: t("products.sort_by", "Search"),
       value: search,
       displayValue: `"${search}"`,
     });
@@ -104,13 +134,15 @@ const ActiveFilters = () => {
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-medium text-gray-900">Active Filters</h3>
+        <h3 className="text-sm font-medium text-gray-900">
+          {t("home.filters", "필터")}
+        </h3>
         <button
           onClick={clearAllFilters}
           className="flex items-center gap-2 text-sm text-red-600 hover:text-red-700 transition-colors"
         >
           <FaUndo className="w-3 h-3" />
-          Clear All
+          {t("offers.clear_all_filters", "Clear All")}
         </button>
       </div>
 

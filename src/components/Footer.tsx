@@ -69,7 +69,7 @@ const Footer = () => {
           </div>
         </div>
         <div>
-          <Title>법적 정보</Title>
+          <Title>{t("footer.legal_info")}</Title>
           <div className="mt-3 flex flex-col gap-y-2">
             <Link
               href="/terms-of-service"

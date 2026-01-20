@@ -2,15 +2,24 @@
 import { useState, useRef, useEffect } from "react";
 import { IoChevronDownSharp } from "react-icons/io5";
 import { FiCheck } from "react-icons/fi";
+import { useTranslation } from "react-i18next";
+import { useRouter } from "next/navigation";
 
 const languages = [
   { code: "ko", name: "한국어", flag: "🇰🇷", available: true },
+  { code: "en", name: "English", flag: "🇺🇸", available: true },
+  { code: "zh", name: "中文", flag: "🇨🇳", available: true },
 ];
 
 const LanguageDropdown = () => {
+  const { i18n } = useTranslation();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Find current language from i18n or localStorage
+  const currentLangCode = i18n.language || "ko";
+  const selectedLanguage = languages.find(l => l.code === (currentLangCode.startsWith('zh') ? 'zh' : currentLangCode)) || languages[0];
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -27,10 +36,14 @@ const LanguageDropdown = () => {
   }, []);
 
   const handleLanguageSelect = (language: (typeof languages)[0]) => {
-    // Only allow selection if language is available
     if (!language.available) return;
-    setSelectedLanguage(language);
+    i18n.changeLanguage(language.code);
+    localStorage.setItem('i18nextLng', language.code);
+    // Explicitly set cookie for SSR components
+    document.cookie = `i18next=${language.code}; path=/; max-age=31536000`;
     setIsOpen(false);
+    // Force complete reload to ensure all server and client components sync language
+    window.location.reload();
   };
 
   return (
@@ -41,11 +54,10 @@ const LanguageDropdown = () => {
       >
         <span className="hidden sm:inline">{selectedLanguage.flag}</span>
         <span className="hidden md:inline">{selectedLanguage.name}</span>
-        <span className="md:hidden">KO</span>
+        <span className="md:hidden">{selectedLanguage.code.toUpperCase()}</span>
         <IoChevronDownSharp
-          className={`transition-transform duration-200 ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""
+            }`}
         />
       </button>
 
@@ -59,11 +71,10 @@ const LanguageDropdown = () => {
               key={language.code}
               onClick={() => handleLanguageSelect(language)}
               disabled={!language.available}
-              className={`w-full px-4 py-2 text-left flex items-center justify-between transition-colors ${
-                language.available
-                  ? "text-gray-700 hover:bg-gray-50 cursor-pointer"
-                  : "text-gray-400 cursor-not-allowed bg-gray-50/50"
-              }`}
+              className={`w-full px-4 py-2 text-left flex items-center justify-between transition-colors ${language.available
+                ? "text-gray-700 hover:bg-gray-50 cursor-pointer"
+                : "text-gray-400 cursor-not-allowed bg-gray-50/50"
+                }`}
             >
               <div className="flex items-center gap-2 flex-1">
                 <span className={language.available ? "" : "opacity-50"}>

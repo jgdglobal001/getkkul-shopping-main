@@ -18,11 +18,11 @@ const Category = ({ categories = [], allProducts = [] }: CategoryProps) => {
   const currentCategory = searchParams.get("category");
 
   // Helper function to get exact product count for a category
-  const getProductCountForCategory = (categorySlug: string): number => {
+  const getProductCountForCategory = (categoryName: string): number => {
     if (!allProducts || allProducts.length === 0) return 0;
     return allProducts.filter(
       (product: any) =>
-        product.category && product.category.toLowerCase() === categorySlug.toLowerCase()
+        product.category && product.category.toLowerCase() === categoryName.toLowerCase()
     ).length;
   };
 
@@ -97,56 +97,69 @@ const Category = ({ categories = [], allProducts = [] }: CategoryProps) => {
             <div className="pt-2 pb-4">
               <div className="space-y-2">
                 {/* Special Categories */}
-                {specialCategories.map((category, index) => {
-                  const isActive = currentCategory === category.name;
-                  const count = getSpecialCategoryCount(category.name);
-                  return (
-                    <div key={`special-${index}`} className="flex items-center">
-                      <input
-                        type="radio"
-                        id={`category-${category.name}`}
-                        name="category"
-                        checked={isActive}
-                        onChange={() => {}}
-                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
-                      />
-                      <button
-                        onClick={() => handleCategoryClick(category.name)}
-                        className="ml-2 text-sm font-medium text-gray-900 hover:text-blue-600 transition-colors flex-1 text-left"
-                      >
-                        {t(category.translationKey)} ({count})
-                      </button>
-                    </div>
-                  );
-                })}
+                {specialCategories
+                  .filter((cat) => getSpecialCategoryCount(cat.name) > 0)
+                  .map((category, index) => {
+                    const isActive = currentCategory === category.name;
+                    const count = getSpecialCategoryCount(category.name);
+                    return (
+                      <div key={`special-${index}`} className="flex items-center">
+                        <input
+                          type="radio"
+                          id={`category-${category.name}`}
+                          name="category"
+                          checked={isActive}
+                          onChange={() => { }}
+                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                        />
+                        <button
+                          onClick={() => handleCategoryClick(category.name)}
+                          className="ml-2 text-sm font-medium text-gray-900 hover:text-blue-600 transition-colors flex-1 text-left"
+                        >
+                          {t(category.translationKey)} ({count})
+                        </button>
+                      </div>
+                    );
+                  })}
 
                 {/* Regular Categories */}
-                {categories.map((category, index) => {
-                  // Handle both string and object formats
-                  const categorySlug = typeof category === 'string' ? category : category.slug;
-                  // Use database value (Korean) as primary source
-                  const categoryName = typeof category === 'string' ? category : category.name;
-                  const isActive = currentCategory === categorySlug;
-                  const count = getProductCountForCategory(categorySlug);
-                  return (
-                    <div key={index} className="flex items-center">
-                      <input
-                        type="radio"
-                        id={`category-${categorySlug}`}
-                        name="category"
-                        checked={isActive}
-                        onChange={() => {}}
-                        className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
-                      />
-                      <button
-                        onClick={() => handleCategoryClick(categorySlug)}
-                        className="ml-2 text-sm font-medium text-gray-900 hover:text-blue-600 transition-colors flex-1 text-left"
-                      >
-                        {categoryName} ({count})
-                      </button>
-                    </div>
-                  );
-                })}
+                {categories
+                  .filter((cat) => {
+                    const categoryName = typeof cat === 'string' ? cat : cat.name;
+                    return getProductCountForCategory(categoryName) > 0;
+                  })
+                  .map((category, index) => {
+                    // Handle both string and object formats
+                    const categorySlug = typeof category === 'string' ? category : category.slug;
+                    // Use database value (Korean) as primary source
+                    const categoryName = typeof category === 'string' ? category : category.name;
+                    const isActive = currentCategory === categorySlug;
+                    const count = getProductCountForCategory(categoryName);
+
+                    // Try to translate using slug (consistent with InfiniteCategoryGrid)
+                    const translationKey = `categories.${categorySlug.replace(/-/g, "_")}_name`;
+                    const translatedName = t(translationKey);
+                    const finalName = translatedName === translationKey ? categoryName : translatedName;
+
+                    return (
+                      <div key={index} className="flex items-center">
+                        <input
+                          type="radio"
+                          id={`category-${categorySlug}`}
+                          name="category"
+                          checked={isActive}
+                          onChange={() => { }}
+                          className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+                        />
+                        <button
+                          onClick={() => handleCategoryClick(categorySlug)}
+                          className="ml-2 text-sm font-medium text-gray-900 hover:text-blue-600 transition-colors flex-1 text-left"
+                        >
+                          {finalName as any} ({count})
+                        </button>
+                      </div>
+                    );
+                  })}
               </div>
             </div>
           </motion.div>

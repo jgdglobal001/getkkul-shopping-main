@@ -96,23 +96,27 @@ const CategoryCard: React.FC<{ category: Category; index: number }> = ({
 }) => {
   const { t } = useTranslation();
   const categorySlug = category.slug;
-  // Use database values (Korean) as primary source of truth
-  const categoryName = category.name;
+  const translationKey = `categories.${categorySlug.replace(/-/g, "_")}_name`;
+  const translatedName = t(translationKey);
+  const categoryName = translatedName === translationKey ? category.name : translatedName;
+
+  const descKey = `categories.${categorySlug.replace(/-/g, "_")}_desc`;
+  const translatedDesc = t(descKey);
+  const description = translatedDesc === descKey ? (category.description || `${categoryName} 카테고리의 상품들을 발견하세요.`) : translatedDesc;
+
   const image =
     categoryImages[categorySlug] ||
     "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop";
-  // Use database description if available, otherwise provide Korean default
-  const description = category.description || `${category.name} 카테고리의 상품들을 발견하세요.`;
+
   const productCount = category.count || 0;
   const isDisabled = productCount === 0;
 
   const cardContent = (
     <div
-      className={`relative bg-white rounded-2xl shadow-md overflow-hidden h-full border transition-all duration-500 ${
-        isDisabled
-          ? "border-gray-200 opacity-60 cursor-not-allowed"
-          : "group border-gray-100 hover:border-blue-200 hover:shadow-2xl transform hover:-translate-y-3 hover:scale-[1.02]"
-      }`}
+      className={`relative bg-white rounded-2xl shadow-md overflow-hidden h-full border transition-all duration-500 ${isDisabled
+        ? "border-gray-200 opacity-60 cursor-not-allowed"
+        : "group border-gray-100 hover:border-blue-200 hover:shadow-2xl transform hover:-translate-y-3 hover:scale-[1.02]"
+        }`}
     >
       {/* Image Container */}
       <div className="relative h-36 lg:h-44 overflow-hidden">
@@ -120,11 +124,10 @@ const CategoryCard: React.FC<{ category: Category; index: number }> = ({
           src={image}
           alt={categoryName}
           fill
-          className={`object-cover transition-transform duration-700 ${
-            isDisabled
-              ? "filter grayscale"
-              : "group-hover:scale-110 filter group-hover:brightness-110"
-          }`}
+          className={`object-cover transition-transform duration-700 ${isDisabled
+            ? "filter grayscale"
+            : "group-hover:scale-110 filter group-hover:brightness-110"
+            }`}
           unoptimized
         />
 
@@ -138,11 +141,10 @@ const CategoryCard: React.FC<{ category: Category; index: number }> = ({
 
         {/* Product Count Badge */}
         <div
-          className={`absolute top-3 left-3 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg transition-transform duration-300 ${
-            isDisabled
-              ? "bg-gray-500"
-              : "bg-gradient-to-r from-blue-600 to-blue-700 transform group-hover:scale-110"
-          }`}
+          className={`absolute top-3 left-3 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-lg transition-transform duration-300 ${isDisabled
+            ? "bg-gray-500"
+            : "bg-gradient-to-r from-blue-600 to-blue-700 transform group-hover:scale-110"
+            }`}
         >
           {productCount} {t("categories.items")}
         </div>
@@ -176,53 +178,47 @@ const CategoryCard: React.FC<{ category: Category; index: number }> = ({
       {/* Content with Enhanced Typography */}
       <div className="p-4 lg:p-5 relative">
         <h3
-          className={`text-base lg:text-lg font-bold mb-2 transition-colors duration-300 line-clamp-1 ${
-            isDisabled
-              ? "text-gray-500"
-              : "text-gray-900 group-hover:text-blue-600 group-hover:tracking-wide"
-          }`}
+          className={`text-base lg:text-lg font-bold mb-2 transition-colors duration-300 line-clamp-1 ${isDisabled
+            ? "text-gray-500"
+            : "text-gray-900 group-hover:text-blue-600 group-hover:tracking-wide"
+            }`}
         >
           {categoryName}
         </h3>
         <p
-          className={`text-sm lg:text-base mb-4 line-clamp-2 transition-colors duration-300 ${
-            isDisabled
-              ? "text-gray-400"
-              : "text-gray-600 group-hover:text-gray-700"
-          }`}
+          className={`text-sm lg:text-base mb-4 line-clamp-2 transition-colors duration-300 ${isDisabled
+            ? "text-gray-400"
+            : "text-gray-600 group-hover:text-gray-700"
+            }`}
         >
-          {isDisabled ? "Currently no products available" : description}
+          {isDisabled ? t("categories.out_of_stock") : description}
         </p>
 
         {/* Enhanced Action Button */}
         <div className="flex items-center justify-between">
           <span
-            className={`text-sm font-medium transition-colors duration-300 ${
-              isDisabled
-                ? "text-gray-400"
-                : "text-gray-500 group-hover:text-blue-600"
-            }`}
+            className={`text-sm font-medium transition-colors duration-300 ${isDisabled
+              ? "text-gray-400"
+              : "text-gray-500 group-hover:text-blue-600"
+              }`}
           >
             {isDisabled ? t("categories.not_available") : t("categories.view_products")}
           </span>
           <div
-            className={`flex items-center transition-all duration-300 ${
-              isDisabled
-                ? "text-gray-400"
-                : "text-blue-600 group-hover:text-blue-700 transform group-hover:scale-110"
-            }`}
+            className={`flex items-center transition-all duration-300 ${isDisabled
+              ? "text-gray-400"
+              : "text-blue-600 group-hover:text-blue-700 transform group-hover:scale-110"
+              }`}
           >
             <div
-              className={`rounded-full p-2 transition-colors duration-300 ${
-                isDisabled
-                  ? "bg-gray-100"
-                  : "bg-blue-50 group-hover:bg-blue-100"
-              }`}
+              className={`rounded-full p-2 transition-colors duration-300 ${isDisabled
+                ? "bg-gray-100"
+                : "bg-blue-50 group-hover:bg-blue-100"
+                }`}
             >
               <FiArrowRight
-                className={`w-4 h-4 transition-transform duration-300 ${
-                  isDisabled ? "" : "transform group-hover:translate-x-1"
-                }`}
+                className={`w-4 h-4 transition-transform duration-300 ${isDisabled ? "" : "transform group-hover:translate-x-1"
+                  }`}
               />
             </div>
           </div>

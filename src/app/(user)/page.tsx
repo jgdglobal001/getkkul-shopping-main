@@ -25,8 +25,8 @@ export default async function Home() {
     .where(eq(products.isActive, true))
     .orderBy(desc(products.createdAt));
 
-  // 더미 참고용 상품 (모바일 카테고리만)
-  const dummyEndpoint = `https://dummyjson.com/products/category/smartphones?limit=0`;
+  // 더미 참고용 상품 (모바일 카테고리만) - 최적화: limit를 8로 제한
+  const dummyEndpoint = `https://dummyjson.com/products/category/smartphones?limit=8`;
   const dummyData = await getData(dummyEndpoint);
   const dummyProducts = dummyData?.products || [];
 
@@ -49,30 +49,36 @@ export default async function Home() {
 
       {/* Best Sellers Section */}
       <ProductSection
-        title="베스트셀러"
-        subtitle="고객들이 가장 사랑하는 인기 상품들"
+        title="Best Sellers"
+        subtitle="Our most popular products loved by customers"
         products={bestSellers}
         viewMoreLink="/products?category=bestsellers"
+        titleKey="home.best_sellers"
+        subtitleKey="home.best_sellers_sub"
       />
 
       <SectionDivider />
 
       {/* New Arrivals Section */}
       <ProductSection
-        title="신상품"
-        subtitle="새롭게 추가된 최신 상품들"
+        title="New Arrivals"
+        subtitle="Fresh additions to our collection"
         products={newArrivals}
         viewMoreLink="/products?category=new"
+        titleKey="home.new_arrivals"
+        subtitleKey="home.new_arrivals_sub"
       />
 
       <SectionDivider />
 
       {/* Special Offers Section */}
       <ProductSection
-        title="특가 상품"
-        subtitle="놓치면 후회할 특별한 할인 혜택"
+        title="Special Offers"
+        subtitle="Don't miss out on these exclusive deals"
         products={offers}
         viewMoreLink="/offers"
+        titleKey="home.special_offers"
+        subtitleKey="home.special_offers_sub"
       />
 
       {/* Reference Products Section (Dummy - Mobile Category) */}
@@ -80,10 +86,12 @@ export default async function Home() {
         <>
           <SectionDivider />
           <ProductSection
-            title="📱 참고 상품 (모바일)"
-            subtitle="다양한 모바일 기기들을 참고하세요"
+            title="📱 Reference Products"
+            subtitle="Explore various mobile devices"
             products={dummyProducts.slice(0, 8)}
             viewMoreLink="/products?category=smartphones"
+            titleKey="home.ref_products"
+            subtitleKey="home.ref_products_sub"
           />
         </>
       )}

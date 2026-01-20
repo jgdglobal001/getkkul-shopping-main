@@ -127,14 +127,17 @@ const RoundedCategoriesCarousel: React.FC<RoundedCategoriesCarouselProps> = ({
     return null;
   }
 
-  // Use database values (Korean) as primary source of truth
-  // i18n is only for future multi-language support fallback
-  const getCategoryName = (name: string): string => {
-    return name; // Database value is already in Korean
+  // Use translation keys based on slug if available, fallback to database name
+  const getCategoryName = (category: Category): string => {
+    const translationKey = `categories.${category.slug.replace(/-/g, '_')}_name`;
+    const translated = t(translationKey);
+    return translated === translationKey ? category.name : translated;
   };
 
-  const getCategoryDescription = (description: string): string => {
-    return description; // Database value is already in Korean
+  const getCategoryDescription = (category: Category): string => {
+    const translationKey = `categories.${category.slug.replace(/-/g, '_')}_desc`;
+    const translated = t(translationKey);
+    return translated === translationKey ? category.description : translated;
   };
 
   return (
@@ -158,38 +161,34 @@ const RoundedCategoriesCarousel: React.FC<RoundedCategoriesCarouselProps> = ({
               <button
                 onClick={goToPrevious}
                 disabled={currentIndex === 0}
-                className={`absolute left-0 top-[30%] -translate-y-1/2 z-10 border border-gray-200 rounded-full p-3 transition-all duration-300 group -ml-6 ${
-                  currentIndex === 0
-                    ? "bg-gray-100 cursor-not-allowed opacity-50"
-                    : "bg-white shadow-lg hover:shadow-xl hover:bg-gray-50 cursor-pointer"
-                }`}
+                className={`absolute left-0 top-[30%] -translate-y-1/2 z-10 border border-gray-200 rounded-full p-3 transition-all duration-300 group -ml-6 ${currentIndex === 0
+                  ? "bg-gray-100 cursor-not-allowed opacity-50"
+                  : "bg-white shadow-lg hover:shadow-xl hover:bg-gray-50 cursor-pointer"
+                  }`}
                 aria-label="Previous categories"
               >
                 <FaArrowLeft
-                  className={`transition-colors duration-300 ${
-                    currentIndex === 0
-                      ? "text-gray-400"
-                      : "text-gray-600 group-hover:text-gray-800"
-                  }`}
+                  className={`transition-colors duration-300 ${currentIndex === 0
+                    ? "text-gray-400"
+                    : "text-gray-600 group-hover:text-gray-800"
+                    }`}
                 />
               </button>
 
               <button
                 onClick={goToNext}
                 disabled={currentIndex === maxIndex}
-                className={`absolute right-0 top-[30%] -translate-y-1/2 z-10 border border-gray-200 rounded-full p-3 transition-all duration-300 group -mr-6 ${
-                  currentIndex === maxIndex
-                    ? "bg-gray-100 cursor-not-allowed opacity-50"
-                    : "bg-white shadow-lg hover:shadow-xl hover:bg-gray-50 cursor-pointer"
-                }`}
+                className={`absolute right-0 top-[30%] -translate-y-1/2 z-10 border border-gray-200 rounded-full p-3 transition-all duration-300 group -mr-6 ${currentIndex === maxIndex
+                  ? "bg-gray-100 cursor-not-allowed opacity-50"
+                  : "bg-white shadow-lg hover:shadow-xl hover:bg-gray-50 cursor-pointer"
+                  }`}
                 aria-label="Next categories"
               >
                 <FaArrowRight
-                  className={`transition-colors duration-300 ${
-                    currentIndex === maxIndex
-                      ? "text-gray-400"
-                      : "text-gray-600 group-hover:text-gray-800"
-                  }`}
+                  className={`transition-colors duration-300 ${currentIndex === maxIndex
+                    ? "text-gray-400"
+                    : "text-gray-600 group-hover:text-gray-800"
+                    }`}
                 />
               </button>
             </>
@@ -210,9 +209,8 @@ const RoundedCategoriesCarousel: React.FC<RoundedCategoriesCarouselProps> = ({
             <div
               className="flex transition-transform duration-500 ease-in-out"
               style={{
-                transform: `translateX(-${
-                  (currentIndex / categories.length) * 100
-                }%)`,
+                transform: `translateX(-${(currentIndex / categories.length) * 100
+                  }%)`,
                 width: `${(categories.length / itemsPerView) * 100}%`,
               }}
             >
@@ -252,10 +250,10 @@ const RoundedCategoriesCarousel: React.FC<RoundedCategoriesCarouselProps> = ({
                       {/* Category Info */}
                       <div className="text-center space-y-1">
                         <h3 className="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-300 text-sm lg:text-base">
-                          {getCategoryName(category.name)}
+                          {getCategoryName(category)}
                         </h3>
                         <p className="text-xs text-gray-500 line-clamp-2 px-1">
-                          {getCategoryDescription(category.description)}
+                          {getCategoryDescription(category)}
                         </p>
                       </div>
                     </div>
@@ -274,11 +272,10 @@ const RoundedCategoriesCarousel: React.FC<RoundedCategoriesCarouselProps> = ({
                   onClick={() => {
                     setCurrentIndex(index);
                   }}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                    index === currentIndex
-                      ? "bg-blue-600 w-8"
-                      : "bg-gray-300 hover:bg-gray-400"
-                  }`}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentIndex
+                    ? "bg-blue-600 w-8"
+                    : "bg-gray-300 hover:bg-gray-400"
+                    }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />
               ))}
