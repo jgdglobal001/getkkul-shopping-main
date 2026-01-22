@@ -9,6 +9,8 @@ import ProductRequiredInfo from "@/components/ProductRequiredInfo";
 import ProductDetailTabs from "@/components/ProductDetailTabs";
 import ProductDetailsInfo from "@/components/ProductDetailsInfo";
 import ProductPurchaseSection from "@/components/ProductPurchaseSection";
+import ProductStickyNav from "@/components/ProductStickyNav";
+import ProductShippingInfo from "@/components/ProductShippingInfo";
 import ProductActionButtons from "@/components/ProductActionButtons";
 import AddToCartButton from "@/components/AddToCartButton";
 import BuyNowButton from "@/components/BuyNowButton";
@@ -114,47 +116,62 @@ const ProductDetailClient = ({
                         </div>
                     </div>
                 </div>
+            </Container>
 
-                <hr className="border-gray-100 mt-2 mb-6" />
+            {/* 쿠팡 스타일 스티키 네비게이션 */}
+            <ProductStickyNav reviewCount={product?.reviews?.length || 0} />
 
-                {/* 하단 상세 정보 섹션: 모바일 좌우 여백 적용 및 간격 최적화 */}
-                <div className="mt-4 px-4 md:px-0 space-y-12">
-                    {/* 필수 표기 정보 */}
-                    <section id="required-info">
-                        <ProductRequiredInfo product={product} />
-                    </section>
+            <Container className="px-0 md:px-4">
+                {/* 하단 상세 정보 섹션: 네비게이션과 연동되는 4가지 주요 섹션 */}
+                <div className="mt-8 px-4 md:px-0 space-y-20">
+                    {/* 1. 상품상세 (필수 표기 정보 + 상세 설명) */}
+                    <div id="details" className="scroll-mt-20">
+                        <section id="required-info" className="mb-12">
+                            <ProductRequiredInfo product={product} />
+                        </section>
+                        <section id="product-tabs">
+                            <ProductDetailTabs product={product} />
+                        </section>
+                    </div>
 
-                    {/* 상품 상세 설명 및 탭 */}
-                    <section id="product-tabs">
-                        <ProductDetailTabs product={product} />
-                    </section>
-
-                    {/* Q&A 섹션 */}
-                    <section id="qa-section">
-                        <ProductQA product={product} questions={questions} />
-                    </section>
-
-                    {/* 리뷰 섹션: 타이틀을 박스 밖으로 꺼내어 정렬 일치 */}
-                    <section id="reviews" className="space-y-6">
-                        <h3 className="text-base font-semibold text-gray-900">구매 후기</h3>
-                        <div className="p-6 md:p-12 bg-gray-50 rounded-lg border border-gray-100">
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                {product?.reviews?.map((item: any, index: number) => (
-                                    <div key={index} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 font-sans hover:shadow-md transition-shadow">
-                                        <p className="font-medium text-gray-800 leading-relaxed min-h-[60px]">{item?.comment}</p>
-                                        <div className="mt-5 pt-4 border-t border-gray-50 flex items-center justify-between text-sm text-gray-500">
-                                            <span className="font-bold text-gray-700">{item?.reviewerName}</span>
-                                            <div className="flex text-yellow-400">
-                                                {Array.from({ length: 5 }).map((_, i) => (
-                                                    <MdStar key={i} className={i < item.rating ? "text-yellow-400" : "text-gray-200"} />
-                                                ))}
+                    {/* 2. 상품평 (리뷰) */}
+                    <div id="reviews" className="scroll-mt-20">
+                        <section className="space-y-6">
+                            <h3 className="text-base font-semibold text-gray-900">구매 후기</h3>
+                            <div className="p-6 md:p-12 bg-gray-50 rounded-lg border border-gray-100">
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                    {product?.reviews?.map((item: any, index: number) => (
+                                        <div key={index} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 font-sans hover:shadow-md transition-shadow">
+                                            <p className="font-medium text-gray-800 leading-relaxed min-h-[60px]">{item?.comment}</p>
+                                            <div className="mt-5 pt-4 border-t border-gray-50 flex items-center justify-between text-sm text-gray-500">
+                                                <span className="font-bold text-gray-700">{item?.reviewerName}</span>
+                                                <div className="flex text-yellow-400">
+                                                    {Array.from({ length: 5 }).map((_, i) => (
+                                                        <MdStar key={i} className={i < item.rating ? "text-yellow-400" : "text-gray-200"} />
+                                                    ))}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))}
+                                    {(!product?.reviews || product?.reviews?.length === 0) && (
+                                        <div className="col-span-full text-center py-10 text-gray-500 bg-white rounded-xl">
+                                            등록된 구매 후기가 없습니다.
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                        </div>
-                    </section>
+                        </section>
+                    </div>
+
+                    {/* 3. 상품문의 (Q&A) */}
+                    <div id="qa" className="scroll-mt-20">
+                        <ProductQA product={product} questions={questions} />
+                    </div>
+
+                    {/* 4. 배송/교환/반품 안내 */}
+                    <div id="shipping" className="scroll-mt-20">
+                        <ProductShippingInfo product={product} />
+                    </div>
                 </div>
             </Container>
 
