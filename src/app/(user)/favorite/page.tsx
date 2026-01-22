@@ -118,7 +118,7 @@ const FavoritePage = () => {
               >
                 {/* Product Image */}
                 <div className="relative aspect-square overflow-hidden">
-                  <Link href={`/products/${product.id}`}>
+                  <Link href={`/products/${product.id}`} target="_blank" rel="noopener noreferrer">
                     <Image
                       src={product.images?.[0] || "/placeholder-product.jpg"}
                       alt={product.title}
@@ -147,6 +147,8 @@ const FavoritePage = () => {
                     </button>
                     <Link
                       href={`/products/${product.id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-blue-50 hover:text-blue-500 transition-colors duration-200"
                       title={t("wishlist.view_details_tooltip")}
                     >

@@ -58,18 +58,18 @@ const EnhancedProductCard = ({ product, view = "grid" }: Props) => {
           : null,
         meta: product.meta
           ? {
-              ...product.meta,
-              createdAt: product.meta.createdAt
-                ? typeof product.meta.createdAt === "string"
-                  ? product.meta.createdAt
-                  : (product.meta.createdAt as any)?.toDate?.()?.toISOString() || null
-                : null,
-              updatedAt: product.meta.updatedAt
-                ? typeof product.meta.updatedAt === "string"
-                  ? product.meta.updatedAt
-                  : (product.meta.updatedAt as any)?.toDate?.()?.toISOString() || null
-                : null,
-            }
+            ...product.meta,
+            createdAt: product.meta.createdAt
+              ? typeof product.meta.createdAt === "string"
+                ? product.meta.createdAt
+                : (product.meta.createdAt as any)?.toDate?.()?.toISOString() || null
+              : null,
+            updatedAt: product.meta.updatedAt
+              ? typeof product.meta.updatedAt === "string"
+                ? product.meta.updatedAt
+                : (product.meta.updatedAt as any)?.toDate?.()?.toISOString() || null
+              : null,
+          }
           : null,
       };
       dispatch(addToFavorite(serializableProduct));
@@ -118,6 +118,8 @@ const EnhancedProductCard = ({ product, view = "grid" }: Props) => {
                 pathname: `/products/${product?.id}`,
                 query: { id: product?.id },
               }}
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <Image
                 src={product?.images?.[0] || ""}
@@ -185,6 +187,8 @@ const EnhancedProductCard = ({ product, view = "grid" }: Props) => {
                     pathname: `/products/${product?.id}`,
                     query: { id: product?.id },
                   }}
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   <h3 className="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors line-clamp-2 mb-3">
                     {product?.title}
@@ -271,6 +275,8 @@ const EnhancedProductCard = ({ product, view = "grid" }: Props) => {
             pathname: `/products/${product?.id}`,
             query: { id: product?.id },
           }}
+          target="_blank"
+          rel="noopener noreferrer"
         >
           <Image
             src={product?.thumbnail || product?.images?.[0] || ""}
@@ -343,6 +349,8 @@ const EnhancedProductCard = ({ product, view = "grid" }: Props) => {
             pathname: `/products/${product?.id}`,
             query: { id: product?.id },
           }}
+          target="_blank"
+          rel="noopener noreferrer"
         >
           <h3 className="font-semibold text-gray-900 hover:text-blue-600 transition-colors truncate mb-3 leading-tight text-sm">
             {product?.title}

@@ -22,9 +22,9 @@ const ProductCard = ({ product }: Props) => {
   const { favorite } = useSelector((state: StateType) => state?.shopy);
   const [isFavorite, setIsFavorite] = useState(false);
 
-  const regularPrice = product?.price;
+  const regularPrice = product?.price || 0;
   const discountedPrice =
-    product?.price - (product?.price * product?.discountPercentage) / 100;
+    (product?.price || 0) - ((product?.price || 0) * (product?.discountPercentage || 0)) / 100;
 
   // Check if product is in favorites
   useEffect(() => {
@@ -56,6 +56,8 @@ const ProductCard = ({ product }: Props) => {
             pathname: `/products/${product?.id}`,
             query: { id: product?.id },
           }}
+          target="_blank"
+          rel="noopener noreferrer"
         >
           <Image
             src={product?.thumbnail || product?.images?.[0] || ""}
@@ -66,14 +68,14 @@ const ProductCard = ({ product }: Props) => {
           />
         </Link>
 
-        {product?.discountPercentage > 0 && (
+        {(product?.discountPercentage || 0) > 0 && (
           <div className="absolute top-3 left-3 bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg z-10 animate-pulse">
-            -{Math.round(product.discountPercentage)}% OFF
+            -{Math.round(product.discountPercentage || 0)}% OFF
           </div>
         )}
 
         {/* Stock Badge */}
-        {product?.stock <= 5 && product?.stock > 0 && (
+        {(product?.stock || 0) <= 5 && (product?.stock || 0) > 0 && (
           <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-2 py-1 rounded-full text-xs font-semibold shadow-lg">
             {product.stock}개 남음!
           </div>
@@ -102,6 +104,8 @@ const ProductCard = ({ product }: Props) => {
           </button>
           <Link
             href={`/products/${product.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
             className="p-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-blue-50 hover:text-blue-500 transform hover:scale-110 transition-all duration-200"
             title="View details"
           >
@@ -128,6 +132,8 @@ const ProductCard = ({ product }: Props) => {
             pathname: `/products/${product?.id}`,
             query: { id: product?.id },
           }}
+          target="_blank"
+          rel="noopener noreferrer"
         >
           <h3 className="font-semibold text-gray-900 hover:text-blue-600 transition-colors line-clamp-1 mb-3 leading-tight">
             {product?.title}
@@ -141,11 +147,10 @@ const ProductCard = ({ product }: Props) => {
               {[...Array(5)].map((_, i) => (
                 <FaStar
                   key={i}
-                  className={`w-3.5 h-3.5 ${
-                    i < Math.floor(product?.rating)
+                  className={`w-3.5 h-3.5 ${i < Math.floor(product?.rating || 0)
                       ? "text-yellow-400"
                       : "text-gray-300"
-                  }`}
+                    }`}
                 />
               ))}
             </div>
@@ -154,7 +159,7 @@ const ProductCard = ({ product }: Props) => {
             </span>
           </div>
 
-          {product?.stock > 0 && (
+          {(product?.stock || 0) > 0 && (
             <span className="text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full font-medium">
               재고 있음
             </span>

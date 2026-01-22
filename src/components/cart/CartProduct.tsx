@@ -25,6 +25,8 @@ const CartProduct = ({ product }: { product: ProductType }) => {
           pathname: `/products/${product?.id}`,
           query: { id: product?.id },
         }}
+        target="_blank"
+        rel="noopener noreferrer"
         className="h-24 w-24 sm:h-48 sm:w-48 border border-sky-color/30 hover:border-sky-color overflow-hidden flex items-center justify-center rounded-md relative"
       >
         <Image
