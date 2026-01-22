@@ -89,7 +89,7 @@ const ProductPurchaseSection: React.FC<ProductPurchaseSectionProps> = ({
 
       {/* 장바구니/구매 버튼 (조건부 노출) */}
       {showButtons && (
-        <div className="hidden md:flex flex-col gap-3 mt-2">
+        <div className="hidden md:grid grid-cols-2 gap-3 mt-2">
           <AddToCartButton
             product={getProductForCart()}
             className="w-full h-12 uppercase font-bold rounded-lg"
