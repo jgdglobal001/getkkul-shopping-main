@@ -15,7 +15,7 @@ const MiddleHeader = async () => {
     <div className="border-b border-b-gray-400">
       <Container className="py-5 flex items-center gap-4 md:gap-6 lg:gap-20 justify-between ">
         <Logo />
-        <SearchInput />
+        <SearchInput className="hidden md:flex flex-1" />
         <div className="hidden md:inline-flex items-center gap-3">
           {/* User */}
           {session?.user ? (

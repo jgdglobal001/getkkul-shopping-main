@@ -25,8 +25,8 @@ const RelatedProducts = ({
   }
 
   return (
-    <div className="py-12 bg-gray-50">
-      <div className="text-center mb-8">
+    <div className="pt-6 pb-12 bg-gray-50">
+      <div className="text-center mb-4">
         <h3 className="text-2xl font-bold text-gray-900 mb-2">
           Related Products
         </h3>

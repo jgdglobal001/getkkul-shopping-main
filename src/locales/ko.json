@@ -292,7 +292,9 @@
     "select_option": "옵션을 선택해주세요!",
     "out_of_stock": "품절된 상품입니다!",
     "max_stock_reached": "재고 수량을 초과할 수 없습니다!",
-    "discount_message": " 할인"
+    "discount_message": " 할인",
+    "buy_now": "바로 구매",
+    "add_to_cart": "장바구니 담기"
   },
   "offers": {
     "title": "특가 상품",

@@ -48,18 +48,18 @@ const ProductActionButtons = ({ product }: Props) => {
           : null,
         meta: product.meta
           ? {
-              ...product.meta,
-              createdAt: product.meta.createdAt
-                ? typeof product.meta.createdAt === "string"
-                  ? product.meta.createdAt
-                  : (product.meta.createdAt as any)?.toDate?.()?.toISOString() || null
-                : null,
-              updatedAt: product.meta.updatedAt
-                ? typeof product.meta.updatedAt === "string"
-                  ? product.meta.updatedAt
-                  : (product.meta.updatedAt as any)?.toDate?.()?.toISOString() || null
-                : null,
-            }
+            ...product.meta,
+            createdAt: product.meta.createdAt
+              ? typeof product.meta.createdAt === "string"
+                ? product.meta.createdAt
+                : (product.meta.createdAt as any)?.toDate?.()?.toISOString() || null
+              : null,
+            updatedAt: product.meta.updatedAt
+              ? typeof product.meta.updatedAt === "string"
+                ? product.meta.updatedAt
+                : (product.meta.updatedAt as any)?.toDate?.()?.toISOString() || null
+              : null,
+          }
           : null,
       };
       dispatch(addToFavorite(serializableProduct));
@@ -96,7 +96,7 @@ const ProductActionButtons = ({ product }: Props) => {
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex flex-col md:flex-row items-center gap-2">
       {/* Favorite Button */}
       <button
         onClick={handleFavoriteClick}

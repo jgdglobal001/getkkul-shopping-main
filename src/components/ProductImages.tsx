@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import { twMerge } from "tailwind-merge";
 
 interface Props {
   thumbnail?: string;
@@ -9,66 +10,115 @@ interface Props {
 }
 
 const ProductImages = ({ thumbnail, images = [] }: Props) => {
-  // 썸네일을 첫 번째로, 그 다음 추가 이미지들을 배열로 구성
-  // 소비자는 썸네일을 클릭하거나 추가 이미지를 클릭해서 선택 가능
-  const allImages = thumbnail
-    ? [thumbnail, ...images.filter(img => img !== thumbnail)]
-    : images;
+  const allImages = Array.from(new Set(thumbnail ? [thumbnail, ...images] : images));
+  const [activeIndex, setActiveIndex] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  // 현재 표시되는 이미지 (초기값: 썸네일)
-  const [currentImage, setCurrentImage] = useState(thumbnail || "");
+  const handleScroll = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, offsetWidth } = scrollRef.current;
+      const index = Math.round(scrollLeft / offsetWidth);
+      if (index !== activeIndex) {
+        setActiveIndex(index);
+      }
+    }
+  };
 
-  // 페이지 로드 시 또는 상품이 변경될 때 썸네일로 리셋
-  // 자동으로 이미지가 변경되지 않음 - 소비자가 클릭할 때만 변경됨
   useEffect(() => {
-    if (thumbnail) {
-      setCurrentImage(thumbnail);
-    } else if (images && images.length > 0) {
-      setCurrentImage(images[0]);
+    setActiveIndex(0);
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft = 0;
     }
   }, [thumbnail, images]);
 
-  if (!currentImage) {
+  if (allImages.length === 0) {
     return (
-      <div className="flex flex-start">
-        <div className="bg-gray-100 rounded-md w-full max-h-[550px] relative flex items-center justify-center">
-          <p className="text-gray-400">이미지 없음</p>
-        </div>
+      <div className="w-full aspect-square bg-gray-50 flex items-center justify-center rounded-xl min-h-[400px]">
+        <p className="text-gray-400">이미지 없음</p>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-start">
-      <div>
-        {allImages?.map((item, index) => (
-          <div
-            key={index}
-            className={`relative w-24 h-24 cursor-pointer opacity-80 hover:opacity-100 duration-300 border border-gray-200 mb-1 ${
-              currentImage === item && "border-gray-500 rounded-xs opacity-100"
-            }`}
-            onClick={() => setCurrentImage(item)}
-          >
-            <Image
-              src={item}
-              alt="productImage"
-              fill
-              className="object-contain"
-              unoptimized
-            />
+    <div className="w-full relative">
+      {/* 1. 모바일 뷰: 메인 큰 이미지 영역 (상단 고정) */}
+      <div className="block md:hidden relative w-full aspect-square bg-white border-b border-gray-100 overflow-hidden">
+        <div
+          ref={scrollRef}
+          onScroll={handleScroll}
+          className="flex w-full h-full overflow-x-auto snap-x snap-mandatory scrollbar-hide touch-pan-x"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {allImages.map((image, index) => (
+            <div
+              key={index}
+              className="w-full h-full flex-shrink-0 snap-center flex items-center justify-center bg-white"
+            >
+              <div className="relative w-full h-full">
+                <Image
+                  src={image}
+                  alt={`상품 이미지 ${index + 1}`}
+                  fill
+                  className="object-contain"
+                  priority={index === 0}
+                  unoptimized
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* 인디케이터 (모바일용) */}
+        {allImages.length > 1 && (
+          <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5 z-10">
+            {allImages.map((_, index) => (
+              <div
+                key={index}
+                className={twMerge(
+                  "w-1.5 h-1.5 rounded-full transition-all duration-300 shadow-sm",
+                  activeIndex === index ? "bg-blue-500 w-4" : "bg-gray-300 shadow-inner"
+                )}
+              />
+            ))}
           </div>
-        ))}
+        )}
       </div>
-      <div className="bg-gray-100 rounded-md ml-5 w-full max-h-[550px] relative">
-        {currentImage && (
+
+      {/* 2. 데스크톱 뷰: 썸네일과 메인 이미지 영역의 물리적 분리 */}
+      <div className="hidden md:flex flex-row gap-4 w-full relative">
+        {/* 썸네일 전용 컬럼: 고정폭 확보 */}
+        <div className="flex flex-col gap-2 w-20 flex-shrink-0 relative">
+          {allImages.map((image, index) => (
+            <div
+              key={index}
+              onClick={() => setActiveIndex(index)}
+              className={twMerge(
+                "relative aspect-square cursor-pointer border-2 transition-all rounded-lg overflow-hidden bg-white z-20",
+                activeIndex === index ? "border-amazonOrangeDark shadow-md" : "border-gray-100 hover:border-gray-200"
+              )}
+            >
+              <Image
+                src={image}
+                alt={`썸네일 ${index + 1}`}
+                fill
+                className="object-contain p-1"
+                unoptimized
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* 메인 이미지 영역: 썸네일과 분리된 독립 컨테이너 */}
+        <div className="relative flex-1 aspect-square bg-white rounded-2xl overflow-hidden border border-gray-50 shadow-sm min-h-[500px]">
           <Image
-            src={currentImage}
-            alt="mainImage"
+            src={allImages[activeIndex]}
+            alt="상품 메인 이미지"
             fill
-            className="object-contain"
+            className="object-contain p-2"
+            priority
             unoptimized
           />
-        )}
+        </div>
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ import { useProductSearch } from "@/hooks/useProductSearch";
 import { useCurrency } from "@/contexts/CurrencyContext";
 import { twMerge } from "tailwind-merge";
 
-const SearchInput = () => {
+const SearchInput = ({ className }: { className?: string }) => {
   const [isInputFocused, setIsInputFocused] = useState(false);
   const searchContainerRef = useRef(null);
   const { t } = useTranslation();
@@ -80,7 +80,7 @@ const SearchInput = () => {
   return (
     <div
       ref={searchContainerRef}
-      className="hidden md:inline-flex flex-1 h-10 relative"
+      className={twMerge("flex-1 h-10 relative", className)}
     >
       <input
         type="text"
