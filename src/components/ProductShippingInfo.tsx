@@ -17,7 +17,7 @@ const ProductShippingInfo: React.FC<ProductShippingInfoProps> = ({ product }) =>
                 <div className="grid grid-cols-1 md:grid-cols-2 border-t border-l border-gray-200">
                     {[
                         { label: "배송방법", value: product?.shippingMethod || "일반배송" },
-                        { label: "배송비", value: product?.shippingCost || "3,000원" },
+                        { label: "배송비", value: product?.shippingCost || "3,000원 (29,000원 이상 구매 시 무료)" },
                         { label: "묶음배송 여부", value: product?.bundleShipping || "가능" },
                         { label: "배송기간", value: product?.shippingPeriod || "주문 후 1-2일 이내 배송" },
                     ].map((item, index) => (

@@ -68,7 +68,7 @@ const OffersPage = async ({ searchParams }: OffersPageProps) => {
   if (params.min_discount) {
     const minDiscount = parseFloat(params.min_discount);
     filteredProducts = filteredProducts.filter(
-      (product: ProductType) => product.discountPercentage >= minDiscount
+      (product: ProductType) => (product.discountPercentage || 0) >= minDiscount
     );
   }
 
@@ -78,13 +78,13 @@ const OffersPage = async ({ searchParams }: OffersPageProps) => {
       case "discount-high":
         filteredProducts.sort(
           (a: ProductType, b: ProductType) =>
-            b.discountPercentage - a.discountPercentage
+            (b.discountPercentage || 0) - (a.discountPercentage || 0)
         );
         break;
       case "discount-low":
         filteredProducts.sort(
           (a: ProductType, b: ProductType) =>
-            a.discountPercentage - b.discountPercentage
+            (a.discountPercentage || 0) - (b.discountPercentage || 0)
         );
         break;
       case "price-low":
@@ -107,7 +107,7 @@ const OffersPage = async ({ searchParams }: OffersPageProps) => {
         // Default: highest discount first
         filteredProducts.sort(
           (a: ProductType, b: ProductType) =>
-            b.discountPercentage - a.discountPercentage
+            (b.discountPercentage || 0) - (a.discountPercentage || 0)
         );
         break;
     }
@@ -115,7 +115,7 @@ const OffersPage = async ({ searchParams }: OffersPageProps) => {
     // Default sorting by highest discount
     filteredProducts.sort(
       (a: ProductType, b: ProductType) =>
-        b.discountPercentage - a.discountPercentage
+        (b.discountPercentage || 0) - (a.discountPercentage || 0)
     );
   }
 
