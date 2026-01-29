@@ -15,7 +15,8 @@
         "confirm": "Confirm",
         "updating": "Updating...",
         "adding": "Adding...",
-        "customer": "Customer"
+        "customer": "Customer",
+        "cancel": "Cancel"
     },
     "cart": {
         "title": "Cart",

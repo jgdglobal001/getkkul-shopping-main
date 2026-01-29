@@ -16,7 +16,8 @@
         "confirm": "确认",
         "updating": "更新中...",
         "adding": "添加中...",
-        "customer": "顾客"
+        "customer": "顾客",
+        "cancel": "取消"
     },
     "cart": {
         "title": "购物车",

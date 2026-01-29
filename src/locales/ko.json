@@ -44,7 +44,8 @@
     "confirm": "확인",
     "updating": "수정 중...",
     "adding": "추가 중...",
-    "customer": "고객"
+    "customer": "고객",
+    "cancel": "취소"
   },
   "cart": {
     "title": "장바구니",
