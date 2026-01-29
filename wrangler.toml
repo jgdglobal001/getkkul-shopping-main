@@ -10,7 +10,6 @@ pages_build_output_dir = ".vercel/output/static"
 # 환경변수
 [vars]
 NODE_ENV = "production"
-NEXTAUTH_URL = "https://www.getkkul.com"
 NEXT_PUBLIC_TOSS_CLIENT_KEY = "live_gck_ex6BJGQOVDW0aeEX0X5X3W4w2zNb"
 NEXT_PUBLIC_TOSS_VARIANT_KEY = "getkkul-live-toss"
 NEXT_PUBLIC_TOSS_SUCCESS_URL = "https://www.getkkul.com/payment/success"
