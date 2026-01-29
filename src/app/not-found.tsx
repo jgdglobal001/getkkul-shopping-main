@@ -81,8 +81,8 @@ export default function GlobalNotFound() {
               help with orders, products, or account issues.
             </p>
             <div className="space-y-2">
-              <p className="text-green-600 font-medium">📧 support@shofy.com</p>
-              <p className="text-green-600 font-medium">� +1 (555) 123-4567</p>
+              <p className="text-green-600 font-medium">📧 jgdglobal@kakao.com</p>
+              <p className="text-green-600 font-medium">📞 010-7218-2858</p>
             </div>
           </div>
         </div>

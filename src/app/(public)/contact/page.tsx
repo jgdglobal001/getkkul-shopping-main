@@ -62,7 +62,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-800 mb-1">Phone</h3>
-                  <p className="text-light-text">+1 (555) 123-4567</p>
+                  <p className="text-light-text">010-7218-2858</p>
                   <p className="text-light-text text-sm">
                     Monday - Friday, 9AM - 6PM
                   </p>
@@ -75,8 +75,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-800 mb-1">Email</h3>
-                  <p className="text-light-text">support@shofy.com</p>
-                  <p className="text-light-text">sales@shofy.com</p>
+                  <p className="text-light-text">jgdglobal@kakao.com</p>
                 </div>
               </div>
 
@@ -216,14 +215,14 @@ export default function ContactPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="tel:+15551234567"
+              href="tel:01072182858"
               className="inline-flex items-center gap-2 bg-theme-color text-theme-white px-6 py-3 rounded-lg hover:bg-theme-color/90 transition-colors duration-200 font-medium"
             >
               <FiPhone className="w-4 h-4" />
               Call Us Now
             </a>
             <a
-              href="mailto:support@shofy.com"
+              href="mailto:jgdglobal@kakao.com"
               className="inline-flex items-center gap-2 bg-theme-white text-theme-color border-2 border-theme-color px-6 py-3 rounded-lg hover:bg-theme-color hover:text-theme-white transition-colors duration-200 font-medium"
             >
               <FiMail className="w-4 h-4" />
@@ -231,7 +230,7 @@ export default function ContactPage() {
             </a>
           </div>
         </div>
-      </div>
-    </Container>
+      </div >
+    </Container >
   );
 }

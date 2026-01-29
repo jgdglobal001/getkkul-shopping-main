@@ -262,21 +262,19 @@ const OrderTrackingPage = () => {
                       {/* Connector Line */}
                       {index < trackingSteps.length - 1 && (
                         <div
-                          className={`absolute left-6 top-12 w-0.5 h-16 ${
-                            step.completed ? "bg-green-500" : "bg-gray-200"
-                          }`}
+                          className={`absolute left-6 top-12 w-0.5 h-16 ${step.completed ? "bg-green-500" : "bg-gray-200"
+                            }`}
                         />
                       )}
 
                       {/* Step Icon */}
                       <div
-                        className={`flex items-center justify-center w-12 h-12 rounded-full border-2 ${
-                          step.completed
+                        className={`flex items-center justify-center w-12 h-12 rounded-full border-2 ${step.completed
                             ? "bg-green-500 border-green-500 text-white"
                             : step.active
-                            ? "bg-blue-500 border-blue-500 text-white"
-                            : "bg-white border-gray-300 text-gray-400"
-                        }`}
+                              ? "bg-blue-500 border-blue-500 text-white"
+                              : "bg-white border-gray-300 text-gray-400"
+                          }`}
                       >
                         <Icon className="w-6 h-6" />
                       </div>
@@ -284,11 +282,10 @@ const OrderTrackingPage = () => {
                       {/* Step Content */}
                       <div className="ml-4 flex-1">
                         <h4
-                          className={`font-medium ${
-                            step.completed || step.active
+                          className={`font-medium ${step.completed || step.active
                               ? "text-gray-900"
                               : "text-gray-500"
-                          }`}
+                            }`}
                         >
                           {t(step.label)}
                         </h4>
@@ -467,7 +464,7 @@ const OrderTrackingPage = () => {
                   <FiPhone className="w-5 h-5 text-blue-600" />
                   <div>
                     <p className="font-medium text-gray-900">{t('account.call_support')}</p>
-                    <p className="text-sm text-gray-600">1-800-SHOFY-HELP</p>
+                    <p className="text-sm text-gray-600">{t('account.support_phone')}</p>
                   </div>
                 </button>
 
@@ -475,7 +472,7 @@ const OrderTrackingPage = () => {
                   <FiMail className="w-5 h-5 text-blue-600" />
                   <div>
                     <p className="font-medium text-gray-900">{t('account.email_support')}</p>
-                    <p className="text-sm text-gray-600">support@shofy.com</p>
+                    <p className="text-sm text-gray-600">{t('account.support_email')}</p>
                   </div>
                 </button>
               </div>

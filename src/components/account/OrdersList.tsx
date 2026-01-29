@@ -248,7 +248,7 @@ export default function OrdersList({
                   <FiPackage className="w-5 h-5 text-blue-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">{t("account.status")}</p>
+                  <p className="text-sm text-gray-600">{t("account.status_label")}</p>
                   <span
                     className={`inline-flex px-2 py-1 text-xs font-medium rounded-full capitalize ${getStatusColor(
                       selectedOrder.status
@@ -493,10 +493,10 @@ export default function OrdersList({
                   {t("common.date")}
                 </th>
                 <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
-                  {t("account.items")}
+                  {t("account.items_label")}
                 </th>
                 <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
-                  {t("account.status")}
+                  {t("account.status_label")}
                 </th>
                 <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
                   {t("account.total")}
