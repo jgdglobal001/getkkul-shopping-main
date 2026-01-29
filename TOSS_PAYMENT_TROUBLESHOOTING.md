@@ -175,3 +175,47 @@ echo $NEXT_PUBLIC_TOSS_CLIENT_KEY
   - 에러 처리 개선
   - UI 에러 표시 추가
 
+---
+
+## 🚀 Cloudflare Pages 배포 트러블슈팅
+
+### 🔴 발생한 에러: 바인딩 충돌
+
+```text
+Error: Failed to publish your Function. Got error: Binding name 'NEXTAUTH_URL' already in use. 
+Please use a different name and try again.
+```
+
+### 🔍 원인 분석
+
+Cloudflare Pages에서는 `NEXTAUTH_URL`과 같은 일부 환경 변수가 대시보드에서 이미 설정되어 있거나 시스템적으로 예약되어 있을 수 있습니다. 이때 `wrangler.toml` 파일의 `[vars]` 섹션에 동일한 이름의 변수가 정의되어 있으면 **바인딩 충돌(Binding Conflict)**이 발생하여 배포가 중단됩니다.
+
+### ✅ 해결 방법
+
+1. **`wrangler.toml` 수정**: `[vars]` 섹션에서 충돌이 발생하는 `NEXTAUTH_URL` 라인을 삭제 또는 주석 처리합니다.
+   
+   ```toml
+   # wrangler.toml
+   [vars]
+   # NEXTAUTH_URL = "https://www.getkkul.com"  <-- 삭제
+   NODE_ENV = "production"
+   NEXT_PUBLIC_TOSS_CLIENT_KEY = "your-key"
+   ...
+   ```
+
+2. **Cloudflare 대시보드 설정**:
+   - Cloudflare 프로젝트 페이지 → **Settings** → **Environment variables** 접속.
+   - `NEXTAUTH_URL` 변수가 올바른 도메인(예: `https://www.getkkul.com`)으로 설정되어 있는지 확인.
+   - 대시보드에서 일관되게 관리하는 것이 안전합니다.
+
+3. **배포 재시도**:
+   ```bash
+   npm run pages:deploy
+   ```
+
+### 💡 팁: 환경 변수 관리 전략
+
+- **`NEXT_PUBLIC_` 변수**: 클라이언트 코드에 포함되어야 하므로 `wrangler.toml`에 정의하여 빌드 타임에 주입하는 것이 편리합니다.
+- **민감한 키 (SECRET)**: `TOSS_SECRET_KEY`, `DATABASE_URL` 등은 보안을 위해 Cloudflare 대시보드에서 **Secret**으로 설정하거나 `.env` 파일로 관리하며, `wrangler.toml`에는 포함하지 않는 것이 좋습니다.
+- **예약된 변수**: `NEXTAUTH_URL`과 같이 충돌이 빈번한 변수는 가급적 대시보드 설정을 우선시합니다.
+

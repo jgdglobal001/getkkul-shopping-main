@@ -75,13 +75,13 @@ const CartSummary = ({ cart }: Props) => {
       try {
         const tossClientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
         if (!tossClientKey) {
-          setWidgetError("결제 설정 오류: 클라이언트 키가 없습니다.");
+          setWidgetError(t("cart.widget_error_no_key"));
           return;
         }
 
         const TossPayments = (window as any).TossPayments;
         if (!TossPayments) {
-          setWidgetError("결제 시스템 로드 실패. 페이지를 새로고침 해주세요.");
+          setWidgetError(t("cart.widget_error_load_failed"));
           return;
         }
 
@@ -121,7 +121,7 @@ const CartSummary = ({ cart }: Props) => {
     }
 
     if (!tossReady) {
-      alert("결제 시스템을 준비 중입니다. 잠시 후 다시 시도해주세요.");
+      alert(t("cart.payment_system_preparing"));
       return;
     }
 
@@ -166,7 +166,7 @@ const CartSummary = ({ cart }: Props) => {
         setPendingOrderId(result.orderId);
         setShowPaymentWidget(true);
       } else {
-        throw new Error("주문 생성 실패");
+        throw new Error(t("cart.order_creation_failed"));
       }
     } catch (error) {
       console.error("Error creating order:", error);
@@ -181,11 +181,11 @@ const CartSummary = ({ cart }: Props) => {
 
     try {
       setPaymentProcessing(true);
-      const customerName = session?.user?.name || session?.user?.email?.split('@')[0] || "고객";
+      const customerName = session?.user?.name || session?.user?.email?.split('@')[0] || t("common.customer");
 
       await paymentWidgetRef.current.requestPayment({
         orderId: pendingOrderId,
-        orderName: cart.length > 1 ? `${cart[0].title} 외 ${cart.length - 1}건` : cart[0].title,
+        orderName: cart.length > 1 ? t("cart.item_count_suffix", { title: cart[0].title, count: cart.length - 1 }) : cart[0].title,
         successUrl: `${window.location.origin}/payment/success`,
         failUrl: `${window.location.origin}/payment/fail`,
         customerEmail: session?.user?.email || "",
@@ -196,7 +196,7 @@ const CartSummary = ({ cart }: Props) => {
       // Don't clear here - redirect happens and Redux state resets anyway
     } catch (error: any) {
       if (!error?.message?.includes("취소")) {
-        alert(`결제 실패: ${error?.message || "다시 시도해주세요."}`);
+        alert(`${t("cart.payment_fail_prefix")}${error?.message || t("cart.try_again_simple")}`);
       }
     } finally {
       setPaymentProcessing(false);
@@ -229,7 +229,7 @@ const CartSummary = ({ cart }: Props) => {
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
             <div className="bg-white rounded-lg max-w-lg w-full max-h-[90vh] overflow-y-auto">
               <div className="flex items-center justify-between p-4 border-b">
-                <h3 className="text-lg font-semibold">결제하기</h3>
+                <h3 className="text-lg font-semibold">{t("cart.checkout_title")}</h3>
                 <button
                   onClick={handleCancelPayment}
                   className="p-2 hover:bg-gray-100 rounded-full"
@@ -242,7 +242,7 @@ const CartSummary = ({ cart }: Props) => {
                 {/* Order Summary */}
                 <div className="mb-4 p-3 bg-gray-50 rounded-lg">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-600">총 결제금액</span>
+                    <span className="text-gray-600">{t("cart.total_order_amount")}</span>
                     <PriceFormat
                       amount={totalAmt - discountAmt + shippingCost}
                       className="text-lg font-bold text-theme-color"
@@ -275,15 +275,15 @@ const CartSummary = ({ cart }: Props) => {
                   {paymentProcessing ? (
                     <>
                       <FiLoader className="animate-spin mr-2" />
-                      결제 진행 중...
+                      {t("cart.payment_processing")}
                     </>
                   ) : !widgetReady ? (
                     <>
                       <FiLoader className="animate-spin mr-2" />
-                      결제 준비 중...
+                      {t("cart.payment_ready")}
                     </>
                   ) : (
-                    "결제하기"
+                    t("cart.checkout_title")
                   )}
                 </button>
               </div>
@@ -417,7 +417,7 @@ const CartSummary = ({ cart }: Props) => {
             ) : !tossReady ? (
               <>
                 <FiLoader className="animate-spin mr-2" />
-                결제 준비 중...
+                {t("cart.payment_ready")}
               </>
             ) : (
               t("cart.place_order")

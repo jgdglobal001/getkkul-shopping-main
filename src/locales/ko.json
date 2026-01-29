@@ -43,7 +43,8 @@
     "optional": "선택사항",
     "confirm": "확인",
     "updating": "수정 중...",
-    "adding": "추가 중..."
+    "adding": "추가 중...",
+    "customer": "고객"
   },
   "cart": {
     "title": "장바구니",
@@ -67,7 +68,29 @@
     "add_more_for_free_shipping": "무료 배송까지 ",
     "add_more_for_free_shipping_suffix": " 남았습니다.",
     "free_shipping_on_orders_over": " 이상 주문 시 무료 배송",
-    "free_shipping": "무료 배송"
+    "free_shipping": "무료 배송",
+    "shipping_address": "배송지 정보",
+    "change": "변경",
+    "collapse": "닫기",
+    "no_shipping_addresses": "등록된 배송지가 없습니다.",
+    "add_shipping_address": "배송지 추가",
+    "add_new_address": "새 주소 추가",
+    "selected_address": "선택된 배송지",
+    "default": "기본",
+    "please_sign_in_to_manage": "로그인하여 배송지를 관리하세요.",
+    "edit_address": "주소 수정",
+    "payment_processing": "결제 진행 중...",
+    "payment_ready": "결제 준비 중...",
+    "total_order_amount": "총 결제 금액",
+    "payment_fail_prefix": "결제 실패: ",
+    "try_again_simple": "다시 시도해주세요.",
+    "checkout_title": "결제하기",
+    "widget_error_no_key": "결제 설정 오류: 클라이언트 키가 없습니다.",
+    "widget_error_load_failed": "결제 시스템 로드 실패. 페이지를 새로고침 해주세요.",
+    "payment_system_preparing": "결제 시스템을 준비 중입니다. 잠시 후 다시 시도해주세요.",
+    "order_creation_failed": "주문 생성 실패",
+    "item_count_suffix": "{{title}} 외 {{count}}건",
+    "product_removed": "상품이 삭제되었습니다."
   },
   "header": {
     "freeShipping": "{{amount}} 이상 주문 시 무료 배송"

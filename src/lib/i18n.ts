@@ -18,14 +18,23 @@ const mergedKo = {
   }, {} as Record<string, any>)
 };
 
+// Resource registration
+const resources = {
+  ko: {
+    translation: mergedKo
+  },
+  en: {
+    translation: en
+  },
+  zh: {
+    translation: zh
+  }
+};
+
 i18n
   .use(initReactI18next)
   .init({
-    resources: {
-      ko: {
-        translation: mergedKo
-      }
-    },
+    resources,
     lng: 'ko',
     fallbackLng: 'ko',
     debug: process.env.NODE_ENV === 'development',

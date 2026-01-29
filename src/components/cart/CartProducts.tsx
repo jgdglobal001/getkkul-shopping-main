@@ -36,7 +36,7 @@ const CartProducts = () => {
       {cart?.length > 0 ? (
         <>
           <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            장바구니
+            {t("cart.title")}
           </h1>
           <div className="mt-10 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-1 2">
             <section className="lg:col-span-7">
