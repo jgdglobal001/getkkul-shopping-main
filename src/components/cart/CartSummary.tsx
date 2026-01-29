@@ -50,7 +50,7 @@ const CartSummary = ({ cart }: Props) => {
     cart?.map((item) => {
       amt += item?.price * item?.quantity!;
       discount +=
-        ((item?.price * item?.discountPercentage) / 100) * item?.quantity!;
+        ((item?.price * (item?.discountPercentage || 0)) / 100) * item?.quantity!;
     });
 
     setTotalAmt(amt);
@@ -94,7 +94,7 @@ const CartSummary = ({ cart }: Props) => {
         await paymentWidget.setAmount({ value: amount, currency: "KRW" });
         await paymentWidget.renderPaymentMethods({
           selector: "#cart-payment-widget",
-          variantKey: "getkkul-live-toss",
+          variantKey: process.env.NEXT_PUBLIC_TOSS_VARIANT_KEY || "DEFAULT",
         });
 
         paymentWidgetRef.current = paymentWidget;
@@ -137,10 +137,10 @@ const CartSummary = ({ cart }: Props) => {
         items: cart.map((item: ProductType) => ({
           id: item.id,
           name: item.title,
-          price: item.price * (1 - item.discountPercentage / 100),
+          price: item.price * (1 - (item.discountPercentage || 0) / 100),
           quantity: item.quantity,
           image: item.thumbnail || item.images?.[0] || "",
-          total: item.price * (1 - item.discountPercentage / 100) * item.quantity!,
+          total: item.price * (1 - (item.discountPercentage || 0) / 100) * item.quantity!,
         })),
         totalAmount: finalTotal.toString(),
         currency: "KRW",
@@ -401,9 +401,8 @@ const CartSummary = ({ cart }: Props) => {
           </div>
           <Button
             onClick={handleCheckout}
-            className={`mt-4 ${
-              isCheckoutDisabled ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+            className={`mt-4 ${isCheckoutDisabled ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             disabled={isCheckoutDisabled}
           >
             {!session?.user ? (

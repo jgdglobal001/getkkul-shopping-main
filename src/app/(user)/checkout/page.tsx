@@ -146,10 +146,10 @@ const CheckoutPage = () => {
           currency: "KRW",
         });
 
-        // Render payment methods UI with variantKey (라이브 위젯)
+        // Render payment methods UI with variantKey (환경변수에서 로드, 없으면 DEFAULT)
         await paymentWidget.renderPaymentMethods({
           selector: "#payment-widget",
-          variantKey: "getkkul-live-toss",
+          variantKey: process.env.NEXT_PUBLIC_TOSS_VARIANT_KEY || "DEFAULT",
         });
 
         // Store widget reference for later use
@@ -266,8 +266,7 @@ const CheckoutPage = () => {
     } catch (error) {
       console.error("Error processing payment:", error);
       alert(
-        `Payment processing failed: ${
-          error instanceof Error ? error.message : "Please try again."
+        `Payment processing failed: ${error instanceof Error ? error.message : "Please try again."
         }`
       );
     } finally {
@@ -307,8 +306,8 @@ const CheckoutPage = () => {
 
       // Get customer name from session or email
       const customerName = session?.user?.name ||
-                          session?.user?.email?.split('@')[0] ||
-                          "고객";
+        session?.user?.email?.split('@')[0] ||
+        "고객";
 
       // Request payment using the already-rendered widget
       await paymentWidgetRef.current.requestPayment({
