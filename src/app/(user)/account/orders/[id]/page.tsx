@@ -47,7 +47,11 @@ interface Order {
   customerName: string;
   shippingAddress?: {
     name: string;
+    recipientName?: string;
+    phone?: string;
     address: string;
+    detailAddress?: string;
+    deliveryRequest?: string;
     city: string;
     state: string;
     zipCode: string;
@@ -427,26 +431,43 @@ const OrderTrackingPage = () => {
             {order.shippingAddress && (
               <div className="bg-white rounded-lg shadow p-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  {t('account.shipping_address')}
+                  {t('account.shipping_address') === 'account.shipping_address' ? '배송 주소' : t('account.shipping_address')}
                 </h3>
 
                 <div className="flex items-start space-x-3">
                   <FiMapPin className="w-5 h-5 text-gray-400 mt-1" />
-                  <div>
-                    <p className="font-medium text-gray-900">
-                      {order.shippingAddress.name}
-                    </p>
-                    <p className="text-sm text-gray-600 mt-1">
-                      {order.shippingAddress.address}
+                  <div className="flex-1">
+                    <p className="font-medium text-gray-900 mb-1">
+                      {order.shippingAddress.recipientName || order.shippingAddress.name}
+                      {order.shippingAddress.phone && (
+                        <span className="text-gray-500 font-normal ml-2">
+                          | {order.shippingAddress.phone}
+                        </span>
+                      )}
                     </p>
                     <p className="text-sm text-gray-600">
-                      {order.shippingAddress.city},{" "}
-                      {order.shippingAddress.state}{" "}
+                      {order.shippingAddress.address}
+                      {order.shippingAddress.city && ` (${order.shippingAddress.city})`}
+                    </p>
+                    {order.shippingAddress.detailAddress && (
+                      <p className="text-sm text-gray-600">
+                        {order.shippingAddress.detailAddress}
+                      </p>
+                    )}
+                    <p className="text-sm text-gray-600 mt-1">
                       {order.shippingAddress.zipCode}
                     </p>
-                    <p className="text-sm text-gray-600">
-                      {order.shippingAddress.country}
-                    </p>
+
+                    {order.shippingAddress.deliveryRequest && (
+                      <div className="mt-4 pt-3 border-t border-gray-100">
+                        <p className="text-xs font-semibold text-gray-500 mb-1">
+                          {t('account.delivery_request') === 'account.delivery_request' ? '배송 요청사항' : t('account.delivery_request')}
+                        </p>
+                        <p className="text-sm text-gray-700">
+                          {order.shippingAddress.deliveryRequest}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

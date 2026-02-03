@@ -59,6 +59,13 @@ export default function OrdersList({
   const [cancellingOrderId, setCancellingOrderId] = useState<string | null>(null);
   const [showCancelConfirm, setShowCancelConfirm] = useState<string | null>(null);
 
+  // 탭 필터 상태
+  const [activeTab, setActiveTab] = useState<'all' | 'pending' | 'paid' | 'shipping' | 'cancelled'>('all');
+
+  // 취소 사유 상태
+  const [cancelReason, setCancelReason] = useState<string>('');
+  const [cancelOrderAmount, setCancelOrderAmount] = useState<number>(0);
+
   const fetchOrders = useCallback(async () => {
     try {
       setLoading(true);
@@ -133,11 +140,49 @@ export default function OrdersList({
     );
   };
 
+  // 삭제 가능한 주문인지 확인 (pending 또는 cancelled만)
+  const isDeletableOrder = (order: Order) => {
+    const status = order.status.toLowerCase();
+    const paymentStatus = order.paymentStatus.toLowerCase();
+    return status === 'cancelled' || paymentStatus === 'pending';
+  };
+
+  // 필터링된 주문 목록
+  const filteredOrders = orders.filter((order) => {
+    const status = order.status.toLowerCase();
+    const paymentStatus = order.paymentStatus.toLowerCase();
+
+    switch (activeTab) {
+      case 'pending':
+        return paymentStatus === 'pending';
+      case 'paid':
+        return paymentStatus === 'paid' && status !== 'cancelled';
+      case 'shipping':
+        return ['shipped', 'delivered', 'processing', 'packed', 'out_for_delivery'].includes(status);
+      case 'cancelled':
+        return status === 'cancelled';
+      default:
+        return true;
+    }
+  });
+
+  // 삭제 가능한 주문만 필터링
+  const deletableOrders = filteredOrders.filter(isDeletableOrder);
+
+  // 탭별 주문 수
+  const tabCounts = {
+    all: orders.length,
+    pending: orders.filter(o => o.paymentStatus.toLowerCase() === 'pending').length,
+    paid: orders.filter(o => o.paymentStatus.toLowerCase() === 'paid' && o.status.toLowerCase() !== 'cancelled').length,
+    shipping: orders.filter(o => ['shipped', 'delivered', 'processing', 'packed', 'out_for_delivery'].includes(o.status.toLowerCase())).length,
+    cancelled: orders.filter(o => o.status.toLowerCase() === 'cancelled').length,
+  };
+
   const handleSelectAll = () => {
     setSelectedOrders(
-      selectedOrders.length === orders.length
+      selectedOrders.length === deletableOrders.length
         ? []
-        : orders.map((order) => order.id)
+        : deletableOrders.map((order) => order.id)
     );
   };
 
@@ -176,25 +221,54 @@ export default function OrdersList({
     }
   };
 
+  // 왕복 택배비 (단순 변심 취소 시 차감)
+  const SHIPPING_FEE = 6000;
+
+  // 취소 확인 모달 열기
+  const openCancelModal = (orderId: string) => {
+    const order = orders.find(o => o.id === orderId);
+    if (order) {
+      setCancelOrderAmount(parseFloat(order.amount));
+      setCancelReason('');
+      setShowCancelConfirm(orderId);
+    }
+  };
+
+  // 환불 금액 계산
+  const getRefundAmount = () => {
+    if (cancelReason === 'customer_change') {
+      return Math.max(0, cancelOrderAmount - SHIPPING_FEE);
+    }
+    return cancelOrderAmount;
+  };
+
   // 주문 취소 처리
   const handleCancelOrder = async (orderId: string) => {
+    if (!cancelReason) {
+      alert(t("orders.select_cancel_reason") || "취소 사유를 선택해주세요.");
+      return;
+    }
+
     setCancellingOrderId(orderId);
-    setShowCancelConfirm(null);
 
     try {
+      const refundAmount = getRefundAmount();
       const response = await fetch('/api/orders/cancel', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           orderId,
-          cancelReason: t("orders.customer_request_cancel")
+          cancelReason: cancelReason,
+          refundAmount: refundAmount,
+          shippingFeeDeducted: cancelReason === 'customer_change' ? SHIPPING_FEE : 0
         }),
       });
 
       const result = await response.json();
 
       if (result.success) {
-        // 주문 목록 새로고침
+        setShowCancelConfirm(null);
+        setCancelReason('');
         await fetchOrders();
         alert(t("orders.cancel_success"));
       } else {
@@ -448,6 +522,33 @@ export default function OrdersList({
         </div>
       )}
 
+      {/* Tab Filters */}
+      <div className="mb-6 border-b border-gray-200">
+        <nav className="flex space-x-1 overflow-x-auto" aria-label="Tabs">
+          {[
+            { key: 'all', label: t("orders.tab_all") || "전체" },
+            { key: 'pending', label: t("orders.tab_pending") || "결제 대기" },
+            { key: 'paid', label: t("orders.tab_paid") || "결제 완료" },
+            { key: 'shipping', label: t("orders.tab_shipping") || "배송" },
+            { key: 'cancelled', label: t("orders.tab_cancelled") || "취소" },
+          ].map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => {
+                setActiveTab(tab.key as typeof activeTab);
+                setSelectedOrders([]);
+              }}
+              className={`px-4 py-2 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${activeTab === tab.key
+                ? 'border-theme-color text-theme-color'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+            >
+              {tab.label} ({tabCounts[tab.key as keyof typeof tabCounts]})
+            </button>
+          ))}
+        </nav>
+      </div>
+
       {/* Delete Selected Button */}
       {selectedOrders.length > 0 && (
         <div className="mb-4 flex items-center justify-between bg-blue-50 border border-blue-200 rounded-lg p-4">
@@ -476,15 +577,17 @@ export default function OrdersList({
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-3 py-3 text-left w-12">
-                  <input
-                    type="checkbox"
-                    checked={
-                      selectedOrders.length === orders.length &&
-                      orders.length > 0
-                    }
-                    onChange={handleSelectAll}
-                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                  />
+                  {deletableOrders.length > 0 && (
+                    <input
+                      type="checkbox"
+                      checked={
+                        selectedOrders.length === deletableOrders.length &&
+                        deletableOrders.length > 0
+                      }
+                      onChange={handleSelectAll}
+                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    />
+                  )}
                 </th>
                 <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
                   {t("account.order")}
@@ -507,19 +610,23 @@ export default function OrdersList({
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {orders.map((order) => (
+              {filteredOrders.map((order) => (
                 <tr
                   key={order.id}
                   className={`hover:bg-gray-50 ${selectedOrders.includes(order.id) ? "bg-blue-50" : ""
                     }`}
                 >
                   <td className="px-3 py-4 whitespace-nowrap">
-                    <input
-                      type="checkbox"
-                      checked={selectedOrders.includes(order.id)}
-                      onChange={() => handleSelectOrder(order.id)}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                    />
+                    {isDeletableOrder(order) ? (
+                      <input
+                        type="checkbox"
+                        checked={selectedOrders.includes(order.id)}
+                        onChange={() => handleSelectOrder(order.id)}
+                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      />
+                    ) : (
+                      <span className="w-4 h-4 block"></span>
+                    )}
                   </td>
                   <td className="px-3 py-4 whitespace-nowrap">
                     <div>
@@ -617,7 +724,7 @@ export default function OrdersList({
                       {order.status.toLowerCase() !== "cancelled" &&
                         order.paymentStatus.toLowerCase() === "paid" && (
                           <button
-                            onClick={() => setShowCancelConfirm(order.id)}
+                            onClick={() => openCancelModal(order.id)}
                             disabled={cancellingOrderId === order.id}
                             className="inline-flex items-center justify-center px-2 py-1 text-xs font-medium rounded text-white bg-red-600 hover:bg-red-700 transition-colors disabled:opacity-50"
                             title={t("orders.cancel_order")}
@@ -636,7 +743,7 @@ export default function OrdersList({
 
       {/* Mobile Card View */}
       <div className="lg:hidden space-y-4 w-full">
-        {orders.map((order) => (
+        {filteredOrders.map((order) => (
           <div
             key={order.id}
             className={`bg-white rounded-lg shadow border border-gray-200 p-4 ${selectedOrders.includes(order.id)
@@ -646,12 +753,16 @@ export default function OrdersList({
           >
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center space-x-3">
-                <input
-                  type="checkbox"
-                  checked={selectedOrders.includes(order.id)}
-                  onChange={() => handleSelectOrder(order.id)}
-                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                />
+                {isDeletableOrder(order) ? (
+                  <input
+                    type="checkbox"
+                    checked={selectedOrders.includes(order.id)}
+                    onChange={() => handleSelectOrder(order.id)}
+                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  />
+                ) : (
+                  <span className="w-4 h-4 block"></span>
+                )}
                 <div>
                   <h3 className="text-sm font-medium text-gray-900">
                     #{order.orderId}
@@ -740,7 +851,7 @@ export default function OrdersList({
                 {order.status.toLowerCase() !== "cancelled" &&
                   order.paymentStatus.toLowerCase() === "paid" && (
                     <button
-                      onClick={() => setShowCancelConfirm(order.id)}
+                      onClick={() => openCancelModal(order.id)}
                       disabled={cancellingOrderId === order.id}
                       className="flex items-center justify-center px-3 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700 transition-colors whitespace-nowrap disabled:opacity-50"
                     >
@@ -800,32 +911,79 @@ export default function OrdersList({
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
             <div
               className="absolute inset-0 bg-black/50"
-              onClick={() => setShowCancelConfirm(null)}
+              onClick={() => {
+                setShowCancelConfirm(null);
+                setCancelReason('');
+              }}
             ></div>
             <div className="relative bg-white rounded-lg shadow-xl max-w-md w-full p-6">
               <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full">
                 <FiX className="w-6 h-6 text-red-600" />
               </div>
               <h3 className="text-lg font-medium text-gray-900 text-center mb-2">
-                {t("orders.cancel_confirm_title")}
+                {t("orders.cancel_confirm_title") || "주문 취소"}
               </h3>
-              <p className="text-sm text-gray-500 text-center mb-6">
-                {t("orders.cancel_confirm_message")}<br />
-                {t("orders.refund_info") || "결제가 취소되고 환불이 진행됩니다."}
-              </p>
+
+              {/* 취소 사유 선택 */}
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  {t("orders.cancel_reason") || "취소 사유"}
+                </label>
+                <select
+                  value={cancelReason}
+                  onChange={(e) => setCancelReason(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-theme-color focus:border-theme-color"
+                >
+                  <option value="">{t("orders.select_reason") || "사유를 선택해주세요"}</option>
+                  <option value="customer_change">{t("orders.reason_customer_change") || "단순 변심"}</option>
+                  <option value="defective">{t("orders.reason_defective") || "상품 불량"}</option>
+                  <option value="wrong_delivery">{t("orders.reason_wrong_delivery") || "오배송"}</option>
+                  <option value="other">{t("orders.reason_other") || "기타"}</option>
+                </select>
+              </div>
+
+              {/* 환불 금액 안내 */}
+              <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                <div className="flex justify-between text-sm mb-2">
+                  <span className="text-gray-600">{t("orders.order_amount") || "주문 금액"}</span>
+                  <span className="font-medium">₩{cancelOrderAmount.toLocaleString()}</span>
+                </div>
+                {cancelReason === 'customer_change' && (
+                  <div className="flex justify-between text-sm mb-2 text-red-600">
+                    <span>{t("orders.shipping_fee_deduction") || "왕복 택배비 차감"}</span>
+                    <span>-₩{SHIPPING_FEE.toLocaleString()}</span>
+                  </div>
+                )}
+                <div className="border-t pt-2 mt-2">
+                  <div className="flex justify-between text-sm font-medium">
+                    <span>{t("orders.refund_amount") || "환불 예정 금액"}</span>
+                    <span className="text-theme-color">₩{getRefundAmount().toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+
+              {cancelReason === 'customer_change' && (
+                <p className="text-xs text-gray-500 mb-4 text-center">
+                  {t("orders.customer_change_notice") || "단순 변심으로 인한 취소 시 왕복 택배비가 차감됩니다."}
+                </p>
+              )}
+
               <div className="flex space-x-3">
                 <button
-                  onClick={() => setShowCancelConfirm(null)}
+                  onClick={() => {
+                    setShowCancelConfirm(null);
+                    setCancelReason('');
+                  }}
                   className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
                 >
-                  {t("common.close")}
+                  {t("common.close") || "닫기"}
                 </button>
                 <button
                   onClick={() => handleCancelOrder(showCancelConfirm)}
-                  disabled={cancellingOrderId !== null}
+                  disabled={cancellingOrderId !== null || !cancelReason}
                   className="flex-1 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 disabled:opacity-50"
                 >
-                  {cancellingOrderId ? t("orders.cancelling") : t("orders.cancel_order")}
+                  {cancellingOrderId ? (t("orders.cancelling") || "취소 중...") : (t("orders.cancel_order") || "주문 취소")}
                 </button>
               </div>
             </div>
