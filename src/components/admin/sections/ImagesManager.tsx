@@ -61,6 +61,8 @@ export const ImagesManager = ({
                   fill
                   className="object-contain"
                   onError={() => setShowThumbnailPreview(false)}
+                  unoptimized={true}
+                  referrerPolicy="no-referrer"
                 />
               </div>
             </div>
@@ -100,6 +102,8 @@ export const ImagesManager = ({
                     alt={`Product image ${idx + 1}`}
                     fill
                     className="object-contain"
+                    unoptimized={true}
+                    referrerPolicy="no-referrer"
                   />
                 </div>
                 <button
@@ -147,6 +151,8 @@ export const ImagesManager = ({
                     alt={`Detail image ${idx + 1}`}
                     fill
                     className="object-contain"
+                    unoptimized={true}
+                    referrerPolicy="no-referrer"
                   />
                 </div>
                 <button

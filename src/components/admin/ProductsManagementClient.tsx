@@ -210,21 +210,19 @@ const ProductsManagementClient = () => {
             <div className="flex border border-gray-300 rounded-lg overflow-hidden">
               <button
                 onClick={() => setViewMode("grid")}
-                className={`px-4 py-2 ${
-                  viewMode === "grid"
-                    ? "bg-theme-color text-white"
-                    : "bg-white text-gray-600 hover:bg-gray-50"
-                }`}
+                className={`px-4 py-2 ${viewMode === "grid"
+                  ? "bg-theme-color text-white"
+                  : "bg-white text-gray-600 hover:bg-gray-50"
+                  }`}
               >
                 <FiGrid className="w-5 h-5" />
               </button>
               <button
                 onClick={() => setViewMode("list")}
-                className={`px-4 py-2 ${
-                  viewMode === "list"
-                    ? "bg-theme-color text-white"
-                    : "bg-white text-gray-600 hover:bg-gray-50"
-                }`}
+                className={`px-4 py-2 ${viewMode === "list"
+                  ? "bg-theme-color text-white"
+                  : "bg-white text-gray-600 hover:bg-gray-50"
+                  }`}
               >
                 <FiList className="w-5 h-5" />
               </button>
@@ -279,11 +277,10 @@ const ProductsManagementClient = () => {
                   <button
                     key={page}
                     onClick={() => setCurrentPage(page)}
-                    className={`px-4 py-2 rounded-lg ${
-                      currentPage === page
-                        ? "bg-theme-color text-white"
-                        : "bg-white text-gray-600 hover:bg-gray-50 border"
-                    }`}
+                    className={`px-4 py-2 rounded-lg ${currentPage === page
+                      ? "bg-theme-color text-white"
+                      : "bg-white text-gray-600 hover:bg-gray-50 border"
+                      }`}
                   >
                     {page}
                   </button>
@@ -311,6 +308,7 @@ const ProductGridCard = ({ product, onDelete }: { product: Product; onDelete: (i
           fill
           className="object-cover"
           unoptimized
+          referrerPolicy="no-referrer"
         />
         {product.discountPercentage > 0 && (
           <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold">
@@ -359,11 +357,10 @@ const ProductGridCard = ({ product, onDelete }: { product: Product; onDelete: (i
             <FiStar className="w-4 h-4 text-yellow-400" />
             <span className="text-sm text-gray-600">{product.rating}</span>
           </div>
-          <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-            product.stock > 0 
-              ? "text-green-600 bg-green-50" 
-              : "text-red-600 bg-red-50"
-          }`}>
+          <span className={`text-xs px-2 py-1 rounded-full font-medium ${product.stock > 0
+            ? "text-green-600 bg-green-50"
+            : "text-red-600 bg-red-50"
+            }`}>
             재고 {product.stock}개
           </span>
         </div>
@@ -410,6 +407,7 @@ const ProductListCard = ({ product, onDelete }: { product: Product; onDelete: (i
           height={64}
           className="object-cover rounded-lg"
           unoptimized
+          referrerPolicy="no-referrer"
         />
         <div className="flex-1">
           <h3 className="font-semibold text-gray-900">{product.title}</h3>

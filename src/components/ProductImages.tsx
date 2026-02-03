@@ -62,6 +62,7 @@ const ProductImages = ({ thumbnail, images = [] }: Props) => {
                   className="object-contain"
                   priority={index === 0}
                   unoptimized
+                  referrerPolicy="no-referrer"
                 />
               </div>
             </div>
@@ -103,6 +104,7 @@ const ProductImages = ({ thumbnail, images = [] }: Props) => {
                 fill
                 className="object-contain p-1"
                 unoptimized
+                referrerPolicy="no-referrer"
               />
             </div>
           ))}
@@ -117,6 +119,7 @@ const ProductImages = ({ thumbnail, images = [] }: Props) => {
             className="object-contain p-2"
             priority
             unoptimized
+            referrerPolicy="no-referrer"
           />
         </div>
       </div>
