@@ -317,3 +317,21 @@ export const businessRegistrations = pgTable('business_registrations', {
   createdAt: timestamp('createdAt', { mode: 'date' }).defaultNow(),
   updatedAt: timestamp('updatedAt', { mode: 'date' }).defaultNow(),
 });
+
+// Payment Methods (빌링키 저장용)
+export const paymentMethods = pgTable('payment_methods', {
+  id: text('id').primaryKey().notNull(),
+  userId: text('userId').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  billingKey: text('billingKey').notNull().unique(),
+  customerKey: text('customerKey').notNull(),
+  cardCompany: text('cardCompany'),       // 카드사 이름 (예: "신한", "삼성")
+  cardNumber: text('cardNumber'),          // 마스킹된 카드번호 (예: "****1234")
+  cardType: text('cardType'),              // 신용, 체크, 기프트
+  ownerType: text('ownerType'),            // 개인, 법인
+  issuerCode: text('issuerCode'),          // 카드 발급사 코드
+  acquirerCode: text('acquirerCode'),      // 카드 매입사 코드
+  isDefault: boolean('isDefault').default(false),
+  authenticatedAt: timestamp('authenticatedAt', { mode: 'date' }),
+  createdAt: timestamp('createdAt', { mode: 'date' }).defaultNow(),
+  updatedAt: timestamp('updatedAt', { mode: 'date' }).defaultNow(),
+});

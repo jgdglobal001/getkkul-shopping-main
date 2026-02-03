@@ -13,7 +13,6 @@ import {
   FaUser,
   FaBox,
   FaHeart,
-  FaCog,
   FaSignOutAlt,
   FaShieldAlt,
 } from "react-icons/fa";
@@ -66,7 +65,6 @@ const MobileNavigation = ({ user }: MobileNavigationProps) => {
     { href: "/account", icon: FaUser, label: t("settings.myProfile") },
     { href: "/account/orders", icon: FaBox, label: t("settings.myOrders") },
     { href: "/favorite", icon: FaHeart, label: t("settings.wishlist") },
-    { href: "/account/settings", icon: FaCog, label: t("settings.title") },
   ];
 
   const adminMenuItems =

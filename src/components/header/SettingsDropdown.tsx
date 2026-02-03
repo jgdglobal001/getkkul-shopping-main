@@ -14,7 +14,6 @@ import {
   FiCreditCard,
   FiMapPin,
   FiBell,
-  FiShield,
   FiHelpCircle,
   FiStar,
 } from "react-icons/fi";
@@ -93,12 +92,6 @@ const SettingsDropdown = () => {
       description: t("settings.notificationsDesc"),
     },
     {
-      icon: FiShield,
-      label: t("settings.privacySecurity"),
-      path: "/account/settings",
-      description: t("settings.privacySecurityDesc"),
-    },
-    {
       icon: FiStar,
       label: t("settings.reviews"),
       path: "/account/reviews",
@@ -121,9 +114,8 @@ const SettingsDropdown = () => {
         <FiSettings className="text-sm" />
         <span className="hidden md:inline">{t("settings.title")}</span>
         <IoChevronDownSharp
-          className={`transition-transform duration-200 ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`transition-transform duration-200 ${isOpen ? "rotate-180" : ""
+            }`}
         />
       </button>
 

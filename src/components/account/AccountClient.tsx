@@ -228,11 +228,10 @@ export default function AccountClient() {
               <p>
                 <span className="font-medium">{t("account.role")}:</span>{" "}
                 <span
-                  className={`px-2 py-1 rounded text-xs ${
-                    userRole === "admin"
-                      ? "bg-red-100 text-red-800"
-                      : "bg-green-100 text-green-800"
-                  }`}
+                  className={`px-2 py-1 rounded text-xs ${userRole === "admin"
+                    ? "bg-red-100 text-red-800"
+                    : "bg-green-100 text-green-800"
+                    }`}
                 >
                   {userRole}
                 </span>
@@ -271,19 +270,6 @@ export default function AccountClient() {
               </p>
             </div>
           </div>
-          {user?.profile && (
-            <div className="mt-4 pt-4 border-t border-blue-200">
-              <p>
-                <span className="font-medium">{t("account.profile")}:</span>
-              </p>
-              <div className="ml-4 text-xs text-gray-600">
-                <p>{t("account.first_name")}: {user.profile.firstName}</p>
-                <p>{t("account.last_name")}: {user.profile.lastName}</p>
-                <p>{t("account.phone")}: {user.profile.phone || t("account.not_provided")}</p>
-                <p>{t("account.addresses")}: {user.profile.addresses?.length || 0} {t("account.saved")}</p>
-              </div>
-            </div>
-          )}
         </div>
 
         {/* Quick Actions */}
@@ -292,9 +278,8 @@ export default function AccountClient() {
             {t("account.quick_actions")}
           </h3>
           <div
-            className={`grid grid-cols-1 md:grid-cols-2 ${
-              userRole === "admin" ? "lg:grid-cols-3" : "lg:grid-cols-4"
-            } gap-4`}
+            className={`grid grid-cols-1 md:grid-cols-2 ${userRole === "admin" ? "lg:grid-cols-3" : "lg:grid-cols-4"
+              } gap-4`}
           >
             {/* Admin Dashboard Button - Only show for admin users */}
             {userRole === "admin" && (
@@ -352,20 +337,8 @@ export default function AccountClient() {
                 <div className="text-sm text-gray-500">{t("account.manage_payment")}</div>
               </div>
             </Link>
-
-            <Link
-              href="/account/settings"
-              className="flex items-center p-4 border border-gray-200 rounded-lg hover:border-theme-color transition-colors group"
-            >
-              <div className="mr-3 text-2xl">⚙️</div>
-              <div>
-                <div className="font-medium text-gray-900 group-hover:text-theme-color">
-                  {t("account.settings")}
-                </div>
-                <div className="text-sm text-gray-500">{t("account.manage_security")}</div>
-              </div>
-            </Link>
           </div>
+
         </div>
       </div>
 

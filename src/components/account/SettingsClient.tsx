@@ -47,31 +47,8 @@ export default function SettingsClient() {
                 {t("common.open")}
               </button>
             </div>
-
-            <div className="flex items-center justify-between py-3">
-              <div>
-                <div className="font-medium text-gray-900">{t("account.login_activity")}</div>
-                <div className="text-sm text-gray-500">
-                  {t("account.login_activity_desc")}
-                </div>
-              </div>
-              <button className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                {t("common.view")}
-              </button>
-            </div>
-
-            <div className="flex items-center justify-between py-3">
-              <div>
-                <div className="font-medium text-gray-900">{t("account.export_data")}</div>
-                <div className="text-sm text-gray-500">
-                  {t("account.export_data_desc")}
-                </div>
-              </div>
-              <button className="px-4 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-                {t("common.download")}
-              </button>
-            </div>
           </div>
+
         </div>
 
         {/* Account Actions */}

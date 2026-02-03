@@ -8,7 +8,6 @@ import {
   FaUser,
   FaBox,
   FaHeart,
-  FaCog,
   FaSignOutAlt,
   FaShieldAlt,
 } from "react-icons/fa";
@@ -95,23 +94,18 @@ const UserProfileDropdown = ({ user }: UserProfileDropdownProps) => {
       icon: FaHeart,
       label: t("settings.wishlist"),
     },
-    {
-      href: "/account/settings",
-      icon: FaCog,
-      label: t("settings.title"),
-    },
   ];
 
   // Add admin dashboard link for admin users
   const adminMenuItems =
     user?.role === "admin"
       ? [
-          {
-            href: "/account/admin",
-            icon: FaShieldAlt,
-            label: t("common.admin_dashboard") || "Admin Dashboard",
-          },
-        ]
+        {
+          href: "/account/admin",
+          icon: FaShieldAlt,
+          label: t("common.admin_dashboard") || "Admin Dashboard",
+        },
+      ]
       : [];
 
   const allMenuItems = [...menuItems, ...adminMenuItems];
@@ -170,11 +164,10 @@ const UserProfileDropdown = ({ user }: UserProfileDropdownProps) => {
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-2 text-sm transition-colors duration-200 ${
-                    item.label === "Admin Dashboard"
-                      ? "text-red-600 hover:bg-red-50 hover:text-red-700 border-t border-gray-100 mt-1 pt-3"
-                      : "text-gray-700 hover:bg-gray-50 hover:text-sky-color"
-                  }`}
+                  className={`flex items-center gap-3 px-4 py-2 text-sm transition-colors duration-200 ${item.label === "Admin Dashboard"
+                    ? "text-red-600 hover:bg-red-50 hover:text-red-700 border-t border-gray-100 mt-1 pt-3"
+                    : "text-gray-700 hover:bg-gray-50 hover:text-sky-color"
+                    }`}
                 >
                   <item.icon className="w-4 h-4" />
                   {item.label}
