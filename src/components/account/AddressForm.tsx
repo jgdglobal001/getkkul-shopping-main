@@ -25,15 +25,14 @@ export default function AddressForm({
 }: AddressFormProps) {
   const { t } = useTranslation();
   const [formData, setFormData] = useState<Address>({
-    recipientName: "",
-    phone: "",
-    zipCode: "",
-    address: "",
-    detailAddress: "",
-    deliveryRequest: "문 앞",
-    entranceCode: "",
-    isDefault: false,
-    ...address,
+    recipientName: address?.recipientName || "",
+    phone: address?.phone || "",
+    zipCode: address?.zipCode || "",
+    address: address?.address || "",
+    detailAddress: address?.detailAddress || "",
+    deliveryRequest: address?.deliveryRequest || "문 앞",
+    entranceCode: address?.entranceCode || "",
+    isDefault: address?.isDefault || false,
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});

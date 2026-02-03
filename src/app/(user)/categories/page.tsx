@@ -6,30 +6,12 @@ import { getData } from "../helpers";
 import { getCategoriesWithCounts } from "../helpers/productHelpers";
 import { Metadata } from "next";
 import Link from "next/link";
-import koTranslations from "@/locales/ko.json";
-import enTranslations from "@/locales/en.json";
-import zhTranslations from "@/locales/zh.json";
+import { getT, getLanguageFromCookie } from "@/lib/i18nUtils";
 import { cookies } from "next/headers";
-
-// Helper function to get translations
-const getT = (lang: string) => {
-  let translations: any = koTranslations;
-  if (lang === "en") translations = enTranslations;
-  if (lang === "zh") translations = zhTranslations;
-
-  return (key: string, defaultValue: string = ""): string => {
-    const keys = key.split(".");
-    let value: any = translations;
-    for (const k of keys) {
-      value = value?.[k];
-    }
-    return value || defaultValue;
-  };
-};
 
 export async function generateMetadata(): Promise<Metadata> {
   const cookieStore = await cookies();
-  const lang = cookieStore.get("i18next")?.value || "ko";
+  const lang = getLanguageFromCookie(cookieStore);
   const t = getT(lang);
 
   return {
@@ -60,7 +42,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function CategoriesPage() {
   const cookieStore = await cookies();
-  const lang = cookieStore.get("i18next")?.value || "ko";
+  const lang = getLanguageFromCookie(cookieStore);
   const t = getT(lang);
 
   // Fetch categories from our database API

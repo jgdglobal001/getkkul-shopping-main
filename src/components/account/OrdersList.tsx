@@ -228,7 +228,7 @@ export default function OrdersList({
                 {t("account.order_details")} - {selectedOrder.orderId}
               </h3>
               <p className="text-sm text-gray-600">
-                {t("account.placed_on")} {formatDate(selectedOrder.createdAt)}
+                {t("account.placed_on", { date: formatDate(selectedOrder.createdAt) })}
               </p>
             </div>
             <button
@@ -276,7 +276,7 @@ export default function OrdersList({
                   <FiCalendar className="w-5 h-5 text-purple-600" />
                 </div>
                 <div>
-                  <p className="text-sm text-gray-600">{t("account.payment_status")}</p>
+                  <p className="text-sm text-gray-600">{t("account.payment_status_label")}</p>
                   <p className="font-medium text-gray-900 capitalize">
                     {t(`orders.payment_status_${selectedOrder.paymentStatus.toLowerCase()}`)}
                   </p>
@@ -590,9 +590,9 @@ export default function OrdersList({
                       <button
                         onClick={() => openOrderModal(order)}
                         className="inline-flex items-center justify-center px-2 py-1 border border-gray-300 text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 transition-colors"
-                        title={t("common.view")}
+                        title={t("account.order_history")}
                       >
-                        <FiEye className="w-3 h-3" />
+                        {t("account.order_history")}
                       </button>
                       {order.status.toLowerCase() === "confirmed" &&
                         order.paymentStatus.toLowerCase() === "paid" && (
@@ -717,8 +717,7 @@ export default function OrdersList({
                   onClick={() => openOrderModal(order)}
                   className="flex items-center justify-center px-3 py-1 text-xs border border-gray-300 rounded hover:bg-gray-50 transition-colors whitespace-nowrap"
                 >
-                  <FiEye className="w-3 h-3 mr-1" />
-                  {t("common.view")}
+                  {t("account.order_history")}
                 </button>
                 {order.status.toLowerCase() === "confirmed" &&
                   order.paymentStatus.toLowerCase() === "paid" && (

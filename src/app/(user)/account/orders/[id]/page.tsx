@@ -141,9 +141,9 @@ const OrderTrackingPage = () => {
   const getTrackingSteps = () => {
     const steps = [
       { id: "confirmed", label: t('account.status.confirmed'), icon: FiCheckCircle },
-      { id: "processing", label: t('account.processing'), icon: FiClock },
-      { id: "shipped", label: t('account.shipped'), icon: FiTruck },
-      { id: "delivered", label: t('account.delivered'), icon: FiPackage },
+      { id: "processing", label: t('account.status.processing'), icon: FiClock },
+      { id: "shipped", label: t('account.status.shipped'), icon: FiTruck },
+      { id: "delivered", label: t('account.status.delivered'), icon: FiPackage },
     ];
 
     const currentStatus = order?.status.toLowerCase();
@@ -270,10 +270,10 @@ const OrderTrackingPage = () => {
                       {/* Step Icon */}
                       <div
                         className={`flex items-center justify-center w-12 h-12 rounded-full border-2 ${step.completed
-                            ? "bg-green-500 border-green-500 text-white"
-                            : step.active
-                              ? "bg-blue-500 border-blue-500 text-white"
-                              : "bg-white border-gray-300 text-gray-400"
+                          ? "bg-green-500 border-green-500 text-white"
+                          : step.active
+                            ? "bg-blue-500 border-blue-500 text-white"
+                            : "bg-white border-gray-300 text-gray-400"
                           }`}
                       >
                         <Icon className="w-6 h-6" />
@@ -283,16 +283,15 @@ const OrderTrackingPage = () => {
                       <div className="ml-4 flex-1">
                         <h4
                           className={`font-medium ${step.completed || step.active
-                              ? "text-gray-900"
-                              : "text-gray-500"
+                            ? "text-gray-900"
+                            : "text-gray-500"
                             }`}
                         >
-                          {t(step.label)}
+                          {step.label}
                         </h4>
                         {step.active && (
                           <p className="text-sm text-gray-600 mt-1">
-                            {t('account.your_order_is_currently_being')}{" "}
-                            {t(step.label)}
+                            {t('account.your_order_is_currently_being', { status: step.label })}
                           </p>
                         )}
                         {step.completed && index === 0 && (

@@ -23,10 +23,13 @@ export default function ProfileEditForm({
   onCancel,
   loading = false,
 }: ProfileEditFormProps) {
-  const { t } = useTranslation("account");
+  const { t } = useTranslation("translation", { keyPrefix: "account" });
   const { data: session } = useSession();
   const [formData, setFormData] = useState({
-    ...profile,
+    name: profile?.name || "",
+    email: profile?.email || "",
+    phone: profile?.phone || "",
+    image: profile?.image || "",
     currentPassword: "",
     newPassword: "",
     confirmPassword: "",
@@ -217,9 +220,8 @@ export default function ProfileEditForm({
           name="name"
           value={formData.name}
           onChange={handleInputChange}
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${
-            errors.name ? "border-red-500" : "border-gray-300"
-          }`}
+          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${errors.name ? "border-red-500" : "border-gray-300"
+            }`}
           placeholder={t("enter_full_name")}
         />
         {errors.name && (
@@ -253,9 +255,8 @@ export default function ProfileEditForm({
           name="phone"
           value={formData.phone}
           onChange={handleInputChange}
-          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${
-            errors.phone ? "border-red-500" : "border-gray-300"
-          }`}
+          className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${errors.phone ? "border-red-500" : "border-gray-300"
+            }`}
           placeholder={t("enter_phone_number")}
         />
         {errors.phone && (
@@ -298,11 +299,10 @@ export default function ProfileEditForm({
                   name="currentPassword"
                   value={formData.currentPassword}
                   onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${
-                    errors.currentPassword
-                      ? "border-red-500"
-                      : "border-gray-300"
-                  }`}
+                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${errors.currentPassword
+                    ? "border-red-500"
+                    : "border-gray-300"
+                    }`}
                   placeholder={t("enter_current_password")}
                 />
                 {errors.currentPassword && (
@@ -322,9 +322,8 @@ export default function ProfileEditForm({
                 name="newPassword"
                 value={formData.newPassword}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${
-                  errors.newPassword ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${errors.newPassword ? "border-red-500" : "border-gray-300"
+                  }`}
                 placeholder={t("enter_new_password")}
               />
               {errors.newPassword && (
@@ -343,9 +342,8 @@ export default function ProfileEditForm({
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${
-                  errors.confirmPassword ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${errors.confirmPassword ? "border-red-500" : "border-gray-300"
+                  }`}
                 placeholder={t("confirm_new_password_placeholder")}
               />
               {errors.confirmPassword && (

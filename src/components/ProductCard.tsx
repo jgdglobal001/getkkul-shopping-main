@@ -11,12 +11,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSession } from "next-auth/react";
 import { addToFavorite } from "@/redux/shofySlice";
 import toast from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   product: ProductType;
 }
 
 const ProductCard = ({ product }: Props) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { data: session } = useSession();
   const { favorite } = useSelector((state: StateType) => state?.shopy);
@@ -38,12 +40,12 @@ const ProductCard = ({ product }: Props) => {
     if (session?.user) {
       dispatch(addToFavorite(product));
       if (isFavorite) {
-        toast.success("Removed from favorites");
+        toast.success(t("common.favorite_removed"));
       } else {
-        toast.success("Added to favorites");
+        toast.success(t("common.favorite_added"));
       }
     } else {
-      toast.error("Please login to add to favorites");
+      toast.error(t("common.login_required"));
     }
   };
 
@@ -70,21 +72,21 @@ const ProductCard = ({ product }: Props) => {
 
         {(product?.discountPercentage || 0) > 0 && (
           <div className="absolute top-3 left-3 bg-gradient-to-r from-red-500 to-red-600 text-white px-3 py-1 rounded-full text-xs font-bold shadow-lg z-10 animate-pulse">
-            -{Math.round(product.discountPercentage || 0)}% OFF
+            -{Math.round(product.discountPercentage || 0)}% {t("product.off")}
           </div>
         )}
 
         {/* Stock Badge */}
         {(product?.stock || 0) <= 5 && (product?.stock || 0) > 0 && (
           <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-2 py-1 rounded-full text-xs font-semibold shadow-lg">
-            {product.stock}개 남음!
+            {t("product.items_left", { count: product.stock ?? 0 })}
           </div>
         )}
 
         {product?.stock === 0 && (
           <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
             <div className="bg-red-500 text-white px-4 py-2 rounded-lg font-bold text-sm shadow-lg">
-              품절
+              {t("product.out_of_stock")}
             </div>
           </div>
         )}
@@ -94,7 +96,7 @@ const ProductCard = ({ product }: Props) => {
           <button
             onClick={handleFavoriteClick}
             className="p-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-red-50 hover:text-red-500 transform hover:scale-110 transition-all duration-200"
-            title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+            title={isFavorite ? t("product.remove_from_favorite") : t("product.add_to_favorite")}
           >
             {isFavorite ? (
               <MdFavorite className="w-4 h-4 text-red-500" />
@@ -107,7 +109,7 @@ const ProductCard = ({ product }: Props) => {
             target="_blank"
             rel="noopener noreferrer"
             className="p-2.5 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:bg-blue-50 hover:text-blue-500 transform hover:scale-110 transition-all duration-200"
-            title="View details"
+            title={t("product.view_details")}
           >
             <FaEye className="w-4 h-4" />
           </Link>
@@ -148,8 +150,8 @@ const ProductCard = ({ product }: Props) => {
                 <FaStar
                   key={i}
                   className={`w-3.5 h-3.5 ${i < Math.floor(product?.rating || 0)
-                      ? "text-yellow-400"
-                      : "text-gray-300"
+                    ? "text-yellow-400"
+                    : "text-gray-300"
                     }`}
                 />
               ))}
@@ -161,7 +163,7 @@ const ProductCard = ({ product }: Props) => {
 
           {(product?.stock || 0) > 0 && (
             <span className="text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full font-medium">
-              재고 있음
+              {t("product.in_stock")}
             </span>
           )}
         </div>

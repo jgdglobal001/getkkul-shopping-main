@@ -18,6 +18,7 @@ import { FaRegEye } from "react-icons/fa";
 import { MdStar } from "react-icons/md";
 import { ProductType, ProductVariant } from "../../type";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const ProductDetailClient = ({
     product,
@@ -28,6 +29,7 @@ const ProductDetailClient = ({
     allProducts: ProductType[],
     questions: any[]
 }) => {
+    const { t } = useTranslation();
     const regularPrice = product?.price;
     const discountedPrice = product?.price - (product?.price * product?.discountPercentage) / 100;
 
@@ -96,7 +98,7 @@ const ProductDetailClient = ({
 
                         <div className="flex items-center text-sm text-gray-600">
                             <FaRegEye className="mr-1.5" />
-                            <span>지금 <span className="font-bold text-gray-900">250+</span>명이 이 상품을 보고 있습니다</span>
+                            <span>{t("product.viewers_watching", { count: 250 })}</span>
                         </div>
 
                         <hr className="border-gray-100" />
@@ -137,7 +139,7 @@ const ProductDetailClient = ({
                     {/* 2. 상품평 (리뷰) */}
                     <div id="reviews" className="scroll-mt-20">
                         <section className="space-y-6">
-                            <h3 className="text-base font-semibold text-gray-900">구매 후기</h3>
+                            <h3 className="text-base font-semibold text-gray-900">{t("product.reviews")}</h3>
                             <div className="p-6 md:p-12 bg-gray-50 rounded-lg border border-gray-100">
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                                     {product?.reviews?.map((item: any, index: number) => (
@@ -155,7 +157,7 @@ const ProductDetailClient = ({
                                     ))}
                                     {(!product?.reviews || product?.reviews?.length === 0) && (
                                         <div className="col-span-full text-center py-10 text-gray-500 bg-white rounded-xl">
-                                            등록된 구매 후기가 없습니다.
+                                            {t("product.no_reviews")}
                                         </div>
                                     )}
                                 </div>

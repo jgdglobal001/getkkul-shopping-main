@@ -343,7 +343,7 @@ const CheckoutPage = () => {
       <Container className="py-8">
         <div className="flex items-center justify-center min-h-96">
           <FiLoader className="animate-spin text-4xl text-theme-color" />
-          <span className="ml-4 text-lg">Loading order details...</span>
+          <span className="ml-4 text-lg">{t("checkout.loading_order_details")}</span>
         </div>
       </Container>
     );
@@ -354,16 +354,16 @@ const CheckoutPage = () => {
       <Container className="py-8">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">
-            Please Sign In
+            {t("checkout.please_sign_in")}
           </h1>
           <p className="text-gray-600 mb-6">
-            You need to be signed in to complete your order.
+            {t("checkout.sign_in_required_desc")}
           </p>
           <Link
             href="/auth/signin"
             className="bg-theme-color text-white px-6 py-3 rounded-lg hover:bg-theme-color/90 transition-colors"
           >
-            Sign In
+            {t("checkout.sign_in")}
           </Link>
         </div>
       </Container>
@@ -375,16 +375,16 @@ const CheckoutPage = () => {
       <Container className="py-8">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">
-            Order not found
+            {t("checkout.order_not_found")}
           </h1>
           <p className="text-gray-600 mb-6">
-            The order you&apos;re looking for could not be found.
+            {t("checkout.order_not_found_desc")}
           </p>
           <Link
             href="/account/orders"
             className="bg-theme-color text-white px-6 py-3 rounded-lg hover:bg-theme-color/90 transition-colors"
           >
-            View Orders
+            {t("checkout.view_orders")}
           </Link>
         </div>
       </Container>
@@ -392,7 +392,7 @@ const CheckoutPage = () => {
   }
 
   return (
-    <ProtectedRoute loadingMessage="Loading checkout...">
+    <ProtectedRoute loadingMessage={t("checkout.loading_checkout")}>
       <Container className="py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -405,9 +405,9 @@ const CheckoutPage = () => {
             </Link>
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
-                Order #{existingOrder?.orderId || existingOrderId}
+                {t("checkout.order_number_label")} #{existingOrder?.orderId || existingOrderId}
               </h1>
-              <p className="text-gray-600">Choose your payment method</p>
+              <p className="text-gray-600">{t("checkout.choose_payment_method")}</p>
             </div>
           </div>
         </div>
@@ -431,12 +431,11 @@ const CheckoutPage = () => {
               </div>
               <div className="ml-3">
                 <h3 className="text-sm font-medium text-yellow-800">
-                  Payment Cancelled
+                  {t("checkout.payment_cancelled")}
                 </h3>
                 <div className="mt-1 text-sm text-yellow-700">
                   <p>
-                    Your payment was cancelled. You can try the payment again
-                    when you&apos;re ready.
+                    {t("checkout.payment_cancelled_desc")}
                   </p>
                 </div>
               </div>
@@ -573,10 +572,10 @@ const CheckoutPage = () => {
                     </div>
                     <div className="ml-3">
                       <h3 className="text-sm font-medium text-red-800">
-                        결제 위젯 로드 실패
+                        {t("checkout.widget_load_failed")}
                       </h3>
                       <div className="mt-2 text-sm text-red-700">
-                        <p>{widgetError}</p>
+                        <p>{t(widgetError)}</p>
                       </div>
                     </div>
                   </div>
@@ -605,10 +604,10 @@ const CheckoutPage = () => {
                 ) : !widgetReady ? (
                   <>
                     <FiLoader className="animate-spin mr-2" />
-                    결제 준비 중...
+                    {t("checkout.preparing_payment")}
                   </>
                 ) : (
-                  "결제하기"
+                  t("checkout.pay_now")
                 )}
               </button>
             </div>
