@@ -17,7 +17,7 @@ function calculatePartnerCommission(productPrice: number): number {
  */
 export async function POST(request: NextRequest) {
   try {
-    const { orderId, cancelReason = "고객 요청에 의한 취소" } = await request.json();
+    const { orderId, cancelReason = "고객 요청에 의한 취소", refundAmount } = await request.json();
 
     if (!orderId) {
       return NextResponse.json(
@@ -61,9 +61,10 @@ export async function POST(request: NextRequest) {
     }
 
     // 2. 토스페이먼츠 결제 취소 요청 (tossPaymentKey가 있는 경우)
-    if (order.tossPaymentKey) {
+    // 6000원 미만 등으로 인해 환불 금액이 0인 경우 API 호출 스킵 (단, 주문 취소 상태는 반영)
+    if (order.tossPaymentKey && (refundAmount === undefined || refundAmount > 0)) {
       const secretKey = process.env.TOSS_SECRET_KEY;
-      
+
       if (!secretKey) {
         console.error("[OrderCancel] TOSS_SECRET_KEY not configured");
         return NextResponse.json(
@@ -72,7 +73,13 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      console.log(`[OrderCancel] Calling Toss cancel API for paymentKey: ${order.tossPaymentKey}`);
+      console.log(`[OrderCancel] Calling Toss cancel API for paymentKey: ${order.tossPaymentKey}, amount: ${refundAmount ?? 'FULL'}`);
+
+      // 부분 취소인 경우 cancelAmount 포함
+      const cancelBody: any = { cancelReason };
+      if (refundAmount !== undefined) {
+        cancelBody.cancelAmount = refundAmount;
+      }
 
       const tossResponse = await fetch(
         `https://api.tosspayments.com/v1/payments/${order.tossPaymentKey}/cancel`,
@@ -82,9 +89,7 @@ export async function POST(request: NextRequest) {
             "Content-Type": "application/json",
             Authorization: `Basic ${Buffer.from(`${secretKey}:`).toString("base64")}`,
           },
-          body: JSON.stringify({
-            cancelReason,
-          }),
+          body: JSON.stringify(cancelBody),
         }
       );
 
@@ -93,10 +98,10 @@ export async function POST(request: NextRequest) {
       if (!tossResponse.ok) {
         console.error("[OrderCancel] Toss cancel failed:", tossResult);
         return NextResponse.json(
-          { 
-            success: false, 
+          {
+            success: false,
             error: tossResult.message || "토스 결제 취소 실패",
-            tossError: tossResult 
+            tossError: tossResult
           },
           { status: 400 }
         );
@@ -104,8 +109,6 @@ export async function POST(request: NextRequest) {
 
       console.log("[OrderCancel] Toss cancel success:", tossResult.status);
     }
-
-    // 3. 주문 상태 업데이트
     await db.update(orders).set({
       status: "cancelled",
       paymentStatus: "refunded",

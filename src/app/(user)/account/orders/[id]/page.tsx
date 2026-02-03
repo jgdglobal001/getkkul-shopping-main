@@ -232,10 +232,6 @@ const OrderTrackingPage = () => {
           </div>
 
           <div className="flex items-center space-x-3">
-            <button className="flex items-center px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
-              <FiDownload className="w-4 h-4 mr-2" />
-              {t('account.download_receipt')}
-            </button>
             <span
               className={`px-4 py-2 text-sm font-medium rounded-lg border capitalize ${getStatusColor(
                 order.status

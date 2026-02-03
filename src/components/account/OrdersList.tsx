@@ -282,6 +282,43 @@ export default function OrdersList({
     }
   };
 
+  const handlePayAndCancel = async (orderId: string, amount: number) => {
+    if (!orderId) return;
+
+    setCancellingOrderId(orderId);
+
+    try {
+      const tossClientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
+      if (!tossClientKey) {
+        throw new Error("Toss Client Key not found");
+      }
+
+      const TossPayments = (window as any).TossPayments;
+      if (!TossPayments) {
+        throw new Error("TossPayments SDK not loaded");
+      }
+
+      const tossPayments = TossPayments(tossClientKey);
+
+      // 주문 번호 생성 (중복 방지)
+      const paymentId = `cancel-${orderId}-${Date.now()}`;
+
+      await tossPayments.requestPayment('카드', {
+        amount: amount,
+        orderId: paymentId,
+        orderName: `[주문취소] 배송비 결제`,
+        customerName: session?.user?.name || "고객",
+        successUrl: `${window.location.origin}/api/orders/cancel/payment-success?originalOrderId=${orderId}`,
+        failUrl: `${window.location.origin}/account/orders?error=payment_failed`,
+      });
+
+    } catch (error) {
+      console.error("Payment request failed:", error);
+      alert(t("orders.payment_request_failed") || "결제 요청에 실패했습니다.");
+      setCancellingOrderId(null);
+    }
+  };
+
   const OrderDetailsModal = () => {
     if (!selectedOrder || !isModalOpen) return null;
 
@@ -567,6 +604,37 @@ export default function OrdersList({
               ? t("common.deleting")
               : `${t("common.delete_selected")} (${selectedOrders.length})`}
           </button>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div className="bg-white rounded-xl p-6 max-w-sm w-full shadow-2xl transform transition-all text-center">
+            <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 mb-4">
+              <FiTrash2 className="h-6 w-6 text-red-600" />
+            </div>
+            <h3 className="text-lg font-bold text-gray-900 mb-2">
+              {t("account.delete_orders") || "선택 삭제"}
+            </h3>
+            <p className="text-gray-500 mb-6 text-sm whitespace-pre-line" style={{ wordBreak: "keep-all" }}>
+              {t("account.delete_orders_confirm") || "선택한 주문 기록을 삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다."}
+            </p>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="w-full px-4 py-2.5 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors font-medium"
+              >
+                {t("common.cancel")}
+              </button>
+              <button
+                onClick={handleDeleteSelected}
+                className="w-full px-4 py-2.5 bg-red-600 text-white hover:bg-red-700 rounded-lg transition-colors font-medium shadow-sm"
+              >
+                {t("common.delete")}
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
@@ -867,43 +935,7 @@ export default function OrdersList({
       {/* Order Details Modal */}
       <OrderDetailsModal />
 
-      {/* Delete Confirmation Modal */}
-      {
-        showDeleteConfirm && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <div
-              className="absolute inset-0 bg-black/50"
-              onClick={() => setShowDeleteConfirm(false)}
-            ></div>
-            <div className="relative bg-white rounded-lg shadow-xl max-w-md w-full p-6">
-              <div className="flex items-center justify-center w-12 h-12 mx-auto mb-4 bg-red-100 rounded-full">
-                <FiTrash2 className="w-6 h-6 text-red-600" />
-              </div>
-              <h3 className="text-lg font-medium text-gray-900 text-center mb-2">
-                {t("account.delete_orders")}
-              </h3>
-              <p className="text-sm text-gray-500 text-center mb-6">
-                {t("account.delete_orders_confirm", { count: selectedOrders.length })}
-              </p>
-              <div className="flex space-x-3">
-                <button
-                  onClick={() => setShowDeleteConfirm(false)}
-                  className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-                >
-                  {t("common.cancel")}
-                </button>
-                <button
-                  onClick={handleDeleteSelected}
-                  disabled={isDeleting}
-                  className="flex-1 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 disabled:opacity-50"
-                >
-                  {isDeleting ? t("common.deleting") : t("common.delete")}
-                </button>
-              </div>
-            </div>
-          </div>
-        )
-      }
+
 
       {/* Cancel Order Confirmation Modal */}
       {
@@ -938,11 +970,11 @@ export default function OrdersList({
                   <option value="customer_change">{t("orders.reason_customer_change") || "단순 변심"}</option>
                   <option value="defective">{t("orders.reason_defective") || "상품 불량"}</option>
                   <option value="wrong_delivery">{t("orders.reason_wrong_delivery") || "오배송"}</option>
-                  <option value="other">{t("orders.reason_other") || "기타"}</option>
+
                 </select>
               </div>
 
-              {/* 환불 금액 안내 */}
+              {/* 환불/추가결제 금액 안내 */}
               <div className="bg-gray-50 rounded-lg p-4 mb-4">
                 <div className="flex justify-between text-sm mb-2">
                   <span className="text-gray-600">{t("orders.order_amount") || "주문 금액"}</span>
@@ -955,16 +987,25 @@ export default function OrdersList({
                   </div>
                 )}
                 <div className="border-t pt-2 mt-2">
-                  <div className="flex justify-between text-sm font-medium">
-                    <span>{t("orders.refund_amount") || "환불 예정 금액"}</span>
-                    <span className="text-theme-color">₩{getRefundAmount().toLocaleString()}</span>
-                  </div>
+                  {cancelReason === 'customer_change' && cancelOrderAmount < SHIPPING_FEE ? (
+                    <div className="flex justify-between text-sm font-medium">
+                      <span className="text-red-600">{t("orders.additional_payment_required") || "추가 결제 필요 금액"}</span>
+                      <span className="text-red-600">₩{(SHIPPING_FEE - cancelOrderAmount).toLocaleString()}</span>
+                    </div>
+                  ) : (
+                    <div className="flex justify-between text-sm font-medium">
+                      <span>{t("orders.refund_amount") || "환불 예정 금액"}</span>
+                      <span className="text-theme-color">₩{getRefundAmount().toLocaleString()}</span>
+                    </div>
+                  )}
                 </div>
               </div>
 
               {cancelReason === 'customer_change' && (
-                <p className="text-xs text-gray-500 mb-4 text-center">
-                  {t("orders.customer_change_notice") || "단순 변심으로 인한 취소 시 왕복 택배비가 차감됩니다."}
+                <p className="text-xs text-gray-500 mb-4 text-center whitespace-pre-line">
+                  {cancelOrderAmount < SHIPPING_FEE
+                    ? (t("orders.deficit_notice") || "주문 금액보다 차감될 배송비가 큽니다.\n부족한 배송비를 결제하시면 취소가 완료됩니다.")
+                    : (t("orders.customer_change_notice") || "단순 변심으로 인한 취소 시 왕복 택배비가 차감됩니다.")}
                 </p>
               )}
 
@@ -978,13 +1019,23 @@ export default function OrdersList({
                 >
                   {t("common.close") || "닫기"}
                 </button>
-                <button
-                  onClick={() => handleCancelOrder(showCancelConfirm)}
-                  disabled={cancellingOrderId !== null || !cancelReason}
-                  className="flex-1 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 disabled:opacity-50"
-                >
-                  {cancellingOrderId ? (t("orders.cancelling") || "취소 중...") : (t("orders.cancel_order") || "주문 취소")}
-                </button>
+                {cancelReason === 'customer_change' && cancelOrderAmount < SHIPPING_FEE ? (
+                  <button
+                    onClick={() => handlePayAndCancel(showCancelConfirm, SHIPPING_FEE - cancelOrderAmount)}
+                    disabled={cancellingOrderId !== null || !cancelReason}
+                    className="flex-1 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 disabled:opacity-50"
+                  >
+                    {cancellingOrderId ? (t("orders.processing") || "처리 중...") : (t("orders.pay_and_cancel") || "결제하고 취소하기")}
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleCancelOrder(showCancelConfirm)}
+                    disabled={cancellingOrderId !== null || !cancelReason}
+                    className="flex-1 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 disabled:opacity-50"
+                  >
+                    {cancellingOrderId ? (t("orders.cancelling") || "취소 중...") : (t("orders.cancel_order") || "주문 취소")}
+                  </button>
+                )}
               </div>
             </div>
           </div>
