@@ -95,6 +95,8 @@ export async function GET(request: NextRequest) {
       createdAt: order.createdAt?.toISOString() || new Date().toISOString(),
       customerEmail: user.email,
       customerName: user.name,
+      shippingAddress: order.shippingAddress,
+      billingAddress: order.billingAddress,
       items: (order.orderItems || []).map((item: any) => ({
         id: item.id,
         name: item.title,

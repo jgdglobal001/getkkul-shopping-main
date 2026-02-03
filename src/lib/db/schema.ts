@@ -67,6 +67,8 @@ export const addresses = pgTable('addresses', {
   entranceCode: text('entranceCode'),
   isDefault: boolean('isDefault').default(false),
   userId: text('userId').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  createdAt: timestamp('createdAt', { mode: 'date' }).defaultNow(),
+  updatedAt: timestamp('updatedAt', { mode: 'date' }).defaultNow(),
 });
 
 // Categories

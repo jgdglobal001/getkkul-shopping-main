@@ -52,7 +52,7 @@ const CheckoutPage = () => {
       const data = await response.json();
 
       if (data.orders) {
-        const order = data.orders.find((o: any) => o.id === existingOrderId);
+        const order = data.orders.find((o: any) => o.id === existingOrderId || o.orderId === existingOrderId);
         if (order) {
           setExistingOrder(order);
         } else {
@@ -508,21 +508,43 @@ const CheckoutPage = () => {
                 {t("checkout.shipping_address")}
               </h3>
 
-              <div className="p-4 bg-gray-50 rounded-lg">
-                <p className="font-medium text-gray-900">
-                  {existingOrder?.shippingAddress?.name}
-                </p>
-                <p className="text-sm text-gray-600 mt-1">
-                  {existingOrder?.shippingAddress?.address}
-                </p>
-                <p className="text-sm text-gray-600">
-                  {existingOrder?.shippingAddress?.city},{" "}
-                  {existingOrder?.shippingAddress?.state}{" "}
-                  {existingOrder?.shippingAddress?.zipCode}
-                </p>
-                <p className="text-sm text-gray-600">
-                  {existingOrder?.shippingAddress?.country}
-                </p>
+              <div className="p-5 bg-gray-50 rounded-xl border border-gray-100">
+                <div className="flex items-center justify-between mb-3 pb-3 border-b border-gray-200">
+                  <div className="flex items-center space-x-2">
+                    <span className="font-bold text-gray-900 text-lg">
+                      {existingOrder?.shippingAddress?.recipientName}
+                    </span>
+                    <span className="text-gray-400">|</span>
+                    <span className="text-gray-600">
+                      {existingOrder?.shippingAddress?.phone}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <p className="text-gray-900 font-medium">
+                    {existingOrder?.shippingAddress?.address}
+                  </p>
+                  <p className="text-gray-700">
+                    {existingOrder?.shippingAddress?.detailAddress}
+                  </p>
+                  <p className="text-sm text-gray-500 mt-2 flex items-center">
+                    <span className="bg-gray-200 px-2 py-0.5 rounded text-xs font-bold mr-2">
+                      {existingOrder?.shippingAddress?.zipCode}
+                    </span>
+                  </p>
+                </div>
+
+                {existingOrder?.shippingAddress?.deliveryRequest && (
+                  <div className="mt-4 pt-4 border-t border-dashed border-gray-300">
+                    <p className="text-xs text-gray-500 font-semibold mb-1 uppercase tracking-wider">
+                      {t("account.delivery_request")}
+                    </p>
+                    <p className="text-sm text-gray-700 bg-white p-2 rounded border border-gray-100">
+                      {existingOrder?.shippingAddress?.deliveryRequest}
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>
