@@ -3,7 +3,7 @@ export const runtime = 'edge';
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { db, productQuestions, productAnswers, products, users } from "@/lib/db";
-import { eq, desc, and } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 
 // GET: 모든 고객 문의 조회 (관리자용)
 export async function GET(request: NextRequest) {
@@ -26,8 +26,8 @@ export async function GET(request: NextRequest) {
     const questionsResult = await db
       .select({
         id: productQuestions.id,
-        content: productQuestions.content,
-        isSecret: productQuestions.isSecret,
+        question: productQuestions.question,
+        isAnswered: productQuestions.isAnswered,
         createdAt: productQuestions.createdAt,
         productId: productQuestions.productId,
         productTitle: products.title,
@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
         const answersResult = await db
           .select({
             id: productAnswers.id,
-            content: productAnswers.content,
+            answer: productAnswers.answer,
             createdAt: productAnswers.createdAt,
             userId: productAnswers.userId,
             userName: users.name,
@@ -60,14 +60,14 @@ export async function GET(request: NextRequest) {
 
         return {
           id: q.id,
-          content: q.content,
-          isSecret: q.isSecret,
+          question: q.question,
+          isAnswered: q.isAnswered,
           createdAt: q.createdAt,
           product: { id: q.productId, title: q.productTitle },
           user: { id: q.userId, name: q.userName, email: q.userEmail },
           answers: answersResult.map(a => ({
             id: a.id,
-            content: a.content,
+            answer: a.answer,
             createdAt: a.createdAt,
             user: { id: a.userId, name: a.userName, email: a.userEmail }
           }))
@@ -84,4 +84,3 @@ export async function GET(request: NextRequest) {
     );
   }
 }
-
