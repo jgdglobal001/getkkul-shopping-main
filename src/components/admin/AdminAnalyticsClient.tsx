@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { AdminCardSkeleton, AdminStatsSkeleton } from "./AdminSkeletons";
+import { useTranslation } from "react-i18next";
 import {
   FiTrendingUp,
   FiTrendingDown,
@@ -27,6 +28,7 @@ interface AnalyticsData {
 }
 
 export default function AdminAnalyticsClient() {
+  const { t, i18n } = useTranslation();
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -49,9 +51,25 @@ export default function AdminAnalyticsClient() {
     }
   };
 
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat(i18n.language, {
+      style: "currency",
+      currency: "KRW",
+    }).format(amount);
+  };
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat(i18n.language, {
+      year: '2-digit',
+      month: 'short'
+    }).format(date);
+  };
+
   if (loading) {
     return (
       <div className="space-y-6">
+        <h1 className="text-2xl font-bold text-gray-900">{t('admin.analytics.title')}</h1>
         <AdminStatsSkeleton />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <AdminCardSkeleton />
@@ -64,24 +82,27 @@ export default function AdminAnalyticsClient() {
 
   if (!analytics) {
     return (
-      <div className="text-center py-12">
-        <FiBarChart className="mx-auto h-12 w-12 text-gray-400" />
-        <p className="text-gray-500 mt-4">Unable to load analytics data</p>
+      <div className="space-y-6">
+        <h1 className="text-2xl font-bold text-gray-900">{t('admin.analytics.title')}</h1>
+        <div className="text-center py-12">
+          <FiBarChart className="mx-auto h-12 w-12 text-gray-400" />
+          <p className="text-gray-500 mt-4">{t('admin.analytics.no_data')}</p>
+        </div>
       </div>
     );
   }
 
   const stats = [
     {
-      title: "Total Revenue",
-      value: `$${analytics.totalRevenue.toFixed(2)}`,
+      title: t('admin.analytics.total_revenue'),
+      value: formatCurrency(analytics.totalRevenue),
       change: analytics.revenueGrowth,
       icon: FiDollarSign,
       color: "text-green-600",
       bgColor: "bg-green-100",
     },
     {
-      title: "Total Orders",
+      title: t('admin.analytics.total_orders'),
       value: analytics.totalOrders.toString(),
       change: analytics.ordersGrowth,
       icon: FiShoppingCart,
@@ -89,7 +110,7 @@ export default function AdminAnalyticsClient() {
       bgColor: "bg-blue-100",
     },
     {
-      title: "Total Users",
+      title: t('admin.analytics.total_users'),
       value: analytics.totalUsers.toString(),
       change: analytics.usersGrowth,
       icon: FiUsers,
@@ -97,8 +118,8 @@ export default function AdminAnalyticsClient() {
       bgColor: "bg-purple-100",
     },
     {
-      title: "Average Order",
-      value: `$${analytics.averageOrderValue.toFixed(2)}`,
+      title: t('admin.analytics.average_order'),
+      value: formatCurrency(analytics.averageOrderValue),
       change: 0,
       icon: FiPackage,
       color: "text-orange-600",
@@ -108,6 +129,8 @@ export default function AdminAnalyticsClient() {
 
   return (
     <div className="space-y-6">
+      <h1 className="text-2xl font-bold text-gray-900">{t('admin.analytics.title')}</h1>
+
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
@@ -131,15 +154,14 @@ export default function AdminAnalyticsClient() {
                       <FiTrendingDown className="h-4 w-4 text-red-500 mr-1" />
                     )}
                     <span
-                      className={`text-sm font-medium ${
-                        stat.change > 0 ? "text-green-600" : "text-red-600"
-                      }`}
+                      className={`text-sm font-medium ${stat.change > 0 ? "text-green-600" : "text-red-600"
+                        }`}
                     >
                       {stat.change > 0 ? "+" : ""}
                       {stat.change.toFixed(1)}%
                     </span>
                     <span className="text-sm text-gray-500 ml-1">
-                      from last month
+                      {t('admin.analytics.from_last_month')}
                     </span>
                   </div>
                 )}
@@ -158,31 +180,30 @@ export default function AdminAnalyticsClient() {
         <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-900">
-              Monthly Revenue
+              {t('admin.analytics.monthly_revenue')}
             </h3>
             <FiCalendar className="h-5 w-5 text-gray-400" />
           </div>
           <div className="space-y-3">
             {analytics.monthlyRevenue.map((item, index) => (
               <div key={index} className="flex items-center justify-between">
-                <span className="text-sm text-gray-600">{item.month}</span>
+                <span className="text-sm text-gray-600">{formatDate(item.month)}</span>
                 <div className="flex items-center space-x-2">
                   <div className="w-32 bg-gray-200 rounded-full h-2">
                     <div
                       className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                       style={{
-                        width: `${
-                          (item.revenue /
-                            Math.max(
-                              ...analytics.monthlyRevenue.map((r) => r.revenue)
-                            )) *
+                        width: `${(item.revenue /
+                          Math.max(
+                            ...analytics.monthlyRevenue.map((r) => r.revenue)
+                          )) *
                           100
-                        }%`,
+                          }%`,
                       }}
                     />
                   </div>
-                  <span className="text-sm font-medium text-gray-900 w-16 text-right">
-                    ${item.revenue.toFixed(0)}
+                  <span className="text-sm font-medium text-gray-900 w-20 text-right">
+                    {formatCurrency(item.revenue)}
                   </span>
                 </div>
               </div>
@@ -194,7 +215,7 @@ export default function AdminAnalyticsClient() {
         <div className="bg-white rounded-lg shadow p-6 border border-gray-200">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-900">
-              Orders by Status
+              {t('admin.analytics.orders_by_status')}
             </h3>
             <FiBarChart className="h-5 w-5 text-gray-400" />
           </div>
@@ -211,12 +232,12 @@ export default function AdminAnalyticsClient() {
                 <div key={index} className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <div
-                      className={`w-3 h-3 rounded-full ${
-                        colors[index % colors.length]
-                      }`}
+                      className={`w-3 h-3 rounded-full ${colors[index % colors.length]
+                        }`}
                     />
                     <span className="text-sm text-gray-600 capitalize">
-                      {item.status}
+                      {/* Try to translate status if available, fallback to raw status */}
+                      {t(`admin.status.${item.status}`, item.status)}
                     </span>
                   </div>
                   <div className="flex items-center space-x-2">
@@ -237,20 +258,20 @@ export default function AdminAnalyticsClient() {
       {/* Top Products Table */}
       <div className="bg-white rounded-lg shadow border border-gray-200">
         <div className="px-6 py-4 border-b border-gray-200">
-          <h3 className="text-lg font-semibold text-gray-900">Top Products</h3>
+          <h3 className="text-lg font-semibold text-gray-900">{t('admin.analytics.top_products')}</h3>
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Product
+                  {t('admin.analytics.product_name')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Sales
+                  {t('admin.analytics.sales')}
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Revenue
+                  {t('admin.analytics.revenue')}
                 </th>
               </tr>
             </thead>
@@ -265,17 +286,17 @@ export default function AdminAnalyticsClient() {
                         </span>
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">
+                        <div className="text-sm font-medium text-gray-900 line-clamp-1 max-w-xs" title={product.name}>
                           {product.name}
                         </div>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {product.sales} units
+                    {product.sales} {t('admin.analytics.units_suffix')}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                    ${product.revenue.toFixed(2)}
+                    {formatCurrency(product.revenue)}
                   </td>
                 </tr>
               ))}
@@ -285,7 +306,7 @@ export default function AdminAnalyticsClient() {
         {analytics.topProducts.length === 0 && (
           <div className="px-6 py-12 text-center">
             <FiPackage className="mx-auto h-12 w-12 text-gray-400" />
-            <p className="text-gray-500 mt-4">No product data available</p>
+            <p className="text-gray-500 mt-4">{t('admin.analytics.no_products')}</p>
           </div>
         )}
       </div>

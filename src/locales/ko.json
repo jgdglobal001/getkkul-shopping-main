@@ -202,6 +202,23 @@
     "zipcode_required": "우편번호는 필수입니다"
   },
   "admin": {
+    "analytics": {
+      "title": "분석 보고서",
+      "total_revenue": "총 매출",
+      "total_orders": "총 주문",
+      "total_users": "총 회원",
+      "average_order": "평균 주문액",
+      "from_last_month": "지난 달 대비",
+      "monthly_revenue": "월별 매출",
+      "orders_by_status": "주문 상태별 현황",
+      "top_products": "인기 상품",
+      "product_name": "상품명",
+      "sales": "판매량",
+      "revenue": "매출",
+      "units_suffix": "개",
+      "no_data": "데이터를 불러올 수 없습니다",
+      "no_products": "상품 데이터가 없습니다"
+    },
     "orders_management": "주문 관리",
     "delete_selected": "선택 삭제",
     "delete_all": "전체 삭제",

@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 
 import AdminUsersClient from "@/components/admin/AdminUsersClient";
 

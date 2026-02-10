@@ -2,8 +2,8 @@ export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "../../../../../auth";
-import { db, users, orders } from "@/lib/db";
-import { eq, desc } from "drizzle-orm";
+import { db, users, orders, orderItems } from "@/lib/db";
+import { eq, desc, sql } from "drizzle-orm";
 
 export async function GET(request: NextRequest) {
   try {
@@ -38,11 +38,33 @@ export async function GET(request: NextRequest) {
       .from(orders)
       .leftJoin(users, eq(orders.userId, users.id))
       .orderBy(desc(orders.createdAt))
-      .limit(100);
+      .limit(1000); // Increased limit for better analytics
 
     const ordersData = ordersResult.map(r => ({
       ...r.order,
       user: { name: r.userName, email: r.userEmail }
+    }));
+
+    // Fetch all users for user stats
+    const allUsers = await db.select({ createdAt: users.createdAt }).from(users);
+    const totalUsers = allUsers.length;
+
+    // Fetch top products
+    const topProductsResult = await db
+      .select({
+        name: orderItems.title,
+        quantity: sql<number>`sum(${orderItems.quantity})`,
+        revenue: sql<number>`sum(${orderItems.total})`
+      })
+      .from(orderItems)
+      .groupBy(orderItems.title)
+      .orderBy(desc(sql`sum(${orderItems.total})`))
+      .limit(5);
+
+    const topProducts = topProductsResult.map(item => ({
+      name: item.name,
+      sales: Number(item.quantity) || 0,
+      revenue: Number(item.revenue) || 0
     }));
 
     // Calculate analytics data
@@ -67,10 +89,7 @@ export async function GET(request: NextRequest) {
       );
 
       return {
-        month: date.toLocaleDateString("en-US", {
-          month: "short",
-          year: "2-digit",
-        }),
+        month: date.toISOString(),
         revenue: Math.round(revenue),
         orders: monthOrders.length,
       };
@@ -86,22 +105,13 @@ export async function GET(request: NextRequest) {
       {}
     );
 
-    // Recent activity (last 10 orders)
-    const recentActivity = ordersData.slice(0, 10).map((order: any) => ({
-      id: order.id,
-      type: "order",
-      description: `Order #${order.id.slice(0, 8)} - ${order.status}`,
-      amount: order.totalAmount || 0,
-      timestamp: order.createdAt,
-      status: order.status || "pending",
-    }));
-
     // Calculate totals
     const totalRevenue = ordersData.reduce(
       (sum: number, order: any) => sum + (order.totalAmount || 0),
       0
     );
     const totalOrders = ordersData.length;
+    const averageOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
 
     // This month's data
     const thisMonthOrders = ordersData.filter((order: any) => {
@@ -116,13 +126,14 @@ export async function GET(request: NextRequest) {
       0
     );
 
-    // Growth calculations (comparing to last month)
+    // Last month's data
+    const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+    const lastMonthYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+
     const lastMonthOrders = ordersData.filter((order: any) => {
       const orderDate = new Date(order.createdAt);
-      const lastMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-      const year = currentMonth === 0 ? currentYear - 1 : currentYear;
       return (
-        orderDate.getMonth() === lastMonth && orderDate.getFullYear() === year
+        orderDate.getMonth() === lastMonth && orderDate.getFullYear() === lastMonthYear
       );
     });
     const lastMonthRevenue = lastMonthOrders.reduce(
@@ -130,39 +141,51 @@ export async function GET(request: NextRequest) {
       0
     );
 
+    // Growth calculations
     const revenueGrowth =
       lastMonthRevenue > 0
         ? ((thisMonthRevenue - lastMonthRevenue) / lastMonthRevenue) * 100
         : 0;
-    const orderGrowth =
+
+    const ordersGrowth =
       lastMonthOrders.length > 0
-        ? ((thisMonthOrders.length - lastMonthOrders.length) /
-            lastMonthOrders.length) *
-          100
+        ? ((thisMonthOrders.length - lastMonthOrders.length) / lastMonthOrders.length) * 100
         : 0;
 
+    // User growth
+    const thisMonthUsers = allUsers.filter(u => {
+      return u.createdAt && u.createdAt.getMonth() === currentMonth && u.createdAt.getFullYear() === currentYear;
+    }).length;
+
+    const lastMonthUsers = allUsers.filter(u => {
+      return u.createdAt && u.createdAt.getMonth() === lastMonth && u.createdAt.getFullYear() === lastMonthYear;
+    }).length;
+
+    const usersGrowth = lastMonthUsers > 0
+      ? ((thisMonthUsers - lastMonthUsers) / lastMonthUsers) * 100
+      : 0;
+
+    const ordersByStatus = Object.entries(statusDistribution).map(
+      ([status, count]) => ({
+        status,
+        count: count as number,
+        percentage: totalOrders > 0 ? ((count as number) / totalOrders) * 100 : 0,
+      })
+    );
+
     return NextResponse.json({
-      success: true,
-      data: {
-        overview: {
-          totalRevenue: Math.round(totalRevenue),
-          totalOrders,
-          monthlyRevenue: Math.round(thisMonthRevenue),
-          monthlyOrders: thisMonthOrders.length,
-          revenueGrowth: Math.round(revenueGrowth * 100) / 100,
-          orderGrowth: Math.round(orderGrowth * 100) / 100,
-        },
-        monthlyRevenue,
-        statusDistribution: Object.entries(statusDistribution).map(
-          ([status, count]) => ({
-            status,
-            count: count as number,
-            percentage: Math.round(((count as number) / totalOrders) * 100),
-          })
-        ),
-        recentActivity,
-      },
+      totalRevenue,
+      totalOrders,
+      totalUsers,
+      averageOrderValue,
+      revenueGrowth,
+      ordersGrowth,
+      usersGrowth,
+      monthlyRevenue,
+      topProducts,
+      ordersByStatus
     });
+
   } catch (error) {
     console.error("Analytics API Error:", error);
     return NextResponse.json(

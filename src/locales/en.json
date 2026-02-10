@@ -186,6 +186,23 @@
     "zipcode_required": "Zipcode Required"
   },
   "admin": {
+    "analytics": {
+      "title": "Analytics Dashboard",
+      "total_revenue": "Total Revenue",
+      "total_orders": "Total Orders",
+      "total_users": "Total Users",
+      "average_order": "Average Order",
+      "from_last_month": "from last month",
+      "monthly_revenue": "Monthly Revenue",
+      "orders_by_status": "Orders by Status",
+      "top_products": "Top Products",
+      "product_name": "Product",
+      "sales": "Sales",
+      "revenue": "Revenue",
+      "units_suffix": "units",
+      "no_data": "Unable to load analytics data",
+      "no_products": "No product data available"
+    },
     "orders_management": "Orders Management",
     "delete_selected": "Delete Selected",
     "delete_all": "Delete All",

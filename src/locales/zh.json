@@ -193,6 +193,23 @@
     "zipcode_required": "우편번호는 필수입니다"
   },
   "admin": {
+    "analytics": {
+      "title": "分析仪表板",
+      "total_revenue": "总收入",
+      "total_orders": "总订单",
+      "total_users": "总用户",
+      "average_order": "平均订单金额",
+      "from_last_month": "与上月相比",
+      "monthly_revenue": "月度收入",
+      "orders_by_status": "订单状态分布",
+      "top_products": "热门商品",
+      "product_name": "商品名称",
+      "sales": "销量",
+      "revenue": "收入",
+      "units_suffix": "件",
+      "no_data": "无法加载分析数据",
+      "no_products": "暂无商品数据"
+    },
     "orders_management": "订单管理",
     "delete_selected": "删除选中",
     "delete_all": "删除所有",
