@@ -12,7 +12,8 @@ export interface VariantData {
   originalPrice: string; // 정상가
   price: string;         // 판매가
   stock: string;         // 재고
-  image?: string;        // 옵션별 이미지
+  image?: string;        // 옵션별 이미지 (대표)
+  detailImages?: string[]; // 옵션별 추가 이미지
   barcode?: string;      // 상품 바코드
   modelNumber?: string;  // 모델번호
   isActive: boolean;

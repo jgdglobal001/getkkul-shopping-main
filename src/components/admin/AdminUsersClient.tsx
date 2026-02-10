@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { AdminTableSkeleton } from "./AdminSkeletons";
 import { USER_ROLES } from "@/lib/rbac/permissions";
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import {
   FiEdit2,
   FiTrash2,
@@ -29,6 +30,7 @@ interface User {
 }
 
 export default function AdminUsersClient() {
+  const { t } = useTranslation();
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingUser, setEditingUser] = useState<User | null>(null);
@@ -90,18 +92,18 @@ export default function AdminUsersClient() {
       });
 
       if (response.ok) {
-        toast.success(`User ${editForm.name} updated successfully`);
+        toast.success(t('admin.users.toast.update_success', { name: editForm.name }));
         await fetchUsers(); // Refresh the data
         setEditingUser(null);
         setEditForm({ name: "", email: "", role: "" });
         setShowEditModal(false);
       } else {
         const errorData = await response.json();
-        toast.error(errorData.error || "Failed to update user");
+        toast.error(errorData.error || t('admin.users.toast.update_error'));
       }
     } catch (error) {
       console.error("Error updating user:", error);
-      toast.error("Failed to update user");
+      toast.error(t('admin.users.toast.update_error'));
     }
   };
 
@@ -114,7 +116,7 @@ export default function AdminUsersClient() {
       });
 
       if (response.ok) {
-        toast.success("User deleted successfully");
+        toast.success(t('admin.users.toast.delete_success'));
         await fetchUsers(); // Refresh the data
         setShowDeleteModal(false);
         setUserToDelete(null);
@@ -126,11 +128,11 @@ export default function AdminUsersClient() {
         }
       } else {
         const errorData = await response.json();
-        toast.error(errorData.error || "Failed to delete user");
+        toast.error(errorData.error || t('admin.users.toast.delete_error'));
       }
     } catch (error) {
       console.error("Error deleting user:", error);
-      toast.error("Failed to delete user");
+      toast.error(t('admin.users.toast.delete_error'));
     }
   };
 
@@ -166,7 +168,7 @@ export default function AdminUsersClient() {
 
   const handleDeleteSelected = () => {
     if (selectedUsers.length === 0) {
-      toast.error("Please select users to delete");
+      toast.error(t('admin.users.toast.select_users'));
       return;
     }
     setShowDeleteSelectedModal(true);
@@ -184,7 +186,7 @@ export default function AdminUsersClient() {
       });
 
       if (response.ok) {
-        toast.success(`${selectedUsers.length} users deleted successfully`);
+        toast.success(t('admin.users.toast.bulk_delete_success', { count: selectedUsers.length }));
         await fetchUsers();
         setSelectedUsers([]);
         setSelectAll(false);
@@ -197,11 +199,11 @@ export default function AdminUsersClient() {
         }
       } else {
         const errorData = await response.json();
-        toast.error(errorData.error || "Failed to delete users");
+        toast.error(errorData.error || t('admin.users.toast.bulk_delete_error'));
       }
     } catch (error) {
       console.error("Error deleting users:", error);
-      toast.error("Failed to delete users");
+      toast.error(t('admin.users.toast.bulk_delete_error'));
     } finally {
       setIsDeleting(false);
     }
@@ -210,16 +212,16 @@ export default function AdminUsersClient() {
   const getRoleDisplayName = (role: string) => {
     switch (role) {
       case USER_ROLES.ADMIN:
-        return "Administrator";
+        return t('admin.users.role.admin');
       case USER_ROLES.ACCOUNT:
-        return "Accountant";
+        return t('admin.users.role.account');
       case USER_ROLES.PACKER:
-        return "Packer";
+        return t('admin.users.role.packer');
       case USER_ROLES.DELIVERYMAN:
-        return "Delivery Person";
+        return t('admin.users.role.delivery');
       case USER_ROLES.USER:
       default:
-        return "User";
+        return t('admin.users.role.user');
     }
   };
 
@@ -275,11 +277,11 @@ export default function AdminUsersClient() {
           <div className="flex items-center mb-4 sm:mb-0">
             <FiShield className="h-5 w-5 sm:h-6 sm:w-6 text-indigo-600 mr-2" />
             <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
-              Users Management ({users.length})
+              {t('admin.users.title')} ({users.length})
             </h2>
             {selectedUsers.length > 0 && (
               <span className="ml-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
-                {selectedUsers.length} selected
+                {t('admin.users.selected', { count: selectedUsers.length })}
               </span>
             )}
           </div>
@@ -290,15 +292,15 @@ export default function AdminUsersClient() {
                 className="flex items-center px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm"
               >
                 <FiTrash2 className="mr-2 h-4 w-4" />
-                Delete {selectedUsers.length} Users
+                {t('admin.users.delete_selected', { count: selectedUsers.length })}
               </button>
             )}
             <div className="text-sm text-gray-600">
               <FiUserCheck className="inline h-4 w-4 mr-1" />
               <span className="hidden sm:inline">
-                Role assignment & user management
+                {t('admin.users.role_management')}
               </span>
-              <span className="sm:hidden">Manage users</span>
+              <span className="sm:hidden">{t('admin.users.manage_users')}</span>
             </div>
           </div>
         </div>
@@ -318,22 +320,22 @@ export default function AdminUsersClient() {
                 />
               </th>
               <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                User
+                {t('admin.users.table.user')}
               </th>
               <th className="hidden sm:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Role
+                {t('admin.users.table.role')}
               </th>
               <th className="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Orders
+                {t('admin.users.table.orders')}
               </th>
               <th className="hidden lg:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Total Spent
+                {t('admin.users.table.total_spent')}
               </th>
               <th className="hidden lg:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Joined
+                {t('admin.users.table.joined')}
               </th>
               <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
+                {t('admin.users.table.actions')}
               </th>
             </tr>
           </thead>
@@ -363,7 +365,7 @@ export default function AdminUsersClient() {
                     </div>
                     <div className="ml-3 sm:ml-4 min-w-0 flex-1">
                       <div className="text-sm font-medium text-gray-900 truncate">
-                        {user.name || "No Name"}
+                        {user.name || t('admin.users.table.no_name')}
                       </div>
                       <div className="text-xs sm:text-sm text-gray-500 flex items-center truncate">
                         <FiMail className="h-3 w-3 mr-1 flex-shrink-0" />
@@ -381,8 +383,8 @@ export default function AdminUsersClient() {
                       </div>
                       {/* Mobile stats */}
                       <div className="md:hidden mt-1 text-xs text-gray-500">
-                        {user.orders || 0} orders • $
-                        {(user.totalSpent || 0).toFixed(2)}
+                        {user.orders || 0} •
+                        {new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(user.totalSpent || 0)}
                       </div>
                     </div>
                   </div>
@@ -399,10 +401,10 @@ export default function AdminUsersClient() {
                   </div>
                 </td>
                 <td className="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {user.orders || 0} orders
+                  {user.orders || 0}
                 </td>
                 <td className="hidden lg:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  ${(user.totalSpent || 0).toFixed(2)}
+                  {new Intl.NumberFormat('ko-KR', { style: 'currency', currency: 'KRW' }).format(user.totalSpent || 0)}
                 </td>
                 <td className="hidden lg:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   <div className="flex items-center">
@@ -417,18 +419,18 @@ export default function AdminUsersClient() {
                     <button
                       onClick={() => handleEditUser(user)}
                       className="inline-flex items-center justify-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
-                      title="Edit User"
+                      title={t('admin.buttons.edit')}
                     >
                       <FiEdit2 size={14} className="mr-1" />
-                      Edit
+                      {t('admin.buttons.edit')}
                     </button>
                     <button
                       onClick={() => confirmDeleteUser(user)}
                       className="inline-flex items-center justify-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
-                      title="Delete User"
+                      title={t('admin.buttons.delete')}
                     >
                       <FiTrash2 size={14} className="mr-1" />
-                      Delete
+                      {t('admin.buttons.delete')}
                     </button>
                   </div>
                 </td>
@@ -441,9 +443,9 @@ export default function AdminUsersClient() {
       {users.length === 0 && !loading && (
         <div className="px-6 py-12 text-center">
           <FiUser className="mx-auto h-12 w-12 text-gray-400" />
-          <p className="text-gray-500 mt-4">No users found</p>
+          <p className="text-gray-500 mt-4">{t('admin.users.empty.title')}</p>
           <p className="text-sm text-gray-400 mt-2">
-            Users will appear here once they register
+            {t('admin.users.empty.desc')}
           </p>
         </div>
       )}
@@ -453,8 +455,11 @@ export default function AdminUsersClient() {
         <div className="px-6 py-3 border-t border-gray-200 bg-gray-50">
           <div className="flex items-center justify-between">
             <div className="text-sm text-gray-700">
-              Showing {indexOfFirstUser + 1} to{" "}
-              {Math.min(indexOfLastUser, users.length)} of {users.length} users
+              {t('admin.users.showing', {
+                start: indexOfFirstUser + 1,
+                end: Math.min(indexOfLastUser, users.length),
+                total: users.length
+              })}
             </div>
             <div className="flex items-center space-x-2">
               <button
@@ -462,7 +467,7 @@ export default function AdminUsersClient() {
                 disabled={currentPage === 1}
                 className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Previous
+                {t('admin.pagination.previous')}
               </button>
 
               <div className="flex items-center space-x-1">
@@ -470,11 +475,10 @@ export default function AdminUsersClient() {
                   <button
                     key={i + 1}
                     onClick={() => handlePageChange(i + 1)}
-                    className={`px-3 py-2 text-sm font-medium rounded-md ${
-                      currentPage === i + 1
-                        ? "bg-indigo-600 text-white"
-                        : "text-gray-500 bg-white border border-gray-300 hover:bg-gray-50"
-                    }`}
+                    className={`px-3 py-2 text-sm font-medium rounded-md ${currentPage === i + 1
+                      ? "bg-indigo-600 text-white"
+                      : "text-gray-500 bg-white border border-gray-300 hover:bg-gray-50"
+                      }`}
                   >
                     {i + 1}
                   </button>
@@ -486,7 +490,7 @@ export default function AdminUsersClient() {
                 disabled={currentPage === totalPages}
                 className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Next
+                {t('admin.pagination.next')}
               </button>
             </div>
           </div>
@@ -510,7 +514,7 @@ export default function AdminUsersClient() {
               <div className="flex items-center">
                 <FiEdit2 className="h-6 w-6 text-indigo-600 mr-3" />
                 <h3 className="text-xl font-semibold text-gray-900">
-                  Edit User Details
+                  {t('admin.users.modal.edit_title')}
                 </h3>
               </div>
               <button
@@ -520,7 +524,7 @@ export default function AdminUsersClient() {
                   setEditForm({ name: "", email: "", role: "" });
                 }}
                 className="text-gray-400 hover:text-gray-600 focus:outline-none p-1 rounded-full hover:bg-gray-100 transition-colors"
-                title="Close modal"
+                title={t('admin.buttons.close')}
               >
                 <FiX className="h-6 w-6" />
               </button>
@@ -534,12 +538,12 @@ export default function AdminUsersClient() {
                     {editForm.name
                       ? editForm.name.charAt(0).toUpperCase()
                       : editingUser.name
-                      ? editingUser.name.charAt(0).toUpperCase()
-                      : "U"}
+                        ? editingUser.name.charAt(0).toUpperCase()
+                        : "U"}
                   </span>
                 </div>
                 <p className="text-sm text-gray-500 mt-2">
-                  User ID: {editingUser.id}
+                  {t('admin.users.modal.user_id')}: {editingUser.id}
                 </p>
               </div>
 
@@ -547,14 +551,14 @@ export default function AdminUsersClient() {
               <div className="bg-gray-50 rounded-lg p-4">
                 <h4 className="text-sm font-semibold text-gray-900 mb-4 flex items-center">
                   <FiUser className="h-4 w-4 mr-2 text-gray-600" />
-                  Personal Information
+                  {t('admin.users.modal.personal_info')}
                 </h4>
 
                 <div className="space-y-4">
                   {/* Name Field */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Full Name <span className="text-red-500">*</span>
+                      {t('admin.users.modal.full_name')} <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <FiUser className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -565,7 +569,7 @@ export default function AdminUsersClient() {
                           setEditForm({ ...editForm, name: e.target.value })
                         }
                         className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
-                        placeholder="Enter full name"
+                        placeholder={t('admin.users.modal.placeholder.name')}
                         required
                       />
                     </div>
@@ -574,7 +578,7 @@ export default function AdminUsersClient() {
                   {/* Email Field */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Email Address <span className="text-red-500">*</span>
+                      {t('admin.users.modal.email')} <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <FiMail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -585,12 +589,12 @@ export default function AdminUsersClient() {
                           setEditForm({ ...editForm, email: e.target.value })
                         }
                         className="w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors"
-                        placeholder="Enter email address"
+                        placeholder={t('admin.users.modal.placeholder.email')}
                         required
                       />
                     </div>
                     <p className="text-xs text-gray-500 mt-1">
-                      This will be the user&apos;s login email
+                      {t('admin.users.modal.login_email_note')}
                     </p>
                   </div>
                 </div>
@@ -600,12 +604,12 @@ export default function AdminUsersClient() {
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
                 <h4 className="text-sm font-semibold text-gray-900 mb-4 flex items-center">
                   <FiShield className="h-4 w-4 mr-2 text-amber-600" />
-                  Role & Permissions
+                  {t('admin.users.modal.role_permissions')}
                 </h4>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    User Role <span className="text-red-500">*</span>
+                    {t('admin.users.modal.role_label')} <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <FiShield className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -618,30 +622,30 @@ export default function AdminUsersClient() {
                       required
                     >
                       <option value={USER_ROLES.USER}>
-                        👤 User - Basic customer access
+                        👤 {t('admin.users.role.user')} - {t('admin.users.role.desc.user')}
                       </option>
                       <option value={USER_ROLES.PACKER}>
-                        📦 Packer - Order fulfillment
+                        📦 {t('admin.users.role.packer')} - {t('admin.users.role.desc.packer')}
                       </option>
                       <option value={USER_ROLES.DELIVERYMAN}>
-                        🚚 Delivery Person - Shipping & delivery
+                        🚚 {t('admin.users.role.delivery')} - {t('admin.users.role.desc.delivery')}
                       </option>
                       <option value={USER_ROLES.ACCOUNT}>
-                        💰 Accountant - Financial management
+                        💰 {t('admin.users.role.account')} - {t('admin.users.role.desc.account')}
                       </option>
                       <option value={USER_ROLES.ADMIN}>
-                        ⚡ Administrator - Full system access
+                        ⚡ {t('admin.users.role.admin')} - {t('admin.users.role.desc.admin')}
                       </option>
                     </select>
                   </div>
                   <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-md">
                     <p className="text-xs text-blue-800">
-                      <strong>Current:</strong>{" "}
+                      <strong>{t('admin.users.modal.current')}:</strong>{" "}
                       {getRoleDisplayName(editingUser.role)} →
-                      <strong> New:</strong> {getRoleDisplayName(editForm.role)}
+                      <strong> {t('admin.users.modal.new')}:</strong> {getRoleDisplayName(editForm.role)}
                     </p>
                     <p className="text-xs text-blue-600 mt-1">
-                      User will be notified of role changes via email
+                      {t('admin.users.modal.role_change_note')}
                     </p>
                   </div>
                 </div>
@@ -651,12 +655,12 @@ export default function AdminUsersClient() {
               <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                 <h4 className="text-sm font-semibold text-gray-900 mb-4 flex items-center">
                   <FiUserCheck className="h-4 w-4 mr-2 text-green-600" />
-                  Account Statistics
+                  {t('admin.users.modal.stats')}
                 </h4>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="text-center p-3 bg-white rounded-lg border border-green-100">
                     <p className="text-xs text-gray-500 uppercase tracking-wide">
-                      Total Orders
+                      {t('admin.users.modal.total_orders')}
                     </p>
                     <p className="text-xl font-bold text-gray-900">
                       {editingUser.orders || 0}
@@ -664,7 +668,7 @@ export default function AdminUsersClient() {
                   </div>
                   <div className="text-center p-3 bg-white rounded-lg border border-green-100">
                     <p className="text-xs text-gray-500 uppercase tracking-wide">
-                      Total Spent
+                      {t('admin.users.modal.total_spent')}
                     </p>
                     <p className="text-xl font-bold text-green-600">
                       ${(editingUser.totalSpent || 0).toFixed(2)}
@@ -672,7 +676,7 @@ export default function AdminUsersClient() {
                   </div>
                   <div className="text-center p-3 bg-white rounded-lg border border-green-100">
                     <p className="text-xs text-gray-500 uppercase tracking-wide">
-                      Member Since
+                      {t('admin.users.modal.member_since')}
                     </p>
                     <p className="text-sm font-medium text-gray-900">
                       {editingUser.createdAt
@@ -682,7 +686,7 @@ export default function AdminUsersClient() {
                   </div>
                   <div className="text-center p-3 bg-white rounded-lg border border-green-100">
                     <p className="text-xs text-gray-500 uppercase tracking-wide">
-                      Current Role
+                      {t('admin.users.modal.current_role')}
                     </p>
                     <span
                       className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getRoleColor(
@@ -703,7 +707,7 @@ export default function AdminUsersClient() {
                 className="w-full sm:w-auto inline-flex justify-center items-center px-6 py-3 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
               >
                 <FiSave className="mr-2 h-4 w-4" />
-                Save Changes
+                {t('admin.buttons.save')}
               </button>
               <button
                 onClick={() => {
@@ -714,7 +718,7 @@ export default function AdminUsersClient() {
                 className="w-full sm:w-auto inline-flex justify-center items-center px-6 py-3 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors shadow-sm"
               >
                 <FiX className="mr-2 h-4 w-4" />
-                Cancel
+                {t('admin.buttons.cancel')}
               </button>
             </div>
           </div>
@@ -734,7 +738,7 @@ export default function AdminUsersClient() {
         >
           <div className="relative bg-white rounded-lg shadow-xl w-full max-w-md mx-auto">
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900">Delete User</h3>
+              <h3 className="text-lg font-medium text-gray-900">{t('admin.users.modal.delete_title')}</h3>
               <button
                 onClick={() => {
                   setShowDeleteModal(false);
@@ -753,10 +757,10 @@ export default function AdminUsersClient() {
                 </div>
                 <div className="ml-4">
                   <h4 className="text-lg font-medium text-gray-900">
-                    Are you sure?
+                    {t('admin.users.modal.delete_confirm')}
                   </h4>
                   <p className="text-sm text-gray-500">
-                    This action cannot be undone.
+                    {t('admin.users.modal.delete_warning')}
                   </p>
                 </div>
               </div>
@@ -775,24 +779,25 @@ export default function AdminUsersClient() {
                     )}
                   </div>
                   <div className="ml-4">
-                    <div className="text-sm font-medium text-red-900">
-                      {userToDelete.name || "No Name"}
+                    <div className="text-sm text-red-900">
+                      {userToDelete.name || t('admin.users.table.no_name')}
                     </div>
                     <div className="text-sm text-red-700">
                       {userToDelete.email}
                     </div>
                     <div className="text-xs text-red-600 mt-1">
-                      Role: {getRoleDisplayName(userToDelete.role)} •
-                      {userToDelete.orders || 0} orders • $
-                      {(userToDelete.totalSpent || 0).toFixed(2)} spent
+                      {t('admin.users.modal.user_summary', {
+                        role: getRoleDisplayName(userToDelete.role),
+                        orders: userToDelete.orders || 0,
+                        spent: (userToDelete.totalSpent || 0).toFixed(2)
+                      })}
                     </div>
                   </div>
                 </div>
               </div>
 
               <p className="text-sm text-gray-600">
-                Deleting this user will permanently remove their account, order
-                history, and all associated data. This action cannot be undone.
+                {t('admin.users.modal.delete_desc')}
               </p>
             </div>
 
@@ -802,7 +807,7 @@ export default function AdminUsersClient() {
                 className="w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
               >
                 <FiTrash2 className="mr-2 h-4 w-4" />
-                Delete User
+                {t('admin.users.modal.delete_confirm_btn')}
               </button>
               <button
                 onClick={() => {
@@ -812,7 +817,7 @@ export default function AdminUsersClient() {
                 className="w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors"
               >
                 <FiX className="mr-2 h-4 w-4" />
-                Cancel
+                {t('admin.buttons.cancel')}
               </button>
             </div>
           </div>
@@ -832,7 +837,7 @@ export default function AdminUsersClient() {
           <div className="relative bg-white rounded-lg shadow-xl w-full max-w-md mx-auto">
             <div className="flex items-center justify-between p-6 border-b border-gray-200">
               <h3 className="text-lg font-medium text-gray-900">
-                Delete Multiple Users
+                {t('admin.users.modal.bulk_delete_title')}
               </h3>
               <button
                 onClick={() => setShowDeleteSelectedModal(false)}
@@ -850,17 +855,17 @@ export default function AdminUsersClient() {
                 </div>
                 <div className="ml-4">
                   <h4 className="text-lg font-medium text-gray-900">
-                    Delete {selectedUsers.length} Users?
+                    {t('admin.users.modal.bulk_delete_confirm', { count: selectedUsers.length })}
                   </h4>
                   <p className="text-sm text-gray-500">
-                    This action cannot be undone.
+                    {t('admin.users.modal.cannot_undo')}
                   </p>
                 </div>
               </div>
 
               <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-4">
                 <p className="text-sm text-red-800 font-medium mb-2">
-                  You are about to delete {selectedUsers.length} users:
+                  {t('admin.users.modal.bulk_delete_warning', { count: selectedUsers.length })}
                 </p>
                 <div className="max-h-32 overflow-y-auto">
                   {selectedUsers.slice(0, 5).map((userId) => {
@@ -883,7 +888,7 @@ export default function AdminUsersClient() {
                         </div>
                         <div className="ml-2">
                           <span className="text-xs text-red-800">
-                            {user.name || "No Name"} ({user.email})
+                            {user.name || t('admin.users.table.no_name')} ({user.email})
                           </span>
                         </div>
                       </div>
@@ -891,16 +896,14 @@ export default function AdminUsersClient() {
                   })}
                   {selectedUsers.length > 5 && (
                     <p className="text-xs text-red-600 mt-2">
-                      ...and {selectedUsers.length - 5} more users
+                      {t('admin.users.modal.more_users', { count: selectedUsers.length - 5 })}
                     </p>
                   )}
                 </div>
               </div>
 
               <p className="text-sm text-gray-600">
-                Deleting these users will permanently remove their accounts,
-                order histories, and all associated data. This action cannot be
-                undone.
+                {t('admin.users.modal.bulk_delete_desc')}
               </p>
             </div>
 
@@ -913,12 +916,12 @@ export default function AdminUsersClient() {
                 {isDeleting ? (
                   <>
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Deleting...
+                    {t('admin.users.deleting')}
                   </>
                 ) : (
                   <>
                     <FiTrash2 className="mr-2 h-4 w-4" />
-                    Delete {selectedUsers.length} Users
+                    {t('admin.users.modal.bulk_delete_btn', { count: selectedUsers.length })}
                   </>
                 )}
               </button>
@@ -928,7 +931,7 @@ export default function AdminUsersClient() {
                 className="w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors disabled:opacity-50"
               >
                 <FiX className="mr-2 h-4 w-4" />
-                Cancel
+                {t('admin.buttons.cancel')}
               </button>
             </div>
           </div>

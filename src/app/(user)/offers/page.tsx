@@ -21,7 +21,11 @@ type Locale = keyof typeof translations;
 export async function generateMetadata() {
   const cookieStore = await cookies();
   const lang = (cookieStore.get("i18next")?.value as Locale) || "ko";
-  const dict = translations[lang] || translations.ko;
+  // Fallback to KO dictionary if the selected language dictionary is missing the 'offers' key
+  // We cast to 'typeof ko' because KO is our Source of Truth for structure
+  const dict = ((translations[lang] && (translations[lang] as any).offers)
+    ? translations[lang]
+    : translations.ko) as typeof ko;
 
   return {
     title: `${dict.offers.title} - Getkkul-shopping`,

@@ -26,14 +26,42 @@ export async function GET(request: NextRequest) {
       .leftJoin(users, eq(orders.userId, users.id))
       .orderBy(desc(orders.createdAt));
 
-    // Group orders by user
+    // Fetch all order items
+    const allOrderItems = await db.select().from(orderItems);
+
+    // Group items by orderId
+    const orderItemsMap = new Map<string, any[]>();
+    for (const item of allOrderItems) {
+      if (!orderItemsMap.has(item.orderId)) {
+        orderItemsMap.set(item.orderId, []);
+      }
+      orderItemsMap.get(item.orderId)!.push(item);
+    }
+
+    // Group orders by user and transform
     const userOrdersMap = new Map<string, any[]>();
     for (const { order, userName, userEmail } of ordersResult) {
+      const items = orderItemsMap.get(order.id) || [];
+      // Parse shipping address if it's a string (though Drizzle should handle JSON)
+      const shippingAddress = typeof order.shippingAddress === 'string'
+        ? JSON.parse(order.shippingAddress)
+        : order.shippingAddress;
+
+      const transformedOrder = {
+        ...order,
+        items,
+        amount: order.totalAmount, // Map totalAmount to amount
+        customerName: userName || shippingAddress?.name || "Unknown User", // Fallback to shipping name
+        customerEmail: userEmail || "",
+        createdAt: order.createdAt?.toISOString(),
+        updatedAt: order.updatedAt?.toISOString(),
+      };
+
       if (order.userId) {
         if (!userOrdersMap.has(order.userId)) {
           userOrdersMap.set(order.userId, []);
         }
-        userOrdersMap.get(order.userId)!.push(order);
+        userOrdersMap.get(order.userId)!.push(transformedOrder);
       }
     }
 
@@ -46,14 +74,22 @@ export async function GET(request: NextRequest) {
       orders: userOrdersMap.get(user.id) || [],
     }));
 
-    const transformedStandaloneOrders = ordersResult.map(({ order, userName, userEmail }) => ({
-      id: order.id,
-      ...order,
-      createdAt: order.createdAt?.toISOString(),
-      updatedAt: order.updatedAt?.toISOString(),
-      customerName: userName || "Unknown User",
-      customerEmail: userEmail || "",
-    }));
+    const transformedStandaloneOrders = ordersResult.map(({ order, userName, userEmail }) => {
+      const items = orderItemsMap.get(order.id) || [];
+      const shippingAddress = typeof order.shippingAddress === 'string'
+        ? JSON.parse(order.shippingAddress)
+        : order.shippingAddress;
+
+      return {
+        ...order,
+        items,
+        amount: order.totalAmount, // Map totalAmount to amount
+        createdAt: order.createdAt?.toISOString(),
+        updatedAt: order.updatedAt?.toISOString(),
+        customerName: userName || shippingAddress?.name || "Unknown User", // Fallback to shipping name
+        customerEmail: userEmail || "",
+      };
+    });
 
     return NextResponse.json(
       {

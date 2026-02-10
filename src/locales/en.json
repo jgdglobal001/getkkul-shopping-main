@@ -122,8 +122,14 @@
     "pay_now": "Pay Now",
     "payment": "Payment",
     "payment_methods": "Payment Methods",
-    "payment_status": "Payment Status",
-    "payment_status_label": "Payment Status Label",
+    "payment_status": {
+      "Paid": "Payment Paid",
+      "failed": "Payment Failed",
+      "paid": "Payment Paid",
+      "pending": "Payment Pending",
+      "refunded": "Payment Refunded"
+    },
+    "payment_status_label": "Payment Status",
     "phone": "Phone",
     "phone_number": "Phone Number",
     "placed_on": "Placed on {{date}}",
@@ -178,6 +184,184 @@
     "your_order_is_currently_being": "Your order is currently {{status}}",
     "zipcode": "Zipcode",
     "zipcode_required": "Zipcode Required"
+  },
+  "admin": {
+    "orders_management": "Orders Management",
+    "delete_selected": "Delete Selected",
+    "delete_all": "Delete All",
+    "refresh": "Refresh",
+    "search_placeholder": "Search by Order ID, Customer, Email, or Tracking...",
+    "all_status": "All Status",
+    "all_payments": "All Payments",
+    "table": {
+      "order": "Order",
+      "customer": "Customer",
+      "status": "Status",
+      "payment": "Payment",
+      "amount": "Amount",
+      "date": "Date",
+      "actions": "Actions",
+      "items": "items",
+      "no_name": "No Name",
+      "quantity": "Quantity",
+      "email": "Email"
+    },
+    "status": {
+      "select": "Select Status",
+      "pending": "Pending",
+      "processing": "Processing",
+      "shipped": "Shipped",
+      "delivered": "Delivered",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "confirmed": "Confirmed",
+      "out_for_delivery": "Out For Delivery"
+    },
+    "payment_status": {
+      "select": "Select Payment",
+      "paid": "Paid",
+      "pending": "Pending",
+      "failed": "Failed",
+      "refunded": "Refunded",
+      "partial": "Partial"
+    },
+    "payment_method": {
+      "online": "Online Payment",
+      "toss": "Toss Payments",
+      "card": "Card Payment",
+      "virtual_account": "Virtual Account",
+      "transfer": "Bank Transfer",
+      "mobile": "Mobile Payment",
+      "unknown": "Unknown"
+    },
+    "messages": {
+      "delete_success": "Order deleted successfully",
+      "delete_all_success": "All orders deleted successfully",
+      "delete_selected_success": "Successfully deleted {{count}} orders",
+      "delete_selected_error": "Failed to delete selected orders",
+      "select_to_delete": "Please select orders to delete",
+      "update_status_success": "Order status updated to {{status}}",
+      "update_payment_success": "Payment status updated to {{status}}"
+    },
+    "buttons": {
+      "save": "Save",
+      "cancel": "Cancel",
+      "view_details": "View Details",
+      "edit_status": "Edit Status",
+      "delete_order": "Delete Order",
+      "close": "Close",
+      "deleting": "Deleting...",
+      "delete_count_orders": "Delete {{count}} Orders"
+    },
+    "empty": {
+      "title": "No orders",
+      "search": "No orders match your search criteria",
+      "no_orders": "No orders have been placed yet"
+    },
+    "modal": {
+      "order_details": "Order Details",
+      "order_info": "Order Information",
+      "shipping_address": "Shipping Address",
+      "delete_order_title": "Delete Order",
+      "delete_order_confirm": "Are you sure you want to delete order",
+      "delete_all_title": "Delete All Orders",
+      "delete_all_confirm": "Are you sure you want to delete ALL orders? This action cannot be undone.",
+      "delete_selected_title": "Delete Selected Orders",
+      "delete_selected_confirm": "Are you sure you want to delete {{count}} selected orders? This action cannot be undone.",
+      "warning": "Warning",
+      "delete_warning": "This action cannot be undone. The order will be permanently removed from the database."
+    },
+    "pagination": {
+      "showing": "Showing {{start}} to {{end}} of {{total}} results",
+      "previous": "Previous",
+      "next": "Next",
+      "page_of": "Page {{current}} of {{total}}"
+    },
+    "common": {
+      "unknown": "Unknown",
+      "not_specified": "Not specified"
+    },
+    "users": {
+      "title": "Users Management",
+      "orders_count": "{{count}} orders",
+      "spent_amount": "{{amount}} spent",
+      "selected": "{{count}} selected",
+      "showing": "Showing {{start}} to {{end}} of {{total}} users",
+      "delete_selected": "Delete {{count}} Users",
+      "toast": {
+        "update_success": "User {{name}} updated successfully",
+        "update_error": "Failed to update user",
+        "delete_success": "User deleted successfully",
+        "delete_error": "Failed to delete user",
+        "select_users": "Please select users to delete",
+        "bulk_delete_success": "{{count}} users deleted successfully",
+        "bulk_delete_error": "Failed to delete users"
+      },
+      "table": {
+        "user": "User",
+        "role": "Role",
+        "orders": "Orders",
+        "total_spent": "Total Spent",
+        "joined": "Joined",
+        "actions": "Actions",
+        "no_name": "No Name"
+      },
+      "modal": {
+        "edit_title": "Edit User",
+        "user_id": "User ID",
+        "personal_info": "Personal Information",
+        "full_name": "Full Name",
+        "email": "Email",
+        "login_email_note": "Used for login authentication.",
+        "role_permissions": "Role & Permissions",
+        "role_label": "Role",
+        "current": "Current",
+        "new": "New",
+        "role_change_note": "Permissions update immediately.",
+        "stats": "User Statistics",
+        "total_orders": "Total Orders",
+        "total_spent": "Total Spent",
+        "member_since": "Member Since",
+        "current_role": "Current Role",
+        "placeholder": {
+          "name": "Enter full name",
+          "email": "Enter email address"
+        },
+        "delete_title": "Delete User",
+        "delete_confirm": "Delete this user?",
+        "delete_warning": "This action cannot be undone.",
+        "delete_desc": "Permanently remove account and all associated data.",
+        "delete_confirm_btn": "Delete User",
+        "user_summary": "Role: {{role}} • Orders: {{orders}} • Spent: {{spent}}",
+        "bulk_delete_title": "Delete Multiple Users",
+        "bulk_delete_confirm": "Delete {{count}} Users?",
+        "cannot_undo": "This action cannot be undone.",
+        "bulk_delete_warning": "You are about to delete {{count}} users:",
+        "more_users": "...and {{count}} more users",
+        "bulk_delete_desc": "Permanently remove accounts and all associated data.",
+        "bulk_delete_btn": "Delete {{count}} Users"
+      },
+      "role": {
+        "admin": "Admin",
+        "account": "Accountant",
+        "packer": "Packer",
+        "delivery": "Delivery",
+        "user": "User",
+        "desc": {
+          "user": "Basic customer access",
+          "packer": "Order fulfillment",
+          "delivery": "Shipping & delivery",
+          "account": "Financial management",
+          "admin": "Full system access"
+        }
+      },
+      "role_management": "Role assignment & user management",
+      "manage_users": "Manage users",
+      "empty": {
+        "title": "No users found",
+        "desc": "Users will appear here once they register"
+      }
+    }
   },
   "auth": {
     "guests": "Guests",
@@ -467,12 +651,14 @@
     "off": "OFF",
     "out_of_stock": "This item is out of stock!",
     "remove_from_favorite": "Remove from favorites",
+    "related_products": "Related Products",
     "reviews": "Customer Reviews",
     "select_option": "Please select an option!",
     "upon_purchase": "!",
     "view_details": "View details",
     "viewers_watching": "Over {{count}} people are watching this item right now",
-    "you_are_saving": "You are saving"
+    "you_are_saving": "You are saving",
+    "you_might_also_like": "You might also like these products"
   },
   "settings": {
     "addresses": "Addresses",
@@ -530,5 +716,53 @@
     "seller_phone": "Seller Phone Number",
     "standard": "Standard Shipping",
     "tag_removed": "Returns not accepted if tag is removed"
+  },
+  "orders": {
+    "status_confirmed": "Confirmed",
+    "status_pending": "Pending",
+    "status_processing": "Processing",
+    "status_shipped": "Shipped",
+    "status_delivered": "Delivered",
+    "status_cancelled": "Cancelled",
+    "status_completed": "Completed",
+    "status_refunded": "Refunded",
+    "payment_status_pending": "Pending",
+    "payment_status_paid": "Paid",
+    "payment_status_failed": "Failed",
+    "payment_status_refunded": "Refunded",
+    "payment_status_partial": "Partial",
+    "tab_all": "All",
+    "tab_pending": "Pending",
+    "tab_paid": "Paid",
+    "tab_shipping": "Shipping",
+    "tab_cancelled": "Cancelled",
+    "cancel_order": "Cancel Order",
+    "track_order": "Track Order",
+    "pay_now": "Pay Now",
+    "cancelling": "Cancelling...",
+    "orders_deleted": "orders deleted",
+    "delete_failed": "Delete Failed",
+    "order_delete_error": "An error occurred while deleting",
+    "cancel_reason": "Cancel Reason",
+    "select_reason": "Please select a reason",
+    "reason_customer_change": "Change of mind",
+    "reason_defective": "Defective product",
+    "reason_wrong_delivery": "Wrong delivery",
+    "reason_other": "Other",
+    "order_amount": "Order Amount",
+    "shipping_fee_deduction": "Shipping fee deduction $6.00",
+    "customer_change_notice": "Shipping fee will be deducted for cancellations due to change of mind.",
+    "additional_payment_required": "Additional Payment Required",
+    "pay_and_cancel": "Pay and Cancel",
+    "status_confirmed_label": "Order Confirmed",
+    "status_out_for_delivery": "Out for Delivery",
+    "status_packed": "Packed",
+    "status_on_hold": "On Hold",
+    "status_returned": "Returned",
+    "order_status": "Order Status",
+    "order_number": "Order Number",
+    "order_date": "Order Date",
+    "order_total": "Order Total",
+    "view_details": "View Details"
   }
 }

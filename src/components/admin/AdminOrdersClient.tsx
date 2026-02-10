@@ -57,6 +57,7 @@ interface Order {
     zipCode: string;
     country?: string;
     phone?: string;
+    detailAddress?: string; // Added optional property
   };
   createdAt: string;
   updatedAt: string;
@@ -234,7 +235,7 @@ export default function AdminOrdersClient() {
       if (response.ok) {
         const statusInfo = getStatusDisplayInfo(newStatus);
         toast.success(
-          `Order status updated to ${t('orders.status_' + newStatus.toLowerCase())}`
+          t('admin.messages.update_status_success', { status: t('admin.status.' + newStatus.toLowerCase()) })
         );
         await fetchOrders();
         setDeliveryNote("");
@@ -269,7 +270,7 @@ export default function AdminOrdersClient() {
       });
 
       if (response.ok) {
-        toast.success(`Payment status updated to ${newPaymentStatus}`);
+        toast.success(t('admin.messages.update_payment_success', { status: t('admin.payment_status.' + newPaymentStatus.toLowerCase()) }));
         await fetchOrders();
         setDeliveryNote("");
       } else {
@@ -402,7 +403,7 @@ export default function AdminOrdersClient() {
       });
 
       if (response.ok) {
-        toast.success("Order deleted successfully");
+        toast.success(t('admin.messages.delete_success'));
         await fetchOrders();
         setDeleteOrderModal(null);
       } else {
@@ -428,7 +429,7 @@ export default function AdminOrdersClient() {
       });
 
       if (response.ok) {
-        toast.success("All orders deleted successfully");
+        toast.success(t('admin.messages.delete_all_success'));
         await fetchOrders();
         setDeleteAllModal(false);
       } else {
@@ -463,7 +464,7 @@ export default function AdminOrdersClient() {
 
   const handleDeleteSelected = () => {
     if (selectedOrders.length === 0) {
-      toast.error("Please select orders to delete");
+      toast.error(t('admin.messages.select_to_delete'));
       return;
     }
     setDeleteSelectedModal(true);
@@ -483,7 +484,7 @@ export default function AdminOrdersClient() {
       });
 
       if (response.ok) {
-        toast.success(`Successfully deleted ${selectedOrders.length} orders`);
+        toast.success(t('admin.messages.delete_selected_success', { count: selectedOrders.length }));
         setSelectedOrders([]);
         setSelectAll(false);
         await fetchOrders();
@@ -510,7 +511,7 @@ export default function AdminOrdersClient() {
       <div className="px-6 py-4 border-b border-gray-200">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-semibold text-gray-900">
-            Orders Management ({filteredOrders.length})
+            {t('admin.orders_management')} ({filteredOrders.length})
           </h2>
           {isAdmin && (
             <div className="flex items-center space-x-2">
@@ -520,7 +521,7 @@ export default function AdminOrdersClient() {
                 disabled={selectedOrders.length === 0}
               >
                 <FiTrash2 className="mr-2 h-4 w-4" />
-                Delete Selected ({selectedOrders.length})
+                {t('admin.delete_selected')} ({selectedOrders.length})
               </button>
               <button
                 onClick={() => setDeleteAllModal(true)}
@@ -528,14 +529,14 @@ export default function AdminOrdersClient() {
                 disabled={orders.length === 0}
               >
                 <FiTrash2 className="mr-2 h-4 w-4" />
-                Delete All
+                {t('admin.delete_all')}
               </button>
               <button
                 onClick={fetchOrders}
                 className="flex items-center px-3 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm"
               >
                 <FiRefreshCw className="mr-2 h-4 w-4" />
-                Refresh
+                {t('admin.refresh')}
               </button>
             </div>
           )}
@@ -551,7 +552,7 @@ export default function AdminOrdersClient() {
               <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <input
                 type="text"
-                placeholder="Search by Order ID, Customer, Email, or Tracking..."
+                placeholder={t('admin.search_placeholder')}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
@@ -566,13 +567,13 @@ export default function AdminOrdersClient() {
               onChange={(e) => setStatusFilter(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             >
-              <option value="all">All Status</option>
-              <option value="pending">Pending</option>
-              <option value="processing">Processing</option>
-              <option value="shipped">Shipped</option>
-              <option value="delivered">Delivered</option>
-              <option value="completed">Completed</option>
-              <option value="cancelled">Cancelled</option>
+              <option value="all">{t('admin.all_status')}</option>
+              <option value="pending">{t('admin.status.pending')}</option>
+              <option value="processing">{t('admin.status.processing')}</option>
+              <option value="shipped">{t('admin.status.shipped')}</option>
+              <option value="delivered">{t('admin.status.delivered')}</option>
+              <option value="completed">{t('admin.status.completed')}</option>
+              <option value="cancelled">{t('admin.status.cancelled')}</option>
             </select>
           </div>
 
@@ -583,12 +584,12 @@ export default function AdminOrdersClient() {
               onChange={(e) => setPaymentFilter(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
             >
-              <option value="all">All Payments</option>
-              <option value="paid">Paid</option>
-              <option value="pending">Payment Pending</option>
-              <option value="failed">Payment Failed</option>
-              <option value="refunded">Refunded</option>
-              <option value="partial">Partial Payment</option>
+              <option value="all">{t('admin.all_payments')}</option>
+              <option value="paid">{t('admin.payment_status.paid')}</option>
+              <option value="pending">{t('admin.payment_status.pending')}</option>
+              <option value="failed">{t('admin.payment_status.failed')}</option>
+              <option value="refunded">{t('admin.payment_status.refunded')}</option>
+              <option value="partial">{t('admin.payment_status.partial')}</option>
             </select>
           </div>
         </div>
@@ -608,25 +609,25 @@ export default function AdminOrdersClient() {
                 />
               </th>
               <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
-                Order
+                {t('admin.table.order')}
               </th>
               <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
-                Customer
+                {t('admin.table.customer')}
               </th>
               <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
-                Status
+                {t('admin.table.status')}
               </th>
               <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
-                Payment
+                {t('admin.table.payment')}
               </th>
               <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
-                Amount
+                {t('admin.table.amount')}
               </th>
               <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
-                Date
+                {t('admin.table.date')}
               </th>
               <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-24">
-                Actions
+                {t('admin.table.actions')}
               </th>
             </tr>
           </thead>
@@ -649,7 +650,7 @@ export default function AdminOrdersClient() {
                         #{order.orderId || order.id.slice(-8)}
                       </div>
                       <div className="text-xs text-gray-500">
-                        {order.items?.length || 0} items
+                        {order.items?.length || 0} {t('admin.table.items')}
                       </div>
                     </div>
                   </div>
@@ -657,7 +658,7 @@ export default function AdminOrdersClient() {
                 <td className="px-3 py-4 whitespace-nowrap">
                   <div className="min-w-0">
                     <div className="text-sm font-medium text-gray-900 truncate">
-                      {order.customerName || "No Name"}
+                      {order.customerName || t('admin.table.no_name')}
                     </div>
                     <div className="text-xs text-gray-500 truncate">
                       {order.customerEmail}
@@ -671,13 +672,13 @@ export default function AdminOrdersClient() {
                       onChange={(e) => setNewStatus(e.target.value)}
                       className="text-xs border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-full"
                     >
-                      <option value="">Select Status</option>
-                      <option value="pending">Pending</option>
-                      <option value="processing">Processing</option>
-                      <option value="shipped">Shipped</option>
-                      <option value="delivered">Delivered</option>
-                      <option value="completed">Completed</option>
-                      <option value="cancelled">Cancelled</option>
+                      <option value="">{t('admin.status.select')}</option>
+                      <option value="pending">{t('admin.status.pending')}</option>
+                      <option value="processing">{t('admin.status.processing')}</option>
+                      <option value="shipped">{t('admin.status.shipped')}</option>
+                      <option value="delivered">{t('admin.status.delivered')}</option>
+                      <option value="completed">{t('admin.status.completed')}</option>
+                      <option value="cancelled">{t('admin.status.cancelled')}</option>
                     </select>
                   ) : (
                     <span
@@ -686,7 +687,7 @@ export default function AdminOrdersClient() {
                       ] || "bg-gray-100 text-gray-800"
                         }`}
                     >
-                      {t('orders.status_' + order.status.toLowerCase())}
+                      {t('admin.status.' + order.status.toLowerCase())}
                     </span>
                   )}
                 </td>
@@ -697,12 +698,12 @@ export default function AdminOrdersClient() {
                       onChange={(e) => setNewPaymentStatus(e.target.value)}
                       className="text-xs border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 w-full"
                     >
-                      <option value="">Select Payment</option>
-                      <option value="paid">Paid</option>
-                      <option value="pending">Pending</option>
-                      <option value="failed">Failed</option>
-                      <option value="refunded">Refunded</option>
-                      <option value="partial">Partial</option>
+                      <option value="">{t('admin.payment_status.select')}</option>
+                      <option value="paid">{t('admin.payment_status.paid')}</option>
+                      <option value="pending">{t('admin.payment_status.pending')}</option>
+                      <option value="failed">{t('admin.payment_status.failed')}</option>
+                      <option value="refunded">{t('admin.payment_status.refunded')}</option>
+                      <option value="partial">{t('admin.payment_status.partial')}</option>
                     </select>
                   ) : (
                     <div>
@@ -712,11 +713,11 @@ export default function AdminOrdersClient() {
                         ] || "bg-gray-100 text-gray-800"
                           }`}
                       >
-                        {order.paymentStatus || "Unknown"}
+                        {order.paymentStatus ? t('admin.payment_status.' + order.paymentStatus.toLowerCase()) : t('admin.common.unknown')}
                       </span>
                       {order.paymentMethod && (
                         <div className="text-xs text-gray-500 capitalize mt-1 truncate">
-                          {order.paymentMethod}
+                          {t('admin.payment_method.' + order.paymentMethod.toLowerCase())}
                         </div>
                       )}
                     </div>
@@ -737,7 +738,7 @@ export default function AdminOrdersClient() {
                         onClick={() => handleUpdateStatus(order.id, newStatus)}
                         disabled={!newStatus}
                         className="p-1 text-green-600 hover:text-green-900 disabled:text-gray-400 transition-colors"
-                        title="Save Status"
+                        title={t('admin.buttons.save')}
                       >
                         <FiSave size={14} />
                       </button>
@@ -747,7 +748,7 @@ export default function AdminOrdersClient() {
                           setNewStatus("");
                         }}
                         className="p-1 text-gray-600 hover:text-gray-900 transition-colors"
-                        title="Cancel"
+                        title={t('admin.buttons.cancel')}
                       >
                         <FiX size={14} />
                       </button>
@@ -760,7 +761,7 @@ export default function AdminOrdersClient() {
                         }
                         disabled={!newPaymentStatus}
                         className="p-1 text-green-600 hover:text-green-900 disabled:text-gray-400 transition-colors"
-                        title="Save Payment"
+                        title={t('admin.buttons.save')}
                       >
                         <FiSave size={14} />
                       </button>
@@ -780,7 +781,7 @@ export default function AdminOrdersClient() {
                       <button
                         onClick={() => setViewOrderModal(order)}
                         className="p-1 text-blue-600 hover:text-blue-900 transition-colors"
-                        title="View Details"
+                        title={t('admin.buttons.view_details')}
                       >
                         <FiEye size={14} />
                       </button>
@@ -790,7 +791,7 @@ export default function AdminOrdersClient() {
                           setNewStatus(order.status);
                         }}
                         className="p-1 text-indigo-600 hover:text-indigo-900 transition-colors"
-                        title="Edit Status"
+                        title={t('admin.buttons.edit_status')}
                       >
                         <FiEdit2 size={14} />
                       </button>
@@ -800,7 +801,7 @@ export default function AdminOrdersClient() {
                           setNewPaymentStatus(order.paymentStatus);
                         }}
                         className="p-1 text-green-600 hover:text-green-900 transition-colors"
-                        title="Edit Payment"
+                        title={t('admin.buttons.edit_status')}
                       >
                         💳
                       </button>
@@ -808,7 +809,7 @@ export default function AdminOrdersClient() {
                         <button
                           onClick={() => handleDeleteOrder(order)}
                           className="p-1 text-red-600 hover:text-red-900 transition-colors"
-                          title="Delete Order"
+                          title={t('admin.buttons.delete_order')}
                         >
                           <FiTrash2 size={14} />
                         </button>
@@ -825,11 +826,11 @@ export default function AdminOrdersClient() {
       {filteredOrders.length === 0 && !loading && (
         <div className="px-6 py-12 text-center">
           <FiPackage className="mx-auto h-12 w-12 text-gray-400" />
-          <h3 className="mt-2 text-sm font-medium text-gray-900">No orders</h3>
+          <h3 className="mt-2 text-sm font-medium text-gray-900">{t('admin.empty.title')}</h3>
           <p className="mt-1 text-sm text-gray-500">
             {searchTerm || statusFilter !== "all" || paymentFilter !== "all"
-              ? "No orders match your search criteria"
-              : "No orders have been placed yet"}
+              ? t('admin.empty.search')
+              : t('admin.empty.no_orders')}
           </p>
         </div>
       )}
@@ -841,7 +842,7 @@ export default function AdminOrdersClient() {
             <div className="px-6 py-4 border-b border-gray-200">
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-medium text-gray-900">
-                  Order Details
+                  {t('admin.modal.order_details')}
                 </h3>
                 <button
                   onClick={() => setViewOrderModal(null)}
@@ -853,11 +854,11 @@ export default function AdminOrdersClient() {
             </div>
             <div className="px-6 py-4 space-y-4">
               <div>
-                <h4 className="font-medium text-gray-900">Order Information</h4>
+                <h4 className="font-medium text-gray-900">{t('admin.modal.order_info')}</h4>
                 <dl className="mt-2 grid grid-cols-1 gap-x-4 gap-y-2 sm:grid-cols-2">
                   <div>
                     <dt className="text-sm font-medium text-gray-500">
-                      Order ID
+                      {t('admin.table.order')} ID
                     </dt>
                     <dd className="text-sm text-gray-900">
                       #{viewOrderModal.orderId || viewOrderModal.id.slice(-8)}
@@ -865,7 +866,7 @@ export default function AdminOrdersClient() {
                   </div>
                   <div>
                     <dt className="text-sm font-medium text-gray-500">
-                      Status
+                      {t('admin.table.status')}
                     </dt>
                     <dd className="text-sm text-gray-900">
                       <span
@@ -874,34 +875,34 @@ export default function AdminOrdersClient() {
                         ] || "bg-gray-100 text-gray-800"
                           }`}
                       >
-                        {viewOrderModal.status}
+                        {t('admin.status.' + viewOrderModal.status)}
                       </span>
                     </dd>
                   </div>
                   <div>
                     <dt className="text-sm font-medium text-gray-500">
-                      Customer
+                      {t('admin.table.customer')}
                     </dt>
                     <dd className="text-sm text-gray-900">
                       {viewOrderModal.customerName}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-sm font-medium text-gray-500">Email</dt>
+                    <dt className="text-sm font-medium text-gray-500">{t('admin.table.email')}</dt>
                     <dd className="text-sm text-gray-900">
                       {viewOrderModal.customerEmail}
                     </dd>
                   </div>
                   <div>
                     <dt className="text-sm font-medium text-gray-500">
-                      Total Amount
+                      {t('admin.table.amount')}
                     </dt>
                     <dd className="text-sm text-gray-900">
                       <PriceFormat amount={viewOrderModal.amount || 0} />
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-sm font-medium text-gray-500">Date</dt>
+                    <dt className="text-sm font-medium text-gray-500">{t('admin.table.date')}</dt>
                     <dd className="text-sm text-gray-900">
                       {viewOrderModal.createdAt
                         ? new Date(viewOrderModal.createdAt).toLocaleString()
@@ -910,7 +911,7 @@ export default function AdminOrdersClient() {
                   </div>
                   <div>
                     <dt className="text-sm font-medium text-gray-500">
-                      Payment Status
+                      {t('admin.table.payment')} {t('admin.table.status')}
                     </dt>
                     <dd className="text-sm text-gray-900">
                       <span
@@ -919,16 +920,16 @@ export default function AdminOrdersClient() {
                         ] || "bg-gray-100 text-gray-800"
                           }`}
                       >
-                        {viewOrderModal.paymentStatus || "Unknown"}
+                        {viewOrderModal.paymentStatus ? t('admin.payment_status.' + viewOrderModal.paymentStatus) : t('admin.common.unknown')}
                       </span>
                     </dd>
                   </div>
                   <div>
                     <dt className="text-sm font-medium text-gray-500">
-                      Payment Method
+                      {t('admin.table.payment')}
                     </dt>
                     <dd className="text-sm text-gray-900 capitalize">
-                      {viewOrderModal.paymentMethod || "Not specified"}
+                      {viewOrderModal.paymentMethod ? t('admin.payment_method.' + viewOrderModal.paymentMethod) : t('admin.common.not_specified')}
                     </dd>
                   </div>
                 </dl>
@@ -936,7 +937,7 @@ export default function AdminOrdersClient() {
 
               {viewOrderModal.items && viewOrderModal.items.length > 0 && (
                 <div>
-                  <h4 className="font-medium text-gray-900">Items</h4>
+                  <h4 className="font-medium text-gray-900">{t('admin.table.items')}</h4>
                   <div className="mt-2 space-y-2">
                     {viewOrderModal.items.map((item, index) => (
                       <div
@@ -944,10 +945,10 @@ export default function AdminOrdersClient() {
                         className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
                       >
                         <div className="flex items-center space-x-3">
-                          {item.images && item.images[0] && (
+                          {(item.image || (item.images && item.images[0])) && (
                             <Image
-                              src={item.images[0] || ""}
-                              alt={item.name || "Product Image"}
+                              src={item.image || item.images?.[0] || ""}
+                              alt={item.title || item.name || "Product Image"}
                               width={48}
                               height={48}
                               className="object-cover rounded"
@@ -956,10 +957,10 @@ export default function AdminOrdersClient() {
                           )}
                           <div>
                             <p className="text-sm font-medium text-gray-900">
-                              {item.name}
+                              {item.title || item.name}
                             </p>
                             <p className="text-sm text-gray-500">
-                              Qty: {item.quantity}
+                              {t('admin.table.quantity')}: {item.quantity}
                             </p>
                           </div>
                         </div>
@@ -977,19 +978,15 @@ export default function AdminOrdersClient() {
               {viewOrderModal.shippingAddress && (
                 <div>
                   <h4 className="font-medium text-gray-900">
-                    Shipping Address
+                    {t('admin.modal.shipping_address')}
                   </h4>
                   <div className="mt-2 p-3 bg-gray-50 rounded-lg">
                     <p className="text-sm text-gray-900">
                       {viewOrderModal.shippingAddress.name}
                     </p>
+
                     <p className="text-sm text-gray-600">
-                      {viewOrderModal.shippingAddress.address}
-                    </p>
-                    <p className="text-sm text-gray-600">
-                      {viewOrderModal.shippingAddress.city},{" "}
-                      {viewOrderModal.shippingAddress.state}{" "}
-                      {viewOrderModal.shippingAddress.zipCode}
+                      {viewOrderModal.shippingAddress.zipCode}) {viewOrderModal.shippingAddress.city} {viewOrderModal.shippingAddress.state} {viewOrderModal.shippingAddress.address} {viewOrderModal.shippingAddress.detailAddress || ''}
                     </p>
                     <p className="text-sm text-gray-600">
                       {viewOrderModal.shippingAddress.country}
@@ -1004,7 +1001,7 @@ export default function AdminOrdersClient() {
                   onClick={() => setViewOrderModal(null)}
                   className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
                 >
-                  Close
+                  {t('admin.buttons.close')}
                 </button>
               </div>
             </div>
@@ -1019,10 +1016,10 @@ export default function AdminOrdersClient() {
             <div className="px-6 py-4">
               <h3 className="text-lg font-medium text-gray-900 flex items-center">
                 <FiTrash2 className="mr-2 h-5 w-5 text-red-600" />
-                Delete Order
+                {t('admin.modal.delete_order_title')}
               </h3>
               <p className="mt-2 text-sm text-gray-600">
-                Are you sure you want to delete order{" "}
+                {t('admin.modal.delete_order_confirm')}{" "}
                 <strong>
                   #{deleteOrderModal.orderId || deleteOrderModal.id.slice(-8)}
                 </strong>
@@ -1031,22 +1028,21 @@ export default function AdminOrdersClient() {
               <div className="mt-3 bg-gray-50 rounded-lg p-3">
                 <div className="text-sm text-gray-700">
                   <div>
-                    <strong>Customer:</strong> {deleteOrderModal.userEmail}
+                    <strong>{t('admin.table.customer')}:</strong> {deleteOrderModal.userEmail}
                   </div>
                   <div>
-                    <strong>Amount:</strong>{" "}
+                    <strong>{t('admin.table.amount')}:</strong>{" "}
                     <PriceFormat amount={deleteOrderModal.amount} />
                   </div>
                   <div>
-                    <strong>Items:</strong> {deleteOrderModal.items.length}{" "}
-                    item(s)
+                    <strong>{t('admin.table.items')}:</strong> {deleteOrderModal.items.length}{" "}
+                    {t('admin.table.items')}
                   </div>
                 </div>
               </div>
               <div className="mt-4 bg-red-50 border border-red-200 rounded-lg p-3">
                 <p className="text-sm text-red-800">
-                  <strong>Warning:</strong> This action cannot be undone. The
-                  order will be permanently removed from the database.
+                  <strong>{t('admin.modal.warning')}:</strong> {t('admin.modal.delete_warning')}
                 </p>
               </div>
             </div>
@@ -1056,7 +1052,7 @@ export default function AdminOrdersClient() {
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
                 disabled={isDeleting}
               >
-                Cancel
+                {t('admin.buttons.cancel')}
               </button>
               <button
                 onClick={confirmDeleteOrder}
@@ -1066,12 +1062,12 @@ export default function AdminOrdersClient() {
                 {isDeleting ? (
                   <>
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Deleting...
+                    {t('admin.buttons.deleting')}
                   </>
                 ) : (
                   <>
                     <FiTrash2 className="mr-2 h-4 w-4" />
-                    Delete Order
+                    {t('admin.buttons.delete_order')}
                   </>
                 )}
               </button>
@@ -1086,12 +1082,10 @@ export default function AdminOrdersClient() {
           <div className="bg-white rounded-lg max-w-md w-full">
             <div className="px-6 py-4">
               <h3 className="text-lg font-medium text-gray-900">
-                Delete All Orders
+                {t('admin.modal.delete_all_title')}
               </h3>
               <p className="mt-2 text-sm text-gray-600">
-                Are you sure you want to delete ALL orders? This action will
-                remove all orders from both user accounts and the orders
-                collection. This action cannot be undone.
+                {t('admin.modal.delete_all_confirm')}
               </p>
             </div>
             <div className="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
@@ -1100,14 +1094,14 @@ export default function AdminOrdersClient() {
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
                 disabled={isDeleting}
               >
-                Cancel
+                {t('admin.buttons.cancel')}
               </button>
               <button
                 onClick={handleDeleteAllOrders}
                 className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors disabled:opacity-50"
                 disabled={isDeleting}
               >
-                {isDeleting ? "Deleting..." : "Delete All"}
+                {isDeleting ? t('admin.buttons.deleting') : t('admin.buttons.delete_all')}
               </button>
             </div>
           </div>
@@ -1121,18 +1115,14 @@ export default function AdminOrdersClient() {
             <div className="px-6 py-4">
               <h3 className="text-lg font-medium text-gray-900 flex items-center">
                 <FiTrash2 className="mr-2 h-5 w-5 text-red-600" />
-                Delete Selected Orders
+                {t('admin.modal.delete_selected_title')}
               </h3>
               <p className="mt-2 text-sm text-gray-600">
-                Are you sure you want to delete{" "}
-                <strong>{selectedOrders.length}</strong> selected orders? This
-                action will permanently remove these orders from the database
-                and cannot be undone.
+                {t('admin.modal.delete_selected_confirm', { count: selectedOrders.length })}
               </p>
               <div className="mt-4 bg-yellow-50 border border-yellow-200 rounded-lg p-3">
                 <p className="text-sm text-yellow-800">
-                  <strong>Warning:</strong> This will delete the orders from
-                  both the user accounts and the orders collection in the database.
+                  <strong>{t('admin.modal.warning')}:</strong> {t('admin.modal.delete_warning')}
                 </p>
               </div>
             </div>
@@ -1142,7 +1132,7 @@ export default function AdminOrdersClient() {
                 className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
                 disabled={isDeleting}
               >
-                Cancel
+                {t('admin.buttons.cancel')}
               </button>
               <button
                 onClick={confirmDeleteSelected}
@@ -1152,12 +1142,12 @@ export default function AdminOrdersClient() {
                 {isDeleting ? (
                   <>
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                    Deleting...
+                    {t('admin.buttons.deleting')}
                   </>
                 ) : (
                   <>
                     <FiTrash2 className="mr-2 h-4 w-4" />
-                    Delete {selectedOrders.length} Orders
+                    {t('admin.buttons.delete_count_orders', { count: selectedOrders.length })}
                   </>
                 )}
               </button>
@@ -1171,9 +1161,7 @@ export default function AdminOrdersClient() {
         <div className="px-6 py-3 border-t border-gray-200 bg-gray-50">
           <div className="flex items-center justify-between">
             <div className="text-sm text-gray-700">
-              Showing {indexOfFirstOrder + 1} to{" "}
-              {Math.min(indexOfLastOrder, filteredOrders.length)} of{" "}
-              {filteredOrders.length} results
+              {t('admin.pagination.showing', { start: indexOfFirstOrder + 1, end: Math.min(indexOfLastOrder, filteredOrders.length), total: filteredOrders.length })}
             </div>
             <div className="flex items-center space-x-2">
               <button
@@ -1181,17 +1169,17 @@ export default function AdminOrdersClient() {
                 disabled={currentPage === 1}
                 className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Previous
+                {t('admin.pagination.previous')}
               </button>
               <span className="px-3 py-2 text-sm font-medium text-gray-700">
-                Page {currentPage} of {totalPages}
+                {t('admin.pagination.page_of', { current: currentPage, total: totalPages })}
               </span>
               <button
                 onClick={() => setCurrentPage(currentPage + 1)}
                 disabled={currentPage === totalPages}
                 className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Next
+                {t('admin.pagination.next')}
               </button>
             </div>
           </div>

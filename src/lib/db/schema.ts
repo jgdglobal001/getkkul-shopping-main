@@ -335,3 +335,37 @@ export const paymentMethods = pgTable('payment_methods', {
   createdAt: timestamp('createdAt', { mode: 'date' }).defaultNow(),
   updatedAt: timestamp('updatedAt', { mode: 'date' }).defaultNow(),
 });
+
+// Product Reviews
+export const productReviews = pgTable('product_reviews', {
+  id: text('id').primaryKey().notNull(),
+  productId: text('productId').notNull().references(() => products.id, { onDelete: 'cascade' }),
+  userId: text('userId').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  rating: real('rating').notNull(),
+  comment: text('comment').notNull(),
+  images: text('images').array(),
+  createdAt: timestamp('createdAt', { mode: 'date' }).defaultNow(),
+  updatedAt: timestamp('updatedAt', { mode: 'date' }).defaultNow(),
+});
+
+// Relations
+export const usersRelations = relations(users, ({ many }) => ({
+  reviews: many(productReviews),
+}));
+
+export const productsRelations = relations(products, ({ many }) => ({
+  reviews: many(productReviews),
+  options: many(productOptions),
+  variants: many(productVariants),
+}));
+
+export const productReviewsRelations = relations(productReviews, ({ one }) => ({
+  product: one(products, {
+    fields: [productReviews.productId],
+    references: [products.id],
+  }),
+  user: one(users, {
+    fields: [productReviews.userId],
+    references: [users.id],
+  }),
+}));

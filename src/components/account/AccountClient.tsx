@@ -148,7 +148,7 @@ export default function AccountClient() {
         {/* Profile Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
           <div className="flex items-center space-x-4 mb-4 md:mb-0">
-            <div className="relative">
+            <div className="relative shrink-0">
               {session?.user?.image ? (
                 <Image
                   src={session.user.image}

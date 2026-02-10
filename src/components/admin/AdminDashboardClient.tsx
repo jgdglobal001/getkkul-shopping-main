@@ -115,11 +115,21 @@ export default function AdminDashboardClient() {
   };
 
   const getStatusColor = (status: string) => {
-    switch (status) {
-      case '완료': return 'bg-green-100 text-green-800';
-      case '배송중': return 'bg-blue-100 text-blue-800';
-      case '처리중': return 'bg-yellow-100 text-yellow-800';
-      case '취소': return 'bg-red-100 text-red-800';
+    const s = status.toLowerCase();
+    switch (s) {
+      case 'completed':
+      case 'delivered':
+        return 'bg-green-100 text-green-800';
+      case 'shipped':
+      case 'out_for_delivery':
+        return 'bg-blue-100 text-blue-800';
+      case 'processing':
+      case 'pending':
+      case 'confirmed':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'cancelled':
+      case 'refunded':
+        return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
   };

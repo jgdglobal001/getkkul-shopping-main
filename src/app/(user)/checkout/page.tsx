@@ -22,7 +22,7 @@ import {
 import Link from "next/link";
 
 const CheckoutPage = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
   const { t } = useTranslation();
@@ -34,6 +34,7 @@ const CheckoutPage = () => {
   const [widgetError, setWidgetError] = useState<string | null>(null);
   const paymentWidgetRef = useRef<any>(null);
   const paymentMethodWidgetRef = useRef<any>(null);
+  const initializingRef = useRef(false);
 
 
   // Get order ID from URL params
@@ -63,16 +64,15 @@ const CheckoutPage = () => {
         // No orders found, redirect to orders page
         router.push("/account/orders");
       }
-    } catch (error) {
-      console.error("Error fetching order:", error);
-      // On error, redirect to orders page
-      router.push("/account/orders");
     } finally {
       setLoading(false);
     }
-  }, [session?.user?.email, existingOrderId, router]);
+  }, [session?.user?.email, existingOrderId, router, status]);
 
   useEffect(() => {
+    // Only fetch if authenticated
+    if (status !== "authenticated") return;
+
     // Always expect an order ID for this new flow
     if (existingOrderId) {
       fetchExistingOrder();
@@ -80,101 +80,152 @@ const CheckoutPage = () => {
       // Redirect to cart if no order ID
       router.push("/cart");
     }
-  }, [existingOrderId, router, fetchExistingOrder]);
+  }, [existingOrderId, router, fetchExistingOrder, status]);
 
   // Initialize Toss Payment Widget when order is loaded
   useEffect(() => {
-    if (!existingOrder || widgetReady) return;
+    if (!existingOrder || widgetReady || initializingRef.current) return;
+
+    let isMounted = true;
 
     const initializeWidget = async () => {
+      if (initializingRef.current) return;
+      initializingRef.current = true;
+
       try {
         const tossClientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
         if (!tossClientKey) {
-          const errorMsg = "Toss Client Key is not configured. Please set NEXT_PUBLIC_TOSS_CLIENT_KEY in your environment variables.";
-          console.error(errorMsg);
-          setWidgetError(errorMsg);
+          if (isMounted) {
+            setWidgetError("Toss Client Key is not configured.");
+          }
+          initializingRef.current = false;
           return;
         }
 
-        // Access global TossPayments from SDK V2
         const TossPayments = (window as any).TossPayments;
         if (!TossPayments) {
-          const errorMsg = "Toss Payments SDK not loaded. Please check if the SDK script is properly loaded.";
-          console.error(errorMsg);
-          setWidgetError(errorMsg);
+          if (isMounted) {
+            setWidgetError("Toss Payments SDK not loaded.");
+          }
+          initializingRef.current = false;
           return;
         }
 
-        // Generate unique customer key
+        if (!isMounted) {
+          initializingRef.current = false;
+          return;
+        }
+
+        // Parse amount and prepare keys
         const customerKey = `customer_${session?.user?.id || session?.user?.email?.replace(/[@.]/g, "_") || Date.now()}`;
-
-        // Parse amount
-        let amount: number;
-        if (typeof existingOrder.amount === 'string') {
-          amount = Math.round(parseFloat(existingOrder.amount));
-        } else if (typeof existingOrder.amount === 'number') {
-          amount = Math.round(existingOrder.amount);
-        } else if (existingOrder.totalAmount) {
-          amount = Math.round(parseFloat(existingOrder.totalAmount.toString()));
-        } else {
-          const errorMsg = "Order amount not found";
-          console.error(errorMsg);
-          setWidgetError(errorMsg);
-          return;
-        }
+        let amount = 0;
+        if (typeof existingOrder.amount === 'string') amount = parseFloat(existingOrder.amount);
+        else if (typeof existingOrder.amount === 'number') amount = existingOrder.amount;
+        else if (existingOrder.totalAmount) amount = parseFloat(existingOrder.totalAmount.toString());
 
         if (isNaN(amount) || amount <= 0) {
-          const errorMsg = `Invalid order amount: ${amount}`;
-          console.error(errorMsg);
-          setWidgetError(errorMsg);
+          if (isMounted) {
+            setWidgetError(`Invalid order amount: ${amount}`);
+          }
+          initializingRef.current = false;
           return;
         }
 
-        console.log("Initializing Toss Payment Widget:", { amount, customerKey, clientKey: tossClientKey.substring(0, 10) + "..." });
-
-        // Initialize Payment Widget (v2 API) - Correct SDK V2 way
         const tossPayments = TossPayments(tossClientKey);
+        const paymentWidget = tossPayments.widgets({ customerKey });
 
-        // Create payment widget with customer key
-        const paymentWidget = tossPayments.widgets({
-          customerKey: customerKey,
-        });
+        if (!isMounted) {
+          initializingRef.current = false;
+          return;
+        }
 
-        // Set amount BEFORE rendering
-        await paymentWidget.setAmount({
-          value: amount,
-          currency: "KRW",
-        });
+        await paymentWidget.setAmount({ value: Math.round(amount), currency: "KRW" });
 
-        // Render payment methods UI with variantKey (환경변수에서 로드, 없으면 DEFAULT)
-        await paymentWidget.renderPaymentMethods({
-          selector: "#payment-widget",
+        if (!isMounted) {
+          initializingRef.current = false;
+          return;
+        }
+
+        if (!isMounted) {
+          initializingRef.current = false;
+          return;
+        }
+
+        // Cleanup any existing widget instance before re-initializing
+        if (paymentMethodWidgetRef.current) {
+          try {
+            const existingWidget = paymentMethodWidgetRef.current as any;
+            if (typeof existingWidget.destroy === 'function') {
+              await existingWidget.destroy();
+            } else if (existingWidget.then) {
+              await existingWidget.then((w: any) => w?.destroy?.());
+            }
+          } catch (e) {
+            console.warn("Pre-cleanup failed:", e);
+          }
+          paymentMethodWidgetRef.current = null;
+          paymentWidgetRef.current = null;
+        }
+
+        // Render payment methods UI and store promise for cleanup
+        const renderPromise = paymentWidget.renderPaymentMethods({
+          selector: "#payment-widget-checkout",
           variantKey: process.env.NEXT_PUBLIC_TOSS_VARIANT_KEY || "DEFAULT",
         });
 
-        // Store widget reference for later use
+        // Save promise to handle cleanup if unmount happens during render
+        (paymentMethodWidgetRef.current as any) = renderPromise;
+
+        const paymentMethodsWidget = await renderPromise;
+
+        // If unmounted during await, destroy immediately
+        if (!isMounted) {
+          paymentMethodsWidget.destroy().catch(() => { });
+          initializingRef.current = false;
+          return;
+        }
+
+        // Store resolved widget instance
         paymentWidgetRef.current = paymentWidget;
+        paymentMethodWidgetRef.current = paymentMethodsWidget;
+
         setWidgetReady(true);
         setWidgetError(null);
-
         console.log("Toss Payment Widget initialized successfully");
       } catch (error) {
-        const errorMsg = error instanceof Error ? error.message : "Failed to initialize Toss Payment Widget";
         console.error("Failed to initialize Toss Payment Widget:", error);
-        setWidgetError(errorMsg);
+        if (isMounted) {
+          setWidgetError(error instanceof Error ? error.message : "Failed to initialize");
+        }
+        initializingRef.current = false;
       }
     };
 
-    initializeWidget();
+    const timerId = setTimeout(() => {
+      initializeWidget();
+    }, 500);
+
     return () => {
-      try {
-        paymentMethodWidgetRef.current?.destroy?.();
+      clearTimeout(timerId);
+      isMounted = false;
+      initializingRef.current = false;
+
+      const widgetOrPromise = paymentMethodWidgetRef.current;
+      if (widgetOrPromise) {
+        // Handle both resolved widget and pending promise
+        if (typeof widgetOrPromise.destroy === 'function') {
+          widgetOrPromise.destroy().catch((e: any) => console.warn("Cleanup error:", e));
+        } else if (widgetOrPromise.then) {
+          widgetOrPromise.then((widget: any) => {
+            widget?.destroy().catch((e: any) => console.warn("Cleanup error (promise):", e));
+          }).catch(() => { });
+        }
         paymentMethodWidgetRef.current = null;
-      } catch (e) {
-        console.warn("Failed to cleanup Toss Payment Widget:", e);
+        paymentWidgetRef.current = null;
       }
+      setWidgetReady(false);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- widgetReady is intentionally excluded to prevent infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [existingOrder, session]);
 
   // Clean up cancelled parameter from URL after showing notification
@@ -338,18 +389,21 @@ const CheckoutPage = () => {
     }
   };
 
-  if (loading) {
+  // Handle redirect and loading states
+  if (status === "loading" || (loading && existingOrderId)) {
     return (
       <Container className="py-8">
-        <div className="flex items-center justify-center min-h-96">
-          <FiLoader className="animate-spin text-4xl text-theme-color" />
-          <span className="ml-4 text-lg">{t("checkout.loading_order_details")}</span>
+        <div className="flex flex-col items-center justify-center min-h-96">
+          <FiLoader className="animate-spin text-4xl text-theme-color mb-4" />
+          <span className="text-lg text-gray-600">
+            {status === "loading" ? t("checkout.checking_session") : t("checkout.loading_order_details")}
+          </span>
         </div>
       </Container>
     );
   }
 
-  if (!session?.user) {
+  if (status === "unauthenticated" || !session?.user) {
     return (
       <Container className="py-8">
         <div className="text-center">
@@ -360,7 +414,7 @@ const CheckoutPage = () => {
             {t("checkout.sign_in_required_desc")}
           </p>
           <Link
-            href="/auth/signin"
+            href={`/auth/signin?callbackUrl=${encodeURIComponent(window.location.pathname + window.location.search)}`}
             className="bg-theme-color text-white px-6 py-3 rounded-lg hover:bg-theme-color/90 transition-colors"
           >
             {t("checkout.sign_in")}
@@ -392,251 +446,249 @@ const CheckoutPage = () => {
   }
 
   return (
-    <ProtectedRoute loadingMessage={t("checkout.loading_checkout")}>
-      <Container className="py-8">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center space-x-4">
-            <Link
-              href="/account/orders"
-              className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
-            >
-              <FiArrowLeft className="w-5 h-5" />
-            </Link>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">
-                {t("checkout.order_number_label")} #{existingOrder?.orderId || existingOrderId}
-              </h1>
-              <p className="text-gray-600">{t("checkout.choose_payment_method")}</p>
+    <Container className="py-8">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center space-x-4">
+          <Link
+            href="/account/orders"
+            className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+          >
+            <FiArrowLeft className="w-5 h-5" />
+          </Link>
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">
+              {t("checkout.order_number_label")} #{existingOrder?.orderId || existingOrderId}
+            </h1>
+            <p className="text-gray-600">{t("checkout.choose_payment_method")}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Payment Cancelled Notification */}
+      {paymentCancelled && (
+        <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+          <div className="flex items-center">
+            <div className="flex-shrink-0">
+              <svg
+                className="h-5 w-5 text-yellow-400"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </div>
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-yellow-800">
+                {t("checkout.payment_cancelled")}
+              </h3>
+              <div className="mt-1 text-sm text-yellow-700">
+                <p>
+                  {t("checkout.payment_cancelled_desc")}
+                </p>
+              </div>
             </div>
           </div>
         </div>
+      )}
 
-        {/* Payment Cancelled Notification */}
-        {paymentCancelled && (
-          <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <svg
-                  className="h-5 w-5 text-yellow-400"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Order Items */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <FiPackage className="w-5 h-5 mr-2" />
+              {t("common.items")} ({existingOrder?.items?.length || 0})
+            </h3>
+
+            <div className="space-y-4">
+              {existingOrder?.items?.map((item: any, index: number) => (
+                <div
+                  key={`order-${item.id}-${index}`}
+                  className="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg"
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-yellow-800">
-                  {t("checkout.payment_cancelled")}
-                </h3>
-                <div className="mt-1 text-sm text-yellow-700">
-                  <p>
-                    {t("checkout.payment_cancelled_desc")}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Order Items */}
-          <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <FiPackage className="w-5 h-5 mr-2" />
-                {t("common.items")} ({existingOrder?.items?.length || 0})
-              </h3>
-
-              <div className="space-y-4">
-                {existingOrder?.items?.map((item: any, index: number) => (
-                  <div
-                    key={`order-${item.id}-${index}`}
-                    className="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg"
-                  >
-                    <div className="flex-shrink-0">
-                      {item.images && item.images[0] ? (
-                        <Image
-                          src={item.images[0]}
-                          alt={item.name || item.title}
-                          width={80}
-                          height={80}
-                          className="rounded-lg object-cover"
-                          unoptimized
-                        />
-                      ) : (
-                        <div className="w-20 h-20 bg-gray-300 rounded-lg flex items-center justify-center">
-                          <span className="text-lg font-medium text-gray-600">
-                            {(item.name || item.title)
-                              ?.charAt(0)
-                              ?.toUpperCase() || "P"}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="flex-1">
-                      <h4 className="font-medium text-gray-900 mb-1">
-                        {item.name || item.title}
-                      </h4>
-                      <div className="flex items-center space-x-4 text-sm text-gray-600">
-                        <span>{t("common.quantity")}: {item.quantity}</span>
-                        <span>
-                          <PriceFormat amount={item.price} />
+                  <div className="flex-shrink-0">
+                    {item.images && item.images[0] ? (
+                      <Image
+                        src={item.images[0]}
+                        alt={item.name || item.title}
+                        width={80}
+                        height={80}
+                        className="rounded-lg object-cover"
+                        unoptimized
+                      />
+                    ) : (
+                      <div className="w-20 h-20 bg-gray-300 rounded-lg flex items-center justify-center">
+                        <span className="text-lg font-medium text-gray-600">
+                          {(item.name || item.title)
+                            ?.charAt(0)
+                            ?.toUpperCase() || "P"}
                         </span>
                       </div>
-                    </div>
+                    )}
+                  </div>
 
-                    <div className="text-right">
-                      <p className="font-semibold text-gray-900">
-                        <PriceFormat amount={item.total} />
-                      </p>
+                  <div className="flex-1">
+                    <h4 className="font-medium text-gray-900 mb-1">
+                      {item.name || item.title}
+                    </h4>
+                    <div className="flex items-center space-x-4 text-sm text-gray-600">
+                      <span>{t("common.quantity")}: {item.quantity}</span>
+                      <span>
+                        <PriceFormat amount={item.price} />
+                      </span>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
 
-            {/* Shipping Address */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <FiMapPin className="w-5 h-5 mr-2" />
-                {t("checkout.shipping_address")}
-              </h3>
-
-              <div className="p-5 bg-gray-50 rounded-xl border border-gray-100">
-                <div className="flex items-center justify-between mb-3 pb-3 border-b border-gray-200">
-                  <div className="flex items-center space-x-2">
-                    <span className="font-bold text-gray-900 text-lg">
-                      {existingOrder?.shippingAddress?.recipientName}
-                    </span>
-                    <span className="text-gray-400">|</span>
-                    <span className="text-gray-600">
-                      {existingOrder?.shippingAddress?.phone}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <p className="text-gray-900 font-medium">
-                    {existingOrder?.shippingAddress?.address}
-                  </p>
-                  <p className="text-gray-700">
-                    {existingOrder?.shippingAddress?.detailAddress}
-                  </p>
-                  <p className="text-sm text-gray-500 mt-2 flex items-center">
-                    <span className="bg-gray-200 px-2 py-0.5 rounded text-xs font-bold mr-2">
-                      {existingOrder?.shippingAddress?.zipCode}
-                    </span>
-                  </p>
-                </div>
-
-                {existingOrder?.shippingAddress?.deliveryRequest && (
-                  <div className="mt-4 pt-4 border-t border-dashed border-gray-300">
-                    <p className="text-xs text-gray-500 font-semibold mb-1 uppercase tracking-wider">
-                      {t("account.delivery_request")}
-                    </p>
-                    <p className="text-sm text-gray-700 bg-white p-2 rounded border border-gray-100">
-                      {existingOrder?.shippingAddress?.deliveryRequest}
+                  <div className="text-right">
+                    <p className="font-semibold text-gray-900">
+                      <PriceFormat amount={item.total} />
                     </p>
                   </div>
-                )}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Payment Options & Order Summary */}
-          <div className="space-y-6">
-            {/* Order Summary */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <FiCreditCard className="w-5 h-5 mr-2" />
-                {t("checkout.order_summary")}
-              </h3>
+          {/* Shipping Address */}
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <FiMapPin className="w-5 h-5 mr-2" />
+              {t("checkout.shipping_address")}
+            </h3>
 
-              <div className="space-y-3">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">{t("checkout.total_amount")}</span>
-                  <PriceFormat
-                    amount={parseFloat(existingOrder?.amount || "0")}
-                    className="font-semibold text-theme-color"
-                  />
+            <div className="p-5 bg-gray-50 rounded-xl border border-gray-100">
+              <div className="flex items-center justify-between mb-3 pb-3 border-b border-gray-200">
+                <div className="flex items-center space-x-2">
+                  <span className="font-bold text-gray-900 text-lg">
+                    {existingOrder?.shippingAddress?.recipientName}
+                  </span>
+                  <span className="text-gray-400">|</span>
+                  <span className="text-gray-600">
+                    {existingOrder?.shippingAddress?.phone}
+                  </span>
                 </div>
               </div>
-            </div>
 
-            {/* Payment Widget Container */}
-            <div className="bg-white rounded-lg shadow p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                {t("checkout.payment_method")}
-              </h3>
+              <div className="space-y-1">
+                <p className="text-gray-900 font-medium">
+                  {existingOrder?.shippingAddress?.address}
+                </p>
+                <p className="text-gray-700">
+                  {existingOrder?.shippingAddress?.detailAddress}
+                </p>
+                <p className="text-sm text-gray-500 mt-2 flex items-center">
+                  <span className="bg-gray-200 px-2 py-0.5 rounded text-xs font-bold mr-2">
+                    {existingOrder?.shippingAddress?.zipCode}
+                  </span>
+                </p>
+              </div>
 
-              {/* Error Display */}
-              {widgetError && (
-                <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-                  <div className="flex items-start">
-                    <div className="flex-shrink-0">
-                      <svg
-                        className="h-5 w-5 text-red-400"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                    <div className="ml-3">
-                      <h3 className="text-sm font-medium text-red-800">
-                        {t("checkout.widget_load_failed")}
-                      </h3>
-                      <div className="mt-2 text-sm text-red-700">
-                        <p>{t(widgetError)}</p>
-                      </div>
-                    </div>
-                  </div>
+              {existingOrder?.shippingAddress?.deliveryRequest && (
+                <div className="mt-4 pt-4 border-t border-dashed border-gray-300">
+                  <p className="text-xs text-gray-500 font-semibold mb-1 uppercase tracking-wider">
+                    {t("account.delivery_request")}
+                  </p>
+                  <p className="text-sm text-gray-700 bg-white p-2 rounded border border-gray-100">
+                    {existingOrder?.shippingAddress?.deliveryRequest}
+                  </p>
                 </div>
               )}
-
-              {/* Toss Payments Widget will be rendered here */}
-              <div id="payment-widget" className="mb-4 min-h-[200px]">
-                {!widgetReady && !widgetError && (
-                  <div className="flex items-center justify-center h-[200px]">
-                    <FiLoader className="animate-spin text-blue-600 text-3xl" />
-                  </div>
-                )}
-              </div>
-
-              <button
-                onClick={handleTossPayment}
-                disabled={paymentProcessing || !widgetReady}
-                className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center font-semibold text-lg"
-              >
-                {paymentProcessing ? (
-                  <>
-                    <FiLoader className="animate-spin mr-2" />
-                    {t("checkout.processing")}
-                  </>
-                ) : !widgetReady ? (
-                  <>
-                    <FiLoader className="animate-spin mr-2" />
-                    {t("checkout.preparing_payment")}
-                  </>
-                ) : (
-                  t("checkout.pay_now")
-                )}
-              </button>
             </div>
           </div>
         </div>
-      </Container>
-    </ProtectedRoute>
+
+        {/* Payment Options & Order Summary */}
+        <div className="space-y-6">
+          {/* Order Summary */}
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <FiCreditCard className="w-5 h-5 mr-2" />
+              {t("checkout.order_summary")}
+            </h3>
+
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-gray-600">{t("checkout.total_amount")}</span>
+                <PriceFormat
+                  amount={parseFloat(existingOrder?.amount || "0")}
+                  className="font-semibold text-theme-color"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Payment Widget Container */}
+          <div className="bg-white rounded-lg shadow p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              {t("checkout.payment_method")}
+            </h3>
+
+            {/* Error Display */}
+            {widgetError && (
+              <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                <div className="flex items-start">
+                  <div className="flex-shrink-0">
+                    <svg
+                      className="h-5 w-5 text-red-400"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <div className="ml-3">
+                    <h3 className="text-sm font-medium text-red-800">
+                      {t("checkout.widget_load_failed")}
+                    </h3>
+                    <div className="mt-2 text-sm text-red-700">
+                      <p>{t(widgetError)}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Toss Payments Widget will be rendered here */}
+            <div id="payment-widget-checkout" className="mb-4 min-h-[200px]">
+              {!widgetReady && !widgetError && (
+                <div className="flex items-center justify-center h-[200px]">
+                  <FiLoader className="animate-spin text-blue-600 text-3xl" />
+                </div>
+              )}
+            </div>
+
+            <button
+              onClick={handleTossPayment}
+              disabled={paymentProcessing || !widgetReady}
+              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center font-semibold text-lg"
+            >
+              {paymentProcessing ? (
+                <>
+                  <FiLoader className="animate-spin mr-2" />
+                  {t("checkout.processing")}
+                </>
+              ) : !widgetReady ? (
+                <>
+                  <FiLoader className="animate-spin mr-2" />
+                  {t("checkout.preparing_payment")}
+                </>
+              ) : (
+                t("checkout.pay_now")
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+    </Container>
   );
 };
 

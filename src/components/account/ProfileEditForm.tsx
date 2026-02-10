@@ -145,7 +145,7 @@ export default function ProfileEditForm({
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Profile Image Section */}
       <div className="text-center">
-        <div className="relative inline-block">
+        <div className="relative inline-block shrink-0">
           {formData.image ? (
             <Image
               src={formData.image}

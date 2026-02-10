@@ -178,12 +178,10 @@ export const BasicInfo = ({
             required
             disabled={isLoadingCategories || categoryError !== null}
           >
-            <option value="">
-              {isLoadingCategories ? "카테고리 로드 중..." : "카테고리 선택"}
-            </option>
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.name}>
-                {cat.name}
+            <option value="">카테고리 선택</option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.name}>
+                {category.name}
               </option>
             ))}
           </select>

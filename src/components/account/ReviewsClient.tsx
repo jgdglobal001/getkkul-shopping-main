@@ -33,38 +33,15 @@ export default function ReviewsClient() {
   const fetchReviews = async () => {
     try {
       setLoading(true);
-      // 현재는 더미 데이터를 사용합니다. 실제로는 API에서 사용자의 리뷰를 가져와야 합니다.
-      // const response = await fetch(`/api/user/${session?.user?.id}/reviews`);
-      // const data = await response.json();
-      
-      // 더미 데이터
-      const dummyReviews: Review[] = [
-        {
-          id: "1",
-          productId: "1",
-          productTitle: "iPhone 9",
-          productImage: "https://cdn.dummyjson.com/product-images/1/thumbnail.jpg",
-          rating: 5,
-          comment: "정말 좋은 제품입니다! 배송도 빠르고 품질도 만족스럽습니다.",
-          createdAt: "2024-01-15T10:30:00Z",
-          updatedAt: "2024-01-15T10:30:00Z",
-        },
-        {
-          id: "2",
-          productId: "2",
-          productTitle: "iPhone X",
-          productImage: "https://cdn.dummyjson.com/product-images/2/thumbnail.jpg",
-          rating: 4,
-          comment: "가격 대비 성능이 좋습니다. 추천합니다.",
-          createdAt: "2024-01-10T14:20:00Z",
-          updatedAt: "2024-01-10T14:20:00Z",
-        },
-      ];
-      
-      setReviews(dummyReviews);
+      const response = await fetch("/api/user/reviews");
+      if (!response.ok) {
+        throw new Error("리뷰를 불러오는 중 오류가 발생했습니다.");
+      }
+      const data = await response.json();
+      setReviews(data);
     } catch (err) {
       console.error("Error fetching reviews:", err);
-      setError("리뷰를 불러오는 중 오류가 발생했습니다.");
+      setError(t("reviews.loading_error", "리뷰를 불러오는 중 오류가 발생했습니다."));
     } finally {
       setLoading(false);
     }
@@ -84,9 +61,8 @@ export default function ReviewsClient() {
         {[...Array(5)].map((_, index) => (
           <FiStar
             key={index}
-            className={`w-4 h-4 ${
-              index < rating ? "text-yellow-400 fill-current" : "text-gray-300"
-            }`}
+            className={`w-4 h-4 ${index < rating ? "text-yellow-400 fill-current" : "text-gray-300"
+              }`}
           />
         ))}
       </div>

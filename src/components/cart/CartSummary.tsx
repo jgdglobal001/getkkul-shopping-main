@@ -36,7 +36,7 @@ const CartSummary = ({ cart }: Props) => {
   const [pendingOrderId, setPendingOrderId] = useState<string | null>(null);
   const paymentWidgetRef = useRef<any>(null);
 
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
 
   // Get free shipping threshold from environment
@@ -68,20 +68,35 @@ const CartSummary = ({ cart }: Props) => {
   }, [cart, freeShippingThreshold]);
 
   // Initialize Toss Widget when showPaymentWidget becomes true
+  const paymentMethodWidgetRef = useRef<any>(null);
+  const initializingRef = useRef(false);
+
   useEffect(() => {
-    if (!showPaymentWidget || !tossReady || widgetReady) return;
+    if (!showPaymentWidget || !tossReady || widgetReady || initializingRef.current || status !== "authenticated") return;
+
+    let isMounted = true;
 
     const initializeWidget = async () => {
+      if (initializingRef.current) return;
+      initializingRef.current = true;
+
       try {
         const tossClientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
         if (!tossClientKey) {
-          setWidgetError(t("cart.widget_error_no_key"));
+          if (isMounted) setWidgetError(t("cart.widget_error_no_key"));
+          initializingRef.current = false;
           return;
         }
 
         const TossPayments = (window as any).TossPayments;
         if (!TossPayments) {
-          setWidgetError(t("cart.widget_error_load_failed"));
+          if (isMounted) setWidgetError(t("cart.widget_error_load_failed"));
+          initializingRef.current = false;
+          return;
+        }
+
+        if (!isMounted) {
+          initializingRef.current = false;
           return;
         }
 
@@ -91,23 +106,101 @@ const CartSummary = ({ cart }: Props) => {
         const tossPayments = TossPayments(tossClientKey);
         const paymentWidget = tossPayments.widgets({ customerKey });
 
+        // Cleanup existing widget if any
+        if (paymentMethodWidgetRef.current) {
+          try {
+            await paymentMethodWidgetRef.current.destroy();
+          } catch (e) {
+            console.warn("Error destroying previous widget instance in CartSummary:", e);
+          }
+        }
+
+        if (!isMounted) {
+          initializingRef.current = false;
+          return;
+        }
+
         await paymentWidget.setAmount({ value: amount, currency: "KRW" });
-        await paymentWidget.renderPaymentMethods({
-          selector: "#cart-payment-widget",
+
+        if (!isMounted) {
+          initializingRef.current = false;
+          return;
+        }
+
+        // Cleanup any existing widget instance before re-initializing
+        if (paymentMethodWidgetRef.current) {
+          try {
+            const existingWidget = paymentMethodWidgetRef.current as any;
+            if (typeof existingWidget.destroy === 'function') {
+              await existingWidget.destroy();
+            } else if (existingWidget.then) {
+              await existingWidget.then((w: any) => w?.destroy?.());
+            }
+          } catch (e) {
+            console.warn("Pre-cleanup failed in CartSummary:", e);
+          }
+          paymentMethodWidgetRef.current = null;
+          paymentWidgetRef.current = null;
+        }
+
+        // Render payment methods UI and store promise for cleanup
+        const renderPromise = paymentWidget.renderPaymentMethods({
+          selector: "#payment-widget-cart",
           variantKey: process.env.NEXT_PUBLIC_TOSS_VARIANT_KEY || "DEFAULT",
         });
 
+        // Save promise to handle cleanup if unmount happens during render
+        (paymentMethodWidgetRef.current as any) = renderPromise;
+
+        const paymentMethodsWidget = await renderPromise;
+
+        // If unmounted during await, destroy immediately
+        if (!isMounted) {
+          paymentMethodsWidget.destroy().catch(() => { });
+          initializingRef.current = false;
+          return;
+        }
+
+        // Store resolved widget instance
         paymentWidgetRef.current = paymentWidget;
+        paymentMethodWidgetRef.current = paymentMethodsWidget;
+
         setWidgetReady(true);
         setWidgetError(null);
       } catch (error) {
-        const errorMsg = error instanceof Error ? error.message : "위젯 초기화 실패";
-        setWidgetError(errorMsg);
+        console.error("CartSummary Widget Error:", error);
+        if (isMounted) {
+          setWidgetError(error instanceof Error ? error.message : "위젯 초기화 실패");
+        }
+        initializingRef.current = false;
       }
     };
 
-    initializeWidget();
-  }, [showPaymentWidget, tossReady, widgetReady, session, totalAmt, discountAmt, shippingCost]);
+    const timerId = setTimeout(() => {
+      initializeWidget();
+    }, 500);
+
+    return () => {
+      clearTimeout(timerId);
+      isMounted = false;
+      initializingRef.current = false;
+
+      const widgetOrPromise = paymentMethodWidgetRef.current;
+      if (widgetOrPromise) {
+        // Handle both resolved widget and pending promise
+        if (typeof widgetOrPromise.destroy === 'function') {
+          widgetOrPromise.destroy().catch((e: any) => console.warn("Cleanup error in CartSummary:", e));
+        } else if (widgetOrPromise.then) {
+          widgetOrPromise.then((widget: any) => {
+            widget?.destroy().catch((e: any) => console.warn("Cleanup error in CartSummary (promise):", e));
+          }).catch(() => { });
+        }
+        paymentMethodWidgetRef.current = null;
+        paymentWidgetRef.current = null;
+      }
+      setWidgetReady(false);
+    };
+  }, [showPaymentWidget, tossReady, widgetReady, session, totalAmt, discountAmt, shippingCost, t, status]);
 
   const handleCheckout = async () => {
     if (!session?.user) {
@@ -257,8 +350,8 @@ const CartSummary = ({ cart }: Props) => {
                   </div>
                 )}
 
-                {/* Toss Payment Widget Container */}
-                <div id="cart-payment-widget" className="min-h-[200px]">
+                {/* Toss Payments Widget will be rendered here */}
+                <div id="payment-widget-cart" className="mb-4 min-h-[200px]">
                   {!widgetReady && !widgetError && (
                     <div className="flex items-center justify-center h-[200px]">
                       <FiLoader className="animate-spin text-blue-600 text-3xl" />

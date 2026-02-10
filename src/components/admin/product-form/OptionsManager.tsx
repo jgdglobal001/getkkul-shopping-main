@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { FiPlus, FiTrash2, FiSettings } from "react-icons/fi";
+import { FiPlus, FiTrash2, FiSettings, FiImage, FiX } from "react-icons/fi";
 import { ProductFormData, OptionDefinition, VariantData } from "../utils/product-types";
+import Image from "next/image";
 
 // 미리 정의된 옵션명 목록
 const PRESET_OPTION_NAMES = [
@@ -26,6 +27,10 @@ const OptionsManager: React.FC<OptionsManagerProps> = ({
 }) => {
   // 각 옵션의 raw 입력값을 관리 (쉼표 입력을 위해)
   const [optionValuesInputs, setOptionValuesInputs] = useState<string[]>([]);
+
+  // 인라인 이미지 입력을 위한 상태
+  const [activeMainInput, setActiveMainInput] = useState<{ index: number; value: string } | null>(null);
+  const [activeDetailInput, setActiveDetailInput] = useState<{ index: number; value: string } | null>(null);
 
   // formData.options가 변경되면 입력값 동기화
   const options = formData.options;
@@ -82,7 +87,7 @@ const OptionsManager: React.FC<OptionsManagerProps> = ({
     onFormDataChange({ options: newOptions, variants: [] });
   };
 
-  // 옵션 조합 생성
+  // 옵션 조합 생성 (기존 목록에 추가)
   const generateVariants = () => {
     const validOptions = formData.options.filter((opt) => opt.values.length > 0);
     if (validOptions.length === 0) {
@@ -92,25 +97,43 @@ const OptionsManager: React.FC<OptionsManagerProps> = ({
 
     // 카테시안 곱으로 모든 조합 생성
     const combinations = cartesianProduct(validOptions);
-    const newVariants: VariantData[] = combinations.map((combo) => ({
-      optionCombination: combo,
-      sku: "",
-      originalPrice: formData.price || "0",
-      price: formData.price || "0",
-      stock: "0",
-      isActive: true,
-    }));
 
-    onFormDataChange({ variants: newVariants });
+    // 기존에 이미 존재하는 조합인지 확인 (중복 방지)
+    const existingSignatures = new Set(
+      formData.variants.map((v) => JSON.stringify(v.optionCombination))
+    );
+
+    const newVariants: VariantData[] = [];
+
+    combinations.forEach((combo) => {
+      if (!existingSignatures.has(JSON.stringify(combo))) {
+        newVariants.push({
+          optionCombination: combo,
+          sku: "",
+          originalPrice: formData.price || "0",
+          price: formData.price || "0",
+          stock: "0",
+          isActive: true,
+        });
+      }
+    });
+
+    if (newVariants.length === 0) {
+      alert("선택한 옵션 조합이 이미 목록에 존재합니다.");
+      return;
+    }
+
+    // 기존 목록 뒤에 추가
+    onFormDataChange({ variants: [...formData.variants, ...newVariants] });
   };
 
   // 카테시안 곱 헬퍼 함수
   const cartesianProduct = (options: OptionDefinition[]): Record<string, string>[] => {
     if (options.length === 0) return [{}];
-    
+
     const [first, ...rest] = options;
     const restProducts = cartesianProduct(rest);
-    
+
     const result: Record<string, string>[] = [];
     for (const value of first.values) {
       for (const restProduct of restProducts) {
@@ -143,6 +166,47 @@ const OptionsManager: React.FC<OptionsManagerProps> = ({
     onFormDataChange({ variants: newVariants });
   };
 
+  // Variant 이미지 업데이트 (대표/추가 이미지 공용)
+  const handleVariantImageUpdate = (
+    variantIndex: number,
+    field: "image" | "detailImages",
+    value: string | string[]
+  ) => {
+    const newVariants = [...formData.variants];
+    newVariants[variantIndex] = { ...newVariants[variantIndex], [field]: value };
+    onFormDataChange({ variants: newVariants });
+  };
+
+  // 대표 이미지 URL 입력 완료
+  const handleMainImageSubmit = (index: number) => {
+    if (activeMainInput && activeMainInput.value) {
+      handleVariantImageUpdate(index, "image", activeMainInput.value);
+    }
+    setActiveMainInput(null);
+  };
+
+  // 추가 이미지 URL 입력 완료
+  const handleDetailImageSubmit = (index: number) => {
+    if (activeDetailInput && activeDetailInput.value) {
+      // @ts-ignore
+      const currentDetails = formData.variants[index].detailImages || [];
+      if (currentDetails.length >= 9) {
+        alert("추가 이미지는 최대 9장까지 등록 가능합니다.");
+      } else {
+        handleVariantImageUpdate(index, "detailImages", [...currentDetails, activeDetailInput.value]);
+      }
+    }
+    setActiveDetailInput(null);
+  };
+
+  // 추가 이미지 삭제
+  const handleDetailImageDelete = (variantIndex: number, imageIndex: number) => {
+    // @ts-ignore
+    const currentDetails = formData.variants[variantIndex].detailImages || [];
+    const newDetails = currentDetails.filter((_, i) => i !== imageIndex);
+    handleVariantImageUpdate(variantIndex, "detailImages", newDetails);
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-sm p-6 space-y-6">
       <div className="flex items-center gap-2 text-xl font-bold text-gray-800">
@@ -155,22 +219,20 @@ const OptionsManager: React.FC<OptionsManagerProps> = ({
         <button
           type="button"
           onClick={() => handleProductTypeChange(true)}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-            formData.hasOptions
-              ? "bg-theme-color text-white"
-              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-          }`}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${formData.hasOptions
+            ? "bg-theme-color text-white"
+            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+            }`}
         >
           옵션 상품등록
         </button>
         <button
           type="button"
           onClick={() => handleProductTypeChange(false)}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-            !formData.hasOptions
-              ? "bg-theme-color text-white"
-              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-          }`}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors ${!formData.hasOptions
+            ? "bg-theme-color text-white"
+            : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+            }`}
         >
           단일 상품등록
         </button>
@@ -250,7 +312,7 @@ const OptionsManager: React.FC<OptionsManagerProps> = ({
             className="w-full md:w-auto px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
           >
             <FiPlus className="w-5 h-5" />
-            옵션목록으로 적용
+            옵션목록 추가
           </button>
 
           {/* 옵션 목록 테이블 */}
@@ -345,6 +407,130 @@ const OptionsManager: React.FC<OptionsManagerProps> = ({
                           >
                             <FiTrash2 className="w-4 h-4" />
                           </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
+          {/* 옵션 이미지 관리 섹션 */}
+          {formData.variants.length > 0 && (
+            <div className="space-y-4 pt-4 border-t border-gray-200">
+              <h3 className="font-medium text-gray-700 flex items-center gap-2">
+                <FiImage className="w-5 h-5" />
+                옵션 이미지 등록
+                <span className="text-xs text-gray-400 font-normal ml-2">권장 크기: 1000x1000px</span>
+              </h3>
+
+              <div className="overflow-x-auto">
+                <table className="w-full border-collapse border border-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="border border-gray-200 px-3 py-2 text-left text-sm w-1/4">옵션명</th>
+                      <th className="border border-gray-200 px-3 py-2 text-center text-sm w-40">대표이미지 <span className="text-red-500">*</span></th>
+                      <th className="border border-gray-200 px-3 py-2 text-left text-sm">추가이미지 (최대 9장)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {formData.variants.map((variant, index) => (
+                      <tr key={index} className="hover:bg-gray-50">
+                        <td className="border border-gray-200 px-3 py-2 text-sm">
+                          {Object.entries(variant.optionCombination).map(([k, v]) => v).join(" ")}
+                        </td>
+                        <td className="border border-gray-200 px-3 py-2 text-center align-middle">
+                          <div className="flex justify-center items-center h-20">
+                            {variant.image ? (
+                              <div className="relative w-20 h-20 bg-gray-100 rounded border border-gray-200 group">
+                                <Image
+                                  src={variant.image}
+                                  alt="Main"
+                                  fill
+                                  className="object-contain"
+                                  unoptimized={true}
+                                  referrerPolicy="no-referrer"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => handleVariantImageUpdate(index, "image", "")}
+                                  className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                >
+                                  <FiTrash2 className="w-3 h-3" />
+                                </button>
+                              </div>
+                            ) : activeMainInput?.index === index ? (
+                              <input
+                                type="text"
+                                autoFocus
+                                value={activeMainInput.value}
+                                onChange={(e) => setActiveMainInput({ ...activeMainInput, value: e.target.value })}
+                                onBlur={() => handleMainImageSubmit(index)}
+                                onKeyDown={(e) => e.key === "Enter" && handleMainImageSubmit(index)}
+                                placeholder="URL 입력"
+                                className="w-full text-xs px-2 py-1 border border-blue-500 rounded"
+                              />
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={() => setActiveMainInput({ index, value: "" })}
+                                className="w-20 h-20 border-2 border-dashed border-gray-300 rounded flex items-center justify-center text-gray-400 hover:border-blue-500 hover:text-blue-500 transition-colors"
+                              >
+                                <FiPlus className="w-6 h-6" />
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                        <td className="border border-gray-200 px-3 py-2 align-middle">
+                          <div className="flex flex-wrap gap-2 items-center">
+                            {/* 추가 이미지 리스트 */}
+                            {(variant.detailImages || []).map((img, imgIdx) => (
+                              <div key={imgIdx} className="relative w-20 h-20 bg-gray-100 rounded border border-gray-200 group">
+                                <Image
+                                  src={img}
+                                  alt={`Detail ${imgIdx}`}
+                                  fill
+                                  className="object-contain"
+                                  unoptimized={true}
+                                  referrerPolicy="no-referrer"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => handleDetailImageDelete(index, imgIdx)}
+                                  className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                >
+                                  <FiTrash2 className="w-3 h-3" />
+                                </button>
+                              </div>
+                            ))}
+
+                            {/* 추가 버튼 / 입력창 */}
+                            {activeDetailInput?.index === index ? (
+                              <div className="w-40">
+                                <input
+                                  type="text"
+                                  autoFocus
+                                  value={activeDetailInput.value}
+                                  onChange={(e) => setActiveDetailInput({ ...activeDetailInput, value: e.target.value })}
+                                  onBlur={() => handleDetailImageSubmit(index)}
+                                  onKeyDown={(e) => e.key === "Enter" && handleDetailImageSubmit(index)}
+                                  placeholder="URL 입력 후 엔터"
+                                  className="w-full text-xs px-2 py-1 border border-blue-500 rounded"
+                                />
+                              </div>
+                            ) : (
+                              (variant.detailImages || []).length < 9 && (
+                                <button
+                                  type="button"
+                                  onClick={() => setActiveDetailInput({ index, value: "" })}
+                                  className="w-20 h-20 border-2 border-dashed border-gray-300 rounded flex items-center justify-center text-gray-400 hover:border-blue-500 hover:text-blue-500 transition-colors"
+                                >
+                                  <FiPlus className="w-6 h-6" />
+                                </button>
+                              )
+                            )}
+                          </div>
                         </td>
                       </tr>
                     ))}
