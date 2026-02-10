@@ -98,6 +98,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       category: body.category || existingProduct.category,
       thumbnail: body.thumbnail || existingProduct.thumbnail,
       images: body.images || existingProduct.images,
+      detailImages: body.detailImages || existingProduct.detailImages,
       tags: body.tags || existingProduct.tags,
       sku: body.sku || existingProduct.sku,
       isActive: body.isActive !== undefined ? body.isActive : existingProduct.isActive,
