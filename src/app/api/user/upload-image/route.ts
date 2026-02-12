@@ -1,7 +1,7 @@
 export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
-import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { getRequestContext } from "@cloudflare/next-on-pages";
 
 // R2 버킷 타입 정의
 interface R2Bucket {
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Cloudflare R2에 이미지 업로드
-    const { env } = getCloudflareContext() as { env: CloudflareEnv };
+    const { env } = getRequestContext() as { env: CloudflareEnv };
 
     // R2 버킷이 바인딩되어 있는지 확인
     if (!env.R2_BUCKET) {
