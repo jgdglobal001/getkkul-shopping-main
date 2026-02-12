@@ -123,12 +123,12 @@ const UserProfileDropdown = ({ user }: UserProfileDropdownProps) => {
         className="flex items-center gap-2 cursor-pointer group"
       >
         <Link href="/account" className="flex items-center">
-          <div className="border border-gray-500 w-10 h-10 rounded-full text-xl overflow-hidden relative">
+          <div className="border border-gray-500 w-10 h-10 rounded-full text-xl overflow-hidden relative bg-gray-100 flex items-center justify-center">
             <Image
               src={!user?.image ? fallbackImage : user.image}
               alt={user?.name || "User"}
               fill
-              className="rounded-full object-cover"
+              className="object-contain"
               unoptimized
             />
           </div>

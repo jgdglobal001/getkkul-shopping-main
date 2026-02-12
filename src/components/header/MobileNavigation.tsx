@@ -126,12 +126,12 @@ const MobileNavigation = ({ user }: MobileNavigationProps) => {
           {user ? (
             <div className="p-4 border-b border-gray-100 bg-gray-50">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-orange-200 relative">
+                <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-orange-200 relative bg-gray-100 flex items-center justify-center">
                   <Image
                     src={user.image || fallbackImage}
                     alt={user.name || "User"}
                     fill
-                    className="object-cover"
+                    className="object-contain"
                     unoptimized
                   />
                 </div>

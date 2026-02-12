@@ -5,10 +5,12 @@ import Image from "next/image";
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import ProfileEditForm from "@/components/account/ProfileEditForm";
 import Sidebar from "@/components/account/Sidebar";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useUserSync } from "@/hooks/useUserSync";
+import { addUser } from "@/redux/shofySlice";
 
 interface UserProfile {
   firstName: string;
@@ -30,6 +32,7 @@ interface Address {
 export default function AccountClient() {
   const { data: session, update } = useSession();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   // Sync user data between session and Redux store
   useUserSync();
@@ -83,12 +86,8 @@ export default function AccountClient() {
         },
         body: JSON.stringify({
           email: session?.user?.email,
-          profile: {
-            firstName: updatedProfile.firstName,
-            lastName: updatedProfile.lastName,
-            phone: updatedProfile.phone,
-          },
-          name: `${updatedProfile.firstName} ${updatedProfile.lastName}`,
+          name: updatedProfile.name,
+          phone: updatedProfile.phone,
           image: updatedProfile.image,
           currentPassword: updatedProfile.currentPassword,
           newPassword: updatedProfile.newPassword,
@@ -98,19 +97,37 @@ export default function AccountClient() {
       const data = await response.json();
 
       if (response.ok) {
-        setProfile(data.profile);
+        // Update profile state
+        if (data.user?.profile) {
+          setProfile(data.user.profile);
+        }
+
+        // Update Redux store with new user data
+        if (data.user) {
+          dispatch(addUser({
+            ...user,
+            name: data.user.name,
+            image: data.user.image,
+            phone: data.user.profile?.phone,
+            profile: data.user.profile,
+            preferences: data.user.preferences,
+          }));
+        }
 
         // Update session with new data
         await update({
           ...session,
           user: {
             ...session?.user,
-            name: data.name,
-            image: data.image,
+            name: data.user?.name || updatedProfile.name,
+            image: data.user?.image || updatedProfile.image,
           },
         });
 
         setIsEditProfileOpen(false);
+
+        // Refresh page to update header
+        window.location.reload();
       } else {
         throw new Error(data.error || "Failed to update profile");
       }
@@ -148,22 +165,19 @@ export default function AccountClient() {
         {/* Profile Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
           <div className="flex items-center space-x-4 mb-4 md:mb-0">
-            <div className="relative shrink-0">
+            <div className="relative shrink-0 w-20 h-20 rounded-full bg-gray-100 overflow-hidden flex items-center justify-center">
               {session?.user?.image ? (
                 <Image
                   src={session.user.image}
                   alt={session?.user?.name || "Profile"}
-                  width={80}
-                  height={80}
-                  className="rounded-full object-cover"
+                  fill
+                  className="object-contain"
                   unoptimized
                 />
               ) : (
-                <div className="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center">
-                  <span className="text-2xl font-semibold text-gray-600">
-                    {session?.user?.name?.charAt(0)?.toUpperCase() || "U"}
-                  </span>
-                </div>
+                <span className="text-2xl font-semibold text-gray-600">
+                  {session?.user?.name?.charAt(0)?.toUpperCase() || "U"}
+                </span>
               )}
             </div>
             <div>
