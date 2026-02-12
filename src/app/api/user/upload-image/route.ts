@@ -16,6 +16,8 @@ interface R2Bucket {
       customMetadata?: Record<string, string>;
     }
   ): Promise<unknown>;
+  delete(key: string): Promise<void>;
+  list(options?: { prefix?: string }): Promise<{ objects: { key: string }[] }>;
 }
 
 // Cloudflare 환경 타입
@@ -70,6 +72,17 @@ export async function POST(request: NextRequest) {
     const timestamp = Date.now();
     const ext = file.name.split('.').pop() || 'jpg';
     const key = `profiles/${emailHash}_${timestamp}.${ext}`;
+
+    // 기존 이미지 삭제 (같은 이메일 해시로 시작하는 파일들)
+    try {
+      const existingFiles = await env.R2_BUCKET.list({ prefix: `profiles/${emailHash}_` });
+      for (const obj of existingFiles.objects) {
+        await env.R2_BUCKET.delete(obj.key);
+      }
+    } catch (deleteError) {
+      console.warn("Failed to delete old images:", deleteError);
+      // 삭제 실패해도 업로드는 계속 진행
+    }
 
     // 파일을 ArrayBuffer로 변환
     const arrayBuffer = await file.arrayBuffer();

@@ -165,7 +165,7 @@ export default function AccountClient() {
         {/* Profile Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
           <div className="flex items-center space-x-4 mb-4 md:mb-0">
-            <div className="relative shrink-0 w-20 h-20 rounded-full bg-gray-100 overflow-hidden flex items-center justify-center">
+            <div className="relative shrink-0 w-20 h-20 rounded-full bg-white overflow-hidden flex items-center justify-center border border-gray-200">
               {session?.user?.image ? (
                 <Image
                   src={session.user.image}
