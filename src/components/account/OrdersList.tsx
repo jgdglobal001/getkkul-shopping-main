@@ -96,10 +96,8 @@ export default function OrdersList({
   const [paymentOrderId, setPaymentOrderId] = useState<string | null>(null);
   const [tossReady, setTossReady] = useState(false);
   const [paymentProcessing, setPaymentProcessing] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const paymentWidgetRef = useRef<any>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const paymentMethodWidgetRef = useRef<any>(null);
+  const paymentWidgetRef = useRef<ReturnType<ReturnType<NonNullable<typeof window.TossPayments>>["widgets"]> | null>(null);
+  const paymentMethodWidgetRef = useRef<{ destroy?: () => void } | null>(null);
 
   const fetchOrders = useCallback(async () => {
     try {

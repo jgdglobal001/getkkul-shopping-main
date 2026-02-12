@@ -840,7 +840,10 @@
     "pay_shipping_fee": "배송비 결제",
     "deficit_payment_info": "주문 금액이 왕복 택배비(6,000원)보다 적어 추가 결제가 필요합니다.",
     "payment_amount": "결제 금액",
-    "loading_payment": "결제 수단 로딩 중..."
+    "loading_payment": "결제 수단 로딩 중...",
+    "cancel_success": "주문이 성공적으로 취소되었습니다.",
+    "cancel_failed": "주문 취소에 실패했습니다.",
+    "order_cancel_error": "주문 취소 중 오류가 발생했습니다."
   },
   "reviews": {
     "my_reviews": "내 리뷰",
