@@ -2,7 +2,6 @@
 
 import React, { useState, useRef } from "react";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
 import { useTranslation } from "react-i18next";
 
 interface ProfileEditFormProps {
@@ -24,26 +23,15 @@ export default function ProfileEditForm({
   loading = false,
 }: ProfileEditFormProps) {
   const { t } = useTranslation("translation", { keyPrefix: "account" });
-  const { data: session } = useSession();
   const [formData, setFormData] = useState({
     name: profile?.name || "",
     email: profile?.email || "",
     phone: profile?.phone || "",
     image: profile?.image || "",
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
   });
   const [imageUploading, setImageUploading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [showPasswordSection, setShowPasswordSection] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-  // Check if user is using OAuth (no password needed) - can be detected by checking if they have an image from provider
-  const isOAuthUser =
-    session?.user?.image?.includes("googleusercontent") ||
-    session?.user?.image?.includes("github") ||
-    false;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -102,31 +90,6 @@ export default function ProfileEditForm({
     }
     if (formData.phone && !/^\+?[\d\s\-\(\)]+$/.test(formData.phone)) {
       newErrors.phone = t("valid_phone");
-    }
-
-    // Password validation (only if trying to update password)
-    if (
-      showPasswordSection ||
-      formData.newPassword ||
-      formData.currentPassword
-    ) {
-      if (!isOAuthUser && !formData.currentPassword.trim()) {
-        newErrors.currentPassword = t("current_password_required");
-      }
-
-      if (formData.newPassword) {
-        if (formData.newPassword.length < 6) {
-          newErrors.newPassword = t("password_min_length");
-        }
-
-        if (formData.newPassword !== formData.confirmPassword) {
-          newErrors.confirmPassword = t("passwords_do_not_match");
-        }
-      }
-
-      if (formData.confirmPassword && !formData.newPassword) {
-        newErrors.newPassword = t("new_password_required");
-      }
     }
 
     setErrors(newErrors);
@@ -260,98 +223,6 @@ export default function ProfileEditForm({
         />
         {errors.phone && (
           <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
-        )}
-      </div>
-
-      {/* Password Section */}
-      <div className="border-t pt-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-medium text-gray-900">
-            {t("password_settings")}
-          </h3>
-          <button
-            type="button"
-            onClick={() => setShowPasswordSection(!showPasswordSection)}
-            className="px-3 py-1.5 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition-colors"
-          >
-            {showPasswordSection ? t("cancel") : t("change_password")}
-          </button>
-        </div>
-
-        {showPasswordSection && (
-          <div className="space-y-4">
-            {isOAuthUser && (
-              <div className="bg-blue-50 border border-blue-200 rounded-md p-3">
-                <p className="text-sm text-blue-800">
-                  <span className="font-medium">{t("oauth_user")}</span> {t("oauth_description")}
-                </p>
-              </div>
-            )}
-
-            {!isOAuthUser && (
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {t("current_password")} *
-                </label>
-                <input
-                  type="password"
-                  name="currentPassword"
-                  value={formData.currentPassword}
-                  onChange={handleInputChange}
-                  className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${errors.currentPassword
-                    ? "border-red-500"
-                    : "border-gray-300"
-                    }`}
-                  placeholder={t("enter_current_password")}
-                />
-                {errors.currentPassword && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.currentPassword}
-                  </p>
-                )}
-              </div>
-            )}
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t("new_password")} *
-              </label>
-              <input
-                type="password"
-                name="newPassword"
-                value={formData.newPassword}
-                onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${errors.newPassword ? "border-red-500" : "border-gray-300"
-                  }`}
-                placeholder={t("enter_new_password")}
-              />
-              {errors.newPassword && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.newPassword}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t("confirm_new_password")} *
-              </label>
-              <input
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleInputChange}
-                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-theme-color ${errors.confirmPassword ? "border-red-500" : "border-gray-300"
-                  }`}
-                placeholder={t("confirm_new_password_placeholder")}
-              />
-              {errors.confirmPassword && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.confirmPassword}
-                </p>
-              )}
-            </div>
-          </div>
         )}
       </div>
 
