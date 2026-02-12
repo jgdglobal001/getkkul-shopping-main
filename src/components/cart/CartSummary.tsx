@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import Title from "../Title";
 import Button from "../ui/Button";
@@ -13,6 +13,10 @@ import { FaSignInAlt } from "react-icons/fa";
 import Link from "next/link";
 import Script from "next/script";
 import { getPartnerInfo } from "../PartnerRefTracker";
+
+// SessionStorage keys for persisting payment state
+const PENDING_ORDER_KEY = "getkkul_pending_order";
+const PENDING_AMOUNT_KEY = "getkkul_pending_amount";
 
 interface Props {
   cart: ProductType[];
@@ -34,6 +38,8 @@ const CartSummary = ({ cart }: Props) => {
   const [widgetError, setWidgetError] = useState<string | null>(null);
   const [paymentProcessing, setPaymentProcessing] = useState(false);
   const [pendingOrderId, setPendingOrderId] = useState<string | null>(null);
+  // Store the amount at the time of order creation to prevent changes during payment
+  const [lockedAmount, setLockedAmount] = useState<number | null>(null);
   const paymentWidgetRef = useRef<any>(null);
 
   const { data: session, status } = useSession();
@@ -67,11 +73,28 @@ const CartSummary = ({ cart }: Props) => {
     }
   }, [cart, freeShippingThreshold]);
 
+  // Restore pending order from sessionStorage on mount (for page refresh recovery)
+  useEffect(() => {
+    if (status === "authenticated" && !pendingOrderId) {
+      const savedOrderId = sessionStorage.getItem(PENDING_ORDER_KEY);
+      const savedAmount = sessionStorage.getItem(PENDING_AMOUNT_KEY);
+      if (savedOrderId && savedAmount) {
+        setPendingOrderId(savedOrderId);
+        setLockedAmount(Number(savedAmount));
+        setShowPaymentWidget(true);
+      }
+    }
+  }, [status, pendingOrderId]);
+
   // Initialize Toss Widget when showPaymentWidget becomes true
   const paymentMethodWidgetRef = useRef<any>(null);
   const initializingRef = useRef(false);
+  // Ref to store the amount used during widget initialization
+  const initializedAmountRef = useRef<number | null>(null);
 
   useEffect(() => {
+    // FIX 1: Only trigger on showPaymentWidget, tossReady, and status changes
+    // Remove totalAmt, discountAmt, shippingCost from dependencies to prevent re-initialization on cart changes
     if (!showPaymentWidget || !tossReady || widgetReady || initializingRef.current || status !== "authenticated") return;
 
     let isMounted = true;
@@ -101,7 +124,9 @@ const CartSummary = ({ cart }: Props) => {
         }
 
         const customerKey = `customer_${session?.user?.id || session?.user?.email?.replace(/[@.]/g, "_") || Date.now()}`;
-        const amount = Math.round(totalAmt - discountAmt + shippingCost);
+        // FIX 1: Use lockedAmount if available (for page refresh recovery), otherwise use current calculation
+        const amount = lockedAmount ?? Math.round(totalAmt - discountAmt + shippingCost);
+        initializedAmountRef.current = amount;
 
         const tossPayments = TossPayments(tossClientKey);
         const paymentWidget = tossPayments.widgets({ customerKey });
@@ -125,22 +150,6 @@ const CartSummary = ({ cart }: Props) => {
         if (!isMounted) {
           initializingRef.current = false;
           return;
-        }
-
-        // Cleanup any existing widget instance before re-initializing
-        if (paymentMethodWidgetRef.current) {
-          try {
-            const existingWidget = paymentMethodWidgetRef.current as any;
-            if (typeof existingWidget.destroy === 'function') {
-              await existingWidget.destroy();
-            } else if (existingWidget.then) {
-              await existingWidget.then((w: any) => w?.destroy?.());
-            }
-          } catch (e) {
-            console.warn("Pre-cleanup failed in CartSummary:", e);
-          }
-          paymentMethodWidgetRef.current = null;
-          paymentWidgetRef.current = null;
         }
 
         // Render payment methods UI and store promise for cleanup
@@ -200,7 +209,9 @@ const CartSummary = ({ cart }: Props) => {
       }
       setWidgetReady(false);
     };
-  }, [showPaymentWidget, tossReady, widgetReady, session, totalAmt, discountAmt, shippingCost, t, status]);
+    // FIX 1: Removed totalAmt, discountAmt, shippingCost from dependencies
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showPaymentWidget, tossReady, widgetReady, session, status, lockedAmount]);
 
   const handleCheckout = async () => {
     if (!session?.user) {
@@ -256,7 +267,12 @@ const CartSummary = ({ cart }: Props) => {
 
       if (response.ok) {
         const result = await response.json();
+        // FIX 2: Store in sessionStorage for page refresh recovery
+        sessionStorage.setItem(PENDING_ORDER_KEY, result.orderId);
+        sessionStorage.setItem(PENDING_AMOUNT_KEY, finalTotal.toString());
+
         setPendingOrderId(result.orderId);
+        setLockedAmount(finalTotal);  // Lock the amount to prevent changes
         setShowPaymentWidget(true);
       } else {
         throw new Error(t("cart.order_creation_failed"));
@@ -285,8 +301,9 @@ const CartSummary = ({ cart }: Props) => {
         customerName: customerName,
       });
 
-      // Note: Cart will be cleared in /payment/success page after payment verification
-      // Don't clear here - redirect happens and Redux state resets anyway
+      // FIX 2: Clear sessionStorage on successful payment request (redirect will happen)
+      sessionStorage.removeItem(PENDING_ORDER_KEY);
+      sessionStorage.removeItem(PENDING_AMOUNT_KEY);
     } catch (error: any) {
       if (!error?.message?.includes("취소")) {
         alert(`${t("cart.payment_fail_prefix")}${error?.message || t("cart.try_again_simple")}`);
@@ -296,12 +313,48 @@ const CartSummary = ({ cart }: Props) => {
     }
   };
 
-  const handleCancelPayment = () => {
+  // FIX 3: Cancel pending order when user closes the payment modal
+  const handleCancelPayment = useCallback(async () => {
+    // Clean up widget state
     setShowPaymentWidget(false);
     setWidgetReady(false);
-    setPendingOrderId(null);
+
+    // FIX 1: Reset initializingRef to allow re-initialization
+    initializingRef.current = false;
+
+    // Destroy widget instances
+    if (paymentMethodWidgetRef.current) {
+      try {
+        if (typeof paymentMethodWidgetRef.current.destroy === 'function') {
+          await paymentMethodWidgetRef.current.destroy();
+        }
+      } catch (e) {
+        console.warn("Error destroying widget on cancel:", e);
+      }
+      paymentMethodWidgetRef.current = null;
+    }
     paymentWidgetRef.current = null;
-  };
+
+    // FIX 3: Cancel the pending order in DB to prevent accumulation
+    if (pendingOrderId) {
+      try {
+        await fetch(`/api/orders/${pendingOrderId}/cancel-pending`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        });
+      } catch (error) {
+        console.warn("Failed to cancel pending order:", error);
+        // Don't block UI - order can be cleaned up later
+      }
+    }
+
+    // FIX 2: Clear sessionStorage
+    sessionStorage.removeItem(PENDING_ORDER_KEY);
+    sessionStorage.removeItem(PENDING_AMOUNT_KEY);
+
+    setPendingOrderId(null);
+    setLockedAmount(null);
+  }, [pendingOrderId]);
 
   const isCheckoutDisabled = session?.user && (!selectedAddress || placing || !tossReady);
 
@@ -332,12 +385,12 @@ const CartSummary = ({ cart }: Props) => {
               </div>
 
               <div className="p-4">
-                {/* Order Summary */}
+                {/* Order Summary - Use lockedAmount to show the actual payment amount */}
                 <div className="mb-4 p-3 bg-gray-50 rounded-lg">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">{t("cart.total_order_amount")}</span>
                     <PriceFormat
-                      amount={totalAmt - discountAmt + shippingCost}
+                      amount={lockedAmount ?? (totalAmt - discountAmt + shippingCost)}
                       className="text-lg font-bold text-theme-color"
                     />
                   </div>

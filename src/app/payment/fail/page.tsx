@@ -5,14 +5,46 @@ export const runtime = 'edge';
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { FiAlertCircle } from "react-icons/fi";
+import { useEffect, useRef } from "react";
 
 export default function PaymentFail() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const cleanupAttempted = useRef(false);
 
   const errorCode = searchParams.get("code");
   const errorMessage = searchParams.get("message");
   const orderId = searchParams.get("orderId");
+
+  // FIX 3: Clean up pending order on payment failure
+  useEffect(() => {
+    if (cleanupAttempted.current) return;
+    cleanupAttempted.current = true;
+
+    const cleanupPendingOrder = async () => {
+      // Get orderId from URL or sessionStorage
+      const pendingOrderId = orderId || (typeof window !== "undefined" ? sessionStorage.getItem("getkkul_pending_order") : null);
+
+      if (pendingOrderId) {
+        try {
+          await fetch(`/api/orders/${pendingOrderId}/cancel-pending`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+          });
+        } catch (error) {
+          console.warn("Failed to cancel pending order on fail page:", error);
+        }
+      }
+
+      // Clear sessionStorage
+      if (typeof window !== "undefined") {
+        sessionStorage.removeItem("getkkul_pending_order");
+        sessionStorage.removeItem("getkkul_pending_amount");
+      }
+    };
+
+    cleanupPendingOrder();
+  }, [orderId]);
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">

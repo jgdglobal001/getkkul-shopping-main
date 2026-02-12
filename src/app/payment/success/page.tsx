@@ -51,6 +51,13 @@ export default function PaymentSuccess() {
 
       // Payment verified successfully - clear the cart!
       dispatch(resetCart());
+
+      // Clear pending order from sessionStorage (FIX 2: cleanup on success)
+      if (typeof window !== "undefined") {
+        sessionStorage.removeItem("getkkul_pending_order");
+        sessionStorage.removeItem("getkkul_pending_amount");
+      }
+
       setVerified(true);
       setLoading(false);
     } catch (err) {
