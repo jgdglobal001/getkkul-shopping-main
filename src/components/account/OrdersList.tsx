@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
+import Script from "next/script";
 import PriceFormat from "@/components/PriceFormat";
 import {
   FiEye,
@@ -12,8 +13,29 @@ import {
   FiCalendar,
   FiCreditCard,
   FiTrash2,
+  FiLoader,
 } from "react-icons/fi";
 import Link from "next/link";
+
+// 토스페이먼츠 V2 타입
+declare global {
+  interface Window {
+    TossPayments?: (clientKey: string) => {
+      widgets: (options: { customerKey: string }) => {
+        setAmount: (options: { value: number; currency: string }) => Promise<void>;
+        renderPaymentMethods: (options: { selector: string; variantKey: string }) => Promise<{ destroy?: () => void }>;
+        requestPayment: (options: {
+          orderId: string;
+          orderName: string;
+          successUrl: string;
+          failUrl: string;
+          customerEmail?: string;
+          customerName?: string;
+        }) => Promise<void>;
+      };
+    };
+  }
+}
 
 interface OrderItem {
   id: string;
@@ -65,6 +87,19 @@ export default function OrdersList({
   // 취소 사유 상태
   const [cancelReason, setCancelReason] = useState<string>('');
   const [cancelOrderAmount, setCancelOrderAmount] = useState<number>(0);
+
+  // 취소 결제 위젯 상태
+  const [showPaymentWidget, setShowPaymentWidget] = useState(false);
+  const [paymentWidgetReady, setPaymentWidgetReady] = useState(false);
+  const [paymentWidgetError, setPaymentWidgetError] = useState<string | null>(null);
+  const [paymentAmount, setPaymentAmount] = useState(0);
+  const [paymentOrderId, setPaymentOrderId] = useState<string | null>(null);
+  const [tossReady, setTossReady] = useState(false);
+  const [paymentProcessing, setPaymentProcessing] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const paymentWidgetRef = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const paymentMethodWidgetRef = useRef<any>(null);
 
   const fetchOrders = useCallback(async () => {
     try {
@@ -282,41 +317,105 @@ export default function OrdersList({
     }
   };
 
+  // 취소 결제 위젯 표시
   const handlePayAndCancel = async (orderId: string, amount: number) => {
     if (!orderId) return;
 
-    setCancellingOrderId(orderId);
+    setPaymentAmount(amount);
+    setPaymentOrderId(orderId);
+    setShowCancelConfirm(null); // 취소 확인 모달 닫기
+    setShowPaymentWidget(true); // 결제 위젯 모달 열기
+    setPaymentWidgetReady(false);
+    setPaymentWidgetError(null);
+  };
+
+  // 결제 위젯 초기화 (모달이 열릴 때)
+  useEffect(() => {
+    if (!showPaymentWidget || !tossReady || !paymentOrderId || paymentAmount <= 0) return;
+
+    const initializeWidget = async () => {
+      try {
+        const tossClientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
+        if (!tossClientKey) {
+          throw new Error("Toss Client Key not found");
+        }
+
+        const TossPayments = window.TossPayments;
+        if (!TossPayments) {
+          throw new Error("TossPayments SDK not loaded");
+        }
+
+        const customerKey = `customer_${session?.user?.id || session?.user?.email?.replace(/[@.]/g, "_") || Date.now()}`;
+
+        const tossPayments = TossPayments(tossClientKey);
+        const paymentWidget = tossPayments.widgets({ customerKey });
+
+        await paymentWidget.setAmount({ value: paymentAmount, currency: "KRW" });
+        const methodWidget = await paymentWidget.renderPaymentMethods({
+          selector: "#cancel-payment-widget",
+          variantKey: "getkkul-live-toss",
+        });
+
+        paymentWidgetRef.current = paymentWidget;
+        paymentMethodWidgetRef.current = methodWidget;
+        setPaymentWidgetReady(true);
+        setPaymentWidgetError(null);
+      } catch (error) {
+        const errorMsg = error instanceof Error ? error.message : "위젯 초기화 실패";
+        console.error("Payment widget error:", error);
+        setPaymentWidgetError(errorMsg);
+      }
+    };
+
+    initializeWidget();
+
+    return () => {
+      try {
+        paymentMethodWidgetRef.current?.destroy?.();
+        paymentMethodWidgetRef.current = null;
+        paymentWidgetRef.current = null;
+      } catch (e) {
+        console.warn("Failed to cleanup payment widget:", e);
+      }
+    };
+  }, [showPaymentWidget, tossReady, paymentOrderId, paymentAmount, session?.user?.id, session?.user?.email]);
+
+  // 실제 결제 요청
+  const handleCancelPaymentRequest = async () => {
+    if (!paymentWidgetRef.current || !paymentOrderId) return;
 
     try {
-      const tossClientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
-      if (!tossClientKey) {
-        throw new Error("Toss Client Key not found");
-      }
+      setPaymentProcessing(true);
+      const customerName = session?.user?.name || session?.user?.email?.split('@')[0] || "고객";
+      const paymentId = `cancel-${paymentOrderId}-${Date.now()}`;
 
-      const TossPayments = (window as any).TossPayments;
-      if (!TossPayments) {
-        throw new Error("TossPayments SDK not loaded");
-      }
-
-      const tossPayments = TossPayments(tossClientKey);
-
-      // 주문 번호 생성 (중복 방지)
-      const paymentId = `cancel-${orderId}-${Date.now()}`;
-
-      await tossPayments.requestPayment('카드', {
-        amount: amount,
+      await paymentWidgetRef.current.requestPayment({
         orderId: paymentId,
         orderName: `[주문취소] 배송비 결제`,
-        customerName: session?.user?.name || "고객",
-        successUrl: `${window.location.origin}/api/orders/cancel/payment-success?originalOrderId=${orderId}`,
+        successUrl: `${window.location.origin}/api/orders/cancel/payment-success?originalOrderId=${paymentOrderId}`,
         failUrl: `${window.location.origin}/account/orders?error=payment_failed`,
+        customerEmail: session?.user?.email || "",
+        customerName: customerName,
       });
-
-    } catch (error) {
-      console.error("Payment request failed:", error);
-      alert(t("orders.payment_request_failed") || "결제 요청에 실패했습니다.");
-      setCancellingOrderId(null);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "";
+      if (!errorMessage.includes("취소")) {
+        console.error("Payment request failed:", error);
+        alert(t("orders.payment_request_failed") || "결제 요청에 실패했습니다.");
+      }
+    } finally {
+      setPaymentProcessing(false);
     }
+  };
+
+  // 결제 모달 닫기
+  const handleClosePaymentWidget = () => {
+    setShowPaymentWidget(false);
+    setPaymentWidgetReady(false);
+    setPaymentAmount(0);
+    setPaymentOrderId(null);
+    setCancellingOrderId(null);
+    paymentWidgetRef.current = null;
   };
 
   const OrderDetailsModal = () => {
@@ -1041,6 +1140,85 @@ export default function OrdersList({
           </div>
         )
       }
+
+      {/* 취소 결제 위젯 모달 */}
+      {showPaymentWidget && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg max-w-lg w-full max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between p-4 border-b">
+              <h3 className="text-lg font-semibold">
+                {t("orders.pay_shipping_fee") || "배송비 결제"}
+              </h3>
+              <button
+                onClick={handleClosePaymentWidget}
+                className="p-2 hover:bg-gray-100 rounded-full"
+              >
+                <FiX className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="p-4">
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
+                <p className="text-sm text-red-700 mb-2">
+                  {t("orders.deficit_payment_info") || "주문 금액이 왕복 택배비(6,000원)보다 적어 추가 결제가 필요합니다."}
+                </p>
+                <p className="text-lg font-bold text-red-600">
+                  {t("orders.payment_amount") || "결제 금액"}: ₩{paymentAmount.toLocaleString()}
+                </p>
+              </div>
+
+              {/* 토스 결제 위젯 렌더링 영역 */}
+              <div id="cancel-payment-widget" className="min-h-[200px]">
+                {!paymentWidgetReady && !paymentWidgetError && (
+                  <div className="flex items-center justify-center py-8">
+                    <FiLoader className="animate-spin text-2xl text-theme-color mr-2" />
+                    <span>{t("orders.loading_payment") || "결제 수단 로딩 중..."}</span>
+                  </div>
+                )}
+                {paymentWidgetError && (
+                  <div className="text-center py-8 text-red-500">
+                    <p>{paymentWidgetError}</p>
+                    <button
+                      onClick={() => {
+                        setPaymentWidgetError(null);
+                        setPaymentWidgetReady(false);
+                      }}
+                      className="mt-2 text-sm text-theme-color underline"
+                    >
+                      {t("common.retry") || "다시 시도"}
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex space-x-3 mt-4">
+                <button
+                  onClick={handleClosePaymentWidget}
+                  className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
+                >
+                  {t("common.cancel") || "취소"}
+                </button>
+                <button
+                  onClick={handleCancelPaymentRequest}
+                  disabled={!paymentWidgetReady || paymentProcessing}
+                  className="flex-1 px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700 disabled:opacity-50"
+                >
+                  {paymentProcessing
+                    ? (t("orders.processing") || "처리 중...")
+                    : (t("orders.pay_and_cancel") || "결제하고 취소하기")}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 토스페이먼츠 V2 SDK 로드 */}
+      <Script
+        src="https://js.tosspayments.com/v2/standard"
+        onLoad={() => setTossReady(true)}
+        strategy="afterInteractive"
+      />
     </div >
   );
 }

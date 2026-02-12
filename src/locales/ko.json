@@ -835,7 +835,12 @@
     "view_details": "상세 보기",
     "cancel_confirm_title": "주문 취소 확인",
     "refund_amount": "환불 예정 금액",
-    "deficit_notice": "단순 변심으로 인한 취소 시 왕복 택배비(6,000원)가 차감됩니다."
+    "deficit_notice": "단순 변심으로 인한 취소 시 왕복 택배비(6,000원)가 차감됩니다.",
+    "payment_request_failed": "결제 요청에 실패했습니다.",
+    "pay_shipping_fee": "배송비 결제",
+    "deficit_payment_info": "주문 금액이 왕복 택배비(6,000원)보다 적어 추가 결제가 필요합니다.",
+    "payment_amount": "결제 금액",
+    "loading_payment": "결제 수단 로딩 중..."
   },
   "reviews": {
     "my_reviews": "내 리뷰",
