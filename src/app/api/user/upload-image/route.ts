@@ -1,7 +1,28 @@
 export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
-// Firebase storage removed - using local file storage or cloud storage alternative
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+
+// R2 버킷 타입 정의
+interface R2Bucket {
+  put(
+    key: string,
+    value: ArrayBuffer | ReadableStream | string | null,
+    options?: {
+      httpMetadata?: {
+        contentType?: string;
+        cacheControl?: string;
+      };
+      customMetadata?: Record<string, string>;
+    }
+  ): Promise<unknown>;
+}
+
+// Cloudflare 환경 타입
+interface CloudflareEnv {
+  R2_BUCKET?: R2Bucket;
+  R2_PUBLIC_URL?: string;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -32,14 +53,50 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Firebase storage removed - return placeholder for now
-    // In production, implement cloud storage (AWS S3, Cloudinary, etc.)
+    // Cloudflare R2에 이미지 업로드
+    const { env } = getCloudflareContext() as { env: CloudflareEnv };
+
+    // R2 버킷이 바인딩되어 있는지 확인
+    if (!env.R2_BUCKET) {
+      console.error("R2_BUCKET binding not found");
+      return NextResponse.json(
+        { error: "Storage service not configured" },
+        { status: 503 }
+      );
+    }
+
+    // 파일명 생성: profiles/{email_hash}_{timestamp}.{ext}
+    const emailHash = await hashEmail(email);
+    const timestamp = Date.now();
+    const ext = file.name.split('.').pop() || 'jpg';
+    const key = `profiles/${emailHash}_${timestamp}.${ext}`;
+
+    // 파일을 ArrayBuffer로 변환
+    const arrayBuffer = await file.arrayBuffer();
+
+    // R2에 업로드
+    await env.R2_BUCKET.put(key, arrayBuffer, {
+      httpMetadata: {
+        contentType: file.type,
+        cacheControl: 'public, max-age=31536000', // 1년 캐시
+      },
+      customMetadata: {
+        email: email,
+        originalName: file.name,
+        uploadedAt: new Date().toISOString(),
+      },
+    });
+
+    // 공개 URL 생성
+    const publicUrl = env.R2_PUBLIC_URL
+      ? `${env.R2_PUBLIC_URL}/${key}`
+      : `https://images.getkkul.com/${key}`;
 
     return NextResponse.json({
-      success: false,
-      error: "Image upload service temporarily unavailable. Firebase storage has been removed.",
-      message: "Please implement alternative cloud storage solution",
-    }, { status: 501 });
+      success: true,
+      imageUrl: publicUrl,
+      key: key,
+    });
   } catch (error) {
     console.error("Image upload error:", error);
     return NextResponse.json(
@@ -50,4 +107,13 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+// 이메일을 해시하여 파일명에 사용 (개인정보 보호)
+async function hashEmail(email: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(email.toLowerCase());
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.slice(0, 8).map(b => b.toString(16).padStart(2, '0')).join('');
 }
