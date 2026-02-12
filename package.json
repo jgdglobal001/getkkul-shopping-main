@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.11.1",
+    "@cloudflare/next-on-pages": "^1.13.16",
     "@headlessui/react": "^2.2.7",
     "@neondatabase/serverless": "^1.0.2",
     "@opennextjs/cloudflare": "^1.14.4",
