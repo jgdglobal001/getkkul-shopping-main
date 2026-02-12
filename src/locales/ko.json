@@ -832,7 +832,10 @@
     "order_number": "주문번호",
     "order_date": "주문일자",
     "order_total": "총 결제 금액",
-    "view_details": "상세 보기"
+    "view_details": "상세 보기",
+    "cancel_confirm_title": "주문 취소 확인",
+    "refund_amount": "환불 예정 금액",
+    "deficit_notice": "단순 변심으로 인한 취소 시 왕복 택배비(6,000원)가 차감됩니다."
   },
   "reviews": {
     "my_reviews": "내 리뷰",
