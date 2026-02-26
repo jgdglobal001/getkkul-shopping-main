@@ -92,15 +92,21 @@ const CartSummary = ({ cart }: Props) => {
   // Ref to store the amount used during widget initialization
   const initializedAmountRef = useRef<number | null>(null);
 
+  // Ref to track widgetReady without causing re-renders in the effect
+  const widgetReadyRef = useRef(false);
+  useEffect(() => {
+    widgetReadyRef.current = widgetReady;
+  }, [widgetReady]);
+
   useEffect(() => {
     // FIX 1: Only trigger on showPaymentWidget, tossReady, and status changes
-    // Remove totalAmt, discountAmt, shippingCost from dependencies to prevent re-initialization on cart changes
-    if (!showPaymentWidget || !tossReady || widgetReady || initializingRef.current || status !== "authenticated") return;
+    // Remove session, widgetReady from dependencies to prevent re-initialization loop
+    if (!showPaymentWidget || !tossReady || widgetReadyRef.current || initializingRef.current || status !== "authenticated") return;
 
     let isMounted = true;
 
     const initializeWidget = async () => {
-      if (initializingRef.current) return;
+      if (initializingRef.current || widgetReadyRef.current) return;
       initializingRef.current = true;
 
       try {
@@ -123,6 +129,7 @@ const CartSummary = ({ cart }: Props) => {
           return;
         }
 
+        // Use session data via closure (session ref doesn't need to be a dependency)
         const customerKey = `customer_${session?.user?.id || session?.user?.email?.replace(/[@.]/g, "_") || Date.now()}`;
         // FIX 1: Use lockedAmount if available (for page refresh recovery), otherwise use current calculation
         const amount = lockedAmount ?? Math.round(totalAmt - discountAmt + shippingCost);
@@ -134,13 +141,23 @@ const CartSummary = ({ cart }: Props) => {
         // Cleanup existing widget if any
         if (paymentMethodWidgetRef.current) {
           try {
-            await paymentMethodWidgetRef.current.destroy();
+            if (typeof paymentMethodWidgetRef.current.destroy === 'function') {
+              await paymentMethodWidgetRef.current.destroy();
+            }
           } catch (e) {
             console.warn("Error destroying previous widget instance in CartSummary:", e);
           }
         }
 
         if (!isMounted) {
+          initializingRef.current = false;
+          return;
+        }
+
+        // Wait for DOM element to be available
+        const selectorEl = document.getElementById("payment-widget-cart");
+        if (!selectorEl) {
+          console.warn("CartSummary: #payment-widget-cart element not found, retrying...");
           initializingRef.current = false;
           return;
         }
@@ -152,16 +169,11 @@ const CartSummary = ({ cart }: Props) => {
           return;
         }
 
-        // Render payment methods UI and store promise for cleanup
-        const renderPromise = paymentWidget.renderPaymentMethods({
+        // Render payment methods UI
+        const paymentMethodsWidget = await paymentWidget.renderPaymentMethods({
           selector: "#payment-widget-cart",
           variantKey: process.env.NEXT_PUBLIC_TOSS_VARIANT_KEY || "DEFAULT",
         });
-
-        // Save promise to handle cleanup if unmount happens during render
-        (paymentMethodWidgetRef.current as any) = renderPromise;
-
-        const paymentMethodsWidget = await renderPromise;
 
         // If unmounted during await, destroy immediately
         if (!isMounted) {
@@ -194,24 +206,19 @@ const CartSummary = ({ cart }: Props) => {
       isMounted = false;
       initializingRef.current = false;
 
-      const widgetOrPromise = paymentMethodWidgetRef.current;
-      if (widgetOrPromise) {
-        // Handle both resolved widget and pending promise
-        if (typeof widgetOrPromise.destroy === 'function') {
-          widgetOrPromise.destroy().catch((e: any) => console.warn("Cleanup error in CartSummary:", e));
-        } else if (widgetOrPromise.then) {
-          widgetOrPromise.then((widget: any) => {
-            widget?.destroy().catch((e: any) => console.warn("Cleanup error in CartSummary (promise):", e));
-          }).catch(() => { });
-        }
+      const currentWidget = paymentMethodWidgetRef.current;
+      if (currentWidget && typeof currentWidget.destroy === 'function') {
+        currentWidget.destroy().catch((e: any) => console.warn("Cleanup error in CartSummary:", e));
         paymentMethodWidgetRef.current = null;
         paymentWidgetRef.current = null;
       }
       setWidgetReady(false);
     };
-    // FIX 1: Removed totalAmt, discountAmt, shippingCost from dependencies
+    // FIX: Removed session and widgetReady from dependencies to prevent infinite re-initialization loop
+    // - session: useSession() returns new object reference every render → triggers cleanup → loop
+    // - widgetReady: cleanup sets it to false → triggers effect again → loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showPaymentWidget, tossReady, widgetReady, session, status, lockedAmount]);
+  }, [showPaymentWidget, tossReady, status, lockedAmount]);
 
   const handleCheckout = async () => {
     if (!session?.user) {
