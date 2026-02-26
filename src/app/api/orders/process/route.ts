@@ -119,25 +119,27 @@ export async function POST(request: NextRequest) {
       id: newOrderId,
       orderId: orderData.orderId,
       userId: user.id,
-      userEmail: email,
       status: orderData.status,
       paymentStatus: orderData.paymentStatus,
       paymentMethod: orderData.paymentMethod,
       totalAmount: parseFloat(orderData.amount),
-      shippingAddress: orderData.shippingAddress ? JSON.stringify(orderData.shippingAddress) : null,
+      shippingAddress: orderData.shippingAddress ? JSON.stringify(orderData.shippingAddress) : {},
       createdAt: new Date(),
       updatedAt: new Date(),
     });
 
     // Create order items
     for (const item of orderData.items) {
+      const itemPrice = item.price || 0;
+      const itemQuantity = item.quantity || 1;
       await db.insert(orderItems).values({
         id: generateId(),
         orderId: newOrderId,
         productId: item.id || "",
         title: item.name || "",
-        quantity: item.quantity || 1,
-        price: item.price || 0,
+        quantity: itemQuantity,
+        price: itemPrice,
+        total: itemPrice * itemQuantity,
         image: item.images?.[0] || "",
       });
     }

@@ -185,7 +185,8 @@ test.describe('Inquiries Management Page Integration', () => {
       });
       
       const finalUrl = page.url();
-      expect(finalUrl).toContain('/account/admin/inquiries') || expect(finalUrl).toContain('/auth');
+      const isValidUrl = finalUrl.includes('/account/admin/inquiries') || finalUrl.includes('/auth');
+      expect(isValidUrl).toBeTruthy();
     }
   });
 });

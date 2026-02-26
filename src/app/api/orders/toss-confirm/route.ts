@@ -114,11 +114,11 @@ export async function POST(request: NextRequest) {
         id: newId,
         orderId,
         userId: user.id,
-        userEmail,
         status: ORDER_STATUSES.CONFIRMED,
         paymentStatus: PAYMENT_STATUSES.PAID,
         paymentMethod: PAYMENT_METHODS.TOSS,
         totalAmount: amount / 100,
+        shippingAddress: {},
         tossPaymentKey: paymentKey, // ⭐ 토스 결제 키 저장
         tossOrderId: orderId,       // ⭐ 토스 주문 ID 저장
         createdAt: new Date(),

@@ -115,7 +115,7 @@ export interface ProductFormClientProps {
 }
 
 // 기본 제출 데이터 타입
-export interface ProductSubmitData extends ProductFormData {
+export interface ProductSubmitData extends Omit<ProductFormData, 'price' | 'discountPercentage' | 'rating' | 'stock' | 'minimumOrderQuantity'> {
   price: number;
   discountPercentage: number;
   rating: number;

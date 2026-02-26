@@ -75,7 +75,7 @@ export function getUserDisplayRole(user: UserData | null): string {
     [USER_ROLES.USER]: "Customer",
   };
 
-  return roleDisplayMap[user.role] || user.role;
+  return roleDisplayMap[user.role || ""] || user.role || "Guest";
 }
 
 export const ROLE_PERMISSIONS = {

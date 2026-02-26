@@ -18,7 +18,7 @@ export default function RoleDashboardRedirect() {
       return;
     }
 
-    const userRole = session.user.role || "user";
+    const userRole = (session.user.role || "user") as import("@/lib/rbac/roles").UserRole;
     const dashboardRoute = getDefaultDashboardRoute(userRole);
     router.push(dashboardRoute);
   }, [session, status, router]);

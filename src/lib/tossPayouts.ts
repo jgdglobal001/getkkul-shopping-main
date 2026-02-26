@@ -8,7 +8,8 @@
  */
 
 import { CompactEncrypt, compactDecrypt } from 'jose';
-import { v4 as uuidv4 } from 'crypto';
+
+const uuidv4 = () => crypto.randomUUID();
 
 const TOSS_API_URL = 'https://api.tosspayments.com';
 

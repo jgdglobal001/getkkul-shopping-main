@@ -14,7 +14,7 @@ import {
   PaymentStatus,
   PaymentMethod,
 } from "@/lib/orderStatus";
-import { hasPermission } from "@/lib/rbac/permissions";
+import { hasPermission, UserRole } from "@/lib/rbac/permissions";
 import { db, users, orders, orderItems, products } from "@/lib/db";
 import { eq, desc, inArray } from "drizzle-orm";
 import { auth } from "../../../../auth";
@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const userRole = user.role || "user";
+    const userRole = (user.role || "user") as UserRole;
 
     // Check if user has permission to view orders
     if (!hasPermission(userRole, "orders", "read")) {
@@ -92,7 +92,6 @@ export async function GET(request: NextRequest) {
           .where(eq(orderItems.orderId, row.order.id));
 
         return {
-          id: row.order.id,
           ...row.order,
           createdAt: row.order.createdAt?.toISOString() || new Date().toISOString(),
           updatedAt: row.order.updatedAt?.toISOString() || new Date().toISOString(),
@@ -145,7 +144,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    const userRole = userResult[0].role || "user";
+    const userRole = (userResult[0].role || "user") as UserRole;
 
     // Check if user has permission to update orders
     if (!hasPermission(userRole, "orders", "update")) {
@@ -262,7 +261,6 @@ export async function POST(request: NextRequest) {
       id: newOrderId,
       orderId: `ORD-${Date.now()}`,
       userId: user.id,
-      userEmail: session.user.email,
       status: ORDER_STATUSES.PENDING,
       paymentStatus:
         orderData.paymentMethod === PAYMENT_METHODS.CASH

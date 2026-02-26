@@ -12,7 +12,7 @@ function generateId() {
 // POST: 질문에 답변 작성
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
@@ -24,7 +24,7 @@ export async function POST(
       );
     }
 
-    const questionId = await Promise.resolve(params.id);
+    const { id: questionId } = await params;
     const body = await request.json();
     const { answer } = body;
 
@@ -88,7 +88,7 @@ export async function POST(
 // DELETE: 답변 삭제
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await auth();
@@ -100,7 +100,7 @@ export async function DELETE(
       );
     }
 
-    const answerId = await Promise.resolve(params.id);
+    const { id: answerId } = await params;
 
     // 답변 삭제
     await db

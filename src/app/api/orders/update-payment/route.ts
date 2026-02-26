@@ -1,7 +1,7 @@
 export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
-import { db, orders } from "@/lib/db";
+import { db, orders, users } from "@/lib/db";
 import { eq, or } from "drizzle-orm";
 
 export async function POST(request: NextRequest) {
@@ -32,9 +32,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
-    // If email is provided, verify it matches the order's user email
-    if (email && order.userEmail !== email) {
-      return NextResponse.json({ error: "Order not found for this email" }, { status: 404 });
+    // If email is provided, verify it matches the order's user via userId
+    if (email) {
+      const userResult = await db.select({ id: users.id }).from(users).where(eq(users.email, email)).limit(1);
+      if (!userResult[0] || userResult[0].id !== order.userId) {
+        return NextResponse.json({ error: "Order not found for this email" }, { status: 404 });
+      }
     }
 
     // Update the order

@@ -7,12 +7,12 @@ import { eq } from "drizzle-orm";
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // TODO: Add proper authentication and permission checks
 
-    const orderId = params.id;
+    const { id: orderId } = await params;
     const body = await request.json();
     const { updates } = body;
 
@@ -52,12 +52,12 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // TODO: Add proper authentication and permission checks
 
-    const orderId = params.id;
+    const { id: orderId } = await params;
 
     if (!orderId) {
       return NextResponse.json({ error: "Order ID required" }, { status: 400 });
@@ -91,12 +91,12 @@ export async function DELETE(
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     // TODO: Add proper authentication and permission checks
 
-    const orderId = params.id;
+    const { id: orderId } = await params;
 
     if (!orderId) {
       return NextResponse.json({ error: "Order ID required" }, { status: 400 });

@@ -5,12 +5,12 @@ export const runtime = 'edge';
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import Container from "@/components/Container";
-import { getDefaultDashboardRoute, getRoleDisplayName } from "@/lib/rbac/roles";
+import { getDefaultDashboardRoute, getRoleDisplayName, type UserRole } from "@/lib/rbac/roles";
 import { FiAlertTriangle } from "react-icons/fi";
 
 export default function Unauthorized() {
   const { data: session } = useSession();
-  const userRole = session?.user?.role || "user";
+  const userRole = (session?.user?.role || "user") as UserRole;
   const defaultRoute = getDefaultDashboardRoute(userRole);
   const roleDisplayName = getRoleDisplayName(userRole);
 

@@ -34,7 +34,7 @@ export default function Naver<P extends NaverProfile>(
     token: "https://nid.naver.com/oauth2.0/token",
     userinfo: {
       url: "https://openapi.naver.com/v1/nid/me",
-      async request({ tokens, provider }) {
+      async request({ tokens, provider }: { tokens: any; provider: any }) {
         const response = await fetch(provider.userinfo?.url as string, {
           headers: {
             Authorization: `Bearer ${tokens.access_token}`,
@@ -54,12 +54,11 @@ export default function Naver<P extends NaverProfile>(
     },
     style: {
       logo: "/naver-logo.svg",
-      logoDark: "/naver-logo.svg",
       bg: "#03C75A",
       text: "#FFFFFF",
       bgDark: "#03C75A",
       textDark: "#FFFFFF",
-    },
+    } as any,
     options,
   };
 }

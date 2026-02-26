@@ -7,7 +7,8 @@ import {
   PAYMENT_STATUSES,
   PAYMENT_METHODS,
 } from "@/lib/orderStatus";
-import { db, orders, orderItems } from "@/lib/db";
+import { db, orders, orderItems, users } from "@/lib/db";
+import { eq } from "drizzle-orm";
 
 function generateId() {
   return `${Date.now().toString(36)}${Math.random().toString(36).substr(2, 9)}`;
@@ -124,29 +125,36 @@ export const POST = async (request: NextRequest) => {
         ) / 100
       );
 
+    // Look up user by email to get userId
+    const userResult = email ? await db.select({ id: users.id }).from(users).where(eq(users.email, email)).limit(1) : [];
+    const userId = userResult[0]?.id || "";
+
     const newOrderId = generateId();
     await db.insert(orders).values({
       id: newOrderId,
       orderId: orderId || `ORD-${Date.now()}`,
+      userId: userId,
       status: ORDER_STATUSES.PENDING,
       paymentStatus: PAYMENT_STATUSES.PENDING,
       paymentMethod: PAYMENT_METHODS.ONLINE,
       totalAmount: totalAmount,
-      shippingAddress: shippingAddress ? JSON.stringify(shippingAddress) : null,
-      userEmail: email,
+      shippingAddress: shippingAddress ? JSON.stringify(shippingAddress) : {},
       createdAt: new Date(),
       updatedAt: new Date(),
     });
 
     // Create order items
     for (const item of extractingItems) {
+      const itemPrice = (item.price_data.unit_amount || 0) / 100;
+      const itemQuantity = item.quantity || 1;
       await db.insert(orderItems).values({
         id: generateId(),
         orderId: newOrderId,
         productId: item.price_data.product_data.metadata.productId || "",
         title: item.price_data.product_data.name || "",
-        quantity: item.quantity || 1,
-        price: (item.price_data.unit_amount || 0) / 100,
+        quantity: itemQuantity,
+        price: itemPrice,
+        total: itemPrice * itemQuantity,
         image: item.price_data.product_data.images?.[0] || "",
       });
     }

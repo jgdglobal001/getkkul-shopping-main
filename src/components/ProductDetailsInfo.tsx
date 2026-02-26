@@ -1,7 +1,7 @@
 "use client";
 
 import { useTranslation } from "react-i18next";
-import { ProductType } from "@/type";
+import { ProductType } from "../../type";
 import PriceFormat from "./PriceFormat";
 
 interface ProductDetailsInfoProps {
@@ -15,7 +15,7 @@ export default function ProductDetailsInfo({ product }: ProductDetailsInfoProps)
     <div className="flex flex-col gap-2">
       <p className="text-green-600 font-semibold">
         <PriceFormat
-          amount={Math.round(product?.price * (product?.discountPercentage / 100))}
+          amount={Math.round(product?.price * ((product?.discountPercentage ?? 0) / 100))}
           className="text-base text-green-500"
         />
         {t("product.discount_message")}

@@ -4,16 +4,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import AddressManagement from "@/components/account/AddressManagement";
-
-interface Address {
-  id?: string;
-  street: string;
-  city: string;
-  state: string;
-  zipCode: string;
-  country: string;
-  isDefault?: boolean;
-}
+import { Address } from "../../../type";
 
 export default function AddressesClient() {
   const { data: session } = useSession();

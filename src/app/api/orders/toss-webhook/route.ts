@@ -109,12 +109,11 @@ export async function POST(request: NextRequest) {
         id: generateId(),
         orderId,
         userId: user.id,
-        userEmail,
         status: ORDER_STATUSES.CONFIRMED,
         paymentStatus: PAYMENT_STATUSES.PAID,
         paymentMethod: PAYMENT_METHODS.TOSS,
         totalAmount: amount / 100, // Toss sends amount in cents
-        shippingAddress: null,
+        shippingAddress: {},
         createdAt: new Date(),
         updatedAt: new Date(),
       }).returning();

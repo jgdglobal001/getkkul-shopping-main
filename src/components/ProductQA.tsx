@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useSession } from "next-auth/react";
-import { ProductType } from "@/type";
+import { ProductType } from "../../type";
 import { FiSend, FiUser, FiClock } from "react-icons/fi";
 import toast from "react-hot-toast";
 

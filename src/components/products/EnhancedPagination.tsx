@@ -58,10 +58,10 @@ const EnhancedPagination = ({
         sorted.sort((a, b) => b.price - a.price);
         break;
       case "rating":
-        sorted.sort((a, b) => b.rating - a.rating);
+        sorted.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
         break;
       case "newest":
-        sorted.sort((a, b) => b.id - a.id);
+        sorted.sort((a, b) => Number(b.id) - Number(a.id));
         break;
       case "name-az":
         sorted.sort((a, b) => a.title.localeCompare(b.title));
