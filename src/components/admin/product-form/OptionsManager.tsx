@@ -87,6 +87,27 @@ const OptionsManager: React.FC<OptionsManagerProps> = ({
     onFormDataChange({ options: newOptions, variants: [] });
   };
 
+  // 같은 옵션명의 값들을 하나로 병합
+  const mergeOptionsByName = (options: OptionDefinition[]): OptionDefinition[] => {
+    const merged = new Map<string, Set<string>>();
+    const order: string[] = [];
+
+    for (const opt of options) {
+      if (!merged.has(opt.name)) {
+        merged.set(opt.name, new Set());
+        order.push(opt.name);
+      }
+      for (const v of opt.values) {
+        merged.get(opt.name)!.add(v);
+      }
+    }
+
+    return order.map((name) => ({
+      name,
+      values: [...merged.get(name)!],
+    }));
+  };
+
   // 옵션 조합 생성 (기존 목록에 추가)
   const generateVariants = () => {
     const validOptions = formData.options.filter((opt) => opt.values.length > 0);
@@ -95,8 +116,11 @@ const OptionsManager: React.FC<OptionsManagerProps> = ({
       return;
     }
 
+    // 같은 옵션명이 있으면 값을 합쳐서 처리
+    const mergedOptions = mergeOptionsByName(validOptions);
+
     // 카테시안 곱으로 모든 조합 생성
-    const combinations = cartesianProduct(validOptions);
+    const combinations = cartesianProduct(mergedOptions);
 
     // 기존에 이미 존재하는 조합인지 확인 (중복 방지)
     const existingSignatures = new Set(
@@ -271,6 +295,9 @@ const OptionsManager: React.FC<OptionsManagerProps> = ({
                       <option key={name} value={name}>{name}</option>
                     ))}
                   </select>
+                  {formData.options.some((opt, i) => i !== index && opt.name === option.name && option.name !== "옵션명 직접입력") && (
+                    <p className="text-xs text-blue-500 mt-1">💡 같은 옵션명의 값들은 자동으로 합쳐져 조합됩니다.</p>
+                  )}
                   {!PRESET_OPTION_NAMES.includes(option.name) && (
                     <input
                       type="text"

@@ -157,12 +157,13 @@ export default function AddressManagement({
 
     setLoading(true);
     try {
+      const addressToDelete = addresses[index];
       const res = await fetch("/api/user/delete-address", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: session.user.email,
-          addressIndex: index,
+          addressId: addressToDelete.id,
         }),
       });
 
@@ -196,12 +197,8 @@ export default function AddressManagement({
   return (
     <>
       <div className="space-y-6">
-        {/* Header */}
-        <div className="flex justify-between items-center">
-          <div>
-            <h2 className="text-xl font-semibold">{t("account.manage_addresses")}</h2>
-            <p className="text-gray-500 text-sm">{t("account.manage_addresses_desc")}</p>
-          </div>
+        {/* Add Address Button */}
+        <div className="flex justify-end">
           <button
             onClick={() => setShowAddSidebar(true)}
             className="px-4 py-2 bg-theme-color text-white rounded-md hover:bg-theme-color/90 transition-colors"
