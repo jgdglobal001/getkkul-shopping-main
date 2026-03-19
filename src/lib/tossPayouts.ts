@@ -88,11 +88,11 @@ export interface PayoutResponse {
  * 지급대행 요청
  */
 export async function requestPayout(request: PayoutRequest): Promise<PayoutResponse> {
-  const secretKey = process.env.TOSS_SECRET_KEY;
+  const secretKey = process.env.TOSS_CORE_SECRET_KEY;
   const securityKey = process.env.TOSS_SECURITY_KEY;
   
   if (!secretKey || !securityKey) {
-    throw new Error('TOSS_SECRET_KEY or TOSS_SECURITY_KEY not configured');
+    throw new Error('TOSS_CORE_SECRET_KEY or TOSS_SECURITY_KEY not configured');
   }
   
   // JWE 암호화

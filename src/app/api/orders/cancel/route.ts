@@ -63,10 +63,10 @@ export async function POST(request: NextRequest) {
     // 2. 토스페이먼츠 결제 취소 요청 (tossPaymentKey가 있는 경우)
     // 6000원 미만 등으로 인해 환불 금액이 0인 경우 API 호출 스킵 (단, 주문 취소 상태는 반영)
     if (order.tossPaymentKey && (refundAmount === undefined || refundAmount > 0)) {
-      const secretKey = process.env.TOSS_SECRET_KEY;
+      const secretKey = process.env.TOSS_WIDGET_SECRET_KEY;
 
       if (!secretKey) {
-        console.error("[OrderCancel] TOSS_SECRET_KEY not configured");
+        console.error("[OrderCancel] TOSS_WIDGET_SECRET_KEY not configured");
         return NextResponse.json(
           { success: false, error: "결제 취소 설정 오류" },
           { status: 500 }

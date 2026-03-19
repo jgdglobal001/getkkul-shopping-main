@@ -22,9 +22,9 @@ export async function GET(request: NextRequest) {
         }
 
         // 1. 토스페이먼츠 결제 승인 요청
-        const secretKey = process.env.TOSS_SECRET_KEY;
+        const secretKey = process.env.TOSS_WIDGET_SECRET_KEY;
         if (!secretKey) {
-            console.error("TOSS_SECRET_KEY not found");
+            console.error("TOSS_WIDGET_SECRET_KEY not found");
             return NextResponse.json({ error: "Server configuration error" }, { status: 500 });
         }
 

@@ -20,7 +20,7 @@ export default function PaymentCallbackPage() {
                 const code = searchParams.get("code");
                 const errorMessage = searchParams.get("message");
 
-                // 실패한 경우
+                // 실패한 경우 (에러 코드가 있거나 메시지가 있는 경우)
                 if (code || errorMessage) {
                     setStatus("error");
                     setMessage(errorMessage || "카드 등록에 실패했습니다.");
@@ -30,43 +30,27 @@ export default function PaymentCallbackPage() {
                     return;
                 }
 
-                // 필수 파라미터 확인
-                if (!authKey || !customerKey) {
-                    setStatus("error");
-                    setMessage("필수 정보가 누락되었습니다.");
-                    setTimeout(() => {
-                        router.push("/account/payment?error=" + encodeURIComponent("필수 정보가 누락되었습니다."));
-                    }, 2000);
-                    return;
+                if (code && customerKey) {
+                    setMessage("토스페이먼츠 보안 인증을 마무리 중입니다...");
+                    const tokenResponse = await fetch("/api/toss/brandpay/access-token", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ code, customerKey }),
+                    });
+                    
+                    if (!tokenResponse.ok) {
+                        const errData = await tokenResponse.json();
+                        throw new Error(`보안 인증 실패: ${errData.message || "Access Token 발급 에러"}`);
+                    }
                 }
 
-                // 빌링키 발급 API 호출
-                const response = await fetch("/api/payment-methods/issue", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        authKey,
-                        customerKey,
-                    }),
-                });
+                // 브랜드페이는 성공 시 고객/카드를 토스가 직접 보관하므로 자체 DB 저장(API 호출) 불필요
+                setStatus("success");
+                setMessage("카드가 성공적으로 등록되었습니다!");
+                setTimeout(() => {
+                    router.push("/account/payment?success=true");
+                }, 1500);
 
-                const data = await response.json();
-
-                if (response.ok && data.success) {
-                    setStatus("success");
-                    setMessage("카드가 성공적으로 등록되었습니다!");
-                    setTimeout(() => {
-                        router.push("/account/payment?success=true");
-                    }, 1500);
-                } else {
-                    setStatus("error");
-                    setMessage(data.error || "카드 등록에 실패했습니다.");
-                    setTimeout(() => {
-                        router.push(`/account/payment?error=${encodeURIComponent(data.error || "카드 등록 실패")}`);
-                    }, 2000);
-                }
             } catch (error) {
                 console.error("Callback processing error:", error);
                 setStatus("error");

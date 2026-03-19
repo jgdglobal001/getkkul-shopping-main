@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 4. 잔액 확인 (지급 가능 금액 체크)
-    const secretKey = process.env.TOSS_SECRET_KEY;
+    const secretKey = process.env.TOSS_CORE_SECRET_KEY;
     if (secretKey) {
       try {
         const balanceResponse = await fetch("https://api.tosspayments.com/v2/balances", {

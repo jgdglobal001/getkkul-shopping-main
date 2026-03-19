@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 
     // Verify payment with Toss API
     const clientKey = process.env.TOSS_CLIENT_KEY;
-    const secretKey = process.env.TOSS_SECRET_KEY;
+    const secretKey = process.env.TOSS_WIDGET_SECRET_KEY;
 
     console.log("=== Toss Payment Verification ===");
     console.log("Client Key exists:", !!clientKey);

@@ -14,10 +14,10 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   try {
-    const secretKey = process.env.TOSS_SECRET_KEY;
+    const secretKey = process.env.TOSS_CORE_SECRET_KEY;
 
     if (!secretKey) {
-      console.error("[TossBalance] TOSS_SECRET_KEY not configured");
+      console.error("[TossBalance] TOSS_CORE_SECRET_KEY not configured");
       return NextResponse.json(
         { success: false, error: "Toss API key not configured" },
         { status: 500 }
