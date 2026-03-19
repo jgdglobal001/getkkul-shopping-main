@@ -1,699 +1,247 @@
-2026-03-19T07:21:54.54518Z	Cloning repository...
-2026-03-19T07:21:55.361128Z	From https://github.com/jgdglobal001/getkkul-shopping-main
-2026-03-19T07:21:55.361542Z	 * branch            1295e7ccbb65bdeb532369859f2608c2504567b4 -> FETCH_HEAD
-2026-03-19T07:21:55.36166Z	
-2026-03-19T07:21:55.440241Z	HEAD is now at 1295e7c NEXT_PUBLIC_TOSS_BRANDPAY_CLIENT_KEY 사용하도록 수정
-2026-03-19T07:21:55.440652Z	
-2026-03-19T07:21:55.478241Z	
-2026-03-19T07:21:55.478631Z	Using v2 root directory strategy
-2026-03-19T07:21:55.489655Z	Success: Finished cloning repository files
-2026-03-19T07:21:57.287061Z	Checking for configuration in a Wrangler configuration file (BETA)
-2026-03-19T07:21:57.287447Z	
-2026-03-19T07:21:57.287586Z	Found wrangler.toml file. Reading build configuration...
-2026-03-19T07:21:57.29416Z	pages_build_output_dir: .vercel/output/static
-2026-03-19T07:21:57.294298Z	Build environment variables: 
-2026-03-19T07:21:57.294352Z	  - NODE_ENV: production
-2026-03-19T07:21:57.294383Z	  - NEXT_PUBLIC_TOSS_CLIENT_KEY: live_gck_ex6BJGQOVDW0aeEX0X5X3W4w2zNb
-2026-03-19T07:21:57.294414Z	  - NEXT_PUBLIC_TOSS_VARIANT_KEY: getkkul-live-toss
-2026-03-19T07:21:57.294442Z	  - NEXT_PUBLIC_TOSS_SUCCESS_URL: https://www.getkkul.com/payment/success
-2026-03-19T07:21:57.2945Z	  - NEXT_PUBLIC_TOSS_FAIL_URL: https://www.getkkul.com/payment/fail
-2026-03-19T07:21:57.294533Z	  - NEXT_PUBLIC_FREE_SHIPPING_THRESHOLD: 29000
-2026-03-19T07:21:57.294559Z	  - NEXT_PUBLIC_TOSS_API_URL: https://api.tosspayments.com
-2026-03-19T07:21:57.294585Z	  - R2_PUBLIC_URL: https://images.getkkul.com
-2026-03-19T07:21:58.379008Z	Successfully read the Wrangler configuration file.
-2026-03-19T07:21:58.563909Z	Detected the following tools from environment: npm@10.9.2, nodejs@22.16.0
-2026-03-19T07:21:58.564475Z	Installing project dependencies: npm clean-install --progress=false
-2026-03-19T07:22:02.816703Z	npm warn deprecated path-match@1.2.4: This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions
-2026-03-19T07:22:04.066637Z	npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
-2026-03-19T07:22:04.332142Z	npm warn deprecated @types/bcryptjs@3.0.0: This is a stub types definition. bcryptjs provides its own type definitions, so you do not need this installed.
-2026-03-19T07:22:05.571854Z	npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
-2026-03-19T07:22:06.934071Z	npm warn deprecated @cloudflare/next-on-pages@1.13.16: Please use the OpenNext adapter instead: https://opennext.js.org/cloudflare
-2026-03-19T07:22:07.670567Z	npm warn deprecated tar@6.2.1: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
-2026-03-19T07:22:38.400498Z	
-2026-03-19T07:22:38.400805Z	added 1290 packages, and audited 1291 packages in 39s
-2026-03-19T07:22:38.400861Z	
-2026-03-19T07:22:38.400901Z	132 packages are looking for funding
-2026-03-19T07:22:38.400934Z	  run `npm fund` for details
-2026-03-19T07:22:38.641666Z	
-2026-03-19T07:22:38.642082Z	58 vulnerabilities (5 low, 15 moderate, 35 high, 3 critical)
-2026-03-19T07:22:38.642216Z	
-2026-03-19T07:22:38.642278Z	To address issues that do not require attention, run:
-2026-03-19T07:22:38.64234Z	  npm audit fix
-2026-03-19T07:22:38.642392Z	
-2026-03-19T07:22:38.642438Z	To address all issues possible, run:
-2026-03-19T07:22:38.642482Z	  npm audit fix --force
-2026-03-19T07:22:38.642512Z	
-2026-03-19T07:22:38.64254Z	Some issues need review, and may require choosing
-2026-03-19T07:22:38.642578Z	a different dependency.
-2026-03-19T07:22:38.642633Z	
-2026-03-19T07:22:38.642663Z	Run `npm audit` for details.
-2026-03-19T07:22:38.750532Z	Executing user command: npm run cf:build
-2026-03-19T07:22:38.987116Z	
-2026-03-19T07:22:38.987639Z	> shofy@0.1.0 cf:build
-2026-03-19T07:22:38.987737Z	> npx @cloudflare/next-on-pages
-2026-03-19T07:22:38.987783Z	
-2026-03-19T07:22:39.695961Z	⚡️ @cloudflare/next-on-pages CLI v.1.13.16
-2026-03-19T07:22:39.821135Z	⚡️ Detected Package Manager: npm (10.9.2)
-2026-03-19T07:22:39.821459Z	⚡️ Preparing project...
-2026-03-19T07:22:39.82381Z	⚡️ Project is ready
-2026-03-19T07:22:39.824368Z	⚡️ Building project...
-2026-03-19T07:22:40.463576Z	▲  Vercel CLI 47.0.4
-2026-03-19T07:22:40.467486Z	▲  > NOTE: The Vercel CLI now collects telemetry regarding usage of the CLI.
-2026-03-19T07:22:40.467625Z	▲  > This information is used to shape the CLI roadmap and prioritize features.
-2026-03-19T07:22:40.467695Z	▲  > You can learn more, including how to opt-out if you'd not like to participate in this program, by visiting the following URL:
-2026-03-19T07:22:40.467752Z	▲  > https://vercel.com/docs/cli/about-telemetry
-2026-03-19T07:22:40.559497Z	▲  WARN! Build not running on Vercel. System environment variables will not be available.
-2026-03-19T07:22:40.745185Z	▲  Installing dependencies...
-2026-03-19T07:22:44.382523Z	▲  added 207 packages in 4s
-2026-03-19T07:22:44.382795Z	▲  239 packages are looking for funding
-2026-03-19T07:22:44.382847Z	▲  run `npm fund` for details
-2026-03-19T07:22:44.40579Z	▲  Detected Next.js version: 15.4.8
-2026-03-19T07:22:44.41314Z	▲  Running "npm run build"
-2026-03-19T07:22:44.551541Z	▲  > shofy@0.1.0 build
-2026-03-19T07:22:44.551777Z	▲  > next build
-2026-03-19T07:22:45.075021Z	▲  Attention: Next.js now collects completely anonymous telemetry regarding usage.
-2026-03-19T07:22:45.075309Z	▲  This information is used to shape Next.js' roadmap and prioritize features.
-2026-03-19T07:22:45.075365Z	▲  You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
-2026-03-19T07:22:45.075405Z	▲  https://nextjs.org/telemetry
-2026-03-19T07:22:45.123442Z	▲  ▲ Next.js 15.4.8
-2026-03-19T07:22:45.17704Z	▲  Creating an optimized production build ...
-2026-03-19T07:23:30.029167Z	▲  ✓ Compiled successfully in 39.0s
-2026-03-19T07:23:30.033172Z	▲  Skipping validation of types
-2026-03-19T07:23:30.033347Z	▲  Linting ...
-2026-03-19T07:23:33.957042Z	▲  ./src/app/(user)/checkout/page.tsx
-2026-03-19T07:23:33.957282Z	▲  70:6  Warning: React Hook useCallback has an unnecessary dependency: 'status'. Either exclude it or remove the dependency array.  react-hooks/exhaustive-deps
-2026-03-19T07:23:33.957502Z	▲  
-2026-03-19T07:23:33.957554Z	▲  ./src/components/ProductStickyNav.tsx
-2026-03-19T07:23:33.957649Z	▲  13:11  Warning: The 'navItems' array makes the dependencies of useEffect Hook (at line 55) change on every render. To fix this, wrap the initialization of 'navItems' in its own useMemo() Hook.  react-hooks/exhaustive-deps
-2026-03-19T07:23:33.95776Z	▲  
-2026-03-19T07:23:33.9578Z	▲  ./src/components/account/OrdersList.tsx
-2026-03-19T07:23:33.957847Z	▲  126:6  Warning: React Hook useCallback has a missing dependency: 't'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
-2026-03-19T07:23:33.957883Z	▲  
-2026-03-19T07:23:33.957917Z	▲  ./src/components/account/ReviewsClient.tsx
-2026-03-19T07:23:33.957957Z	▲  31:6  Warning: React Hook useEffect has a missing dependency: 'fetchReviews'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
-2026-03-19T07:23:33.958004Z	▲  
-2026-03-19T07:23:33.958047Z	▲  info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
-2026-03-19T07:23:33.958104Z	▲  Collecting page data ...
-2026-03-19T07:23:34.486692Z	▲  ⚠ Using edge runtime on a page currently disables static generation for that page
-2026-03-19T07:23:35.998804Z	▲  Generating static pages (0/6) ...
-2026-03-19T07:23:36.587916Z	▲  Generating static pages (1/6) 
-2026-03-19T07:23:36.588271Z	▲  Generating static pages (2/6) 
-2026-03-19T07:23:36.588402Z	▲  Generating static pages (4/6)
-2026-03-19T07:23:38.166569Z	▲  ✓ Generating static pages (6/6)
-2026-03-19T07:23:39.209505Z	▲  Finalizing page optimization ...
-2026-03-19T07:23:39.20973Z	▲  Collecting build traces ...
-2026-03-19T07:23:42.497799Z	▲  
-2026-03-19T07:23:42.509452Z	▲  Route (app)                                    Size  First Load JS
-2026-03-19T07:23:42.50967Z	▲  ┌ ƒ /                                       4.77 kB         168 kB
-2026-03-19T07:23:42.509792Z	▲  ├ ƒ /_not-found                               276 B        99.9 kB
-2026-03-19T07:23:42.509846Z	▲  ├ ƒ /about                                    169 B         103 kB
-2026-03-19T07:23:42.509886Z	▲  ├ ƒ /account                                6.52 kB         153 kB
-2026-03-19T07:23:42.509918Z	▲  ├ ƒ /account/addresses                      4.98 kB         129 kB
-2026-03-19T07:23:42.50999Z	▲  ├ ƒ /account/admin                          5.27 kB         138 kB
-2026-03-19T07:23:42.51005Z	▲  ├ ƒ /account/admin/analytics                3.18 kB         122 kB
-2026-03-19T07:23:42.510097Z	▲  ├ ƒ /account/admin/categories               4.88 kB         122 kB
-2026-03-19T07:23:42.510138Z	▲  ├ ƒ /account/admin/inquiries                3.93 kB         126 kB
-2026-03-19T07:23:42.510184Z	▲  ├ ƒ /account/admin/orders                    7.3 kB         153 kB
-2026-03-19T07:23:42.510248Z	▲  ├ ƒ /account/admin/products                 5.12 kB         127 kB
-2026-03-19T07:23:42.510293Z	▲  ├ ƒ /account/admin/products/[id]            2.48 kB         173 kB
-2026-03-19T07:23:42.510323Z	▲  ├ ƒ /account/admin/products/[id]/edit         142 B         136 kB
-2026-03-19T07:23:42.510375Z	▲  ├ ƒ /account/admin/products/new               142 B         136 kB
-2026-03-19T07:23:42.510421Z	▲  ├ ƒ /account/admin/users                    6.61 kB         130 kB
-2026-03-19T07:23:42.510464Z	▲  ├ ƒ /account/notifications                    961 B         117 kB
-2026-03-19T07:23:42.51051Z	▲  ├ ƒ /account/orders                         11.5 kB         150 kB
-2026-03-19T07:23:42.510558Z	▲  ├ ƒ /account/orders/[id]                    5.74 kB         144 kB
-2026-03-19T07:23:42.510635Z	▲  ├ ƒ /account/payment                        3.23 kB         125 kB
-2026-03-19T07:23:42.510691Z	▲  ├ ƒ /account/payment/callback               2.38 kB         105 kB
-2026-03-19T07:23:42.510733Z	▲  ├ ƒ /account/profile                          276 B        99.9 kB
-2026-03-19T07:23:42.510769Z	▲  ├ ƒ /account/reviews                        3.65 kB         142 kB
-2026-03-19T07:23:42.510804Z	▲  ├ ƒ /account/settings                       2.75 kB         136 kB
-2026-03-19T07:23:42.510849Z	▲  ├ ƒ /api/admin/analytics                      276 B        99.9 kB
-2026-03-19T07:23:42.510891Z	▲  ├ ƒ /api/admin/categories                     276 B        99.9 kB
-2026-03-19T07:23:42.510931Z	▲  ├ ƒ /api/admin/categories/[id]                276 B        99.9 kB
-2026-03-19T07:23:42.510958Z	▲  ├ ƒ /api/admin/categories/migrate             276 B        99.9 kB
-2026-03-19T07:23:42.51099Z	▲  ├ ƒ /api/admin/dashboard/recent-orders        276 B        99.9 kB
-2026-03-19T07:23:42.511026Z	▲  ├ ƒ /api/admin/dashboard/stats                276 B        99.9 kB
-2026-03-19T07:23:42.511052Z	▲  ├ ƒ /api/admin/inquiries                      276 B        99.9 kB
-2026-03-19T07:23:42.511078Z	▲  ├ ƒ /api/admin/inquiries/[id]                 276 B        99.9 kB
-2026-03-19T07:23:42.511104Z	▲  ├ ƒ /api/admin/orders                         276 B        99.9 kB
-2026-03-19T07:23:42.511129Z	▲  ├ ƒ /api/admin/orders/[id]                    276 B        99.9 kB
-2026-03-19T07:23:42.511155Z	▲  ├ ƒ /api/admin/orders/bulk-delete             276 B        99.9 kB
-2026-03-19T07:23:42.511183Z	▲  ├ ƒ /api/admin/orders/bulk-delete-selected    276 B        99.9 kB
-2026-03-19T07:23:42.511211Z	▲  ├ ƒ /api/admin/products                       276 B        99.9 kB
-2026-03-19T07:23:42.511241Z	▲  ├ ƒ /api/admin/products/[id]                  276 B        99.9 kB
-2026-03-19T07:23:42.511281Z	▲  ├ ƒ /api/admin/setup                          276 B        99.9 kB
-2026-03-19T07:23:42.511316Z	▲  ├ ƒ /api/admin/stats                          276 B        99.9 kB
-2026-03-19T07:23:42.511366Z	▲  ├ ƒ /api/admin/users                          276 B        99.9 kB
-2026-03-19T07:23:42.511414Z	▲  ├ ƒ /api/admin/users/bulk-delete              276 B        99.9 kB
-2026-03-19T07:23:42.51146Z	▲  ├ ƒ /api/auth/[...nextauth]                   276 B        99.9 kB
-2026-03-19T07:23:42.5115Z	▲  ├ ƒ /api/auth/register                        276 B        99.9 kB
-2026-03-19T07:23:42.511543Z	▲  ├ ƒ /api/auth/update-password                 276 B        99.9 kB
-2026-03-19T07:23:42.511585Z	▲  ├ ƒ /api/categories                           276 B        99.9 kB
-2026-03-19T07:23:42.511616Z	▲  ├ ƒ /api/checkout                             276 B        99.9 kB
-2026-03-19T07:23:42.511656Z	▲  ├ ƒ /api/orders                               276 B        99.9 kB
-2026-03-19T07:23:42.511687Z	▲  ├ ƒ /api/orders/[orderId]/cancel-pending      276 B        99.9 kB
-2026-03-19T07:23:42.511738Z	▲  ├ ƒ /api/orders/cancel                        276 B        99.9 kB
-2026-03-19T07:23:42.511776Z	▲  ├ ƒ /api/orders/cancel/payment-success        276 B        99.9 kB
-2026-03-19T07:23:42.511803Z	▲  ├ ƒ /api/orders/place                         276 B        99.9 kB
-2026-03-19T07:23:42.511832Z	▲  ├ ƒ /api/orders/process                       276 B        99.9 kB
-2026-03-19T07:23:42.511869Z	▲  ├ ƒ /api/orders/toss-confirm                  276 B        99.9 kB
-2026-03-19T07:23:42.511916Z	▲  ├ ƒ /api/orders/toss-webhook                  276 B        99.9 kB
-2026-03-19T07:23:42.511957Z	▲  ├ ƒ /api/orders/update-payment                276 B        99.9 kB
-2026-03-19T07:23:42.511995Z	▲  ├ ƒ /api/payouts/request                      276 B        99.9 kB
-2026-03-19T07:23:42.512037Z	▲  ├ ƒ /api/product-questions                    276 B        99.9 kB
-2026-03-19T07:23:42.512081Z	▲  ├ ƒ /api/products                             276 B        99.9 kB
-2026-03-19T07:23:42.512126Z	▲  ├ ƒ /api/products/search                      276 B        99.9 kB
-2026-03-19T07:23:42.512223Z	▲  ├ ƒ /api/seller                               276 B        99.9 kB
-2026-03-19T07:23:42.51227Z	▲  ├ ƒ /api/toss/balance                         276 B        99.9 kB
-2026-03-19T07:23:42.512313Z	▲  ├ ƒ /api/toss/brandpay/access-token           276 B        99.9 kB
-2026-03-19T07:23:42.512374Z	▲  ├ ƒ /api/user/[id]                            276 B        99.9 kB
-2026-03-19T07:23:42.512407Z	▲  ├ ƒ /api/user/delete-address                  276 B        99.9 kB
-2026-03-19T07:23:42.512433Z	▲  ├ ƒ /api/user/orders                          276 B        99.9 kB
-2026-03-19T07:23:42.512468Z	▲  ├ ƒ /api/user/profile                         276 B        99.9 kB
-2026-03-19T07:23:42.512496Z	▲  ├ ƒ /api/user/reviews                         276 B        99.9 kB
-2026-03-19T07:23:42.512535Z	▲  ├ ƒ /api/user/upload-image                    276 B        99.9 kB
-2026-03-19T07:23:42.512578Z	▲  ├ ○ /apple-icon.png                             0 B            0 B
-2026-03-19T07:23:42.512606Z	▲  ├ ƒ /auth/error                             1.31 kB         104 kB
-2026-03-19T07:23:42.512636Z	▲  ├ ƒ /auth/register                          2.42 kB         124 kB
-2026-03-19T07:23:42.512801Z	▲  ├ ƒ /auth/signin                            2.46 kB         124 kB
-2026-03-19T07:23:42.512858Z	▲  ├ ƒ /auth/welcome                           6.95 kB         121 kB
-2026-03-19T07:23:42.512889Z	▲  ├ ƒ /cancel                                   648 B         111 kB
-2026-03-19T07:23:42.512918Z	▲  ├ ƒ /cart                                   10.8 kB         174 kB
-2026-03-19T07:23:42.512955Z	▲  ├ ƒ /categories                             4.63 kB         132 kB
-2026-03-19T07:23:42.512984Z	▲  ├ ƒ /checkout                               6.88 kB         145 kB
-2026-03-19T07:23:42.513094Z	▲  ├ ƒ /contact                                  276 B        99.9 kB
-2026-03-19T07:23:42.513126Z	▲  ├ ƒ /customer-service                         169 B         103 kB
-2026-03-19T07:23:42.513153Z	▲  ├ ƒ /dashboard                              1.09 kB         104 kB
-2026-03-19T07:23:42.513179Z	▲  ├ ƒ /delivery                                 580 B         100 kB
-2026-03-19T07:23:42.513204Z	▲  ├ ƒ /delivery-dashboard                     3.73 kB         112 kB
-2026-03-19T07:23:42.51323Z	▲  ├ ƒ /faqs                                   4.87 kB         115 kB
-2026-03-19T07:23:42.513256Z	▲  ├ ƒ /favorite                               3.62 kB         157 kB
-2026-03-19T07:23:42.513284Z	▲  ├ ○ /icon.png                                   0 B            0 B
-2026-03-19T07:23:42.51331Z	▲  ├ ƒ /inquiry                                  276 B        99.9 kB
-2026-03-19T07:23:42.513336Z	▲  ├ ƒ /offers                                 2.73 kB         203 kB
-2026-03-19T07:23:42.513379Z	▲  ├ ƒ /orders/[id]                              276 B        99.9 kB
-2026-03-19T07:23:42.513412Z	▲  ├ ƒ /packer-dashboard                       5.67 kB         140 kB
-2026-03-19T07:23:42.513438Z	▲  ├ ƒ /payment/fail                           2.31 kB         108 kB
-2026-03-19T07:23:42.513464Z	▲  ├ ƒ /payment/success                        2.28 kB         120 kB
-2026-03-19T07:23:42.513489Z	▲  ├ ƒ /privacy-policy                           276 B        99.9 kB
-2026-03-19T07:23:42.513515Z	▲  ├ ƒ /products                               6.25 kB         204 kB
-2026-03-19T07:23:42.513542Z	▲  ├ ƒ /products/[id]                            204 B         171 kB
-2026-03-19T07:23:42.513572Z	▲  ├ ○ /robots.txt                               276 B        99.9 kB
-2026-03-19T07:23:42.513598Z	▲  ├ ○ /sitemap.xml                              276 B        99.9 kB
-2026-03-19T07:23:42.51363Z	▲  ├ ƒ /success                                3.83 kB         135 kB
-2026-03-19T07:23:42.513659Z	▲  ├ ƒ /terms-of-service                         276 B        99.9 kB
-2026-03-19T07:23:42.513693Z	▲  ├ ƒ /unauthorized                           2.17 kB         119 kB
-2026-03-19T07:23:42.513721Z	▲  └ ƒ /user-dashboard                          4.2 kB         121 kB
-2026-03-19T07:23:42.513756Z	▲  + First Load JS shared by all               99.6 kB
-2026-03-19T07:23:42.513798Z	▲  ├ chunks/4bd1b696-602635ee57868870.js     54.1 kB
-2026-03-19T07:23:42.51384Z	▲  ├ chunks/5964-455cec4068509000.js         43.5 kB
-2026-03-19T07:23:42.513877Z	▲  └ other shared chunks (total)             1.95 kB
-2026-03-19T07:23:42.513908Z	▲  ○  (Static)   prerendered as static content
-2026-03-19T07:23:42.513944Z	▲  ƒ  (Dynamic)  server-rendered on demand
-2026-03-19T07:23:42.556998Z	▲  > shofy@0.1.0 postbuild
-2026-03-19T07:23:42.557208Z	▲  > next-sitemap
-2026-03-19T07:23:42.651842Z	▲  ✨ [next-sitemap] Loading next-sitemap config: file:///opt/buildhome/repo/next-sitemap.config.js
-2026-03-19T07:23:42.658022Z	▲  ✅ [next-sitemap] Generation completed
-2026-03-19T07:23:42.658519Z	▲  ┌───────────────┬────────┐
-2026-03-19T07:23:42.658621Z	▲  │ (index)       │ Values │
-2026-03-19T07:23:42.658671Z	▲  ├───────────────┼────────┤
-2026-03-19T07:23:42.658706Z	▲  │ indexSitemaps │ 0      │
-2026-03-19T07:23:42.658735Z	▲  │ sitemaps      │ 1      │
-2026-03-19T07:23:42.658762Z	▲  └───────────────┴────────┘
-2026-03-19T07:23:42.658794Z	▲  -----------------------------------------------------
-2026-03-19T07:23:42.6589Z	▲  SITEMAPS 
-2026-03-19T07:23:42.658932Z	▲  -----------------------------------------------------
-2026-03-19T07:23:42.658985Z	▲  
-2026-03-19T07:23:42.659031Z	▲    ○ https://www.getkkul.com/sitemap.xml
-2026-03-19T07:23:42.6591Z	▲  
-2026-03-19T07:23:42.98524Z	▲  Traced Next.js server files in: 225.648ms
-2026-03-19T07:23:43.050935Z	▲  Created all serverless functions in: 65.552ms
-2026-03-19T07:23:55.639462Z	▲  Collected static files (public/, static/, .next/static): 16.427ms
-2026-03-19T07:23:56.397453Z	▲  Build Completed in .vercel/output [1m]
-2026-03-19T07:23:56.654797Z	⚡️ Completed `npx vercel build`.
-2026-03-19T07:24:49.257595Z	
-2026-03-19T07:24:49.257994Z	⚡️ Build Summary (@cloudflare/next-on-pages v1.13.16)
-2026-03-19T07:24:49.258179Z	⚡️ 
-2026-03-19T07:24:49.25823Z	⚡️ Edge Function Routes (96)
-2026-03-19T07:24:49.258265Z	⚡️   ┌ /
-2026-03-19T07:24:49.258329Z	⚡️   ├ /_not-found
-2026-03-19T07:24:49.258367Z	⚡️   ├ /about
-2026-03-19T07:24:49.258424Z	⚡️   ├ /account
-2026-03-19T07:24:49.258473Z	⚡️   ├ /account/addresses
-2026-03-19T07:24:49.259406Z	⚡️   ├ /account/admin
-2026-03-19T07:24:49.259486Z	⚡️   ├ /account/admin/analytics
-2026-03-19T07:24:49.259529Z	⚡️   ├ /account/admin/categories
-2026-03-19T07:24:49.259564Z	⚡️   ├ /account/admin/inquiries
-2026-03-19T07:24:49.259685Z	⚡️   ├ /account/admin/orders
-2026-03-19T07:24:49.259777Z	⚡️   ├ /account/admin/products
-2026-03-19T07:24:49.259827Z	⚡️   ├ /account/admin/products/[id]
-2026-03-19T07:24:49.259861Z	⚡️   ├ /account/admin/products/[id]/edit
-2026-03-19T07:24:49.259892Z	⚡️   ├ /account/admin/products/new
-2026-03-19T07:24:49.259922Z	⚡️   ├ /account/admin/users
-2026-03-19T07:24:49.259955Z	⚡️   ├ /account/notifications
-2026-03-19T07:24:49.259981Z	⚡️   ├ /account/orders
-2026-03-19T07:24:49.260074Z	⚡️   ├ /account/orders/[id]
-2026-03-19T07:24:49.260127Z	⚡️   ├ /account/payment
-2026-03-19T07:24:49.260163Z	⚡️   ├ /account/payment/callback
-2026-03-19T07:24:49.260195Z	⚡️   ├ /account/profile
-2026-03-19T07:24:49.260225Z	⚡️   ├ /account/reviews
-2026-03-19T07:24:49.260254Z	⚡️   ├ /account/settings
-2026-03-19T07:24:49.260284Z	⚡️   ├ /api/admin/analytics
-2026-03-19T07:24:49.260314Z	⚡️   ├ /api/admin/categories
-2026-03-19T07:24:49.260344Z	⚡️   ├ /api/admin/categories/[id]
-2026-03-19T07:24:49.260374Z	⚡️   ├ /api/admin/categories/migrate
-2026-03-19T07:24:49.260444Z	⚡️   ├ /api/admin/dashboard/recent-orders
-2026-03-19T07:24:49.260478Z	⚡️   ├ /api/admin/dashboard/stats
-2026-03-19T07:24:49.260511Z	⚡️   ├ /api/admin/inquiries
-2026-03-19T07:24:49.260537Z	⚡️   ├ /api/admin/inquiries/[id]
-2026-03-19T07:24:49.260563Z	⚡️   ├ /api/admin/orders
-2026-03-19T07:24:49.260588Z	⚡️   ├ /api/admin/orders/[id]
-2026-03-19T07:24:49.2607Z	⚡️   ├ /api/admin/orders/bulk-delete
-2026-03-19T07:24:49.26073Z	⚡️   ├ /api/admin/orders/bulk-delete-selected
-2026-03-19T07:24:49.260764Z	⚡️   ├ /api/admin/products
-2026-03-19T07:24:49.260795Z	⚡️   ├ /api/admin/products/[id]
-2026-03-19T07:24:49.260821Z	⚡️   ├ /api/admin/setup
-2026-03-19T07:24:49.260846Z	⚡️   ├ /api/admin/stats
-2026-03-19T07:24:49.260904Z	⚡️   ├ /api/admin/users
-2026-03-19T07:24:49.260958Z	⚡️   ├ /api/admin/users/bulk-delete
-2026-03-19T07:24:49.261006Z	⚡️   ├ /api/auth/[...nextauth]
-2026-03-19T07:24:49.261051Z	⚡️   ├ /api/auth/register
-2026-03-19T07:24:49.261094Z	⚡️   ├ /api/auth/update-password
-2026-03-19T07:24:49.26114Z	⚡️   ├ /api/categories
-2026-03-19T07:24:49.261184Z	⚡️   ├ /api/checkout
-2026-03-19T07:24:49.261225Z	⚡️   ├ /api/orders
-2026-03-19T07:24:49.261269Z	⚡️   ├ /api/orders/[orderId]/cancel-pending
-2026-03-19T07:24:49.261311Z	⚡️   ├ /api/orders/cancel
-2026-03-19T07:24:49.261353Z	⚡️   ├ /api/orders/cancel/payment-success
-2026-03-19T07:24:49.261404Z	⚡️   ├ /api/orders/place
-2026-03-19T07:24:49.26145Z	⚡️   ├ /api/orders/process
-2026-03-19T07:24:49.261524Z	⚡️   ├ /api/orders/toss-confirm
-2026-03-19T07:24:49.261557Z	⚡️   ├ /api/orders/toss-webhook
-2026-03-19T07:24:49.261678Z	⚡️   ├ /api/orders/update-payment
-2026-03-19T07:24:49.261773Z	⚡️   ├ /api/payouts/request
-2026-03-19T07:24:49.261845Z	⚡️   ├ /api/product-questions
-2026-03-19T07:24:49.261898Z	⚡️   ├ /api/products
-2026-03-19T07:24:49.261956Z	⚡️   ├ /api/products/search
-2026-03-19T07:24:49.262018Z	⚡️   ├ /api/seller
-2026-03-19T07:24:49.262135Z	⚡️   ├ /api/toss/balance
-2026-03-19T07:24:49.262271Z	⚡️   ├ /api/toss/brandpay/access-token
-2026-03-19T07:24:49.262411Z	⚡️   ├ /api/user/[id]
-2026-03-19T07:24:49.262507Z	⚡️   ├ /api/user/delete-address
-2026-03-19T07:24:49.262573Z	⚡️   ├ /api/user/orders
-2026-03-19T07:24:49.262654Z	⚡️   ├ /api/user/profile
-2026-03-19T07:24:49.262691Z	⚡️   ├ /api/user/reviews
-2026-03-19T07:24:49.262722Z	⚡️   ├ /api/user/upload-image
-2026-03-19T07:24:49.262759Z	⚡️   ├ /auth/error
-2026-03-19T07:24:49.262812Z	⚡️   ├ /auth/register
-2026-03-19T07:24:49.262859Z	⚡️   ├ /auth/signin
-2026-03-19T07:24:49.262893Z	⚡️   ├ /auth/welcome
-2026-03-19T07:24:49.262931Z	⚡️   ├ /cancel
-2026-03-19T07:24:49.263057Z	⚡️   ├ /cart
-2026-03-19T07:24:49.263103Z	⚡️   ├ /categories
-2026-03-19T07:24:49.263149Z	⚡️   ├ /checkout
-2026-03-19T07:24:49.263181Z	⚡️   ├ /contact
-2026-03-19T07:24:49.26324Z	⚡️   ├ /customer-service
-2026-03-19T07:24:49.263296Z	⚡️   ├ /dashboard
-2026-03-19T07:24:49.26333Z	⚡️   ├ /delivery
-2026-03-19T07:24:49.26336Z	⚡️   ├ /delivery-dashboard
-2026-03-19T07:24:49.263398Z	⚡️   ├ /faqs
-2026-03-19T07:24:49.26343Z	⚡️   ├ /favorite
-2026-03-19T07:24:49.263487Z	⚡️   ├ /inquiry
-2026-03-19T07:24:49.263518Z	⚡️   ├ /offers
-2026-03-19T07:24:49.263557Z	⚡️   ├ /orders/[id]
-2026-03-19T07:24:49.263604Z	⚡️   ├ /packer-dashboard
-2026-03-19T07:24:49.26364Z	⚡️   ├ /payment/fail
-2026-03-19T07:24:49.26367Z	⚡️   ├ /payment/success
-2026-03-19T07:24:49.263699Z	⚡️   ├ /privacy-policy
-2026-03-19T07:24:49.26373Z	⚡️   ├ /products
-2026-03-19T07:24:49.263779Z	⚡️   ├ /products/[id]
-2026-03-19T07:24:49.263832Z	⚡️   ├ /success
-2026-03-19T07:24:49.263866Z	⚡️   ├ /terms-of-service
-2026-03-19T07:24:49.263896Z	⚡️   ├ /unauthorized
-2026-03-19T07:24:49.263925Z	⚡️   └ /user-dashboard
-2026-03-19T07:24:49.263955Z	⚡️ 
-2026-03-19T07:24:49.263985Z	⚡️ Prerendered Routes (4)
-2026-03-19T07:24:49.264018Z	⚡️   ┌ /apple-icon.png
-2026-03-19T07:24:49.264048Z	⚡️   ├ /icon.png
-2026-03-19T07:24:49.264082Z	⚡️   ├ /robots.txt
-2026-03-19T07:24:49.264207Z	⚡️   └ /sitemap.xml
-2026-03-19T07:24:49.264282Z	⚡️ 
-2026-03-19T07:24:49.264342Z	⚡️ Other Static Assets (187)
-2026-03-19T07:24:49.264404Z	⚡️   ┌ /_app.rsc.json
-2026-03-19T07:24:49.264459Z	⚡️   ├ /_document.rsc.json
-2026-03-19T07:24:49.264559Z	⚡️   ├ /_error.rsc.json
-2026-03-19T07:24:49.264606Z	⚡️   ├ /_redirects
-2026-03-19T07:24:49.264638Z	⚡️   └ ... 183 more
-2026-03-19T07:24:49.264667Z	
-2026-03-19T07:24:49.277147Z	⚡️ Build log saved to '.vercel/output/static/_worker.js/nop-build-log.json'
-2026-03-19T07:24:49.277445Z	⚡️ Generated '.vercel/output/static/_worker.js/index.js'.
-2026-03-19T07:24:49.277549Z	⚡️ Build completed in 52.62s
-2026-03-19T07:24:49.485889Z	Finished
-2026-03-19T07:24:50.136956Z	Checking for configuration in a Wrangler configuration file (BETA)
-2026-03-19T07:24:50.137367Z	
-2026-03-19T07:24:50.137451Z	Found wrangler.toml file. Reading build configuration...
-2026-03-19T07:24:50.142431Z	pages_build_output_dir: .vercel/output/static
-2026-03-19T07:24:50.142672Z	Build environment variables: 
-2026-03-19T07:24:50.142879Z	  - NODE_ENV: production
-2026-03-19T07:24:50.142955Z	  - NEXT_PUBLIC_TOSS_CLIENT_KEY: live_gck_ex6BJGQOVDW0aeEX0X5X3W4w2zNb
-2026-03-19T07:24:50.143002Z	  - NEXT_PUBLIC_TOSS_VARIANT_KEY: getkkul-live-toss
-2026-03-19T07:24:50.143043Z	  - NEXT_PUBLIC_TOSS_SUCCESS_URL: https://www.getkkul.com/payment/success
-2026-03-19T07:24:50.143071Z	  - NEXT_PUBLIC_TOSS_FAIL_URL: https://www.getkkul.com/payment/fail
-2026-03-19T07:24:50.143102Z	  - NEXT_PUBLIC_FREE_SHIPPING_THRESHOLD: 29000
-2026-03-19T07:24:50.14313Z	  - NEXT_PUBLIC_TOSS_API_URL: https://api.tosspayments.com
-2026-03-19T07:24:50.143155Z	  - R2_PUBLIC_URL: https://images.getkkul.com
-2026-03-19T07:24:51.228911Z	Successfully read the Wrangler configuration file.
-2026-03-19T07:24:51.22998Z	Found _worker.js in output directory. Uploading.
-2026-03-19T07:24:51.235962Z	 ⛅️ wrangler 3.101.0
-2026-03-19T07:24:51.236153Z	-------------------
-2026-03-19T07:24:51.885792Z	Attaching additional modules:
-2026-03-19T07:24:51.917347Z	┌────────────────────────────────────────────────────────────────────────────────┬──────┬──────────────┐
-2026-03-19T07:24:51.91773Z	│ Name                                                                           │ Type │ Size         │
-2026-03-19T07:24:51.917926Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.918002Z	│ __next-on-pages-dist__/cache/adaptor.js                                        │ esm  │ 2.29 KiB     │
-2026-03-19T07:24:51.918045Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.918091Z	│ __next-on-pages-dist__/cache/cache-api.js                                      │ esm  │ 0.43 KiB     │
-2026-03-19T07:24:51.918128Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.918206Z	│ __next-on-pages-dist__/cache/kv.js                                             │ esm  │ 0.35 KiB     │
-2026-03-19T07:24:51.918253Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.918333Z	│ __next-on-pages-dist__/functions/_not-found.func.js                            │ esm  │ 86.55 KiB    │
-2026-03-19T07:24:51.918402Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.918469Z	│ __next-on-pages-dist__/functions/about.func.js                                 │ esm  │ 98.12 KiB    │
-2026-03-19T07:24:51.918507Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.918562Z	│ __next-on-pages-dist__/functions/account/addresses.func.js                     │ esm  │ 101.89 KiB   │
-2026-03-19T07:24:51.918648Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.918687Z	│ __next-on-pages-dist__/functions/account/admin/analytics.func.js               │ esm  │ 102.27 KiB   │
-2026-03-19T07:24:51.91872Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.918753Z	│ __next-on-pages-dist__/functions/account/admin/categories.func.js              │ esm  │ 107.43 KiB   │
-2026-03-19T07:24:51.918791Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.918824Z	│ __next-on-pages-dist__/functions/account/admin/inquiries.func.js               │ esm  │ 101.24 KiB   │
-2026-03-19T07:24:51.918855Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.918887Z	│ __next-on-pages-dist__/functions/account/admin/orders.func.js                  │ esm  │ 121.33 KiB   │
-2026-03-19T07:24:51.918923Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.918976Z	│ __next-on-pages-dist__/functions/account/admin/products/[id]/edit.func.js      │ esm  │ 96.94 KiB    │
-2026-03-19T07:24:51.919012Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.919044Z	│ __next-on-pages-dist__/functions/account/admin/products/[id].func.js           │ esm  │ 102.00 KiB   │
-2026-03-19T07:24:51.919074Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.919105Z	│ __next-on-pages-dist__/functions/account/admin/products/new.func.js            │ esm  │ 95.88 KiB    │
-2026-03-19T07:24:51.919139Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.91917Z	│ __next-on-pages-dist__/functions/account/admin/products.func.js                │ esm  │ 106.19 KiB   │
-2026-03-19T07:24:51.919203Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.919235Z	│ __next-on-pages-dist__/functions/account/admin/users.func.js                   │ esm  │ 120.79 KiB   │
-2026-03-19T07:24:51.919265Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.919305Z	│ __next-on-pages-dist__/functions/account/admin.func.js                         │ esm  │ 109.77 KiB   │
-2026-03-19T07:24:51.919378Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.919421Z	│ __next-on-pages-dist__/functions/account/notifications.func.js                 │ esm  │ 99.58 KiB    │
-2026-03-19T07:24:51.919453Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.919578Z	│ __next-on-pages-dist__/functions/account/orders/[id].func.js                   │ esm  │ 107.29 KiB   │
-2026-03-19T07:24:51.919621Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.919656Z	│ __next-on-pages-dist__/functions/account/orders.func.js                        │ esm  │ 125.16 KiB   │
-2026-03-19T07:24:51.91969Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.919725Z	│ __next-on-pages-dist__/functions/account/payment/callback.func.js              │ esm  │ 97.44 KiB    │
-2026-03-19T07:24:51.919762Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.919795Z	│ __next-on-pages-dist__/functions/account/payment.func.js                       │ esm  │ 99.75 KiB    │
-2026-03-19T07:24:51.919847Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.919888Z	│ __next-on-pages-dist__/functions/account/profile.func.js                       │ esm  │ 94.45 KiB    │
-2026-03-19T07:24:51.919921Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.919957Z	│ __next-on-pages-dist__/functions/account/reviews.func.js                       │ esm  │ 99.58 KiB    │
-2026-03-19T07:24:51.919988Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.920018Z	│ __next-on-pages-dist__/functions/account/settings.func.js                      │ esm  │ 98.56 KiB    │
-2026-03-19T07:24:51.920059Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.92019Z	│ __next-on-pages-dist__/functions/account.func.js                               │ esm  │ 108.55 KiB   │
-2026-03-19T07:24:51.920262Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.9203Z	│ __next-on-pages-dist__/functions/api/admin/analytics.func.js                   │ esm  │ 75.47 KiB    │
-2026-03-19T07:24:51.920333Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.920389Z	│ __next-on-pages-dist__/functions/api/admin/categories/[id].func.js             │ esm  │ 75.77 KiB    │
-2026-03-19T07:24:51.920425Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.920483Z	│ __next-on-pages-dist__/functions/api/admin/categories/migrate.func.js          │ esm  │ 77.63 KiB    │
-2026-03-19T07:24:51.920595Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.920683Z	│ __next-on-pages-dist__/functions/api/admin/categories.func.js                  │ esm  │ 74.70 KiB    │
-2026-03-19T07:24:51.920722Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.92076Z	│ __next-on-pages-dist__/functions/api/admin/dashboard/recent-orders.func.js     │ esm  │ 72.93 KiB    │
-2026-03-19T07:24:51.920799Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.921005Z	│ __next-on-pages-dist__/functions/api/admin/dashboard/stats.func.js             │ esm  │ 72.99 KiB    │
-2026-03-19T07:24:51.921171Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.921261Z	│ __next-on-pages-dist__/functions/api/admin/inquiries/[id].func.js              │ esm  │ 74.91 KiB    │
-2026-03-19T07:24:51.92133Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.921368Z	│ __next-on-pages-dist__/functions/api/admin/inquiries.func.js                   │ esm  │ 74.54 KiB    │
-2026-03-19T07:24:51.921419Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.921452Z	│ __next-on-pages-dist__/functions/api/admin/orders/[id].func.js                 │ esm  │ 73.41 KiB    │
-2026-03-19T07:24:51.921486Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.921525Z	│ __next-on-pages-dist__/functions/api/admin/orders/bulk-delete-selected.func.js │ esm  │ 72.39 KiB    │
-2026-03-19T07:24:51.921586Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.921626Z	│ __next-on-pages-dist__/functions/api/admin/orders/bulk-delete.func.js          │ esm  │ 74.52 KiB    │
-2026-03-19T07:24:51.92168Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.921718Z	│ __next-on-pages-dist__/functions/api/admin/orders.func.js                      │ esm  │ 75.37 KiB    │
-2026-03-19T07:24:51.921754Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.921787Z	│ __next-on-pages-dist__/functions/api/admin/products/[id].func.js               │ esm  │ 75.47 KiB    │
-2026-03-19T07:24:51.921821Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.921851Z	│ __next-on-pages-dist__/functions/api/admin/products.func.js                    │ esm  │ 74.43 KiB    │
-2026-03-19T07:24:51.921882Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.921918Z	│ __next-on-pages-dist__/functions/api/admin/setup.func.js                       │ esm  │ 71.84 KiB    │
-2026-03-19T07:24:51.921949Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.921986Z	│ __next-on-pages-dist__/functions/api/admin/stats.func.js                       │ esm  │ 72.30 KiB    │
-2026-03-19T07:24:51.922046Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.922082Z	│ __next-on-pages-dist__/functions/api/admin/users/bulk-delete.func.js           │ esm  │ 72.03 KiB    │
-2026-03-19T07:24:51.922119Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.922151Z	│ __next-on-pages-dist__/functions/api/admin/users.func.js                       │ esm  │ 72.99 KiB    │
-2026-03-19T07:24:51.922182Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.922214Z	│ __next-on-pages-dist__/functions/api/auth/[...nextauth].func.js                │ esm  │ 73.09 KiB    │
-2026-03-19T07:24:51.922245Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.92229Z	│ __next-on-pages-dist__/functions/api/auth/register.func.js                     │ esm  │ 72.61 KiB    │
-2026-03-19T07:24:51.922327Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.922368Z	│ __next-on-pages-dist__/functions/api/auth/update-password.func.js              │ esm  │ 72.81 KiB    │
-2026-03-19T07:24:51.922551Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.922692Z	│ __next-on-pages-dist__/functions/api/categories.func.js                        │ esm  │ 72.09 KiB    │
-2026-03-19T07:24:51.922763Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.922832Z	│ __next-on-pages-dist__/functions/api/checkout.func.js                          │ esm  │ 75.54 KiB    │
-2026-03-19T07:24:51.92287Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.922912Z	│ __next-on-pages-dist__/functions/api/orders/[orderId]/cancel-pending.func.js   │ esm  │ 75.05 KiB    │
-2026-03-19T07:24:51.922979Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.92302Z	│ __next-on-pages-dist__/functions/api/orders/cancel/payment-success.func.js     │ esm  │ 73.56 KiB    │
-2026-03-19T07:24:51.923048Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.923075Z	│ __next-on-pages-dist__/functions/api/orders/cancel.func.js                     │ esm  │ 74.37 KiB    │
-2026-03-19T07:24:51.923101Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.923128Z	│ __next-on-pages-dist__/functions/api/orders/place.func.js                      │ esm  │ 72.66 KiB    │
-2026-03-19T07:24:51.923154Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.923181Z	│ __next-on-pages-dist__/functions/api/orders/process.func.js                    │ esm  │ 75.76 KiB    │
-2026-03-19T07:24:51.923207Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.923275Z	│ __next-on-pages-dist__/functions/api/orders/toss-confirm.func.js               │ esm  │ 75.48 KiB    │
-2026-03-19T07:24:51.923307Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.92336Z	│ __next-on-pages-dist__/functions/api/orders/toss-webhook.func.js               │ esm  │ 73.62 KiB    │
-2026-03-19T07:24:51.92341Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.923438Z	│ __next-on-pages-dist__/functions/api/orders/update-payment.func.js             │ esm  │ 72.39 KiB    │
-2026-03-19T07:24:51.923495Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.92354Z	│ __next-on-pages-dist__/functions/api/orders.func.js                            │ esm  │ 76.98 KiB    │
-2026-03-19T07:24:51.923572Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.923607Z	│ __next-on-pages-dist__/functions/api/payouts/request.func.js                   │ esm  │ 76.25 KiB    │
-2026-03-19T07:24:51.923637Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.923668Z	│ __next-on-pages-dist__/functions/api/product-questions.func.js                 │ esm  │ 75.21 KiB    │
-2026-03-19T07:24:51.923749Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.923809Z	│ __next-on-pages-dist__/functions/api/products/search.func.js                   │ esm  │ 72.28 KiB    │
-2026-03-19T07:24:51.923859Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.923891Z	│ __next-on-pages-dist__/functions/api/products.func.js                          │ esm  │ 72.25 KiB    │
-2026-03-19T07:24:51.923918Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.923945Z	│ __next-on-pages-dist__/functions/api/seller.func.js                            │ esm  │ 72.17 KiB    │
-2026-03-19T07:24:51.923971Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.923998Z	│ __next-on-pages-dist__/functions/api/toss/balance.func.js                      │ esm  │ 71.32 KiB    │
-2026-03-19T07:24:51.924034Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.924102Z	│ __next-on-pages-dist__/functions/api/toss/brandpay/access-token.func.js        │ esm  │ 71.32 KiB    │
-2026-03-19T07:24:51.924163Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.924216Z	│ __next-on-pages-dist__/functions/api/user/[id].func.js                         │ esm  │ 73.40 KiB    │
-2026-03-19T07:24:51.924267Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.924322Z	│ __next-on-pages-dist__/functions/api/user/delete-address.func.js               │ esm  │ 72.12 KiB    │
-2026-03-19T07:24:51.924412Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.924477Z	│ __next-on-pages-dist__/functions/api/user/orders.func.js                       │ esm  │ 73.66 KiB    │
-2026-03-19T07:24:51.924531Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.924599Z	│ __next-on-pages-dist__/functions/api/user/profile.func.js                      │ esm  │ 77.33 KiB    │
-2026-03-19T07:24:51.924662Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.924713Z	│ __next-on-pages-dist__/functions/api/user/reviews.func.js                      │ esm  │ 74.57 KiB    │
-2026-03-19T07:24:51.92477Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.924822Z	│ __next-on-pages-dist__/functions/api/user/upload-image.func.js                 │ esm  │ 74.15 KiB    │
-2026-03-19T07:24:51.925293Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.92548Z	│ __next-on-pages-dist__/functions/auth/error.func.js                            │ esm  │ 90.16 KiB    │
-2026-03-19T07:24:51.925639Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.925797Z	│ __next-on-pages-dist__/functions/auth/register.func.js                         │ esm  │ 87.86 KiB    │
-2026-03-19T07:24:51.925966Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.926112Z	│ __next-on-pages-dist__/functions/auth/signin.func.js                           │ esm  │ 87.91 KiB    │
-2026-03-19T07:24:51.926207Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.926312Z	│ __next-on-pages-dist__/functions/auth/welcome.func.js                          │ esm  │ 102.22 KiB   │
-2026-03-19T07:24:51.926349Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.92639Z	│ __next-on-pages-dist__/functions/cancel.func.js                                │ esm  │ 94.20 KiB    │
-2026-03-19T07:24:51.926422Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.926474Z	│ __next-on-pages-dist__/functions/cart.func.js                                  │ esm  │ 121.81 KiB   │
-2026-03-19T07:24:51.926517Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.926545Z	│ __next-on-pages-dist__/functions/categories.func.js                            │ esm  │ 108.24 KiB   │
-2026-03-19T07:24:51.926581Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.926634Z	│ __next-on-pages-dist__/functions/checkout.func.js                              │ esm  │ 110.31 KiB   │
-2026-03-19T07:24:51.926799Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.926878Z	│ __next-on-pages-dist__/functions/contact.func.js                               │ esm  │ 99.98 KiB    │
-2026-03-19T07:24:51.92691Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.926938Z	│ __next-on-pages-dist__/functions/customer-service.func.js                      │ esm  │ 95.90 KiB    │
-2026-03-19T07:24:51.926965Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.926992Z	│ __next-on-pages-dist__/functions/dashboard.func.js                             │ esm  │ 88.10 KiB    │
-2026-03-19T07:24:51.927018Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.927045Z	│ __next-on-pages-dist__/functions/delivery-dashboard.func.js                    │ esm  │ 99.88 KiB    │
-2026-03-19T07:24:51.927074Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.927107Z	│ __next-on-pages-dist__/functions/delivery.func.js                              │ esm  │ 88.72 KiB    │
-2026-03-19T07:24:51.927135Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.927161Z	│ __next-on-pages-dist__/functions/faqs.func.js                                  │ esm  │ 107.09 KiB   │
-2026-03-19T07:24:51.92719Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.927218Z	│ __next-on-pages-dist__/functions/favorite.func.js                              │ esm  │ 99.98 KiB    │
-2026-03-19T07:24:51.927249Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.927283Z	│ __next-on-pages-dist__/functions/index.func.js                                 │ esm  │ 112.75 KiB   │
-2026-03-19T07:24:51.927324Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.927364Z	│ __next-on-pages-dist__/functions/inquiry.func.js                               │ esm  │ 104.85 KiB   │
-2026-03-19T07:24:51.927458Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.927525Z	│ __next-on-pages-dist__/functions/offers.func.js                                │ esm  │ 117.56 KiB   │
-2026-03-19T07:24:51.927572Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.927682Z	│ __next-on-pages-dist__/functions/orders/[id].func.js                           │ esm  │ 92.78 KiB    │
-2026-03-19T07:24:51.927729Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.927758Z	│ __next-on-pages-dist__/functions/packer-dashboard.func.js                      │ esm  │ 97.26 KiB    │
-2026-03-19T07:24:51.927797Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.927835Z	│ __next-on-pages-dist__/functions/payment/fail.func.js                          │ esm  │ 89.87 KiB    │
-2026-03-19T07:24:51.927873Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.927903Z	│ __next-on-pages-dist__/functions/payment/success.func.js                       │ esm  │ 92.25 KiB    │
-2026-03-19T07:24:51.927929Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.92796Z	│ __next-on-pages-dist__/functions/privacy-policy.func.js                        │ esm  │ 100.52 KiB   │
-2026-03-19T07:24:51.927988Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.928019Z	│ __next-on-pages-dist__/functions/products/[id].func.js                         │ esm  │ 100.70 KiB   │
-2026-03-19T07:24:51.928052Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.92808Z	│ __next-on-pages-dist__/functions/products.func.js                              │ esm  │ 122.24 KiB   │
-2026-03-19T07:24:51.928112Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.928155Z	│ __next-on-pages-dist__/functions/success.func.js                               │ esm  │ 98.76 KiB    │
-2026-03-19T07:24:51.928235Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.928269Z	│ __next-on-pages-dist__/functions/terms-of-service.func.js                      │ esm  │ 100.73 KiB   │
-2026-03-19T07:24:51.928295Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.928327Z	│ __next-on-pages-dist__/functions/unauthorized.func.js                          │ esm  │ 90.31 KiB    │
-2026-03-19T07:24:51.928386Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.928467Z	│ __next-on-pages-dist__/functions/user-dashboard.func.js                        │ esm  │ 100.81 KiB   │
-2026-03-19T07:24:51.928499Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.928526Z	│ __next-on-pages-dist__/manifest/88a389dd6c068190adb2efc795e4063c.js            │ esm  │ 0.37 KiB     │
-2026-03-19T07:24:51.928552Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.928602Z	│ __next-on-pages-dist__/webpack/0385af1aa1c88b836674212e2838fe7f.js             │ esm  │ 131.70 KiB   │
-2026-03-19T07:24:51.928667Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.928727Z	│ __next-on-pages-dist__/webpack/12124.js                                        │ esm  │ 0.59 KiB     │
-2026-03-19T07:24:51.928799Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.928881Z	│ __next-on-pages-dist__/webpack/1bb29baca62882b58897f27bb3176515.js             │ esm  │ 120.77 KiB   │
-2026-03-19T07:24:51.928943Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.92906Z	│ __next-on-pages-dist__/webpack/22433.js                                        │ esm  │ 11.52 KiB    │
-2026-03-19T07:24:51.929116Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.929153Z	│ __next-on-pages-dist__/webpack/24835.js                                        │ esm  │ 0.19 KiB     │
-2026-03-19T07:24:51.929203Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.929282Z	│ __next-on-pages-dist__/webpack/25071.js                                        │ esm  │ 0.28 KiB     │
-2026-03-19T07:24:51.929341Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.929402Z	│ __next-on-pages-dist__/webpack/30373.js                                        │ esm  │ 1.31 KiB     │
-2026-03-19T07:24:51.92945Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.929503Z	│ __next-on-pages-dist__/webpack/31b9246a6de304325abab70ff5b47844.js             │ esm  │ 7.73 KiB     │
-2026-03-19T07:24:51.929562Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.929616Z	│ __next-on-pages-dist__/webpack/326310beb581d7c39280c6d76e314012.js             │ esm  │ 88.36 KiB    │
-2026-03-19T07:24:51.929651Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.929716Z	│ __next-on-pages-dist__/webpack/34559.js                                        │ esm  │ 0.50 KiB     │
-2026-03-19T07:24:51.92975Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.929783Z	│ __next-on-pages-dist__/webpack/34619.js                                        │ esm  │ 0.26 KiB     │
-2026-03-19T07:24:51.929814Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.92985Z	│ __next-on-pages-dist__/webpack/34956.js                                        │ esm  │ 0.13 KiB     │
-2026-03-19T07:24:51.929887Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.929918Z	│ __next-on-pages-dist__/webpack/37553.js                                        │ esm  │ 35.93 KiB    │
-2026-03-19T07:24:51.92995Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.929982Z	│ __next-on-pages-dist__/webpack/383c4a4182f4f62a32b738374da33b73.js             │ esm  │ 3.88 KiB     │
-2026-03-19T07:24:51.930064Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.9301Z	│ __next-on-pages-dist__/webpack/42091.js                                        │ esm  │ 0.99 KiB     │
-2026-03-19T07:24:51.930138Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.93018Z	│ __next-on-pages-dist__/webpack/42322.js                                        │ esm  │ 0.26 KiB     │
-2026-03-19T07:24:51.930213Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.930254Z	│ __next-on-pages-dist__/webpack/46791.js                                        │ esm  │ 2.17 KiB     │
-2026-03-19T07:24:51.930297Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.930346Z	│ __next-on-pages-dist__/webpack/47055.js                                        │ esm  │ 20.40 KiB    │
-2026-03-19T07:24:51.930399Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.930438Z	│ __next-on-pages-dist__/webpack/49705.js                                        │ esm  │ 2.31 KiB     │
-2026-03-19T07:24:51.930477Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.930511Z	│ __next-on-pages-dist__/webpack/54401.js                                        │ esm  │ 0.49 KiB     │
-2026-03-19T07:24:51.930541Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.930582Z	│ __next-on-pages-dist__/webpack/57f6ec9f336ee144fc2a910d7e789db9.js             │ esm  │ 0.10 KiB     │
-2026-03-19T07:24:51.930704Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.930778Z	│ __next-on-pages-dist__/webpack/58322.js                                        │ esm  │ 1.20 KiB     │
-2026-03-19T07:24:51.930832Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.930882Z	│ __next-on-pages-dist__/webpack/6133.js                                         │ esm  │ 0.21 KiB     │
-2026-03-19T07:24:51.931038Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.9311Z	│ __next-on-pages-dist__/webpack/67870.js                                        │ esm  │ 2.02 KiB     │
-2026-03-19T07:24:51.931149Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.931182Z	│ __next-on-pages-dist__/webpack/688.js                                          │ esm  │ 2.54 KiB     │
-2026-03-19T07:24:51.931209Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.931236Z	│ __next-on-pages-dist__/webpack/71476.js                                        │ esm  │ 0.54 KiB     │
-2026-03-19T07:24:51.931268Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.9313Z	│ __next-on-pages-dist__/webpack/71620.js                                        │ esm  │ 0.57 KiB     │
-2026-03-19T07:24:51.931335Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.931367Z	│ __next-on-pages-dist__/webpack/72235.js                                        │ esm  │ 1.15 KiB     │
-2026-03-19T07:24:51.931444Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.931492Z	│ __next-on-pages-dist__/webpack/72912.js                                        │ esm  │ 0.41 KiB     │
-2026-03-19T07:24:51.931533Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.931575Z	│ __next-on-pages-dist__/webpack/76468.js                                        │ esm  │ 0.15 KiB     │
-2026-03-19T07:24:51.931606Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.931637Z	│ __next-on-pages-dist__/webpack/7694.js                                         │ esm  │ 0.26 KiB     │
-2026-03-19T07:24:51.931672Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.931703Z	│ __next-on-pages-dist__/webpack/77486.js                                        │ esm  │ 1.59 KiB     │
-2026-03-19T07:24:51.931734Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.931765Z	│ __next-on-pages-dist__/webpack/83222.js                                        │ esm  │ 1.59 KiB     │
-2026-03-19T07:24:51.931804Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.93185Z	│ __next-on-pages-dist__/webpack/83583.js                                        │ esm  │ 9.54 KiB     │
-2026-03-19T07:24:51.931893Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.931926Z	│ __next-on-pages-dist__/webpack/8370409d69c91cc595283b4ab95c7a3c.js             │ esm  │ 927.01 KiB   │
-2026-03-19T07:24:51.931959Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.931989Z	│ __next-on-pages-dist__/webpack/83823.js                                        │ esm  │ 0.20 KiB     │
-2026-03-19T07:24:51.932025Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.932057Z	│ __next-on-pages-dist__/webpack/84320.js                                        │ esm  │ 23.76 KiB    │
-2026-03-19T07:24:51.932087Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.932117Z	│ __next-on-pages-dist__/webpack/84826.js                                        │ esm  │ 5.39 KiB     │
-2026-03-19T07:24:51.932149Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.932179Z	│ __next-on-pages-dist__/webpack/89684.js                                        │ esm  │ 0.21 KiB     │
-2026-03-19T07:24:51.93221Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.932246Z	│ __next-on-pages-dist__/webpack/a0d8bd9d07384d1902c980b1166d52b2.js             │ esm  │ 3.65 KiB     │
-2026-03-19T07:24:51.932281Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.93235Z	│ __next-on-pages-dist__/webpack/aeb13d47d755feb020f0e788a5f99e9c.js             │ esm  │ 6.70 KiB     │
-2026-03-19T07:24:51.93245Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.932549Z	│ __next-on-pages-dist__/webpack/ba4cc6e5612b893450be06625a2573f3.js             │ esm  │ 63.87 KiB    │
-2026-03-19T07:24:51.93261Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.932721Z	│ __next-on-pages-dist__/webpack/ce4d4dcb175965ad829fc444e46b3fa5.js             │ esm  │ 0.19 KiB     │
-2026-03-19T07:24:51.932818Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.932931Z	│ __next-on-pages-dist__/webpack/d1851f84b204d67c8fd85b147de99a10.js             │ esm  │ 34.50 KiB    │
-2026-03-19T07:24:51.932991Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.933059Z	│ __next-on-pages-dist__/webpack/d28f23e36ff1e58ab4e9315eb63dfe03.js             │ esm  │ 3.85 KiB     │
-2026-03-19T07:24:51.933099Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.933145Z	│ __next-on-pages-dist__/webpack/dacdd8e1c6437ba913520400ba196347.js             │ esm  │ 241.27 KiB   │
-2026-03-19T07:24:51.933184Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.933218Z	│ __next-on-pages-dist__/webpack/dcd7c6755a26288904becbb735897125.js             │ esm  │ 21.13 KiB    │
-2026-03-19T07:24:51.933253Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.933286Z	│ __next-on-pages-dist__/webpack/e1f182f776392ab9fffa9a690636be28.js             │ esm  │ 184.98 KiB   │
-2026-03-19T07:24:51.933317Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.933348Z	│ __next-on-pages-dist__/webpack/e2276215ed038e1b00111ec81a20eb53.js             │ esm  │ 19.25 KiB    │
-2026-03-19T07:24:51.933388Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.933421Z	│ __next-on-pages-dist__/webpack/f7a907d7d00998585c89b6f3a2701d36.js             │ esm  │ 156.78 KiB   │
-2026-03-19T07:24:51.933452Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.933488Z	│ __next-on-pages-dist__/webpack/f80c53104201ab9272b6e9f05ce8e28a.js             │ esm  │ 108.82 KiB   │
-2026-03-19T07:24:51.933524Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.933556Z	│ __next-on-pages-dist__/webpack/fcf90d52e63650c834d53720f283c688.js             │ esm  │ 1.17 KiB     │
-2026-03-19T07:24:51.933587Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.974453Z	│ __next-on-pages-dist__/webpack/fdc708bd8b6746b2147c39925548a28d.js             │ esm  │ 62.91 KiB    │
-2026-03-19T07:24:51.97477Z	├────────────────────────────────────────────────────────────────────────────────┼──────┼──────────────┤
-2026-03-19T07:24:51.974855Z	│ Total (153 modules)                                                            │      │ 10830.97 KiB │
-2026-03-19T07:24:51.974904Z	└────────────────────────────────────────────────────────────────────────────────┴──────┴──────────────┘
-2026-03-19T07:24:52.034318Z	✨ Compiled Worker successfully
-2026-03-19T07:24:53.240525Z	Found _routes.json in output directory. Uploading.
-2026-03-19T07:24:53.248448Z	Validating asset output directory
-2026-03-19T07:24:59.929643Z	Deploying your site to Cloudflare's global network...
-2026-03-19T07:25:05.480565Z	Parsed 7 valid redirect rules.
-2026-03-19T07:25:05.480881Z	Info: the redirect rule /login → 301 /auth/signin could be made more performant by bringing it above any lines with splats or placeholders.
-2026-03-19T07:25:05.480959Z	Info: the redirect rule /register → 301 /auth/register could be made more performant by bringing it above any lines with splats or placeholders.
-2026-03-19T07:25:05.48101Z	Info: the redirect rule /signup → 301 /auth/register could be made more performant by bringing it above any lines with splats or placeholders.
-2026-03-19T07:25:05.48105Z	Info: the redirect rule /dashboard → 301 /user-dashboard could be made more performant by bringing it above any lines with splats or placeholders.
-2026-03-19T07:25:05.481255Z	Info: the redirect rule /profile → 301 /account could be made more performant by bringing it above any lines with splats or placeholders.
-2026-03-19T07:25:05.481348Z	Parsed 6 valid header rules.
-2026-03-19T07:25:07.006208Z	Uploading... (189/191)
-2026-03-19T07:25:07.431051Z	Uploading... (190/191)
-2026-03-19T07:25:08.204333Z	Uploading... (191/191)
-2026-03-19T07:25:08.204646Z	✨ Success! Uploaded 2 files (189 already uploaded) (1.95 sec)
-2026-03-19T07:25:08.204714Z	
-2026-03-19T07:25:09.115809Z	✨ Upload complete!
-2026-03-19T07:25:13.614586Z	Success: Assets published!
-2026-03-19T07:25:20.204352Z	Success: Your site was deployed!
+2026-03-19T08:15:37.47187Z	Cloning repository...
+2026-03-19T08:15:38.047753Z	From https://github.com/jgdglobal001/getkkul-shopping-main
+2026-03-19T08:15:38.048083Z	 * branch            5381eb00f5d9b2c03c782cf0f22b9da1fe10181b -> FETCH_HEAD
+2026-03-19T08:15:38.048156Z	
+2026-03-19T08:15:38.120445Z	HEAD is now at 5381eb0 콜백 경로 미들웨어 제외
+2026-03-19T08:15:38.120702Z	
+2026-03-19T08:15:38.160426Z	
+2026-03-19T08:15:38.160703Z	Using v2 root directory strategy
+2026-03-19T08:15:38.176204Z	Success: Finished cloning repository files
+2026-03-19T08:15:40.001856Z	Checking for configuration in a Wrangler configuration file (BETA)
+2026-03-19T08:15:40.002233Z	
+2026-03-19T08:15:40.002347Z	Found wrangler.toml file. Reading build configuration...
+2026-03-19T08:15:40.009499Z	pages_build_output_dir: .vercel/output/static
+2026-03-19T08:15:40.009649Z	Build environment variables: 
+2026-03-19T08:15:40.009703Z	  - NODE_ENV: production
+2026-03-19T08:15:40.00974Z	  - NEXT_PUBLIC_TOSS_CLIENT_KEY: live_gck_ex6BJGQOVDW0aeEX0X5X3W4w2zNb
+2026-03-19T08:15:40.009779Z	  - NEXT_PUBLIC_TOSS_VARIANT_KEY: getkkul-live-toss
+2026-03-19T08:15:40.009806Z	  - NEXT_PUBLIC_TOSS_SUCCESS_URL: https://www.getkkul.com/payment/success
+2026-03-19T08:15:40.009835Z	  - NEXT_PUBLIC_TOSS_FAIL_URL: https://www.getkkul.com/payment/fail
+2026-03-19T08:15:40.009859Z	  - NEXT_PUBLIC_FREE_SHIPPING_THRESHOLD: 29000
+2026-03-19T08:15:40.009885Z	  - NEXT_PUBLIC_TOSS_API_URL: https://api.tosspayments.com
+2026-03-19T08:15:40.009911Z	  - R2_PUBLIC_URL: https://images.getkkul.com
+2026-03-19T08:15:41.0999Z	Successfully read the Wrangler configuration file.
+2026-03-19T08:15:41.246367Z	Detected the following tools from environment: npm@10.9.2, nodejs@22.16.0
+2026-03-19T08:15:41.24672Z	Installing project dependencies: npm clean-install --progress=false
+2026-03-19T08:15:45.403967Z	npm warn deprecated path-match@1.2.4: This package is archived and no longer maintained. For support, visit https://github.com/expressjs/express/discussions
+2026-03-19T08:15:46.477455Z	npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+2026-03-19T08:15:46.807489Z	npm warn deprecated @types/bcryptjs@3.0.0: This is a stub types definition. bcryptjs provides its own type definitions, so you do not need this installed.
+2026-03-19T08:15:48.068027Z	npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-03-19T08:15:49.274323Z	npm warn deprecated @cloudflare/next-on-pages@1.13.16: Please use the OpenNext adapter instead: https://opennext.js.org/cloudflare
+2026-03-19T08:15:49.885122Z	npm warn deprecated tar@6.2.1: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+2026-03-19T08:16:20.063067Z	
+2026-03-19T08:16:20.063405Z	added 1290 packages, and audited 1291 packages in 38s
+2026-03-19T08:16:20.063502Z	
+2026-03-19T08:16:20.063546Z	132 packages are looking for funding
+2026-03-19T08:16:20.063577Z	  run `npm fund` for details
+2026-03-19T08:16:20.367213Z	
+2026-03-19T08:16:20.367476Z	58 vulnerabilities (5 low, 15 moderate, 35 high, 3 critical)
+2026-03-19T08:16:20.36753Z	
+2026-03-19T08:16:20.367569Z	To address issues that do not require attention, run:
+2026-03-19T08:16:20.367614Z	  npm audit fix
+2026-03-19T08:16:20.367669Z	
+2026-03-19T08:16:20.367705Z	To address all issues possible, run:
+2026-03-19T08:16:20.367731Z	  npm audit fix --force
+2026-03-19T08:16:20.367755Z	
+2026-03-19T08:16:20.367779Z	Some issues need review, and may require choosing
+2026-03-19T08:16:20.367803Z	a different dependency.
+2026-03-19T08:16:20.367831Z	
+2026-03-19T08:16:20.367855Z	Run `npm audit` for details.
+2026-03-19T08:16:20.494312Z	Executing user command: npm run cf:build
+2026-03-19T08:16:20.705074Z	
+2026-03-19T08:16:20.705326Z	> shofy@0.1.0 cf:build
+2026-03-19T08:16:20.705379Z	> npx @cloudflare/next-on-pages
+2026-03-19T08:16:20.705552Z	
+2026-03-19T08:16:21.395717Z	⚡️ @cloudflare/next-on-pages CLI v.1.13.16
+2026-03-19T08:16:21.524746Z	⚡️ Detected Package Manager: npm (10.9.2)
+2026-03-19T08:16:21.525138Z	⚡️ Preparing project...
+2026-03-19T08:16:21.527594Z	⚡️ Project is ready
+2026-03-19T08:16:21.527729Z	⚡️ Building project...
+2026-03-19T08:16:22.184609Z	▲  Vercel CLI 47.0.4
+2026-03-19T08:16:22.189323Z	▲  > NOTE: The Vercel CLI now collects telemetry regarding usage of the CLI.
+2026-03-19T08:16:22.189502Z	▲  > This information is used to shape the CLI roadmap and prioritize features.
+2026-03-19T08:16:22.189573Z	▲  > You can learn more, including how to opt-out if you'd not like to participate in this program, by visiting the following URL:
+2026-03-19T08:16:22.189612Z	▲  > https://vercel.com/docs/cli/about-telemetry
+2026-03-19T08:16:22.28986Z	▲  WARN! Build not running on Vercel. System environment variables will not be available.
+2026-03-19T08:16:22.472554Z	▲  Installing dependencies...
+2026-03-19T08:16:26.340019Z	▲  added 207 packages in 4s
+2026-03-19T08:16:26.340803Z	▲  239 packages are looking for funding
+2026-03-19T08:16:26.340899Z	▲  run `npm fund` for details
+2026-03-19T08:16:26.365307Z	▲  Detected Next.js version: 15.4.8
+2026-03-19T08:16:26.374701Z	▲  Running "npm run build"
+2026-03-19T08:16:26.498247Z	▲  > shofy@0.1.0 build
+2026-03-19T08:16:26.498561Z	▲  > next build
+2026-03-19T08:16:27.112653Z	▲  Attention: Next.js now collects completely anonymous telemetry regarding usage.
+2026-03-19T08:16:27.112894Z	▲  This information is used to shape Next.js' roadmap and prioritize features.
+2026-03-19T08:16:27.112971Z	▲  You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+2026-03-19T08:16:27.113292Z	▲  https://nextjs.org/telemetry
+2026-03-19T08:16:27.171415Z	▲  ▲ Next.js 15.4.8
+2026-03-19T08:16:27.171691Z	▲  
+2026-03-19T08:16:27.245973Z	▲  Creating an optimized production build ...
+2026-03-19T08:17:19.976782Z	▲  ✓ Compiled successfully in 48s
+2026-03-19T08:17:19.981324Z	▲  Skipping validation of types
+2026-03-19T08:17:19.981545Z	▲  Linting ...
+2026-03-19T08:17:24.230755Z	▲  ./src/app/(user)/checkout/page.tsx
+2026-03-19T08:17:24.23108Z	▲  70:6  Warning: React Hook useCallback has an unnecessary dependency: 'status'. Either exclude it or remove the dependency array.  react-hooks/exhaustive-deps
+2026-03-19T08:17:24.23122Z	▲  
+2026-03-19T08:17:24.231274Z	▲  ./src/components/ProductStickyNav.tsx
+2026-03-19T08:17:24.231321Z	▲  13:11  Warning: The 'navItems' array makes the dependencies of useEffect Hook (at line 55) change on every render. To fix this, wrap the initialization of 'navItems' in its own useMemo() Hook.  react-hooks/exhaustive-deps
+2026-03-19T08:17:24.231365Z	▲  
+2026-03-19T08:17:24.231402Z	▲  ./src/components/account/OrdersList.tsx
+2026-03-19T08:17:24.23147Z	▲  126:6  Warning: React Hook useCallback has a missing dependency: 't'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+2026-03-19T08:17:24.231516Z	▲  
+2026-03-19T08:17:24.231547Z	▲  ./src/components/account/ReviewsClient.tsx
+2026-03-19T08:17:24.231612Z	▲  31:6  Warning: React Hook useEffect has a missing dependency: 'fetchReviews'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+2026-03-19T08:17:24.231647Z	▲  
+2026-03-19T08:17:24.231687Z	▲  info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+2026-03-19T08:17:24.235315Z	▲  Collecting page data ...
+2026-03-19T08:17:24.756323Z	▲  ⚠ Using edge runtime on a page currently disables static generation for that page
+2026-03-19T08:17:26.695022Z	▲  Generating static pages (0/7) ...
+2026-03-19T08:17:27.432014Z	▲  Generating static pages (1/7) 
+2026-03-19T08:17:27.432251Z	▲  Generating static pages (3/7)
+2026-03-19T08:17:27.678368Z	▲  Generating static pages (5/7)
+2026-03-19T08:17:28.477609Z	▲  ✓ Generating static pages (7/7)
+2026-03-19T08:17:28.670651Z	▲  Finalizing page optimization ...
+2026-03-19T08:17:28.674666Z	▲  Collecting build traces ...
+2026-03-19T08:17:33.446945Z	▲  
+2026-03-19T08:17:33.458716Z	▲  Route (app)                                    Size  First Load JS
+2026-03-19T08:17:33.459481Z	▲  ┌ ƒ /                                       4.77 kB         168 kB
+2026-03-19T08:17:33.459534Z	▲  ├ ƒ /_not-found                               276 B        99.9 kB
+2026-03-19T08:17:33.459565Z	▲  ├ ƒ /about                                    169 B         103 kB
+2026-03-19T08:17:33.459592Z	▲  ├ ƒ /account                                6.52 kB         153 kB
+2026-03-19T08:17:33.45962Z	▲  ├ ƒ /account/addresses                      4.98 kB         129 kB
+2026-03-19T08:17:33.459647Z	▲  ├ ƒ /account/admin                          5.27 kB         138 kB
+2026-03-19T08:17:33.459671Z	▲  ├ ƒ /account/admin/analytics                3.18 kB         122 kB
+2026-03-19T08:17:33.459698Z	▲  ├ ƒ /account/admin/categories               4.88 kB         122 kB
+2026-03-19T08:17:33.459729Z	▲  ├ ƒ /account/admin/inquiries                3.93 kB         126 kB
+2026-03-19T08:17:33.459755Z	▲  ├ ƒ /account/admin/orders                    7.3 kB         153 kB
+2026-03-19T08:17:33.459787Z	▲  ├ ƒ /account/admin/products                 5.12 kB         127 kB
+2026-03-19T08:17:33.459813Z	▲  ├ ƒ /account/admin/products/[id]            2.48 kB         173 kB
+2026-03-19T08:17:33.459837Z	▲  ├ ƒ /account/admin/products/[id]/edit         142 B         136 kB
+2026-03-19T08:17:33.459861Z	▲  ├ ƒ /account/admin/products/new               142 B         136 kB
+2026-03-19T08:17:33.459885Z	▲  ├ ƒ /account/admin/users                    6.61 kB         130 kB
+2026-03-19T08:17:33.459909Z	▲  ├ ƒ /account/notifications                    961 B         117 kB
+2026-03-19T08:17:33.459933Z	▲  ├ ƒ /account/orders                         11.5 kB         150 kB
+2026-03-19T08:17:33.45996Z	▲  ├ ƒ /account/orders/[id]                    5.74 kB         144 kB
+2026-03-19T08:17:33.459984Z	▲  ├ ƒ /account/payment                        3.23 kB         125 kB
+2026-03-19T08:17:33.460008Z	▲  ├ ƒ /account/payment/callback               2.36 kB         105 kB
+2026-03-19T08:17:33.460033Z	▲  ├ ƒ /account/profile                          276 B        99.9 kB
+2026-03-19T08:17:33.46006Z	▲  ├ ƒ /account/reviews                        3.65 kB         142 kB
+2026-03-19T08:17:33.460085Z	▲  ├ ƒ /account/settings                       2.75 kB         136 kB
+2026-03-19T08:17:33.460109Z	▲  ├ ƒ /api/admin/analytics                      276 B        99.9 kB
+2026-03-19T08:17:33.460133Z	▲  ├ ƒ /api/admin/categories                     276 B        99.9 kB
+2026-03-19T08:17:33.460157Z	▲  ├ ƒ /api/admin/categories/[id]                276 B        99.9 kB
+2026-03-19T08:17:33.460181Z	▲  ├ ƒ /api/admin/categories/migrate             276 B        99.9 kB
+2026-03-19T08:17:33.460207Z	▲  ├ ƒ /api/admin/dashboard/recent-orders        276 B        99.9 kB
+2026-03-19T08:17:33.460232Z	▲  ├ ƒ /api/admin/dashboard/stats                276 B        99.9 kB
+2026-03-19T08:17:33.460267Z	▲  ├ ƒ /api/admin/inquiries                      276 B        99.9 kB
+2026-03-19T08:17:33.460311Z	▲  ├ ƒ /api/admin/inquiries/[id]                 276 B        99.9 kB
+2026-03-19T08:17:33.460344Z	▲  ├ ƒ /api/admin/orders                         276 B        99.9 kB
+2026-03-19T08:17:33.460372Z	▲  ├ ƒ /api/admin/orders/[id]                    276 B        99.9 kB
+2026-03-19T08:17:33.460397Z	▲  ├ ƒ /api/admin/orders/bulk-delete             276 B        99.9 kB
+2026-03-19T08:17:33.460422Z	▲  ├ ƒ /api/admin/orders/bulk-delete-selected    276 B        99.9 kB
+2026-03-19T08:17:33.460448Z	▲  ├ ƒ /api/admin/products                       276 B        99.9 kB
+2026-03-19T08:17:33.460473Z	▲  ├ ƒ /api/admin/products/[id]                  276 B        99.9 kB
+2026-03-19T08:17:33.460497Z	▲  ├ ƒ /api/admin/setup                          276 B        99.9 kB
+2026-03-19T08:17:33.460521Z	▲  ├ ƒ /api/admin/stats                          276 B        99.9 kB
+2026-03-19T08:17:33.460545Z	▲  ├ ƒ /api/admin/users                          276 B        99.9 kB
+2026-03-19T08:17:33.460575Z	▲  ├ ƒ /api/admin/users/bulk-delete              276 B        99.9 kB
+2026-03-19T08:17:33.460608Z	▲  ├ ƒ /api/auth/[...nextauth]                   276 B        99.9 kB
+2026-03-19T08:17:33.460634Z	▲  ├ ƒ /api/auth/register                        276 B        99.9 kB
+2026-03-19T08:17:33.460658Z	▲  ├ ƒ /api/auth/update-password                 276 B        99.9 kB
+2026-03-19T08:17:33.460682Z	▲  ├ ƒ /api/categories                           276 B        99.9 kB
+2026-03-19T08:17:33.460706Z	▲  ├ ƒ /api/checkout                             276 B        99.9 kB
+2026-03-19T08:17:33.46073Z	▲  ├ ƒ /api/orders                               276 B        99.9 kB
+2026-03-19T08:17:33.460754Z	▲  ├ ƒ /api/orders/[orderId]/cancel-pending      276 B        99.9 kB
+2026-03-19T08:17:33.46078Z	▲  ├ ƒ /api/orders/cancel                        276 B        99.9 kB
+2026-03-19T08:17:33.460806Z	▲  ├ ƒ /api/orders/cancel/payment-success        276 B        99.9 kB
+2026-03-19T08:17:33.460832Z	▲  ├ ƒ /api/orders/place                         276 B        99.9 kB
+2026-03-19T08:17:33.460856Z	▲  ├ ƒ /api/orders/process                       276 B        99.9 kB
+2026-03-19T08:17:33.46088Z	▲  ├ ƒ /api/orders/toss-confirm                  276 B        99.9 kB
+2026-03-19T08:17:33.460911Z	▲  ├ ƒ /api/orders/toss-webhook                  276 B        99.9 kB
+2026-03-19T08:17:33.460938Z	▲  ├ ƒ /api/orders/update-payment                276 B        99.9 kB
+2026-03-19T08:17:33.460963Z	▲  ├ ƒ /api/payouts/request                      276 B        99.9 kB
+2026-03-19T08:17:33.460987Z	▲  ├ ƒ /api/product-questions                    276 B        99.9 kB
+2026-03-19T08:17:33.461012Z	▲  ├ ƒ /api/products                             276 B        99.9 kB
+2026-03-19T08:17:33.461037Z	▲  ├ ƒ /api/products/search                      276 B        99.9 kB
+2026-03-19T08:17:33.461063Z	▲  ├ ƒ /api/seller                               276 B        99.9 kB
+2026-03-19T08:17:33.461087Z	▲  ├ ƒ /api/toss/balance                         276 B        99.9 kB
+2026-03-19T08:17:33.461111Z	▲  ├ ƒ /api/toss/brandpay/access-token           276 B        99.9 kB
+2026-03-19T08:17:33.461135Z	▲  ├ ƒ /api/user/[id]                            276 B        99.9 kB
+2026-03-19T08:17:33.461159Z	▲  ├ ƒ /api/user/delete-address                  276 B        99.9 kB
+2026-03-19T08:17:33.461182Z	▲  ├ ƒ /api/user/orders                          276 B        99.9 kB
+2026-03-19T08:17:33.461207Z	▲  ├ ƒ /api/user/profile                         276 B        99.9 kB
+2026-03-19T08:17:33.46123Z	▲  ├ ƒ /api/user/reviews                         276 B        99.9 kB
+2026-03-19T08:17:33.461269Z	▲  ├ ƒ /api/user/upload-image                    276 B        99.9 kB
+2026-03-19T08:17:33.461296Z	▲  ├ ○ /apple-icon.png                             0 B            0 B
+2026-03-19T08:17:33.46132Z	▲  ├ ƒ /auth/error                             1.31 kB         104 kB
+2026-03-19T08:17:33.461344Z	▲  ├ ƒ /auth/register                          2.42 kB         124 kB
+2026-03-19T08:17:33.461374Z	▲  ├ ƒ /auth/signin                            2.46 kB         124 kB
+2026-03-19T08:17:33.461643Z	▲  ├ ƒ /auth/welcome                           6.95 kB         121 kB
+2026-03-19T08:17:33.461714Z	▲  ├ ƒ /cancel                                   648 B         111 kB
+2026-03-19T08:17:33.461778Z	▲  ├ ƒ /cart                                   10.8 kB         174 kB
+2026-03-19T08:17:33.461838Z	▲  ├ ƒ /categories                             4.63 kB         132 kB
+2026-03-19T08:17:33.461897Z	▲  ├ ƒ /checkout                               6.88 kB         145 kB
+2026-03-19T08:17:33.462157Z	▲  ├ ƒ /contact                                  276 B        99.9 kB
+2026-03-19T08:17:33.462243Z	▲  ├ ƒ /customer-service                         169 B         103 kB
+2026-03-19T08:17:33.462339Z	▲  ├ ƒ /dashboard                              1.09 kB         104 kB
+2026-03-19T08:17:33.462572Z	▲  ├ ƒ /delivery                                 580 B         100 kB
+2026-03-19T08:17:33.462783Z	▲  ├ ƒ /delivery-dashboard                     3.73 kB         112 kB
+2026-03-19T08:17:33.462887Z	▲  ├ ƒ /faqs                                   4.87 kB         115 kB
+2026-03-19T08:17:33.462978Z	▲  ├ ƒ /favorite                               3.62 kB         157 kB
+2026-03-19T08:17:33.463066Z	▲  ├ ○ /icon.png                                   0 B            0 B
+2026-03-19T08:17:33.463151Z	▲  ├ ƒ /inquiry                                  276 B        99.9 kB
+2026-03-19T08:17:33.463407Z	▲  ├ ƒ /offers                                 2.73 kB         203 kB
+2026-03-19T08:17:33.463482Z	▲  ├ ƒ /orders/[id]                              276 B        99.9 kB
+2026-03-19T08:17:33.463512Z	▲  ├ ƒ /packer-dashboard                       5.67 kB         140 kB
+2026-03-19T08:17:33.463542Z	▲  ├ ƒ /payment/fail                           2.31 kB         108 kB
+2026-03-19T08:17:33.463569Z	▲  ├ ƒ /payment/success                        2.28 kB         120 kB
+2026-03-19T08:17:33.463596Z	▲  ├ ƒ /privacy-policy                           276 B        99.9 kB
+2026-03-19T08:17:33.463735Z	▲  ├ ƒ /products                               6.25 kB         204 kB
+2026-03-19T08:17:33.463785Z	▲  ├ ƒ /products/[id]                            204 B         171 kB
+2026-03-19T08:17:33.463816Z	▲  ├ ○ /robots.txt                               276 B        99.9 kB
+2026-03-19T08:17:33.463843Z	▲  ├ ○ /sitemap.xml                              276 B        99.9 kB
+2026-03-19T08:17:33.463976Z	▲  ├ ƒ /success                                3.83 kB         135 kB
+2026-03-19T08:17:33.464016Z	▲  ├ ƒ /terms-of-service                         276 B        99.9 kB
+2026-03-19T08:17:33.464044Z	▲  ├ ƒ /unauthorized                           2.17 kB         119 kB
+2026-03-19T08:17:33.464071Z	▲  └ ƒ /user-dashboard                          4.2 kB         121 kB
+2026-03-19T08:17:33.464103Z	▲  + First Load JS shared by all               99.6 kB
+2026-03-19T08:17:33.464273Z	▲  ├ chunks/4bd1b696-602635ee57868870.js     54.1 kB
+2026-03-19T08:17:33.464331Z	▲  ├ chunks/5964-455cec4068509000.js         43.5 kB
+2026-03-19T08:17:33.464397Z	▲  └ other shared chunks (total)             1.95 kB
+2026-03-19T08:17:33.464437Z	▲  ○  (Static)   prerendered as static content
+2026-03-19T08:17:33.464466Z	▲  ƒ  (Dynamic)  server-rendered on demand
+2026-03-19T08:17:33.510912Z	▲  > shofy@0.1.0 postbuild
+2026-03-19T08:17:33.511148Z	▲  > next-sitemap
+2026-03-19T08:17:33.595087Z	▲  ✨ [next-sitemap] Loading next-sitemap config: file:///opt/buildhome/repo/next-sitemap.config.js
+2026-03-19T08:17:33.60012Z	▲  ✅ [next-sitemap] Generation completed
+2026-03-19T08:17:33.600714Z	▲  ┌───────────────┬────────┐
+2026-03-19T08:17:33.600975Z	▲  │ (index)       │ Values │
+2026-03-19T08:17:33.601058Z	▲  ├───────────────┼────────┤
+2026-03-19T08:17:33.60112Z	▲  │ indexSitemaps │ 0      │
+2026-03-19T08:17:33.601168Z	▲  │ sitemaps      │ 1      │
+2026-03-19T08:17:33.601229Z	▲  └───────────────┴────────┘
+2026-03-19T08:17:33.601356Z	▲  -----------------------------------------------------
+2026-03-19T08:17:33.601435Z	▲  SITEMAPS 
+2026-03-19T08:17:33.601491Z	▲  -----------------------------------------------------
+2026-03-19T08:17:33.601556Z	▲  ○ https://www.getkkul.com/sitemap.xml
+2026-03-19T08:17:33.980466Z	▲  Traced Next.js server files in: 265.439ms
+2026-03-19T08:17:34.059235Z	▲  Created all serverless functions in: 78.6ms
+2026-03-19T08:17:46.429071Z	▲  Collected static files (public/, static/, .next/static): 16.941ms
+2026-03-19T08:17:47.120358Z	▲  Build Completed in .vercel/output [1m]
+2026-03-19T08:17:47.445434Z	⚡️ Completed `npx vercel build`.
+2026-03-19T08:17:48.347805Z	
+2026-03-19T08:17:48.348113Z	⚡️ ERROR: Failed to produce a Cloudflare Pages build from the project.
+2026-03-19T08:17:48.348345Z	⚡️ 
+2026-03-19T08:17:48.348426Z	⚡️ 	The following routes were not configured to run with the Edge Runtime:
+2026-03-19T08:17:48.348484Z	⚡️ 	  - /account/payment/callback
+2026-03-19T08:17:48.348534Z	⚡️ 
+2026-03-19T08:17:48.348593Z	⚡️ 	Please make sure that all your non-static routes export the following edge runtime route segment config:
+2026-03-19T08:17:48.348645Z	⚡️ 	  export const runtime = 'edge';
+2026-03-19T08:17:48.348983Z	⚡️ 
+2026-03-19T08:17:48.349204Z	⚡️ 	You can read more about the Edge Runtime on the Next.js documentation:
+2026-03-19T08:17:48.349335Z	⚡️ 	  https://nextjs.org/docs/app/building-your-application/rendering/edge-and-nodejs-runtimes
+2026-03-19T08:17:48.349405Z	
+2026-03-19T08:17:48.386122Z	Failed: Error while executing user command. Exited with error code: 1
+2026-03-19T08:17:48.393662Z	Failed: build command exited with code: 1
+2026-03-19T08:17:49.770019Z	Failed: error occurred while running build command
