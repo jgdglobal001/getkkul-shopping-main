@@ -15,21 +15,11 @@ export default function PaymentCallbackPage() {
     useEffect(() => {
         const processCallback = async () => {
             try {
-                const authKey = searchParams.get("authKey");
                 const customerKey = searchParams.get("customerKey");
                 const code = searchParams.get("code");
                 const errorMessage = searchParams.get("message");
 
-                // 실패한 경우 (에러 코드가 있거나 메시지가 있는 경우)
-                if (code || errorMessage) {
-                    setStatus("error");
-                    setMessage(errorMessage || "카드 등록에 실패했습니다.");
-                    setTimeout(() => {
-                        router.push(`/account/payment?error=${encodeURIComponent(errorMessage || "카드 등록 실패")}`);
-                    }, 2000);
-                    return;
-                }
-
+                // ✅ 1단계: code가 있으면 성공! Access Token 교환 진행
                 if (code && customerKey) {
                     setMessage("토스페이먼츠 보안 인증을 마무리 중입니다...");
                     const tokenResponse = await fetch("/api/toss/brandpay/access-token", {
@@ -42,14 +32,32 @@ export default function PaymentCallbackPage() {
                         const errData = await tokenResponse.json();
                         throw new Error(`보안 인증 실패: ${errData.message || "Access Token 발급 에러"}`);
                     }
+
+                    // Access Token 교환 성공 → 카드 등록 완료
+                    setStatus("success");
+                    setMessage("카드가 성공적으로 등록되었습니다!");
+                    setTimeout(() => {
+                        router.push("/account/payment?success=true");
+                    }, 1500);
+                    return;
                 }
 
-                // 브랜드페이는 성공 시 고객/카드를 토스가 직접 보관하므로 자체 DB 저장(API 호출) 불필요
-                setStatus("success");
-                setMessage("카드가 성공적으로 등록되었습니다!");
+                // ✅ 2단계: code 없이 에러 메시지만 있으면 실패
+                if (errorMessage) {
+                    setStatus("error");
+                    setMessage(errorMessage);
+                    setTimeout(() => {
+                        router.push(`/account/payment?error=${encodeURIComponent(errorMessage)}`);
+                    }, 2000);
+                    return;
+                }
+
+                // ✅ 3단계: code도 에러 메시지도 없으면 (직접 접근 등) 메인으로 이동
+                setStatus("error");
+                setMessage("잘못된 접근입니다.");
                 setTimeout(() => {
-                    router.push("/account/payment?success=true");
-                }, 1500);
+                    router.push("/account/payment");
+                }, 2000);
 
             } catch (error) {
                 console.error("Callback processing error:", error);

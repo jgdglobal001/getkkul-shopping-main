@@ -17,7 +17,8 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "Server configuration error" }, { status: 500 });
         }
 
-        const basicToken = Buffer.from(`${secretKey}:`).toString("base64");
+        // Edge Runtime 호환: btoa 사용 (Buffer 미지원 환경 대응)
+        const basicToken = btoa(`${secretKey}:`);
 
         // V2 브랜드페이 SDK여도 액세스 토큰 발급 API는 v1 규격을 사용
         const response = await fetch("https://api.tosspayments.com/v1/brandpay/authorizations/access-token", {
