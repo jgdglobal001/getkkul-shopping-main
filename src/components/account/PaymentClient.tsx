@@ -45,47 +45,54 @@ export default function PaymentClient() {
     }
   }, [error]);
 
-  const initBrandpay = () => {
-    // 브랜드페이 API 개별 연동 키(Client Key) 사용 필수 (결제위젯 키 gck 지원 안함)
-    const tossClientKey = process.env.NEXT_PUBLIC_TOSS_BRANDPAY_CLIENT_KEY;
-    if (!tossClientKey) {
-      throw new Error("브랜드페이 개별 연동 클라이언트 키 설정 오류입니다. 관리자에게 문의하세요.");
-    }
+  const [brandpay, setBrandpay] = useState<any>(null);
 
-    const TossPayments = (window as any).TossPayments;
-    if (!TossPayments) {
-      throw new Error("결제 SDK를 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
-    }
-
-    // 회원 고유 ID를 기반으로 고정된 customerKey 생성. 랜덤값(Date.now) 절대 사용 금지 (429 에러 방지)
-    const userId = session?.user?.id || session?.user?.email?.replace(/[@.]/g, "_");
-    if (!userId) {
-      throw new Error("고객 식별 정보를 찾을 수 없습니다. 다시 로그인해주세요.");
-    }
+  useEffect(() => {
+    if (status !== "authenticated" || !session) return;
     
-    // 영문, 숫자, 특수문자 -, _ 만 허용되며 최대 50자
-    const customerKey = `customer_${userId}`.slice(0, 50);
-
-    // TossPayments SDK v2 인스턴스 초기화
-    const tossPayments = TossPayments(tossClientKey);
-    return tossPayments.brandpay({
-      customerKey,
-      redirectUrl: `${window.location.origin}/account/payment/callback`,
-    });
-  };
+    try {
+      const tossClientKey = process.env.NEXT_PUBLIC_TOSS_BRANDPAY_CLIENT_KEY;
+      if (!tossClientKey) return;
+      
+      const TossPayments = (window as any).TossPayments;
+      if (!TossPayments) return;
+      
+      const userId = session.user?.id || session.user?.email?.replace(/[@.]/g, "_");
+      if (!userId) return;
+      
+      const customerKey = `customer_${userId}`.slice(0, 50);
+      
+      const tp = TossPayments(tossClientKey);
+      const bp = tp.brandpay({
+        customerKey,
+        redirectUrl: `${window.location.origin}/account/payment/callback`,
+      });
+      setBrandpay(bp);
+    } catch (err) {
+      console.error("Failed to initialize Brandpay:", err);
+    }
+  }, [session, status]);
 
   const handleAddCard = async () => {
+    if (!brandpay) {
+      setError("결제 시스템을 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
-      
-      const brandpay = initBrandpay();
       await brandpay.addPaymentMethod();
     } catch (err: any) {
       console.error("Error adding card:", err);
-      const errorMessage = err?.message || "카드 등록 중 오류가 발생했습니다.";
+      const errorMessage = err?.message || "";
       if (!errorMessage.includes("취소")) {
-        setError(errorMessage);
+        // 토스 내부 기술 에러 메시지를 파싱하여 친화적인 문구로 변경
+        if (errorMessage.includes("BRIDGE") || errorMessage.includes("customerToken") || errorMessage.includes("Timeout")) {
+          setError("유효하지 않은 카드이거나 통신 지연이 발생했습니다. 카드 정보를 확인하시고 다시 시도해주시거나 다른 카드로 등록해주세요!");
+        } else {
+          setError(errorMessage || "카드 등록 중 오류가 발생했습니다.");
+        }
       }
     } finally {
       setLoading(false);
@@ -93,18 +100,24 @@ export default function PaymentClient() {
   };
 
   const handleManageCards = async () => {
+    if (!brandpay) {
+      setError("결제 시스템을 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
-      
-      const brandpay = initBrandpay();
-      // Toss V2 SDK에서는 별도의 메소드 없이 openSettings() 창에서 결제수단 추가 및 관리를 통합 제공합니다.
       await brandpay.openSettings();
     } catch (err: any) {
       console.error("Error opening brandpay settings:", err);
-      const errorMessage = err?.message || "설정창을 여는 중 오류가 발생했습니다.";
+      const errorMessage = err?.message || "";
       if (!errorMessage.includes("취소")) {
-        setError(errorMessage);
+        if (errorMessage.includes("BRIDGE") || errorMessage.includes("customerToken") || errorMessage.includes("Timeout")) {
+          setError("통신 지연 또는 인증 오류가 발생했습니다. 브라우저를 새로고침하신 후 다시 시도해 주세요!");
+        } else {
+          setError(errorMessage || "설정창을 여는 중 오류가 발생했습니다.");
+        }
       }
     } finally {
       setLoading(false);
