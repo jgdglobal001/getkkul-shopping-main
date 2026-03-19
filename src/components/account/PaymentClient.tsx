@@ -51,7 +51,9 @@ export default function PaymentClient() {
     if (status !== "authenticated" || !session) return;
     
     try {
-      const tossClientKey = process.env.NEXT_PUBLIC_TOSS_BRANDPAY_CLIENT_KEY;
+      // 결제 UI 설정에서 브랜드페이 MID가 결제위젯에 연결되어 있으므로  
+      // 결제위젯 클라이언트 키(live_gck_...)로 초기화해야 SDK가 브랜드페이 인증 흐름을 정상 처리합니다
+      const tossClientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
       if (!tossClientKey) return;
       
       const TossPayments = (window as any).TossPayments;

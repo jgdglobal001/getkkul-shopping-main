@@ -10,10 +10,11 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "Missing required parameters" }, { status: 400 });
         }
 
-        // 브랜드페이 단독 발급용(코어) 시크릿 키 사용 필수
-        const secretKey = process.env.TOSS_CORE_SECRET_KEY;
+        // SDK를 결제위젯 클라이언트 키로 초기화했으므로, 토큰 교환도 결제위젯 시크릿 키 사용
+        // 토스 공식 문서: "결제위젯 연동 키 > 시크릿 키 뒤에 :을 추가하고 base64로 인코딩합니다"
+        const secretKey = process.env.TOSS_WIDGET_SECRET_KEY || process.env.TOSS_CORE_SECRET_KEY;
         if (!secretKey) {
-            console.error("TOSS_CORE_SECRET_KEY is not defined");
+            console.error("TOSS_WIDGET_SECRET_KEY (or TOSS_CORE_SECRET_KEY) is not defined");
             return NextResponse.json({ error: "Server configuration error" }, { status: 500 });
         }
 
