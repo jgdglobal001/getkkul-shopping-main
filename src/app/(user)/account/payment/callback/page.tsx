@@ -1,7 +1,5 @@
 "use client";
 
-export const runtime = 'edge';
-
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FiLoader, FiCheck, FiX } from "react-icons/fi";

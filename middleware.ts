@@ -32,8 +32,17 @@ const protectedRoutes = [
 ];
 const authRoutes = ["/auth/signin", "/auth/register"];
 
+// 토스 BrandPay SDK 콜백 경로 — 세션 체크 제외 (팝업 리다이렉트이므로 세션 쿠키 없음)
+const publicCallbackRoutes = ["/account/payment/callback"];
+
 export async function middleware(request: any) {
   const { pathname } = request.nextUrl;
+
+  // 토스 BrandPay 콜백은 세션 없이 접근 가능해야 함
+  if (publicCallbackRoutes.some((route) => pathname.startsWith(route))) {
+    return NextResponse.next();
+  }
+
   const session = await auth();
 
   // Restrict protected routes to logged-in users
