@@ -244,4 +244,4 @@
 2026-03-19T08:17:48.349405Z	
 2026-03-19T08:17:48.386122Z	Failed: Error while executing user command. Exited with error code: 1
 2026-03-19T08:17:48.393662Z	Failed: build command exited with code: 1
-2026-03-19T08:17:49.770019Z	Failed: error occurred while running build command
+2026-03-19T08:17:49.770019Z	Failed: error occurred while run

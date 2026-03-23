@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { FiCreditCard, FiSettings, FiLoader, FiCheck, FiAlertCircle } from "react-icons/fi";
+import { buildTossCustomerKey, getBrandpayRedirectUrl } from "@/lib/tossUtils";
 
 export default function PaymentClient() {
   const { data: session, status } = useSession();
@@ -51,23 +52,25 @@ export default function PaymentClient() {
     if (status !== "authenticated" || !session) return;
     
     try {
-      // 브랜드페이 독립 연동(addPaymentMethod, openSettings)은 API 개별 연동 키 사용
-      // 결제위젯 키(live_gck_...)를 사용하면 Access Token 교환 시 NOT_FOUND_AUTHORIZATION_CODE 에러 발생
-      const tossClientKey = process.env.NEXT_PUBLIC_TOSS_BRANDPAY_CLIENT_KEY;
+      const tossClientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
       if (!tossClientKey) return;
       
       const TossPayments = (window as any).TossPayments;
       if (!TossPayments) return;
       
-      const userId = session.user?.id || session.user?.email?.replace(/[@.]/g, "_");
-      if (!userId) return;
-      
-      const customerKey = `customer_${userId}`.slice(0, 50);
+      const customerKey = buildTossCustomerKey({
+        userId: session.user?.id,
+        email: session.user?.email,
+      });
+      if (!customerKey) {
+        setError("고객 식별 정보를 확인할 수 없습니다. 다시 로그인 후 시도해주세요.");
+        return;
+      }
       
       const tp = TossPayments(tossClientKey);
       const bp = tp.brandpay({
         customerKey,
-        redirectUrl: `${window.location.origin}/account/payment/callback`,
+        redirectUrl: getBrandpayRedirectUrl(window.location.origin, "/account/payment"),
       });
       setBrandpay(bp);
     } catch (err) {

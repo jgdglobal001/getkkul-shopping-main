@@ -5,6 +5,7 @@ export const runtime = 'edge';
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FiLoader, FiCheck, FiX } from "react-icons/fi";
+import { appendQueryParam, normalizeBrandpayReturnPath } from "@/lib/tossUtils";
 
 export default function PaymentCallbackPage() {
     const router = useRouter();
@@ -18,6 +19,14 @@ export default function PaymentCallbackPage() {
                 const customerKey = searchParams.get("customerKey");
                 const code = searchParams.get("code");
                 const errorMessage = searchParams.get("message");
+                const errorCode = searchParams.get("errorCode");
+                const returnUrl = normalizeBrandpayReturnPath(searchParams.get("returnUrl"));
+                const successRedirectUrl = returnUrl.startsWith("/account/payment")
+                    ? appendQueryParam(returnUrl, "success", "true")
+                    : appendQueryParam(returnUrl, "brandpay", "registered");
+                const errorRedirectUrl = returnUrl.startsWith("/account/payment")
+                    ? appendQueryParam(returnUrl, "error", errorMessage || errorCode || "카드 등록에 실패했습니다.")
+                    : appendQueryParam(returnUrl, "brandpayError", errorMessage || errorCode || "card_registration_failed");
 
                 // ✅ 1단계: code가 있으면 성공! Access Token 교환 진행
                 if (code && customerKey) {
@@ -30,24 +39,24 @@ export default function PaymentCallbackPage() {
                     
                     if (!tokenResponse.ok) {
                         const errData = await tokenResponse.json();
-                        throw new Error(`보안 인증 실패: ${errData.message || "Access Token 발급 에러"}`);
+                        throw new Error(`보안 인증 실패: ${errData.message || errData.error || "Access Token 발급 에러"}`);
                     }
 
                     // Access Token 교환 성공 → 카드 등록 완료
                     setStatus("success");
                     setMessage("카드가 성공적으로 등록되었습니다!");
                     setTimeout(() => {
-                        router.push("/account/payment?success=true");
+                        router.push(successRedirectUrl);
                     }, 1500);
                     return;
                 }
 
                 // ✅ 2단계: code 없이 에러 메시지만 있으면 실패
-                if (errorMessage) {
+                if (errorMessage || errorCode) {
                     setStatus("error");
-                    setMessage(errorMessage);
+                    setMessage(errorMessage || errorCode || "카드 등록 중 오류가 발생했습니다.");
                     setTimeout(() => {
-                        router.push(`/account/payment?error=${encodeURIComponent(errorMessage)}`);
+                        router.push(errorRedirectUrl);
                     }, 2000);
                     return;
                 }
@@ -56,15 +65,19 @@ export default function PaymentCallbackPage() {
                 setStatus("error");
                 setMessage("잘못된 접근입니다.");
                 setTimeout(() => {
-                    router.push("/account/payment");
+                    router.push(returnUrl);
                 }, 2000);
 
             } catch (error) {
                 console.error("Callback processing error:", error);
                 setStatus("error");
-                setMessage("처리 중 오류가 발생했습니다.");
+                setMessage(error instanceof Error ? error.message : "처리 중 오류가 발생했습니다.");
                 setTimeout(() => {
-                    router.push("/account/payment?error=" + encodeURIComponent("처리 중 오류가 발생했습니다."));
+                    const returnUrl = normalizeBrandpayReturnPath(searchParams.get("returnUrl"));
+                    const nextUrl = returnUrl.startsWith("/account/payment")
+                        ? appendQueryParam(returnUrl, "error", "처리 중 오류가 발생했습니다.")
+                        : appendQueryParam(returnUrl, "brandpayError", "callback_processing_failed");
+                    router.push(nextUrl);
                 }, 2000);
             }
         };

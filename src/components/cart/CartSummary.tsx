@@ -13,6 +13,7 @@ import { FaSignInAlt } from "react-icons/fa";
 import Link from "next/link";
 import Script from "next/script";
 import { getPartnerInfo } from "../PartnerRefTracker";
+import { buildTossCustomerKey, getBrandpayRedirectUrl } from "@/lib/tossUtils";
 
 // SessionStorage keys for persisting payment state
 const PENDING_ORDER_KEY = "getkkul_pending_order";
@@ -129,14 +130,31 @@ const CartSummary = ({ cart }: Props) => {
           return;
         }
 
-        // Use session data via closure (session ref doesn't need to be a dependency)
-        const customerKey = `customer_${session?.user?.id || session?.user?.email?.replace(/[@.]/g, "_") || Date.now()}`;
+        const customerKey = buildTossCustomerKey({
+          userId: session?.user?.id,
+          email: session?.user?.email,
+        });
+        if (!customerKey) {
+          if (isMounted) {
+            setWidgetError("고객 식별 정보를 확인할 수 없습니다. 다시 로그인 후 시도해주세요.");
+          }
+          initializingRef.current = false;
+          return;
+        }
+
+        const brandpayRedirectUrl = getBrandpayRedirectUrl(window.location.origin, "/cart");
+
         // FIX 1: Use lockedAmount if available (for page refresh recovery), otherwise use current calculation
         const amount = lockedAmount ?? Math.round(totalAmt - discountAmt + shippingCost);
         initializedAmountRef.current = amount;
 
         const tossPayments = TossPayments(tossClientKey);
-        const paymentWidget = tossPayments.widgets({ customerKey });
+        const paymentWidget = tossPayments.widgets({
+          customerKey,
+          brandpay: {
+            redirectUrl: brandpayRedirectUrl,
+          },
+        });
 
         // Cleanup existing widget if any
         if (paymentMethodWidgetRef.current) {

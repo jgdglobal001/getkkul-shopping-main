@@ -11,6 +11,7 @@ import Container from "@/components/Container";
 import PriceFormat from "@/components/PriceFormat";
 import { loadStripe } from "@stripe/stripe-js";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { buildTossCustomerKey, getBrandpayRedirectUrl } from "@/lib/tossUtils";
 import {
   FiPackage,
   FiMapPin,
@@ -116,8 +117,23 @@ const CheckoutPage = () => {
           return;
         }
 
-        // Parse amount and prepare keys
-        const customerKey = `customer_${session?.user?.id || session?.user?.email?.replace(/[@.]/g, "_") || Date.now()}`;
+        const customerKey = buildTossCustomerKey({
+          userId: session?.user?.id,
+          email: session?.user?.email,
+        });
+        if (!customerKey) {
+          if (isMounted) {
+            setWidgetError("고객 식별 정보를 확인할 수 없습니다. 다시 로그인 후 시도해주세요.");
+          }
+          initializingRef.current = false;
+          return;
+        }
+
+        const brandpayRedirectUrl = getBrandpayRedirectUrl(
+          window.location.origin,
+          existingOrderId ? `/checkout?orderId=${encodeURIComponent(existingOrderId)}` : "/checkout",
+        );
+
         let amount = 0;
         if (typeof existingOrder.amount === 'string') amount = parseFloat(existingOrder.amount);
         else if (typeof existingOrder.amount === 'number') amount = existingOrder.amount;
@@ -132,7 +148,12 @@ const CheckoutPage = () => {
         }
 
         const tossPayments = TossPayments(tossClientKey);
-        const paymentWidget = tossPayments.widgets({ customerKey });
+        const paymentWidget = tossPayments.widgets({
+          customerKey,
+          brandpay: {
+            redirectUrl: brandpayRedirectUrl,
+          },
+        });
 
         if (!isMounted) {
           initializingRef.current = false;

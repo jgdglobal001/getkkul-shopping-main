@@ -10,12 +10,9 @@ export async function POST(req: Request) {
             return NextResponse.json({ error: "Missing required parameters" }, { status: 400 });
         }
 
-        // 브랜드페이 SDK를 API 개별 연동 클라이언트 키로 초기화했으므로,
-        // 토큰 교환도 반드시 동일한 API 개별 연동 시크릿 키를 사용해야 합니다.
-        // 키 쌍 불일치 시 NOT_FOUND_AUTHORIZATION_CODE 에러 발생
-        const secretKey = process.env.TOSS_CORE_SECRET_KEY || process.env.TOSS_WIDGET_SECRET_KEY;
+        const secretKey = process.env.TOSS_WIDGET_SECRET_KEY;
         if (!secretKey) {
-            console.error("TOSS_WIDGET_SECRET_KEY (or TOSS_CORE_SECRET_KEY) is not defined");
+            console.error("TOSS_WIDGET_SECRET_KEY is not defined");
             return NextResponse.json({ error: "Server configuration error" }, { status: 500 });
         }
 
@@ -40,7 +37,10 @@ export async function POST(req: Request) {
 
         if (!response.ok) {
             console.error("Toss Brandpay Token Error:", data);
-            return NextResponse.json(data, { status: response.status });
+            return NextResponse.json({
+                ...data,
+                message: data?.message || data?.error?.message || "Access Token 발급에 실패했습니다.",
+            }, { status: response.status });
         }
 
         // 정상 발급 시 토스가 내부적으로 AccessToken을 영구 관리하므로, 별도 보관 로직을 강제하지 않습니다.

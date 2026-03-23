@@ -16,12 +16,13 @@ import {
   FiLoader,
 } from "react-icons/fi";
 import Link from "next/link";
+import { buildTossCustomerKey, getBrandpayRedirectUrl } from "@/lib/tossUtils";
 
 // 토스페이먼츠 V2 타입
 declare global {
   interface Window {
     TossPayments?: (clientKey: string) => {
-      widgets: (options: { customerKey: string }) => {
+      widgets: (options: { customerKey: string; brandpay?: { redirectUrl: string } }) => {
         setAmount: (options: { value: number; currency: string }) => Promise<void>;
         renderPaymentMethods: (options: { selector: string; variantKey: string }) => Promise<{ destroy?: () => void }>;
         requestPayment: (options: {
@@ -343,10 +344,23 @@ export default function OrdersList({
           throw new Error("TossPayments SDK not loaded");
         }
 
-        const customerKey = `customer_${session?.user?.id || session?.user?.email?.replace(/[@.]/g, "_") || Date.now()}`;
+        const customerKey = buildTossCustomerKey({
+          userId: session?.user?.id,
+          email: session?.user?.email,
+        });
+        if (!customerKey) {
+          throw new Error("고객 식별 정보를 확인할 수 없습니다. 다시 로그인 후 시도해주세요.");
+        }
+
+        const brandpayRedirectUrl = getBrandpayRedirectUrl(window.location.origin, "/account/orders");
 
         const tossPayments = TossPayments(tossClientKey);
-        const paymentWidget = tossPayments.widgets({ customerKey });
+        const paymentWidget = tossPayments.widgets({
+          customerKey,
+          brandpay: {
+            redirectUrl: brandpayRedirectUrl,
+          },
+        });
 
         await paymentWidget.setAmount({ value: paymentAmount, currency: "KRW" });
         const methodWidget = await paymentWidget.renderPaymentMethods({
