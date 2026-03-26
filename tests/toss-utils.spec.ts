@@ -112,6 +112,9 @@ test.describe("tossUtils", () => {
     expect(formatBrandpayRegistrationErrorMessage("[BRIDGE] customerToken timeout")).toBe(
       "브랜드페이 등록 확인이 지연되었습니다. 현재 화면에서 다시 시도해주세요.",
     );
+    expect(formatBrandpayRegistrationErrorMessage("[BRIDGE] GET_PARAMETER brandpayCustomerToken timeout")).toBe(
+      "브랜드페이 등록 확인이 지연되었습니다. 현재 화면에서 다시 시도해주세요.",
+    );
   });
 
   test("readBrandpayRegistrationReturn reads success and error flags", () => {
