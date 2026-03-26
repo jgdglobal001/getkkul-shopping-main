@@ -6,9 +6,9 @@ import PriceFormat from "../PriceFormat";
 import ShippingAddressSelector from "./ShippingAddressSelector";
 import { ProductType, Address } from "../../../type";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { CiDeliveryTruck } from "react-icons/ci";
-import { FiAlertCircle, FiLoader, FiX } from "react-icons/fi";
+import { FiAlertCircle, FiCheck, FiLoader, FiX } from "react-icons/fi";
 import { FaSignInAlt } from "react-icons/fa";
 import Link from "next/link";
 import Script from "next/script";
@@ -17,6 +17,8 @@ import {
   buildTossCustomerKey,
   getBrandpayRedirectUrl,
   persistExpectedBrandpayCustomerKey,
+  readBrandpayRegistrationReturn,
+  removeQueryParams,
 } from "@/lib/tossUtils";
 
 // SessionStorage keys for persisting payment state
@@ -26,6 +28,11 @@ const PENDING_AMOUNT_KEY = "getkkul_pending_amount";
 interface Props {
   cart: ProductType[];
 }
+
+type BrandpayNotice = {
+  type: "success" | "error";
+  message: string;
+};
 
 const CartSummary = ({ cart }: Props) => {
   const { t } = useTranslation();
@@ -49,6 +56,25 @@ const CartSummary = ({ cart }: Props) => {
 
   const { data: session, status } = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const [brandpayNotice, setBrandpayNotice] = useState<BrandpayNotice | null>(null);
+
+  useEffect(() => {
+    const result = readBrandpayRegistrationReturn(searchParams);
+    if (!result.status || !result.message) return;
+
+    setBrandpayNotice({ type: result.status, message: result.message });
+
+    const currentPath = searchParams.toString() ? `/cart?${searchParams.toString()}` : "/cart";
+    router.replace(removeQueryParams(currentPath, ["brandpay", "brandpayError"]));
+  }, [router, searchParams]);
+
+  useEffect(() => {
+    if (!brandpayNotice) return;
+
+    const timer = window.setTimeout(() => setBrandpayNotice(null), 5000);
+    return () => window.clearTimeout(timer);
+  }, [brandpayNotice]);
 
   // Get free shipping threshold from environment
   const freeShippingThreshold =
@@ -401,6 +427,24 @@ const CartSummary = ({ cart }: Props) => {
       <section className="rounded-lg bg-gray-100 px-4 py-6 sm:p-10 lg:col-span-5 mt-16 lg:mt-0">
         <Title>{t("cart.cart_summary")}</Title>
 
+        {brandpayNotice && !showPaymentWidget && (
+          <div
+            className={`mb-4 rounded-lg border px-4 py-3 text-sm ${brandpayNotice.type === "success"
+              ? "border-green-200 bg-green-50 text-green-800"
+              : "border-red-200 bg-red-50 text-red-800"
+              }`}
+          >
+            <div className="flex items-start">
+              {brandpayNotice.type === "success" ? (
+                <FiCheck className="mr-2 mt-0.5 h-4 w-4 flex-shrink-0" />
+              ) : (
+                <FiAlertCircle className="mr-2 mt-0.5 h-4 w-4 flex-shrink-0" />
+              )}
+              <p className="font-medium">{brandpayNotice.message}</p>
+            </div>
+          </div>
+        )}
+
         {/* Toss Payment Widget Modal */}
         {showPaymentWidget && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
@@ -416,6 +460,24 @@ const CartSummary = ({ cart }: Props) => {
               </div>
 
               <div className="p-4">
+                {brandpayNotice && (
+                  <div
+                    className={`mb-4 rounded-lg border px-4 py-3 text-sm ${brandpayNotice.type === "success"
+                      ? "border-green-200 bg-green-50 text-green-800"
+                      : "border-red-200 bg-red-50 text-red-800"
+                      }`}
+                  >
+                    <div className="flex items-start">
+                      {brandpayNotice.type === "success" ? (
+                        <FiCheck className="mr-2 mt-0.5 h-4 w-4 flex-shrink-0" />
+                      ) : (
+                        <FiAlertCircle className="mr-2 mt-0.5 h-4 w-4 flex-shrink-0" />
+                      )}
+                      <p className="font-medium">{brandpayNotice.message}</p>
+                    </div>
+                  </div>
+                )}
+
                 {/* Order Summary - Use lockedAmount to show the actual payment amount */}
                 <div className="mb-4 p-3 bg-gray-50 rounded-lg">
                   <div className="flex justify-between items-center">

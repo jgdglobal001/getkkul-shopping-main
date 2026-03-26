@@ -8,6 +8,10 @@ type TossCustomerIdentity = {
   email?: string | null;
 };
 
+type SearchParamsLike = {
+  get(name: string): string | null;
+};
+
 function createStableHash(value: string) {
   let hash = 2166136261;
 
@@ -73,6 +77,66 @@ export function appendQueryParam(path: string, key: string, value: string) {
   const nextHash = hash ? `#${hash}` : "";
 
   return `${pathname}${nextSearch ? `?${nextSearch}` : ""}${nextHash}`;
+}
+
+export function removeQueryParams(path: string, keys: string[]) {
+  const [pathnameWithSearch, hash = ""] = path.split("#", 2);
+  const [pathname, search = ""] = pathnameWithSearch.split("?", 2);
+  const params = new URLSearchParams(search);
+
+  keys.forEach((key) => params.delete(key));
+
+  const nextSearch = params.toString();
+  const nextHash = hash ? `#${hash}` : "";
+
+  return `${pathname}${nextSearch ? `?${nextSearch}` : ""}${nextHash}`;
+}
+
+export function formatBrandpayRegistrationErrorMessage(errorMessage?: string | null) {
+  const trimmed = errorMessage?.trim();
+
+  if (!trimmed) {
+    return "브랜드페이 카드 등록 중 오류가 발생했습니다. 다시 시도해주세요.";
+  }
+
+  const normalized = trimmed.toLowerCase();
+
+  if (
+    normalized === "card_registration_failed" ||
+    normalized.includes("timeout") ||
+    normalized.includes("bridge") ||
+    normalized.includes("customertoken")
+  ) {
+    return "브랜드페이 등록 확인이 지연되었습니다. 현재 화면에서 다시 시도해주세요.";
+  }
+
+  if (normalized.includes("expired") || trimmed.includes("만료")) {
+    return "브랜드페이 인증 정보가 만료되었습니다. 원래 화면에서 다시 시도해주세요.";
+  }
+
+  return trimmed;
+}
+
+export function readBrandpayRegistrationReturn(searchParams: SearchParamsLike) {
+  if (searchParams.get("brandpay") === "registered") {
+    return {
+      status: "success" as const,
+      message: "브랜드페이 카드 등록이 완료되었습니다. 등록한 카드로 계속 결제를 진행해주세요.",
+    };
+  }
+
+  const errorMessage = searchParams.get("brandpayError");
+  if (errorMessage) {
+    return {
+      status: "error" as const,
+      message: formatBrandpayRegistrationErrorMessage(errorMessage),
+    };
+  }
+
+  return {
+    status: null,
+    message: null,
+  };
 }
 
 export function getBrandpayCustomerKeyStorageKey(returnPath?: string | null) {

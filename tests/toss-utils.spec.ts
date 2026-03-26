@@ -3,10 +3,13 @@ import {
   appendQueryParam,
   buildBrandpayCallbackRedirectTargets,
   buildTossCustomerKey,
+  formatBrandpayRegistrationErrorMessage,
   getBrandpayCustomerKeyStorageKey,
   getBrandpayRedirectUrl,
   isBrandpayCustomerKeyVerified,
   normalizeBrandpayReturnPath,
+  readBrandpayRegistrationReturn,
+  removeQueryParams,
 } from "../src/lib/tossUtils";
 
 test.describe("tossUtils", () => {
@@ -41,6 +44,15 @@ test.describe("tossUtils", () => {
     const nextPath = appendQueryParam("/checkout?orderId=abc#brandpay", "brandpay", "registered");
 
     expect(nextPath).toBe("/checkout?orderId=abc&brandpay=registered#brandpay");
+  });
+
+  test("removeQueryParams removes only requested parameters", () => {
+    const nextPath = removeQueryParams(
+      "/checkout?orderId=abc&brandpay=registered&brandpayError=timeout_error#payment",
+      ["brandpay", "brandpayError"],
+    );
+
+    expect(nextPath).toBe("/checkout?orderId=abc#payment");
   });
 
   test("getBrandpayRedirectUrl embeds a safe returnUrl", () => {
@@ -80,5 +92,28 @@ test.describe("tossUtils", () => {
     expect(targets.returnUrl).toBe("/checkout?step=payment");
     expect(targets.successRedirectUrl).toBe("/checkout?step=payment&brandpay=registered");
     expect(targets.errorRedirectUrl).toBe("/checkout?step=payment&brandpayError=timeout_error");
+  });
+
+  test("formatBrandpayRegistrationErrorMessage normalizes timeout errors", () => {
+    expect(formatBrandpayRegistrationErrorMessage("timeout_error")).toBe(
+      "브랜드페이 등록 확인이 지연되었습니다. 현재 화면에서 다시 시도해주세요.",
+    );
+    expect(formatBrandpayRegistrationErrorMessage("[BRIDGE] customerToken timeout")).toBe(
+      "브랜드페이 등록 확인이 지연되었습니다. 현재 화면에서 다시 시도해주세요.",
+    );
+  });
+
+  test("readBrandpayRegistrationReturn reads success and error flags", () => {
+    expect(readBrandpayRegistrationReturn(new URLSearchParams("brandpay=registered"))).toEqual({
+      status: "success",
+      message: "브랜드페이 카드 등록이 완료되었습니다. 등록한 카드로 계속 결제를 진행해주세요.",
+    });
+
+    expect(
+      readBrandpayRegistrationReturn(new URLSearchParams("brandpayError=card_registration_failed")),
+    ).toEqual({
+      status: "error",
+      message: "브랜드페이 등록 확인이 지연되었습니다. 현재 화면에서 다시 시도해주세요.",
+    });
   });
 });

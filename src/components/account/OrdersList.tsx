@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import Script from "next/script";
@@ -13,6 +14,8 @@ import {
   FiCalendar,
   FiCreditCard,
   FiTrash2,
+  FiAlertCircle,
+  FiCheck,
   FiLoader,
 } from "react-icons/fi";
 import Link from "next/link";
@@ -20,7 +23,55 @@ import {
   buildTossCustomerKey,
   getBrandpayRedirectUrl,
   persistExpectedBrandpayCustomerKey,
+  readBrandpayRegistrationReturn,
+  removeQueryParams,
 } from "@/lib/tossUtils";
+
+const CANCEL_PAYMENT_ORDER_STORAGE_KEY = "getkkul_cancel_payment_order_id";
+const CANCEL_PAYMENT_AMOUNT_STORAGE_KEY = "getkkul_cancel_payment_amount";
+
+type BrandpayNotice = {
+  type: "success" | "error";
+  message: string;
+};
+
+function persistCancelPaymentContext(orderId: string, amount: number) {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  window.sessionStorage.setItem(CANCEL_PAYMENT_ORDER_STORAGE_KEY, orderId);
+  window.sessionStorage.setItem(CANCEL_PAYMENT_AMOUNT_STORAGE_KEY, amount.toString());
+}
+
+function readCancelPaymentContext() {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  const orderId = window.sessionStorage.getItem(CANCEL_PAYMENT_ORDER_STORAGE_KEY);
+  const amount = window.sessionStorage.getItem(CANCEL_PAYMENT_AMOUNT_STORAGE_KEY);
+
+  if (!orderId || !amount) {
+    return null;
+  }
+
+  const parsedAmount = Number(amount);
+  if (!Number.isFinite(parsedAmount) || parsedAmount <= 0) {
+    return null;
+  }
+
+  return { orderId, amount: parsedAmount };
+}
+
+function clearCancelPaymentContext() {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  window.sessionStorage.removeItem(CANCEL_PAYMENT_ORDER_STORAGE_KEY);
+  window.sessionStorage.removeItem(CANCEL_PAYMENT_AMOUNT_STORAGE_KEY);
+}
 
 // 토스페이먼츠 V2 타입
 declare global {
@@ -74,6 +125,8 @@ export default function OrdersList({
   onOrdersChange,
 }: OrdersListProps) {
   const { data: session } = useSession();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const { t } = useTranslation();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
@@ -101,6 +154,8 @@ export default function OrdersList({
   const [paymentOrderId, setPaymentOrderId] = useState<string | null>(null);
   const [tossReady, setTossReady] = useState(false);
   const [paymentProcessing, setPaymentProcessing] = useState(false);
+  const [brandpayNotice, setBrandpayNotice] = useState<BrandpayNotice | null>(null);
+  const [paymentWidgetRetryKey, setPaymentWidgetRetryKey] = useState(0);
   const paymentWidgetRef = useRef<ReturnType<ReturnType<NonNullable<typeof window.TossPayments>>["widgets"]> | null>(null);
   const paymentMethodWidgetRef = useRef<{ destroy?: () => void } | null>(null);
 
@@ -129,6 +184,37 @@ export default function OrdersList({
       setLoading(false);
     }
   }, [session?.user?.email, onOrdersChange]);
+
+  useEffect(() => {
+    const result = readBrandpayRegistrationReturn(searchParams);
+    if (!result.status || !result.message) return;
+
+    setBrandpayNotice({ type: result.status, message: result.message });
+
+    const restoredContext = readCancelPaymentContext();
+    if (restoredContext) {
+      setPaymentOrderId(restoredContext.orderId);
+      setPaymentAmount(restoredContext.amount);
+      setShowCancelConfirm(null);
+      setShowPaymentWidget(true);
+      setPaymentWidgetReady(false);
+      setPaymentWidgetError(null);
+      setPaymentWidgetRetryKey((prev) => prev + 1);
+    }
+
+    const currentPath = searchParams.toString()
+      ? `/account/orders?${searchParams.toString()}`
+      : "/account/orders";
+
+    router.replace(removeQueryParams(currentPath, ["brandpay", "brandpayError"]));
+  }, [router, searchParams]);
+
+  useEffect(() => {
+    if (!brandpayNotice) return;
+
+    const timer = window.setTimeout(() => setBrandpayNotice(null), 5000);
+    return () => window.clearTimeout(timer);
+  }, [brandpayNotice]);
 
   useEffect(() => {
     if (session?.user?.email) {
@@ -324,12 +410,14 @@ export default function OrdersList({
   const handlePayAndCancel = async (orderId: string, amount: number) => {
     if (!orderId) return;
 
+    persistCancelPaymentContext(orderId, amount);
     setPaymentAmount(amount);
     setPaymentOrderId(orderId);
     setShowCancelConfirm(null); // 취소 확인 모달 닫기
     setShowPaymentWidget(true); // 결제 위젯 모달 열기
     setPaymentWidgetReady(false);
     setPaymentWidgetError(null);
+    setPaymentWidgetRetryKey((prev) => prev + 1);
   };
 
   // 결제 위젯 초기화 (모달이 열릴 때)
@@ -396,7 +484,7 @@ export default function OrdersList({
         console.warn("Failed to cleanup payment widget:", e);
       }
     };
-  }, [showPaymentWidget, tossReady, paymentOrderId, paymentAmount, session?.user?.id, session?.user?.email]);
+  }, [showPaymentWidget, tossReady, paymentOrderId, paymentAmount, paymentWidgetRetryKey, session?.user?.id, session?.user?.email]);
 
   // 실제 결제 요청
   const handleCancelPaymentRequest = async () => {
@@ -428,11 +516,13 @@ export default function OrdersList({
 
   // 결제 모달 닫기
   const handleClosePaymentWidget = () => {
+    clearCancelPaymentContext();
     setShowPaymentWidget(false);
     setPaymentWidgetReady(false);
     setPaymentAmount(0);
     setPaymentOrderId(null);
     setCancellingOrderId(null);
+    setBrandpayNotice(null);
     paymentWidgetRef.current = null;
   };
 
@@ -673,6 +763,24 @@ export default function OrdersList({
           <p className="text-gray-600">
             {orders.length} {t("account.orders_found")}
           </p>
+        </div>
+      )}
+
+      {brandpayNotice && !showPaymentWidget && (
+        <div
+          className={`mb-4 rounded-lg border px-4 py-3 text-sm ${brandpayNotice.type === "success"
+            ? "border-green-200 bg-green-50 text-green-800"
+            : "border-red-200 bg-red-50 text-red-800"
+            }`}
+        >
+          <div className="flex items-start">
+            {brandpayNotice.type === "success" ? (
+              <FiCheck className="mr-2 mt-0.5 h-4 w-4 flex-shrink-0" />
+            ) : (
+              <FiAlertCircle className="mr-2 mt-0.5 h-4 w-4 flex-shrink-0" />
+            )}
+            <p className="font-medium">{brandpayNotice.message}</p>
+          </div>
         </div>
       )}
 
@@ -1176,6 +1284,24 @@ export default function OrdersList({
             </div>
 
             <div className="p-4">
+	              {brandpayNotice && (
+	                <div
+	                  className={`mb-4 rounded-lg border px-4 py-3 text-sm ${brandpayNotice.type === "success"
+	                    ? "border-green-200 bg-green-50 text-green-800"
+	                    : "border-red-200 bg-red-50 text-red-800"
+	                    }`}
+	                >
+	                  <div className="flex items-start">
+	                    {brandpayNotice.type === "success" ? (
+	                      <FiCheck className="mr-2 mt-0.5 h-4 w-4 flex-shrink-0" />
+	                    ) : (
+	                      <FiAlertCircle className="mr-2 mt-0.5 h-4 w-4 flex-shrink-0" />
+	                    )}
+	                    <p className="font-medium">{brandpayNotice.message}</p>
+	                  </div>
+	                </div>
+	              )}
+
               <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
                 <p className="text-sm text-red-700 mb-2">
                   {t("orders.deficit_payment_info") || "주문 금액이 왕복 택배비(6,000원)보다 적어 추가 결제가 필요합니다."}
@@ -1200,6 +1326,7 @@ export default function OrdersList({
                       onClick={() => {
                         setPaymentWidgetError(null);
                         setPaymentWidgetReady(false);
+                        setPaymentWidgetRetryKey((prev) => prev + 1);
                       }}
                       className="mt-2 text-sm text-theme-color underline"
                     >

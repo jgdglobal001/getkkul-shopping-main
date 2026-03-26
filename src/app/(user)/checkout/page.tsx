@@ -15,16 +15,25 @@ import {
   buildTossCustomerKey,
   getBrandpayRedirectUrl,
   persistExpectedBrandpayCustomerKey,
+  readBrandpayRegistrationReturn,
+  removeQueryParams,
 } from "@/lib/tossUtils";
 import {
   FiPackage,
   FiMapPin,
   FiCreditCard,
   FiArrowLeft,
+  FiAlertCircle,
+  FiCheck,
   FiLoader,
   FiTruck,
 } from "react-icons/fi";
 import Link from "next/link";
+
+type BrandpayNotice = {
+  type: "success" | "error";
+  message: string;
+};
 
 const CheckoutPage = () => {
   const { data: session, status } = useSession();
@@ -37,6 +46,7 @@ const CheckoutPage = () => {
   const [paymentProcessing, setPaymentProcessing] = useState(false);
   const [widgetReady, setWidgetReady] = useState(false);
   const [widgetError, setWidgetError] = useState<string | null>(null);
+  const [brandpayNotice, setBrandpayNotice] = useState<BrandpayNotice | null>(null);
   const paymentWidgetRef = useRef<any>(null);
   const paymentMethodWidgetRef = useRef<any>(null);
   const initializingRef = useRef(false);
@@ -45,6 +55,26 @@ const CheckoutPage = () => {
   // Get order ID from URL params
   const existingOrderId = searchParams.get("orderId");
   const paymentCancelled = searchParams.get("cancelled");
+
+  useEffect(() => {
+    const result = readBrandpayRegistrationReturn(searchParams);
+    if (!result.status || !result.message) return;
+
+    setBrandpayNotice({ type: result.status, message: result.message });
+
+    const currentPath = searchParams.toString()
+      ? `/checkout?${searchParams.toString()}`
+      : "/checkout";
+
+    router.replace(removeQueryParams(currentPath, ["brandpay", "brandpayError"]));
+  }, [router, searchParams]);
+
+  useEffect(() => {
+    if (!brandpayNotice) return;
+
+    const timer = window.setTimeout(() => setBrandpayNotice(null), 5000);
+    return () => window.clearTimeout(timer);
+  }, [brandpayNotice]);
 
   // Define fetchExistingOrder BEFORE the useEffect that uses it
   const fetchExistingOrder = useCallback(async () => {
@@ -493,6 +523,24 @@ const CheckoutPage = () => {
       </div>
 
       {/* Payment Cancelled Notification */}
+      {brandpayNotice && (
+        <div
+          className={`mb-6 rounded-lg border p-4 ${brandpayNotice.type === "success"
+            ? "border-green-200 bg-green-50 text-green-800"
+            : "border-red-200 bg-red-50 text-red-800"
+            }`}
+        >
+          <div className="flex items-start">
+            {brandpayNotice.type === "success" ? (
+              <FiCheck className="mr-3 mt-0.5 h-5 w-5 flex-shrink-0" />
+            ) : (
+              <FiAlertCircle className="mr-3 mt-0.5 h-5 w-5 flex-shrink-0" />
+            )}
+            <p className="text-sm font-medium">{brandpayNotice.message}</p>
+          </div>
+        </div>
+      )}
+
       {paymentCancelled && (
         <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
           <div className="flex items-center">
