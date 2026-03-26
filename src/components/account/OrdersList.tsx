@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useEffect, useState, useCallback, useRef } from "react";
+import React, { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
-import Script from "next/script";
 import PriceFormat from "@/components/PriceFormat";
 import {
   FiEye,
@@ -21,11 +20,17 @@ import {
 import Link from "next/link";
 import {
   buildTossCustomerKey,
+  formatBrandpayRegistrationErrorMessage,
   getBrandpayRedirectUrl,
   persistExpectedBrandpayCustomerKey,
   readBrandpayRegistrationReturn,
   removeQueryParams,
 } from "@/lib/tossUtils";
+import {
+  TossPaymentsMethodWidget,
+  TossPaymentsWidgetsInstance,
+  useTossPaymentsReady,
+} from "@/hooks/useTossPayments";
 
 const CANCEL_PAYMENT_ORDER_STORAGE_KEY = "getkkul_cancel_payment_order_id";
 const CANCEL_PAYMENT_AMOUNT_STORAGE_KEY = "getkkul_cancel_payment_amount";
@@ -71,26 +76,6 @@ function clearCancelPaymentContext() {
 
   window.sessionStorage.removeItem(CANCEL_PAYMENT_ORDER_STORAGE_KEY);
   window.sessionStorage.removeItem(CANCEL_PAYMENT_AMOUNT_STORAGE_KEY);
-}
-
-// 토스페이먼츠 V2 타입
-declare global {
-  interface Window {
-    TossPayments?: (clientKey: string) => {
-      widgets: (options: { customerKey: string; brandpay?: { redirectUrl: string } }) => {
-        setAmount: (options: { value: number; currency: string }) => Promise<void>;
-        renderPaymentMethods: (options: { selector: string; variantKey: string }) => Promise<{ destroy?: () => void }>;
-        requestPayment: (options: {
-          orderId: string;
-          orderName: string;
-          successUrl: string;
-          failUrl: string;
-          customerEmail?: string;
-          customerName?: string;
-        }) => Promise<void>;
-      };
-    };
-  }
 }
 
 interface OrderItem {
@@ -152,12 +137,32 @@ export default function OrdersList({
   const [paymentWidgetError, setPaymentWidgetError] = useState<string | null>(null);
   const [paymentAmount, setPaymentAmount] = useState(0);
   const [paymentOrderId, setPaymentOrderId] = useState<string | null>(null);
-  const [tossReady, setTossReady] = useState(false);
   const [paymentProcessing, setPaymentProcessing] = useState(false);
   const [brandpayNotice, setBrandpayNotice] = useState<BrandpayNotice | null>(null);
   const [paymentWidgetRetryKey, setPaymentWidgetRetryKey] = useState(0);
-  const paymentWidgetRef = useRef<ReturnType<ReturnType<NonNullable<typeof window.TossPayments>>["widgets"]> | null>(null);
-  const paymentMethodWidgetRef = useRef<{ destroy?: () => void } | null>(null);
+  const paymentWidgetRef = useRef<TossPaymentsWidgetsInstance | null>(null);
+  const paymentMethodWidgetRef = useRef<TossPaymentsMethodWidget | null>(null);
+  const paymentWidgetReadyRef = useRef(false);
+  const initializingPaymentWidgetRef = useRef(false);
+  const { isReady: tossReady, sdkError, tossPaymentsFactory } = useTossPaymentsReady();
+  const paymentCustomerKey = useMemo(
+    () =>
+      buildTossCustomerKey({
+        userId: session?.user?.id,
+        email: session?.user?.email,
+      }),
+    [session?.user?.email, session?.user?.id],
+  );
+
+  useEffect(() => {
+    paymentWidgetReadyRef.current = paymentWidgetReady;
+  }, [paymentWidgetReady]);
+
+  useEffect(() => {
+    if (showPaymentWidget && sdkError) {
+      setPaymentWidgetError(sdkError);
+    }
+  }, [sdkError, showPaymentWidget]);
 
   const fetchOrders = useCallback(async () => {
     try {
@@ -422,69 +427,108 @@ export default function OrdersList({
 
   // 결제 위젯 초기화 (모달이 열릴 때)
   useEffect(() => {
-    if (!showPaymentWidget || !tossReady || !paymentOrderId || paymentAmount <= 0) return;
+    if (
+      !showPaymentWidget ||
+      !tossReady ||
+      !paymentOrderId ||
+      paymentAmount <= 0 ||
+      paymentWidgetReadyRef.current ||
+      initializingPaymentWidgetRef.current
+    ) {
+      return;
+    }
+
+    let isMounted = true;
 
     const initializeWidget = async () => {
+      initializingPaymentWidgetRef.current = true;
+
       try {
         const tossClientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
         if (!tossClientKey) {
           throw new Error("Toss Client Key not found");
         }
 
-        const TossPayments = window.TossPayments;
-        if (!TossPayments) {
-          throw new Error("TossPayments SDK not loaded");
+        if (!tossPaymentsFactory) {
+          throw new Error(sdkError || "TossPayments SDK not loaded");
         }
 
-        const customerKey = buildTossCustomerKey({
-          userId: session?.user?.id,
-          email: session?.user?.email,
-        });
-        if (!customerKey) {
+        if (!paymentCustomerKey) {
           throw new Error("고객 식별 정보를 확인할 수 없습니다. 다시 로그인 후 시도해주세요.");
         }
 
-        persistExpectedBrandpayCustomerKey(customerKey, "/account/orders");
+        persistExpectedBrandpayCustomerKey(paymentCustomerKey, "/account/orders");
 
         const brandpayRedirectUrl = getBrandpayRedirectUrl(window.location.origin, "/account/orders");
 
-        const tossPayments = TossPayments(tossClientKey);
+        const tossPayments = tossPaymentsFactory(tossClientKey);
         const paymentWidget = tossPayments.widgets({
-          customerKey,
+          customerKey: paymentCustomerKey,
           brandpay: {
             redirectUrl: brandpayRedirectUrl,
           },
         });
 
+        if (paymentMethodWidgetRef.current) {
+          try {
+            await paymentMethodWidgetRef.current.destroy?.();
+          } catch (cleanupError) {
+            console.warn("Failed to destroy previous cancel payment widget:", cleanupError);
+          }
+          paymentMethodWidgetRef.current = null;
+          paymentWidgetRef.current = null;
+        }
+
+        if (!isMounted) {
+          initializingPaymentWidgetRef.current = false;
+          return;
+        }
+
         await paymentWidget.setAmount({ value: paymentAmount, currency: "KRW" });
+
+        if (!isMounted) {
+          initializingPaymentWidgetRef.current = false;
+          return;
+        }
+
         const methodWidget = await paymentWidget.renderPaymentMethods({
           selector: "#cancel-payment-widget",
           variantKey: "getkkul-live-toss",
         });
 
+        if (!isMounted) {
+          await methodWidget.destroy?.();
+          initializingPaymentWidgetRef.current = false;
+          return;
+        }
+
         paymentWidgetRef.current = paymentWidget;
         paymentMethodWidgetRef.current = methodWidget;
         setPaymentWidgetReady(true);
         setPaymentWidgetError(null);
+        initializingPaymentWidgetRef.current = false;
       } catch (error) {
         const errorMsg = error instanceof Error ? error.message : "위젯 초기화 실패";
         console.error("Payment widget error:", error);
-        setPaymentWidgetError(errorMsg);
+        if (isMounted) {
+          setPaymentWidgetError(formatBrandpayRegistrationErrorMessage(errorMsg));
+        }
+        initializingPaymentWidgetRef.current = false;
       }
     };
 
     initializeWidget();
 
     return () => {
-      try {
-        paymentMethodWidgetRef.current?.destroy?.();
-        paymentMethodWidgetRef.current = null;
-        paymentWidgetRef.current = null;
-      } catch (e) {
+      isMounted = false;
+      initializingPaymentWidgetRef.current = false;
+      void Promise.resolve(paymentMethodWidgetRef.current?.destroy?.()).catch((e) => {
         console.warn("Failed to cleanup payment widget:", e);
-      }
+      });
+      paymentMethodWidgetRef.current = null;
+      paymentWidgetRef.current = null;
     };
-  }, [showPaymentWidget, tossReady, paymentOrderId, paymentAmount, paymentWidgetRetryKey, session?.user?.id, session?.user?.email]);
+  }, [paymentAmount, paymentCustomerKey, paymentOrderId, paymentWidgetRetryKey, sdkError, showPaymentWidget, tossPaymentsFactory, tossReady]);
 
   // 실제 결제 요청
   const handleCancelPaymentRequest = async () => {
@@ -1357,13 +1401,6 @@ export default function OrdersList({
           </div>
         </div>
       )}
-
-      {/* 토스페이먼츠 V2 SDK 로드 */}
-      <Script
-        src="https://js.tosspayments.com/v2/standard"
-        onLoad={() => setTossReady(true)}
-        strategy="afterInteractive"
-      />
     </div >
   );
 }

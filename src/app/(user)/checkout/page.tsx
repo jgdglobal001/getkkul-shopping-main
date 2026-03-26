@@ -2,7 +2,7 @@
 
 export const runtime = 'edge';
 
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -13,11 +13,17 @@ import { loadStripe } from "@stripe/stripe-js";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import {
   buildTossCustomerKey,
+  formatBrandpayRegistrationErrorMessage,
   getBrandpayRedirectUrl,
   persistExpectedBrandpayCustomerKey,
   readBrandpayRegistrationReturn,
   removeQueryParams,
 } from "@/lib/tossUtils";
+import {
+  TossPaymentsMethodWidget,
+  TossPaymentsWidgetsInstance,
+  useTossPaymentsReady,
+} from "@/hooks/useTossPayments";
 import {
   FiPackage,
   FiMapPin,
@@ -47,14 +53,32 @@ const CheckoutPage = () => {
   const [widgetReady, setWidgetReady] = useState(false);
   const [widgetError, setWidgetError] = useState<string | null>(null);
   const [brandpayNotice, setBrandpayNotice] = useState<BrandpayNotice | null>(null);
-  const paymentWidgetRef = useRef<any>(null);
-  const paymentMethodWidgetRef = useRef<any>(null);
+  const paymentWidgetRef = useRef<TossPaymentsWidgetsInstance | null>(null);
+  const paymentMethodWidgetRef = useRef<Promise<TossPaymentsMethodWidget> | TossPaymentsMethodWidget | null>(null);
   const initializingRef = useRef(false);
+  const widgetReadyRef = useRef(false);
+  const { isReady: tossReady, sdkError, tossPaymentsFactory } = useTossPaymentsReady();
+
+  useEffect(() => {
+    widgetReadyRef.current = widgetReady;
+  }, [widgetReady]);
 
 
   // Get order ID from URL params
   const existingOrderId = searchParams.get("orderId");
   const paymentCancelled = searchParams.get("cancelled");
+  const customerKey = useMemo(
+    () =>
+      buildTossCustomerKey({
+        userId: session?.user?.id,
+        email: session?.user?.email,
+      }),
+    [session?.user?.email, session?.user?.id],
+  );
+  const brandpayReturnPath = useMemo(
+    () => (existingOrderId ? `/checkout?orderId=${encodeURIComponent(existingOrderId)}` : "/checkout"),
+    [existingOrderId],
+  );
 
   useEffect(() => {
     const result = readBrandpayRegistrationReturn(searchParams);
@@ -102,7 +126,7 @@ const CheckoutPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [session?.user?.email, existingOrderId, router, status]);
+  }, [session?.user?.email, existingOrderId, router]);
 
   useEffect(() => {
     // Only fetch if authenticated
@@ -119,7 +143,7 @@ const CheckoutPage = () => {
 
   // Initialize Toss Payment Widget when order is loaded
   useEffect(() => {
-    if (!existingOrder || widgetReady || initializingRef.current) return;
+    if (!existingOrder || !tossReady || widgetReadyRef.current || initializingRef.current) return;
 
     let isMounted = true;
 
@@ -137,10 +161,9 @@ const CheckoutPage = () => {
           return;
         }
 
-        const TossPayments = (window as any).TossPayments;
-        if (!TossPayments) {
+        if (!tossPaymentsFactory) {
           if (isMounted) {
-            setWidgetError("Toss Payments SDK not loaded.");
+            setWidgetError(sdkError || "Toss Payments SDK not loaded.");
           }
           initializingRef.current = false;
           return;
@@ -151,10 +174,6 @@ const CheckoutPage = () => {
           return;
         }
 
-        const customerKey = buildTossCustomerKey({
-          userId: session?.user?.id,
-          email: session?.user?.email,
-        });
         if (!customerKey) {
           if (isMounted) {
             setWidgetError("고객 식별 정보를 확인할 수 없습니다. 다시 로그인 후 시도해주세요.");
@@ -163,9 +182,6 @@ const CheckoutPage = () => {
           return;
         }
 
-        const brandpayReturnPath = existingOrderId
-          ? `/checkout?orderId=${encodeURIComponent(existingOrderId)}`
-          : "/checkout";
         persistExpectedBrandpayCustomerKey(customerKey, brandpayReturnPath);
 
         const brandpayRedirectUrl = getBrandpayRedirectUrl(window.location.origin, brandpayReturnPath);
@@ -183,7 +199,7 @@ const CheckoutPage = () => {
           return;
         }
 
-        const tossPayments = TossPayments(tossClientKey);
+        const tossPayments = tossPaymentsFactory(tossClientKey);
         const paymentWidget = tossPayments.widgets({
           customerKey,
           brandpay: {
@@ -211,12 +227,7 @@ const CheckoutPage = () => {
         // Cleanup any existing widget instance before re-initializing
         if (paymentMethodWidgetRef.current) {
           try {
-            const existingWidget = paymentMethodWidgetRef.current as any;
-            if (typeof existingWidget.destroy === 'function') {
-              await existingWidget.destroy();
-            } else if (existingWidget.then) {
-              await existingWidget.then((w: any) => w?.destroy?.());
-            }
+            await Promise.resolve(paymentMethodWidgetRef.current).then((widget) => widget?.destroy?.());
           } catch (e) {
             console.warn("Pre-cleanup failed:", e);
           }
@@ -237,7 +248,7 @@ const CheckoutPage = () => {
 
         // If unmounted during await, destroy immediately
         if (!isMounted) {
-          paymentMethodsWidget.destroy().catch(() => { });
+          await paymentMethodsWidget.destroy?.();
           initializingRef.current = false;
           return;
         }
@@ -248,42 +259,42 @@ const CheckoutPage = () => {
 
         setWidgetReady(true);
         setWidgetError(null);
+        initializingRef.current = false;
         console.log("Toss Payment Widget initialized successfully");
       } catch (error) {
         console.error("Failed to initialize Toss Payment Widget:", error);
         if (isMounted) {
-          setWidgetError(error instanceof Error ? error.message : "Failed to initialize");
+          const errorMessage = error instanceof Error ? error.message : "Failed to initialize";
+          setWidgetError(formatBrandpayRegistrationErrorMessage(errorMessage));
         }
         initializingRef.current = false;
       }
     };
 
-    const timerId = setTimeout(() => {
-      initializeWidget();
-    }, 500);
+    initializeWidget();
 
     return () => {
-      clearTimeout(timerId);
       isMounted = false;
       initializingRef.current = false;
 
       const widgetOrPromise = paymentMethodWidgetRef.current;
       if (widgetOrPromise) {
-        // Handle both resolved widget and pending promise
-        if (typeof widgetOrPromise.destroy === 'function') {
-          widgetOrPromise.destroy().catch((e: any) => console.warn("Cleanup error:", e));
-        } else if (widgetOrPromise.then) {
-          widgetOrPromise.then((widget: any) => {
-            widget?.destroy().catch((e: any) => console.warn("Cleanup error (promise):", e));
-          }).catch(() => { });
-        }
+        void Promise.resolve(widgetOrPromise)
+          .then((widget) => widget?.destroy?.())
+          .catch((e) => console.warn("Cleanup error:", e));
         paymentMethodWidgetRef.current = null;
         paymentWidgetRef.current = null;
       }
       setWidgetReady(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [existingOrder, session]);
+  }, [brandpayReturnPath, customerKey, existingOrder, sdkError, tossPaymentsFactory, tossReady]);
+
+  useEffect(() => {
+    if (existingOrder && sdkError) {
+      setWidgetError(sdkError);
+    }
+  }, [existingOrder, sdkError]);
 
   // Clean up cancelled parameter from URL after showing notification
   useEffect(() => {

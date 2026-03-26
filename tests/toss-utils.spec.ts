@@ -4,6 +4,7 @@ import {
   buildBrandpayCallbackRedirectTargets,
   buildTossCustomerKey,
   formatBrandpayRegistrationErrorMessage,
+  getBrandpayCustomerKeyCookieName,
   getBrandpayCustomerKeyStorageKey,
   getBrandpayRedirectUrl,
   isBrandpayCustomerKeyVerified,
@@ -70,6 +71,16 @@ test.describe("tossUtils", () => {
 
     expect(first).toBe(second);
     expect(first).not.toBe(third);
+  });
+
+  test("getBrandpayCustomerKeyCookieName is stable and isolated by return path", () => {
+    const first = getBrandpayCustomerKeyCookieName("/checkout?orderId=abc");
+    const second = getBrandpayCustomerKeyCookieName("/checkout?orderId=abc");
+    const third = getBrandpayCustomerKeyCookieName("/account/orders");
+
+    expect(first).toBe(second);
+    expect(first).not.toBe(third);
+    expect(first).toMatch(/^getkkul_brandpay_expected_customer_key_/);
   });
 
   test("isBrandpayCustomerKeyVerified only accepts exact matches", () => {

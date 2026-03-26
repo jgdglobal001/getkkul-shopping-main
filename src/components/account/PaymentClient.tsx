@@ -1,15 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { FiCreditCard, FiSettings, FiLoader, FiCheck, FiAlertCircle } from "react-icons/fi";
 import {
   buildTossCustomerKey,
+  formatBrandpayRegistrationErrorMessage,
   getBrandpayRedirectUrl,
   persistExpectedBrandpayCustomerKey,
 } from "@/lib/tossUtils";
+import { useTossPaymentsReady } from "@/hooks/useTossPayments";
 
 export default function PaymentClient() {
   const { data: session, status } = useSession();
@@ -17,14 +19,19 @@ export default function PaymentClient() {
   const searchParams = useSearchParams();
   const { t } = useTranslation();
   const brandpayReturnPath = "/account/payment";
-  const customerKey = buildTossCustomerKey({
-    userId: session?.user?.id,
-    email: session?.user?.email,
-  });
+  const customerKey = useMemo(
+    () =>
+      buildTossCustomerKey({
+        userId: session?.user?.id,
+        email: session?.user?.email,
+      }),
+    [session?.user?.email, session?.user?.id],
+  );
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const { isReady: tossReady, sdkError, tossPaymentsFactory } = useTossPaymentsReady();
 
   useEffect(() => {
     // 성공/실패 메시지 처리
@@ -55,60 +62,47 @@ export default function PaymentClient() {
     }
   }, [error]);
 
-  const [brandpay, setBrandpay] = useState<any>(null);
-
   useEffect(() => {
-    if (status !== "authenticated" || !session) return;
-    
-    try {
-      const tossClientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
-      if (!tossClientKey) return;
-      
-      const TossPayments = (window as any).TossPayments;
-      if (!TossPayments) return;
-      
-      if (!customerKey) {
-        setError("고객 식별 정보를 확인할 수 없습니다. 다시 로그인 후 시도해주세요.");
-        return;
-      }
-      
-      const tp = TossPayments(tossClientKey);
-      const bp = tp.brandpay({
-        customerKey,
-        redirectUrl: getBrandpayRedirectUrl(window.location.origin, brandpayReturnPath),
-      });
-      setBrandpay(bp);
-    } catch (err) {
-      console.error("Failed to initialize Brandpay:", err);
-    }
-  }, [brandpayReturnPath, customerKey, session, status]);
+    if (status !== "authenticated" || !sdkError) return;
 
-  const handleAddCard = async () => {
-    if (!brandpay) {
-      setError("결제 시스템을 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
-      return;
+    setError(sdkError);
+  }, [sdkError, status]);
+
+  const createBrandpay = useCallback(() => {
+    const tossClientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
+    if (!tossClientKey) {
+      throw new Error("Toss Client Key is not configured.");
     }
 
     if (!customerKey) {
-      setError("고객 식별 정보를 확인할 수 없습니다. 다시 로그인 후 시도해주세요.");
-      return;
+      throw new Error("고객 식별 정보를 확인할 수 없습니다. 다시 로그인 후 시도해주세요.");
     }
 
+    if (!tossReady || !tossPaymentsFactory) {
+      throw new Error(sdkError || "결제 시스템을 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
+    }
+
+    return tossPaymentsFactory(tossClientKey).brandpay({
+      customerKey,
+      redirectUrl: getBrandpayRedirectUrl(window.location.origin, brandpayReturnPath),
+    });
+  }, [brandpayReturnPath, customerKey, sdkError, tossPaymentsFactory, tossReady]);
+
+  const handleAddCard = async () => {
     try {
       setLoading(true);
       setError(null);
+      if (!customerKey) {
+        throw new Error("고객 식별 정보를 확인할 수 없습니다. 다시 로그인 후 시도해주세요.");
+      }
+      const brandpay = createBrandpay();
       persistExpectedBrandpayCustomerKey(customerKey, brandpayReturnPath);
       await brandpay.addPaymentMethod();
     } catch (err: any) {
       console.error("Error adding card:", err);
       const errorMessage = err?.message || "";
       if (!errorMessage.includes("취소")) {
-        // 토스 내부 기술 에러 메시지를 파싱하여 친화적인 문구로 변경
-        if (errorMessage.includes("BRIDGE") || errorMessage.includes("customerToken") || errorMessage.includes("Timeout")) {
-          setError("유효하지 않은 카드이거나 통신 지연이 발생했습니다. 카드 정보를 확인하시고 다시 시도해주시거나 다른 카드로 등록해주세요!");
-        } else {
-          setError(errorMessage || "카드 등록 중 오류가 발생했습니다.");
-        }
+        setError(formatBrandpayRegistrationErrorMessage(errorMessage));
       }
     } finally {
       setLoading(false);
@@ -116,30 +110,20 @@ export default function PaymentClient() {
   };
 
   const handleManageCards = async () => {
-    if (!brandpay) {
-      setError("결제 시스템을 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
-      return;
-    }
-
-    if (!customerKey) {
-      setError("고객 식별 정보를 확인할 수 없습니다. 다시 로그인 후 시도해주세요.");
-      return;
-    }
-
     try {
       setLoading(true);
       setError(null);
+      if (!customerKey) {
+        throw new Error("고객 식별 정보를 확인할 수 없습니다. 다시 로그인 후 시도해주세요.");
+      }
+      const brandpay = createBrandpay();
       persistExpectedBrandpayCustomerKey(customerKey, brandpayReturnPath);
       await brandpay.openSettings();
     } catch (err: any) {
       console.error("Error opening brandpay settings:", err);
       const errorMessage = err?.message || "";
       if (!errorMessage.includes("취소")) {
-        if (errorMessage.includes("BRIDGE") || errorMessage.includes("customerToken") || errorMessage.includes("Timeout")) {
-          setError("통신 지연 또는 인증 오류가 발생했습니다. 브라우저를 새로고침하신 후 다시 시도해 주세요!");
-        } else {
-          setError(errorMessage || "설정창을 여는 중 오류가 발생했습니다.");
-        }
+        setError(formatBrandpayRegistrationErrorMessage(errorMessage));
       }
     } finally {
       setLoading(false);
@@ -184,7 +168,7 @@ export default function PaymentClient() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-lg mx-auto">
           <button
             onClick={handleAddCard}
-            disabled={loading || status === "loading" || status === "unauthenticated"}
+            disabled={loading || status === "loading" || status === "unauthenticated" || !tossReady}
             className="flex-1 inline-flex items-center justify-center px-6 py-4 bg-theme-color text-white rounded-xl hover:bg-theme-color/90 transition-colors disabled:opacity-50 text-base font-medium shadow-md shadow-theme-color/20"
           >
             {loading || status === "loading" ? (
@@ -197,7 +181,7 @@ export default function PaymentClient() {
           
           <button
             onClick={handleManageCards}
-            disabled={loading || status === "loading" || status === "unauthenticated"}
+            disabled={loading || status === "loading" || status === "unauthenticated" || !tossReady}
             className="flex-1 inline-flex items-center justify-center px-6 py-4 bg-white text-gray-700 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors disabled:opacity-50 text-base font-medium"
           >
             {loading || status === "loading" ? (

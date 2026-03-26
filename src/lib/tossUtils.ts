@@ -2,6 +2,8 @@ const TOSS_CUSTOMER_KEY_PREFIX = "customer_";
 const MAX_TOSS_CUSTOMER_KEY_LENGTH = 50;
 const DEFAULT_BRANDPAY_RETURN_PATH = "/account/payment";
 const BRANDPAY_EXPECTED_CUSTOMER_KEY_STORAGE_PREFIX = "getkkul_brandpay_expected_customer_key:";
+const BRANDPAY_EXPECTED_CUSTOMER_KEY_COOKIE_PREFIX = "getkkul_brandpay_expected_customer_key_";
+const BRANDPAY_EXPECTED_CUSTOMER_KEY_COOKIE_MAX_AGE_SECONDS = 60 * 30;
 
 type TossCustomerIdentity = {
   userId?: string | null;
@@ -28,6 +30,55 @@ function sanitizeCustomerFragment(value: string) {
     .replace(/[^a-zA-Z0-9_-]/g, "_")
     .replace(/_+/g, "_")
     .replace(/^_+|_+$/g, "");
+}
+
+function readCookieValue(cookieSource: string, cookieName: string) {
+  const prefix = `${cookieName}=`;
+
+  for (const part of cookieSource.split(";")) {
+    const normalizedPart = part.trim();
+    if (!normalizedPart.startsWith(prefix)) {
+      continue;
+    }
+
+    try {
+      return decodeURIComponent(normalizedPart.slice(prefix.length));
+    } catch {
+      return normalizedPart.slice(prefix.length);
+    }
+  }
+
+  return null;
+}
+
+function writeBrandpayCustomerKeyCookie(customerKey: string, returnPath?: string | null) {
+  if (typeof document === "undefined" || !customerKey) {
+    return;
+  }
+
+  const cookieName = getBrandpayCustomerKeyCookieName(returnPath);
+  const secure = typeof window !== "undefined" && window.location.protocol === "https:" ? "; Secure" : "";
+
+  document.cookie = `${cookieName}=${encodeURIComponent(customerKey)}; Path=/; Max-Age=${BRANDPAY_EXPECTED_CUSTOMER_KEY_COOKIE_MAX_AGE_SECONDS}; SameSite=Lax${secure}`;
+}
+
+function clearBrandpayCustomerKeyCookie(returnPath?: string | null) {
+  if (typeof document === "undefined") {
+    return;
+  }
+
+  const cookieName = getBrandpayCustomerKeyCookieName(returnPath);
+  const secure = typeof window !== "undefined" && window.location.protocol === "https:" ? "; Secure" : "";
+
+  document.cookie = `${cookieName}=; Path=/; Max-Age=0; SameSite=Lax${secure}`;
+}
+
+function readBrandpayCustomerKeyCookie(returnPath?: string | null) {
+  if (typeof document === "undefined") {
+    return null;
+  }
+
+  return readCookieValue(document.cookie, getBrandpayCustomerKeyCookieName(returnPath));
 }
 
 export function buildTossCustomerKey({ userId, email }: TossCustomerIdentity) {
@@ -145,6 +196,12 @@ export function getBrandpayCustomerKeyStorageKey(returnPath?: string | null) {
   return `${BRANDPAY_EXPECTED_CUSTOMER_KEY_STORAGE_PREFIX}${createStableHash(normalizedReturnPath)}`;
 }
 
+export function getBrandpayCustomerKeyCookieName(returnPath?: string | null) {
+  const normalizedReturnPath = normalizeBrandpayReturnPath(returnPath);
+
+  return `${BRANDPAY_EXPECTED_CUSTOMER_KEY_COOKIE_PREFIX}${createStableHash(normalizedReturnPath)}`;
+}
+
 export function persistExpectedBrandpayCustomerKey(customerKey: string, returnPath?: string | null) {
   if (!customerKey || typeof window === "undefined") {
     return;
@@ -163,11 +220,18 @@ export function persistExpectedBrandpayCustomerKey(customerKey: string, returnPa
   } catch {
     // ignore storage failures
   }
+
+  writeBrandpayCustomerKeyCookie(customerKey, returnPath);
 }
 
 export function readExpectedBrandpayCustomerKey(returnPath?: string | null) {
   if (typeof window === "undefined") {
     return null;
+  }
+
+  const cookieValue = readBrandpayCustomerKeyCookie(returnPath);
+  if (cookieValue) {
+    return cookieValue;
   }
 
   const storageKey = getBrandpayCustomerKeyStorageKey(returnPath);
@@ -206,6 +270,8 @@ export function clearExpectedBrandpayCustomerKey(returnPath?: string | null) {
   } catch {
     // ignore storage failures
   }
+
+  clearBrandpayCustomerKeyCookie(returnPath);
 }
 
 export function isBrandpayCustomerKeyVerified(

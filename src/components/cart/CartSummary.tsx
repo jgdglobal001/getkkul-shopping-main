@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Title from "../Title";
 import Button from "../ui/Button";
@@ -11,15 +11,20 @@ import { CiDeliveryTruck } from "react-icons/ci";
 import { FiAlertCircle, FiCheck, FiLoader, FiX } from "react-icons/fi";
 import { FaSignInAlt } from "react-icons/fa";
 import Link from "next/link";
-import Script from "next/script";
 import { getPartnerInfo } from "../PartnerRefTracker";
 import {
   buildTossCustomerKey,
+  formatBrandpayRegistrationErrorMessage,
   getBrandpayRedirectUrl,
   persistExpectedBrandpayCustomerKey,
   readBrandpayRegistrationReturn,
   removeQueryParams,
 } from "@/lib/tossUtils";
+import {
+  TossPaymentsMethodWidget,
+  TossPaymentsWidgetsInstance,
+  useTossPaymentsReady,
+} from "@/hooks/useTossPayments";
 
 // SessionStorage keys for persisting payment state
 const PENDING_ORDER_KEY = "getkkul_pending_order";
@@ -45,19 +50,27 @@ const CartSummary = ({ cart }: Props) => {
 
   // Toss Widget states
   const [showPaymentWidget, setShowPaymentWidget] = useState(false);
-  const [tossReady, setTossReady] = useState(false);
   const [widgetReady, setWidgetReady] = useState(false);
   const [widgetError, setWidgetError] = useState<string | null>(null);
   const [paymentProcessing, setPaymentProcessing] = useState(false);
   const [pendingOrderId, setPendingOrderId] = useState<string | null>(null);
   // Store the amount at the time of order creation to prevent changes during payment
   const [lockedAmount, setLockedAmount] = useState<number | null>(null);
-  const paymentWidgetRef = useRef<any>(null);
+  const paymentWidgetRef = useRef<TossPaymentsWidgetsInstance | null>(null);
 
   const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [brandpayNotice, setBrandpayNotice] = useState<BrandpayNotice | null>(null);
+  const { isReady: tossReady, sdkError, tossPaymentsFactory } = useTossPaymentsReady();
+  const customerKey = useMemo(
+    () =>
+      buildTossCustomerKey({
+        userId: session?.user?.id,
+        email: session?.user?.email,
+      }),
+    [session?.user?.email, session?.user?.id],
+  );
 
   useEffect(() => {
     const result = readBrandpayRegistrationReturn(searchParams);
@@ -118,7 +131,7 @@ const CartSummary = ({ cart }: Props) => {
   }, [status, pendingOrderId]);
 
   // Initialize Toss Widget when showPaymentWidget becomes true
-  const paymentMethodWidgetRef = useRef<any>(null);
+  const paymentMethodWidgetRef = useRef<TossPaymentsMethodWidget | null>(null);
   const initializingRef = useRef(false);
   // Ref to store the amount used during widget initialization
   const initializedAmountRef = useRef<number | null>(null);
@@ -128,6 +141,12 @@ const CartSummary = ({ cart }: Props) => {
   useEffect(() => {
     widgetReadyRef.current = widgetReady;
   }, [widgetReady]);
+
+  useEffect(() => {
+    if (showPaymentWidget && sdkError) {
+      setWidgetError(sdkError);
+    }
+  }, [sdkError, showPaymentWidget]);
 
   useEffect(() => {
     // FIX 1: Only trigger on showPaymentWidget, tossReady, and status changes
@@ -148,9 +167,8 @@ const CartSummary = ({ cart }: Props) => {
           return;
         }
 
-        const TossPayments = (window as any).TossPayments;
-        if (!TossPayments) {
-          if (isMounted) setWidgetError(t("cart.widget_error_load_failed"));
+        if (!tossPaymentsFactory) {
+          if (isMounted) setWidgetError(sdkError || t("cart.widget_error_load_failed"));
           initializingRef.current = false;
           return;
         }
@@ -160,10 +178,6 @@ const CartSummary = ({ cart }: Props) => {
           return;
         }
 
-        const customerKey = buildTossCustomerKey({
-          userId: session?.user?.id,
-          email: session?.user?.email,
-        });
         if (!customerKey) {
           if (isMounted) {
             setWidgetError("고객 식별 정보를 확인할 수 없습니다. 다시 로그인 후 시도해주세요.");
@@ -180,7 +194,7 @@ const CartSummary = ({ cart }: Props) => {
         const amount = lockedAmount ?? Math.round(totalAmt - discountAmt + shippingCost);
         initializedAmountRef.current = amount;
 
-        const tossPayments = TossPayments(tossClientKey);
+        const tossPayments = tossPaymentsFactory(tossClientKey);
         const paymentWidget = tossPayments.widgets({
           customerKey,
           brandpay: {
@@ -227,7 +241,7 @@ const CartSummary = ({ cart }: Props) => {
 
         // If unmounted during await, destroy immediately
         if (!isMounted) {
-          paymentMethodsWidget.destroy().catch(() => { });
+          await paymentMethodsWidget.destroy?.();
           initializingRef.current = false;
           return;
         }
@@ -238,27 +252,26 @@ const CartSummary = ({ cart }: Props) => {
 
         setWidgetReady(true);
         setWidgetError(null);
+        initializingRef.current = false;
       } catch (error) {
         console.error("CartSummary Widget Error:", error);
         if (isMounted) {
-          setWidgetError(error instanceof Error ? error.message : "위젯 초기화 실패");
+          const errorMessage = error instanceof Error ? error.message : "위젯 초기화 실패";
+          setWidgetError(formatBrandpayRegistrationErrorMessage(errorMessage));
         }
         initializingRef.current = false;
       }
     };
 
-    const timerId = setTimeout(() => {
-      initializeWidget();
-    }, 500);
+    initializeWidget();
 
     return () => {
-      clearTimeout(timerId);
       isMounted = false;
       initializingRef.current = false;
 
       const currentWidget = paymentMethodWidgetRef.current;
       if (currentWidget && typeof currentWidget.destroy === 'function') {
-        currentWidget.destroy().catch((e: any) => console.warn("Cleanup error in CartSummary:", e));
+        void Promise.resolve(currentWidget.destroy()).catch((e) => console.warn("Cleanup error in CartSummary:", e));
         paymentMethodWidgetRef.current = null;
         paymentWidgetRef.current = null;
       }
@@ -268,7 +281,7 @@ const CartSummary = ({ cart }: Props) => {
     // - session: useSession() returns new object reference every render → triggers cleanup → loop
     // - widgetReady: cleanup sets it to false → triggers effect again → loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showPaymentWidget, tossReady, status, lockedAmount]);
+  }, [customerKey, lockedAmount, sdkError, showPaymentWidget, status, tossPaymentsFactory, tossReady]);
 
   const handleCheckout = async () => {
     if (!session?.user) {
@@ -282,7 +295,7 @@ const CartSummary = ({ cart }: Props) => {
     }
 
     if (!tossReady) {
-      alert(t("cart.payment_system_preparing"));
+      alert(sdkError || t("cart.payment_system_preparing"));
       return;
     }
 
@@ -417,13 +430,6 @@ const CartSummary = ({ cart }: Props) => {
 
   return (
     <>
-      {/* Load Toss Payments SDK v2 */}
-      <Script
-        src="https://js.tosspayments.com/v2/standard"
-        onLoad={() => setTossReady(true)}
-        strategy="afterInteractive"
-      />
-
       <section className="rounded-lg bg-gray-100 px-4 py-6 sm:p-10 lg:col-span-5 mt-16 lg:mt-0">
         <Title>{t("cart.cart_summary")}</Title>
 
