@@ -14,10 +14,15 @@
    - `userId` 우선, 없으면 `email` 기반으로 안정적인 키 생성
    - `Date.now()` 같은 비안정 fallback 제거
    - BrandPay redirect 전 기대 `customerKey`를 브라우저 저장소에 보관하고 callback에서 동일 값인지 검증
-3. **BrandPay redirectUrl 공통화**
+3. **customerIdentity 동반 전송**
+   - 공식 API 문서(`brandpay_api.md`) 기준으로 Access Token 발급 시 `customerIdentity.name`, `customerIdentity.mobilePhone` 전달 가능
+   - 현재 앱에서는 `session.user.name` + Redux `user.phone`를 우선 사용
+   - redirect 전 `customerKey`와 함께 저장하고 callback에서 `/api/toss/brandpay/access-token`으로 재전달
+   - 휴대폰 본인인증 입력값 사전 채움 및 `isIdentified` 흐름 개선 목적
+4. **BrandPay redirectUrl 공통화**
    - 모든 `widgets()`/`brandpay()` 초기화 시 `getBrandpayRedirectUrl()` 사용
    - callback은 `returnUrl`을 받아 원래 화면으로 복귀
-4. **파트너 커미션 유지**
+5. **파트너 커미션 유지**
    - BrandPay 여부와 무관하게 `orders.partnerLinkId`만 유지되면 됨
    - 실제 커미션 지급은 기존 `src/app/api/orders/toss-confirm/route.ts`가 계속 담당
 
@@ -41,16 +46,18 @@
 5. 토스 callback → `/account/payment/callback`
 6. callback이 `code + customerKey`를 `/api/toss/brandpay/access-token`으로 전달
 7. callback은 저장해둔 expected `customerKey`와 URL의 `customerKey`를 먼저 비교
-8. callback 화면은 브리지 완료 전까지 유지하고, 즉시 `router.push()` 하지 않음
-9. 토큰 교환과 SDK 브리지 정리 후 원래 화면으로 복귀
+8. 저장해둔 `customerIdentity(name/mobilePhone)`가 있으면 함께 전달
+9. callback 화면은 브리지 완료 전까지 유지하고, 즉시 `router.push()` 하지 않음
+10. 토큰 교환과 SDK 브리지 정리 후 원래 화면으로 복귀
 
 #### 2. 체크아웃/장바구니 BrandPay 결제
 1. 기존 pending order 생성 로직 유지
 2. 위젯 초기화 시 `widgets({ customerKey, brandpay: { redirectUrl } })` 사용
 3. 최초 BrandPay 등록이 필요하면 callback을 거쳐 원래 페이지로 돌아옴
 4. callback에서 expected `customerKey` 검증 후 Access Token을 발급함
-5. 같은 `customerKey`를 다시 사용하므로 등록 카드가 위젯에 노출됨
-6. `requestPayment()`는 기존처럼 `successUrl/failUrl`로 진행
+5. 저장된 이름/전화번호가 있으면 Access Token 발급 시 `customerIdentity`로 함께 전달함
+6. 같은 `customerKey`를 다시 사용하므로 등록 카드가 위젯에 노출됨
+7. `requestPayment()`는 기존처럼 `successUrl/failUrl`로 진행
 
 #### 3. 파트너 커미션 지급
 1. 파트너 링크 유입 시 `partnerLinkId`를 주문에 저장
@@ -70,3 +77,4 @@
 - customerKey 생성 규칙을 다른 파일에서 다시 구현하지 말고 공통 유틸만 사용할 것
 - callback 페이지에서 Access Token 교환 직후 즉시 SPA 이동하면 SDK의 `customerToken` 브리지가 끊길 수 있으므로, callback은 server wrapper + client processor 구조로 유지할 것
 - 팝업 callback도 고려해 expected `customerKey`는 `sessionStorage`와 `localStorage`에 함께 저장하고, callback에서 검증 후 정리할 것
+- `customerIdentity`는 보안 검증값이 아니라 인증 편의/식별 보강값이므로 서버 cookie 검증 대상은 계속 `customerKey`만 사용하고, identity는 callback에서 다시 전달하는 보조 정보로만 취급할 것

@@ -11,7 +11,9 @@ import Container from "@/components/Container";
 import PriceFormat from "@/components/PriceFormat";
 import { loadStripe } from "@stripe/stripe-js";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import {
+  buildBrandpayCustomerIdentity,
   buildTossCustomerKey,
   formatBrandpayRegistrationErrorMessage,
   getBrandpayRedirectUrl,
@@ -43,6 +45,7 @@ type BrandpayNotice = {
 
 const CheckoutPage = () => {
   const { data: session, status } = useSession();
+  const { user } = useCurrentUser();
   const router = useRouter();
   const searchParams = useSearchParams();
   const { t } = useTranslation();
@@ -75,10 +78,26 @@ const CheckoutPage = () => {
       }),
     [session?.user?.email, session?.user?.id],
   );
+  const brandpayCustomerIdentity = useMemo(
+    () =>
+      buildBrandpayCustomerIdentity({
+        name: session?.user?.name || user?.name,
+        mobilePhone: user?.phone,
+      }),
+    [session?.user?.name, user?.name, user?.phone],
+  );
   const brandpayReturnPath = useMemo(
     () => (existingOrderId ? `/checkout?orderId=${encodeURIComponent(existingOrderId)}` : "/checkout"),
     [existingOrderId],
   );
+
+  useEffect(() => {
+    if (status !== "authenticated" || !customerKey) return;
+
+    persistExpectedBrandpayCustomerKey(customerKey, brandpayReturnPath, {
+      customerIdentity: brandpayCustomerIdentity,
+    });
+  }, [brandpayCustomerIdentity, brandpayReturnPath, customerKey, status]);
 
   useEffect(() => {
     const result = readBrandpayRegistrationReturn(searchParams);
@@ -182,7 +201,9 @@ const CheckoutPage = () => {
           return;
         }
 
-        persistExpectedBrandpayCustomerKey(customerKey, brandpayReturnPath);
+        persistExpectedBrandpayCustomerKey(customerKey, brandpayReturnPath, {
+          customerIdentity: brandpayCustomerIdentity,
+        });
 
         const brandpayRedirectUrl = getBrandpayRedirectUrl(window.location.origin, brandpayReturnPath);
 
@@ -288,7 +309,7 @@ const CheckoutPage = () => {
       setWidgetReady(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [brandpayReturnPath, customerKey, existingOrder, sdkError, tossPaymentsFactory, tossReady]);
+  }, [brandpayCustomerIdentity, brandpayReturnPath, customerKey, existingOrder, sdkError, tossPaymentsFactory, tossReady]);
 
   useEffect(() => {
     if (existingOrder && sdkError) {

@@ -9,6 +9,7 @@ import {
   formatBrandpayRegistrationErrorMessage,
   isBrandpayCustomerKeyVerified,
   normalizeBrandpayReturnPath,
+  readExpectedBrandpayCustomerIdentity,
   readExpectedBrandpayCustomerKey,
 } from "@/lib/tossUtils";
 
@@ -81,6 +82,7 @@ export default function PaymentCallbackClient() {
           setMessage("토스페이먼츠 보안 인증을 마무리하는 중입니다. 이 화면을 닫지 말아주세요...");
 
           const expectedCustomerKey = readExpectedBrandpayCustomerKey(returnUrl);
+          const expectedCustomerIdentity = readExpectedBrandpayCustomerIdentity(returnUrl);
 
           if (!expectedCustomerKey) {
             throw new Error("브랜드페이 인증 정보가 만료되었습니다. 원래 화면에서 다시 시도해주세요.");
@@ -96,6 +98,7 @@ export default function PaymentCallbackClient() {
             body: JSON.stringify({
               code: authorizationCode,
               customerKey,
+              customerIdentity: expectedCustomerIdentity,
               returnUrl,
             }),
           });

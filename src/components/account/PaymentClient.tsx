@@ -6,15 +6,18 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { FiCreditCard, FiSettings, FiLoader, FiCheck, FiAlertCircle } from "react-icons/fi";
 import {
+  buildBrandpayCustomerIdentity,
   buildTossCustomerKey,
   formatBrandpayRegistrationErrorMessage,
   getBrandpayRedirectUrl,
   persistExpectedBrandpayCustomerKey,
 } from "@/lib/tossUtils";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { useTossPaymentsReady } from "@/hooks/useTossPayments";
 
 export default function PaymentClient() {
   const { data: session, status } = useSession();
+  const { user } = useCurrentUser();
   const router = useRouter();
   const searchParams = useSearchParams();
   const { t } = useTranslation();
@@ -26,6 +29,14 @@ export default function PaymentClient() {
         email: session?.user?.email,
       }),
     [session?.user?.email, session?.user?.id],
+  );
+  const brandpayCustomerIdentity = useMemo(
+    () =>
+      buildBrandpayCustomerIdentity({
+        name: session?.user?.name || user?.name,
+        mobilePhone: user?.phone,
+      }),
+    [session?.user?.name, user?.name, user?.phone],
   );
 
   const [loading, setLoading] = useState(false);
@@ -96,7 +107,9 @@ export default function PaymentClient() {
         throw new Error("고객 식별 정보를 확인할 수 없습니다. 다시 로그인 후 시도해주세요.");
       }
       const brandpay = createBrandpay();
-      persistExpectedBrandpayCustomerKey(customerKey, brandpayReturnPath);
+      persistExpectedBrandpayCustomerKey(customerKey, brandpayReturnPath, {
+        customerIdentity: brandpayCustomerIdentity,
+      });
       await brandpay.addPaymentMethod();
     } catch (err: any) {
       console.error("Error adding card:", err);
@@ -117,7 +130,9 @@ export default function PaymentClient() {
         throw new Error("고객 식별 정보를 확인할 수 없습니다. 다시 로그인 후 시도해주세요.");
       }
       const brandpay = createBrandpay();
-      persistExpectedBrandpayCustomerKey(customerKey, brandpayReturnPath);
+      persistExpectedBrandpayCustomerKey(customerKey, brandpayReturnPath, {
+        customerIdentity: brandpayCustomerIdentity,
+      });
       await brandpay.openSettings();
     } catch (err: any) {
       console.error("Error opening brandpay settings:", err);

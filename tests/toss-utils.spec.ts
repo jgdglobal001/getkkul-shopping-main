@@ -1,6 +1,7 @@
 import { test, expect } from "@playwright/test";
 import {
   appendQueryParam,
+  buildBrandpayCustomerIdentity,
   buildBrandpayCallbackRedirectTargets,
   buildTossCustomerKey,
   formatBrandpayRegistrationErrorMessage,
@@ -33,6 +34,22 @@ test.describe("tossUtils", () => {
 
   test("buildTossCustomerKey returns null when identity is missing", () => {
     expect(buildTossCustomerKey({})).toBeNull();
+  });
+
+  test("buildBrandpayCustomerIdentity normalizes name and mobile phone", () => {
+    expect(
+      buildBrandpayCustomerIdentity({
+        name: "  홍길동  ",
+        mobilePhone: "010-1234-5678",
+      }),
+    ).toEqual({
+      name: "홍길동",
+      mobilePhone: "01012345678",
+    });
+  });
+
+  test("buildBrandpayCustomerIdentity returns null when all fields are empty", () => {
+    expect(buildBrandpayCustomerIdentity({ name: " ", mobilePhone: "-" })).toBeNull();
   });
 
   test("normalizeBrandpayReturnPath only allows internal paths", () => {

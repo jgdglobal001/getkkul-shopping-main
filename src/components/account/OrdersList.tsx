@@ -19,6 +19,7 @@ import {
 } from "react-icons/fi";
 import Link from "next/link";
 import {
+  buildBrandpayCustomerIdentity,
   buildTossCustomerKey,
   formatBrandpayRegistrationErrorMessage,
   getBrandpayRedirectUrl,
@@ -31,6 +32,7 @@ import {
   TossPaymentsWidgetsInstance,
   useTossPaymentsReady,
 } from "@/hooks/useTossPayments";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 const CANCEL_PAYMENT_ORDER_STORAGE_KEY = "getkkul_cancel_payment_order_id";
 const CANCEL_PAYMENT_AMOUNT_STORAGE_KEY = "getkkul_cancel_payment_amount";
@@ -110,6 +112,7 @@ export default function OrdersList({
   onOrdersChange,
 }: OrdersListProps) {
   const { data: session } = useSession();
+  const { user } = useCurrentUser();
   const router = useRouter();
   const searchParams = useSearchParams();
   const { t } = useTranslation();
@@ -153,6 +156,14 @@ export default function OrdersList({
       }),
     [session?.user?.email, session?.user?.id],
   );
+  const paymentCustomerIdentity = useMemo(
+    () =>
+      buildBrandpayCustomerIdentity({
+        name: session?.user?.name || user?.name,
+        mobilePhone: user?.phone,
+      }),
+    [session?.user?.name, user?.name, user?.phone],
+  );
 
   useEffect(() => {
     paymentWidgetReadyRef.current = paymentWidgetReady;
@@ -163,6 +174,14 @@ export default function OrdersList({
       setPaymentWidgetError(sdkError);
     }
   }, [sdkError, showPaymentWidget]);
+
+  useEffect(() => {
+    if (!showPaymentWidget || !paymentCustomerKey) return;
+
+    persistExpectedBrandpayCustomerKey(paymentCustomerKey, "/account/orders", {
+      customerIdentity: paymentCustomerIdentity,
+    });
+  }, [paymentCustomerIdentity, paymentCustomerKey, showPaymentWidget]);
 
   const fetchOrders = useCallback(async () => {
     try {
@@ -457,7 +476,9 @@ export default function OrdersList({
           throw new Error("고객 식별 정보를 확인할 수 없습니다. 다시 로그인 후 시도해주세요.");
         }
 
-        persistExpectedBrandpayCustomerKey(paymentCustomerKey, "/account/orders");
+        persistExpectedBrandpayCustomerKey(paymentCustomerKey, "/account/orders", {
+          customerIdentity: paymentCustomerIdentity,
+        });
 
         const brandpayRedirectUrl = getBrandpayRedirectUrl(window.location.origin, "/account/orders");
 
@@ -528,7 +549,7 @@ export default function OrdersList({
       paymentMethodWidgetRef.current = null;
       paymentWidgetRef.current = null;
     };
-  }, [paymentAmount, paymentCustomerKey, paymentOrderId, paymentWidgetRetryKey, sdkError, showPaymentWidget, tossPaymentsFactory, tossReady]);
+  }, [paymentAmount, paymentCustomerIdentity, paymentCustomerKey, paymentOrderId, paymentWidgetRetryKey, sdkError, showPaymentWidget, tossPaymentsFactory, tossReady]);
 
   // 실제 결제 요청
   const handleCancelPaymentRequest = async () => {

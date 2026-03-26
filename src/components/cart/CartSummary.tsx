@@ -13,6 +13,7 @@ import { FaSignInAlt } from "react-icons/fa";
 import Link from "next/link";
 import { getPartnerInfo } from "../PartnerRefTracker";
 import {
+  buildBrandpayCustomerIdentity,
   buildTossCustomerKey,
   formatBrandpayRegistrationErrorMessage,
   getBrandpayRedirectUrl,
@@ -25,6 +26,7 @@ import {
   TossPaymentsWidgetsInstance,
   useTossPaymentsReady,
 } from "@/hooks/useTossPayments";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
 
 // SessionStorage keys for persisting payment state
 const PENDING_ORDER_KEY = "getkkul_pending_order";
@@ -59,6 +61,7 @@ const CartSummary = ({ cart }: Props) => {
   const paymentWidgetRef = useRef<TossPaymentsWidgetsInstance | null>(null);
 
   const { data: session, status } = useSession();
+  const { user } = useCurrentUser();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [brandpayNotice, setBrandpayNotice] = useState<BrandpayNotice | null>(null);
@@ -70,6 +73,14 @@ const CartSummary = ({ cart }: Props) => {
         email: session?.user?.email,
       }),
     [session?.user?.email, session?.user?.id],
+  );
+  const brandpayCustomerIdentity = useMemo(
+    () =>
+      buildBrandpayCustomerIdentity({
+        name: session?.user?.name || user?.name,
+        mobilePhone: user?.phone,
+      }),
+    [session?.user?.name, user?.name, user?.phone],
   );
 
   useEffect(() => {
@@ -88,6 +99,14 @@ const CartSummary = ({ cart }: Props) => {
     const timer = window.setTimeout(() => setBrandpayNotice(null), 5000);
     return () => window.clearTimeout(timer);
   }, [brandpayNotice]);
+
+  useEffect(() => {
+    if (status !== "authenticated" || !customerKey || !showPaymentWidget) return;
+
+    persistExpectedBrandpayCustomerKey(customerKey, "/cart", {
+      customerIdentity: brandpayCustomerIdentity,
+    });
+  }, [brandpayCustomerIdentity, customerKey, showPaymentWidget, status]);
 
   // Get free shipping threshold from environment
   const freeShippingThreshold =
@@ -186,7 +205,9 @@ const CartSummary = ({ cart }: Props) => {
           return;
         }
 
-        persistExpectedBrandpayCustomerKey(customerKey, "/cart");
+        persistExpectedBrandpayCustomerKey(customerKey, "/cart", {
+          customerIdentity: brandpayCustomerIdentity,
+        });
 
         const brandpayRedirectUrl = getBrandpayRedirectUrl(window.location.origin, "/cart");
 
@@ -281,7 +302,7 @@ const CartSummary = ({ cart }: Props) => {
     // - session: useSession() returns new object reference every render → triggers cleanup → loop
     // - widgetReady: cleanup sets it to false → triggers effect again → loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [customerKey, lockedAmount, sdkError, showPaymentWidget, status, tossPaymentsFactory, tossReady]);
+  }, [brandpayCustomerIdentity, customerKey, lockedAmount, sdkError, showPaymentWidget, status, tossPaymentsFactory, tossReady]);
 
   const handleCheckout = async () => {
     if (!session?.user) {

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import {
+    buildBrandpayCustomerIdentity,
     getBrandpayCustomerKeyCookieName,
     isBrandpayCustomerKeyVerified,
     normalizeBrandpayReturnPath,
@@ -48,6 +49,11 @@ export async function POST(req: Request) {
         const body = await req.json();
         const code = typeof body?.code === "string" ? body.code : null;
         const customerKey = typeof body?.customerKey === "string" ? body.customerKey : null;
+        const customerIdentity = buildBrandpayCustomerIdentity(
+            typeof body?.customerIdentity === "object" && body.customerIdentity !== null
+                ? body.customerIdentity
+                : undefined,
+        );
         const returnUrl = normalizeBrandpayReturnPath(
             typeof body?.returnUrl === "string" ? body.returnUrl : null,
         );
@@ -108,6 +114,7 @@ export async function POST(req: Request) {
                 grantType: "AuthorizationCode",
                 code,
                 customerKey,
+                ...(customerIdentity ? { customerIdentity } : {}),
             }),
         });
 
