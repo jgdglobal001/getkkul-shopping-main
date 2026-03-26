@@ -3,11 +3,9 @@ export const runtime = 'edge';
 import { NextRequest, NextResponse } from "next/server";
 import { db, orders, orderItems, partnerLinks } from "@/lib/db";
 import { eq, sql } from "drizzle-orm";
-
-// 커미션 계산 (15%)
-function calculatePartnerCommission(productPrice: number): number {
-  return Math.round(productPrice * 0.15);
-}
+import { ORDER_STATUSES, PAYMENT_STATUSES } from "@/lib/orderStatus";
+import { calculatePartnerCommission } from "@/lib/partnerCommission";
+import { buildTossBasicAuthHeader } from "@/lib/tossPaymentValidation";
 
 /**
  * 토스페이먼츠 결제 취소 API
@@ -45,7 +43,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 이미 취소된 주문인지 확인
-    if (order.status === "cancelled") {
+    if (order.status === ORDER_STATUSES.CANCELLED) {
       return NextResponse.json(
         { success: false, error: "이미 취소된 주문입니다" },
         { status: 400 }
@@ -53,7 +51,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 결제 완료된 주문만 취소 가능
-    if (order.paymentStatus !== "paid") {
+    if (order.paymentStatus !== PAYMENT_STATUSES.PAID) {
       return NextResponse.json(
         { success: false, error: "결제 완료된 주문만 취소할 수 있습니다" },
         { status: 400 }
@@ -87,7 +85,7 @@ export async function POST(request: NextRequest) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Basic ${Buffer.from(`${secretKey}:`).toString("base64")}`,
+            Authorization: buildTossBasicAuthHeader(secretKey),
           },
           body: JSON.stringify(cancelBody),
         }
@@ -110,8 +108,8 @@ export async function POST(request: NextRequest) {
       console.log("[OrderCancel] Toss cancel success:", tossResult.status);
     }
     await db.update(orders).set({
-      status: "cancelled",
-      paymentStatus: "refunded",
+      status: ORDER_STATUSES.CANCELLED,
+      paymentStatus: PAYMENT_STATUSES.REFUNDED,
       updatedAt: new Date(),
     }).where(eq(orders.id, orderId));
 

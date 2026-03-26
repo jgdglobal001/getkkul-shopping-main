@@ -2,7 +2,7 @@
 
 export const runtime = 'edge';
 
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useDispatch } from "react-redux";
@@ -12,7 +12,6 @@ import { FiCheckCircle } from "react-icons/fi";
 
 export default function PaymentSuccess() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const dispatch = useDispatch();
   const { data: session, status: sessionStatus } = useSession();
   const [loading, setLoading] = useState(true);
@@ -71,11 +70,23 @@ export default function PaymentSuccess() {
     // Wait for session to load, then verify payment
     if (sessionStatus === "loading") return;
 
+    if (!paymentKey || !orderId || !amount) {
+      setError("결제 확인에 필요한 정보가 누락되었습니다.");
+      setLoading(false);
+      return;
+    }
+
+    if (sessionStatus !== "authenticated" || !session?.user?.email) {
+      setError("로그인 정보를 확인할 수 없습니다. 다시 로그인 후 주문 내역에서 확인해주세요.");
+      setLoading(false);
+      return;
+    }
+
     // Verify payment once we have the required params
-    if (paymentKey && orderId && amount && !verificationAttempted.current) {
+    if (!verificationAttempted.current) {
       verifyPayment();
     }
-  }, [paymentKey, orderId, amount, sessionStatus, verifyPayment]);
+  }, [paymentKey, orderId, amount, sessionStatus, session?.user?.email, verifyPayment]);
 
   // Show loading while session is loading or payment is being verified
   if (sessionStatus === "loading" || loading) {

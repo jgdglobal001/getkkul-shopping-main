@@ -2,23 +2,25 @@ export const runtime = 'edge';
 
 import { NextRequest, NextResponse } from "next/server";
 import { db, users, orders, orderItems, partnerLinks } from "@/lib/db";
-import { eq, sql } from "drizzle-orm";
+import { and, eq, ne, sql } from "drizzle-orm";
 import {
   ORDER_STATUSES,
   PAYMENT_STATUSES,
   PAYMENT_METHODS,
 } from "@/lib/orderStatus";
 import { calculatePartnerCommission } from "@/lib/partnerCommission";
-
-function generateId() {
-  return `${Date.now().toString(36)}${Math.random().toString(36).substr(2, 9)}`;
-}
+import {
+  amountsMatch,
+  buildTossBasicAuthHeader,
+  normalizeTossAmount,
+} from "@/lib/tossPaymentValidation";
 
 export async function POST(request: NextRequest) {
   try {
     const { orderId, paymentKey, amount, userEmail } = await request.json();
+    const normalizedRequestedAmount = normalizeTossAmount(amount);
 
-    if (!orderId || !paymentKey || !amount || !userEmail) {
+    if (!orderId || !paymentKey || normalizedRequestedAmount === null || !userEmail) {
       return NextResponse.json(
         {
           success: false,
@@ -28,20 +30,77 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verify payment with Toss API
-    const clientKey = process.env.TOSS_CLIENT_KEY;
     const secretKey = process.env.TOSS_WIDGET_SECRET_KEY;
 
-    console.log("=== Toss Payment Verification ===");
-    console.log("Client Key exists:", !!clientKey);
-    console.log("Secret Key exists:", !!secretKey);
-
-    if (!clientKey || !secretKey) {
+    if (!secretKey) {
       console.error("Toss API keys not configured");
       return NextResponse.json(
         { success: false, error: "Toss API keys not configured" },
         { status: 500 }
       );
+    }
+
+    const userResult = await db.select().from(users).where(eq(users.email, userEmail)).limit(1);
+    const user = userResult[0];
+
+    if (!user) {
+      return NextResponse.json(
+        { success: false, error: "사용자를 찾을 수 없습니다" },
+        { status: 404 }
+      );
+    }
+
+    const existingOrderResult = await db.select().from(orders).where(eq(orders.orderId, orderId)).limit(1);
+    const existingOrder = existingOrderResult[0];
+
+    if (!existingOrder) {
+      return NextResponse.json(
+        { success: false, error: "주문 정보를 찾을 수 없습니다" },
+        { status: 404 }
+      );
+    }
+
+    if (existingOrder.userId !== user.id) {
+      return NextResponse.json(
+        { success: false, error: "주문 소유자가 일치하지 않습니다" },
+        { status: 403 }
+      );
+    }
+
+    const expectedAmount = normalizeTossAmount(existingOrder.totalAmount);
+
+    if (expectedAmount === null) {
+      return NextResponse.json(
+        { success: false, error: "주문 금액 정보가 올바르지 않습니다" },
+        { status: 500 }
+      );
+    }
+
+    if (expectedAmount !== normalizedRequestedAmount) {
+      return NextResponse.json(
+        { success: false, error: "주문 금액 검증에 실패했습니다" },
+        { status: 400 }
+      );
+    }
+
+    if (existingOrder.paymentStatus === PAYMENT_STATUSES.PAID) {
+      if (existingOrder.tossPaymentKey && existingOrder.tossPaymentKey !== paymentKey) {
+        return NextResponse.json(
+          { success: false, error: "이미 다른 결제 정보로 승인된 주문입니다" },
+          { status: 409 }
+        );
+      }
+
+      return NextResponse.json({
+        success: true,
+        message: "Payment already confirmed",
+        order: {
+          id: existingOrder.orderId,
+          amount: expectedAmount,
+          status: existingOrder.status,
+          paymentStatus: existingOrder.paymentStatus,
+        },
+      });
     }
 
     const tossResponse = await fetch(
@@ -50,12 +109,12 @@ export async function POST(request: NextRequest) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Basic ${Buffer.from(`${secretKey}:`).toString("base64")}`,
+          Authorization: buildTossBasicAuthHeader(secretKey),
         },
         body: JSON.stringify({
           paymentKey,
           orderId,
-          amount,
+          amount: expectedAmount,
         }),
       }
     );
@@ -71,61 +130,60 @@ export async function POST(request: NextRequest) {
 
     const paymentData = await tossResponse.json();
 
-    // Find or create user
-    const userResult = await db.select().from(users).where(eq(users.email, userEmail)).limit(1);
-    let user = userResult[0];
-
-    if (!user) {
-      const newUserId = generateId();
-      await db.insert(users).values({
-        id: newUserId,
-        email: userEmail,
-        name: paymentData.customerName || "Guest Customer",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
-      const newUserResult = await db.select().from(users).where(eq(users.id, newUserId)).limit(1);
-      user = newUserResult[0];
+    if (paymentData.orderId !== orderId || !amountsMatch(expectedAmount, paymentData.totalAmount)) {
+      return NextResponse.json(
+        { success: false, error: "토스 결제 응답 검증에 실패했습니다" },
+        { status: 400 }
+      );
     }
 
-    // Check if order exists
-    const existingOrderResult = await db.select().from(orders).where(eq(orders.orderId, orderId)).limit(1);
-    const existingOrder = existingOrderResult[0];
-
-    let order;
-    if (existingOrder) {
-      // Update existing order - tossPaymentKey 저장 추가!
-      await db.update(orders).set({
+    const updatedOrderResult = await db.update(orders).set({
         paymentStatus: PAYMENT_STATUSES.PAID,
         status: ORDER_STATUSES.CONFIRMED,
         paymentMethod: PAYMENT_METHODS.TOSS,
         userId: user.id,
-        tossPaymentKey: paymentKey, // ⭐ 토스 결제 키 저장
-        tossOrderId: orderId,       // ⭐ 토스 주문 ID 저장
+        tossPaymentKey: paymentKey,
+        tossOrderId: orderId,
+        tossPaymentMethod: paymentData.method || null,
+        tossCardCompany: paymentData.card?.company || null,
+        tossCardNumber: paymentData.card?.number || null,
+        tossApprovalNumber: paymentData.card?.approveNo || null,
+        tossReceipt: paymentData.receipt || null,
+        tossPaymentAttempts: sql`${orders.tossPaymentAttempts} + 1`,
+        lastTossAttempt: new Date(),
         updatedAt: new Date(),
-      }).where(eq(orders.orderId, orderId));
+      })
+      .where(
+        and(
+          eq(orders.orderId, orderId),
+          ne(orders.paymentStatus, PAYMENT_STATUSES.PAID),
+        )
+      )
+      .returning();
 
-      const updatedResult = await db.select().from(orders).where(eq(orders.orderId, orderId)).limit(1);
-      order = updatedResult[0];
-    } else {
-      // Create new order
-      const newId = generateId();
-      await db.insert(orders).values({
-        id: newId,
-        orderId,
-        userId: user.id,
-        status: ORDER_STATUSES.CONFIRMED,
-        paymentStatus: PAYMENT_STATUSES.PAID,
-        paymentMethod: PAYMENT_METHODS.TOSS,
-        totalAmount: amount / 100,
-        shippingAddress: {},
-        tossPaymentKey: paymentKey, // ⭐ 토스 결제 키 저장
-        tossOrderId: orderId,       // ⭐ 토스 주문 ID 저장
-        createdAt: new Date(),
-        updatedAt: new Date(),
+    let order = updatedOrderResult[0];
+
+    if (!order) {
+      const latestOrderResult = await db.select().from(orders).where(eq(orders.orderId, orderId)).limit(1);
+      const latestOrder = latestOrderResult[0];
+
+      if (!latestOrder) {
+        return NextResponse.json(
+          { success: false, error: "주문 정보를 찾을 수 없습니다" },
+          { status: 404 }
+        );
+      }
+
+      return NextResponse.json({
+        success: true,
+        message: "Payment already confirmed",
+        order: {
+          id: latestOrder.orderId,
+          amount: normalizeTossAmount(latestOrder.totalAmount),
+          status: latestOrder.status,
+          paymentStatus: latestOrder.paymentStatus,
+        },
       });
-      const newOrderResult = await db.select().from(orders).where(eq(orders.id, newId)).limit(1);
-      order = newOrderResult[0];
     }
 
     // 🎯 파트너 커미션 처리: partner_links 업데이트 + 지급대행 요청
