@@ -150,7 +150,7 @@ export default function OrdersList({
   const paymentWidgetReadyRef = useRef(false);
   const initializingPaymentWidgetRef = useRef(false);
   const { isReady: tossReady, sdkError, tossPaymentsFactory } = useTossPaymentsReady();
-  const paymentCustomerKey = useMemo(
+  const paymentCustomerKeyRaw = useMemo(
     () =>
       buildTossCustomerKey({
         userId: session?.user?.id,
@@ -158,6 +158,12 @@ export default function OrdersList({
       }),
     [session?.user?.email, session?.user?.id],
   );
+  // Lock customerKey once resolved to prevent re-initialization when session updates
+  const paymentCustomerKeyRef = useRef<string | null>(null);
+  if (paymentCustomerKeyRaw && !paymentCustomerKeyRef.current) {
+    paymentCustomerKeyRef.current = paymentCustomerKeyRaw;
+  }
+  const paymentCustomerKey = paymentCustomerKeyRef.current;
   const paymentCustomerIdentity = useMemo(
     () =>
       buildBrandpayCustomerIdentity({
@@ -530,6 +536,7 @@ export default function OrdersList({
           }),
           paymentWidget.renderAgreement({
             selector: "#cancel-agreement-widget",
+            variantKey: "AGREEMENT",
           }),
         ]);
 

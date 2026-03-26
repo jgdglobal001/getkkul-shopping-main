@@ -72,7 +72,7 @@ const CheckoutPage = () => {
   // Get order ID from URL params
   const existingOrderId = searchParams.get("orderId");
   const paymentCancelled = searchParams.get("cancelled");
-  const customerKey = useMemo(
+  const customerKeyRaw = useMemo(
     () =>
       buildTossCustomerKey({
         userId: session?.user?.id,
@@ -80,6 +80,12 @@ const CheckoutPage = () => {
       }),
     [session?.user?.email, session?.user?.id],
   );
+  // Lock customerKey once resolved to prevent re-initialization when session updates
+  const customerKeyRef = useRef<string | null>(null);
+  if (customerKeyRaw && !customerKeyRef.current) {
+    customerKeyRef.current = customerKeyRaw;
+  }
+  const customerKey = customerKeyRef.current;
   const brandpayCustomerIdentity = useMemo(
     () =>
       buildBrandpayCustomerIdentity({
@@ -274,6 +280,7 @@ const CheckoutPage = () => {
 
         const agreementPromise = paymentWidget.renderAgreement({
           selector: "#agreement-widget-checkout",
+          variantKey: "AGREEMENT",
         });
 
         // Save promise to handle cleanup if unmount happens during render

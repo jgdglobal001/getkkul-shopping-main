@@ -67,7 +67,7 @@ const CartSummary = ({ cart }: Props) => {
   const searchParams = useSearchParams();
   const [brandpayNotice, setBrandpayNotice] = useState<BrandpayNotice | null>(null);
   const { isReady: tossReady, sdkError, tossPaymentsFactory } = useTossPaymentsReady();
-  const customerKey = useMemo(
+  const customerKeyRaw = useMemo(
     () =>
       buildTossCustomerKey({
         userId: session?.user?.id,
@@ -75,6 +75,12 @@ const CartSummary = ({ cart }: Props) => {
       }),
     [session?.user?.email, session?.user?.id],
   );
+  // Lock customerKey once resolved to prevent re-initialization when session updates
+  const customerKeyRef = useRef<string | null>(null);
+  if (customerKeyRaw && !customerKeyRef.current) {
+    customerKeyRef.current = customerKeyRaw;
+  }
+  const customerKey = customerKeyRef.current;
   const brandpayCustomerIdentity = useMemo(
     () =>
       buildBrandpayCustomerIdentity({
@@ -272,6 +278,7 @@ const CartSummary = ({ cart }: Props) => {
           }),
           paymentWidget.renderAgreement({
             selector: "#agreement-widget-cart",
+            variantKey: "AGREEMENT",
           }),
         ]);
 
