@@ -205,9 +205,9 @@ const CartSummary = ({ cart }: Props) => {
           return;
         }
 
-        persistExpectedBrandpayCustomerKey(customerKey, "/cart", {
-          customerIdentity: brandpayCustomerIdentity,
-        });
+        // NOTE: persistExpectedBrandpayCustomerKey is handled by a separate effect (line ~103)
+        // to avoid including brandpayCustomerIdentity in this effect's deps,
+        // which would cause widget destroy/recreate cycles → SDK bridge timeout.
 
         const brandpayRedirectUrl = getBrandpayRedirectUrl(window.location.origin, "/cart");
 
@@ -302,7 +302,7 @@ const CartSummary = ({ cart }: Props) => {
     // - session: useSession() returns new object reference every render → triggers cleanup → loop
     // - widgetReady: cleanup sets it to false → triggers effect again → loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [brandpayCustomerIdentity, customerKey, lockedAmount, sdkError, showPaymentWidget, status, tossPaymentsFactory, tossReady]);
+  }, [customerKey, lockedAmount, sdkError, showPaymentWidget, status, tossPaymentsFactory, tossReady]);
 
   const handleCheckout = async () => {
     if (!session?.user) {

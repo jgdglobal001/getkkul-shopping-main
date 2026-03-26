@@ -201,9 +201,9 @@ const CheckoutPage = () => {
           return;
         }
 
-        persistExpectedBrandpayCustomerKey(customerKey, brandpayReturnPath, {
-          customerIdentity: brandpayCustomerIdentity,
-        });
+        // NOTE: persistExpectedBrandpayCustomerKey is handled by a separate effect (line ~94)
+        // to avoid including brandpayCustomerIdentity in this effect's deps,
+        // which would cause widget destroy/recreate cycles → SDK bridge timeout.
 
         const brandpayRedirectUrl = getBrandpayRedirectUrl(window.location.origin, brandpayReturnPath);
 
@@ -309,7 +309,7 @@ const CheckoutPage = () => {
       setWidgetReady(false);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [brandpayCustomerIdentity, brandpayReturnPath, customerKey, existingOrder, sdkError, tossPaymentsFactory, tossReady]);
+  }, [brandpayReturnPath, customerKey, existingOrder, sdkError, tossPaymentsFactory, tossReady]);
 
   useEffect(() => {
     if (existingOrder && sdkError) {

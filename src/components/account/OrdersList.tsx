@@ -476,9 +476,9 @@ export default function OrdersList({
           throw new Error("고객 식별 정보를 확인할 수 없습니다. 다시 로그인 후 시도해주세요.");
         }
 
-        persistExpectedBrandpayCustomerKey(paymentCustomerKey, "/account/orders", {
-          customerIdentity: paymentCustomerIdentity,
-        });
+        // NOTE: persistExpectedBrandpayCustomerKey is handled by a separate effect (line ~178)
+        // to avoid including paymentCustomerIdentity in this effect's deps,
+        // which would cause widget destroy/recreate cycles → SDK bridge timeout.
 
         const brandpayRedirectUrl = getBrandpayRedirectUrl(window.location.origin, "/account/orders");
 
@@ -549,7 +549,7 @@ export default function OrdersList({
       paymentMethodWidgetRef.current = null;
       paymentWidgetRef.current = null;
     };
-  }, [paymentAmount, paymentCustomerIdentity, paymentCustomerKey, paymentOrderId, paymentWidgetRetryKey, sdkError, showPaymentWidget, tossPaymentsFactory, tossReady]);
+  }, [paymentAmount, paymentCustomerKey, paymentOrderId, paymentWidgetRetryKey, sdkError, showPaymentWidget, tossPaymentsFactory, tossReady]);
 
   // 실제 결제 요청
   const handleCancelPaymentRequest = async () => {
