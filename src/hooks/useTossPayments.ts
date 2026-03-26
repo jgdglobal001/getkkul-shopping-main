@@ -1,14 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export type TossPaymentsMethodWidget = {
+  destroy?: () => void | Promise<void>;
+};
+
+export type TossPaymentsAgreementWidget = {
   destroy?: () => void | Promise<void>;
 };
 
 export type TossPaymentsWidgetsInstance = {
   setAmount: (options: { value: number; currency: string }) => Promise<void>;
   renderPaymentMethods: (options: { selector: string; variantKey: string }) => Promise<TossPaymentsMethodWidget>;
+  renderAgreement: (options: { selector: string; variantKey?: string }) => Promise<TossPaymentsAgreementWidget>;
   requestPayment: (options: {
     orderId: string;
     orderName: string;
@@ -52,12 +57,18 @@ export function useTossPaymentsReady(timeoutMs = 10000, pollIntervalMs = 100) {
   );
   const [sdkError, setSdkError] = useState<string | null>(null);
 
+  // Stable ref for the factory – avoids returning a new reference on every render
+  const factoryRef = useRef<TossPaymentsFactory | null>(
+    getTossPaymentsFactoryFromWindow(getTossPaymentsWindow()),
+  );
+
   useEffect(() => {
     const browserWindow = getTossPaymentsWindow();
     if (!browserWindow) return;
 
     const existingFactory = getTossPaymentsFactoryFromWindow(browserWindow);
     if (existingFactory) {
+      factoryRef.current = existingFactory;
       setIsReady(true);
       setSdkError(null);
       return;
@@ -71,6 +82,7 @@ export function useTossPaymentsReady(timeoutMs = 10000, pollIntervalMs = 100) {
 
       const factory = getTossPaymentsFactoryFromWindow(browserWindow);
       if (factory) {
+        factoryRef.current = factory;
         setIsReady(true);
         setSdkError(null);
         return true;
@@ -107,6 +119,7 @@ export function useTossPaymentsReady(timeoutMs = 10000, pollIntervalMs = 100) {
   return {
     isReady,
     sdkError,
-    tossPaymentsFactory: getTossPaymentsFactoryFromWindow(getTossPaymentsWindow()),
+    /** Stable reference – same object identity as long as the underlying SDK doesn't change */
+    tossPaymentsFactory: factoryRef.current,
   };
 }

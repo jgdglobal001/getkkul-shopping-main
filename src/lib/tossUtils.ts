@@ -1,6 +1,8 @@
 const TOSS_CUSTOMER_KEY_PREFIX = "customer_";
 const MAX_TOSS_CUSTOMER_KEY_LENGTH = 50;
 const DEFAULT_BRANDPAY_RETURN_PATH = "/account/payment";
+const BRANDPAY_PENDING_SESSION_KEY = "getkkul_brandpay_pending_session";
+const BRANDPAY_PENDING_SESSION_COOKIE = "getkkul_brandpay_pending";
 const BRANDPAY_EXPECTED_CUSTOMER_KEY_STORAGE_PREFIX = "getkkul_brandpay_expected_customer_key:";
 const BRANDPAY_EXPECTED_CUSTOMER_KEY_COOKIE_PREFIX = "getkkul_brandpay_expected_customer_key_";
 const BRANDPAY_EXPECTED_CUSTOMER_KEY_COOKIE_MAX_AGE_SECONDS = 60 * 30;
@@ -26,6 +28,7 @@ type BrandpayCustomerIdentityInput = {
 
 type StoredBrandpayContext = {
   customerKey: string;
+  returnPath?: string;
   customerIdentity?: BrandpayCustomerIdentity | null;
 };
 
@@ -75,6 +78,7 @@ function parseStoredBrandpayContext(rawValue: string | null) {
     if (parsed && typeof parsed.customerKey === "string") {
       return {
         customerKey: parsed.customerKey,
+        returnPath: parsed.returnPath || undefined,
         customerIdentity: buildBrandpayCustomerIdentity(parsed.customerIdentity || undefined),
       };
     }
@@ -84,6 +88,7 @@ function parseStoredBrandpayContext(rawValue: string | null) {
 
   return {
     customerKey: rawValue,
+    returnPath: undefined,
     customerIdentity: null,
   };
 }
@@ -93,6 +98,26 @@ function readStoredBrandpayContext(returnPath?: string | null) {
     return null;
   }
 
+  // Primary: read from fixed pending-session key (new approach)
+  try {
+    const pendingSession = parseStoredBrandpayContext(window.sessionStorage.getItem(BRANDPAY_PENDING_SESSION_KEY));
+    if (pendingSession) {
+      return pendingSession;
+    }
+  } catch {
+    // ignore
+  }
+
+  try {
+    const pendingLocal = parseStoredBrandpayContext(window.localStorage.getItem(BRANDPAY_PENDING_SESSION_KEY));
+    if (pendingLocal) {
+      return pendingLocal;
+    }
+  } catch {
+    // ignore
+  }
+
+  // Fallback: legacy per-path hashed key
   const storageKey = getBrandpayCustomerKeyStorageKey(returnPath);
 
   try {
@@ -313,12 +338,29 @@ export function persistExpectedBrandpayCustomerKey(
     return;
   }
 
-  const storageKey = getBrandpayCustomerKeyStorageKey(returnPath);
+  const normalizedReturnPath = normalizeBrandpayReturnPath(returnPath);
   const normalizedCustomerIdentity = buildBrandpayCustomerIdentity(options?.customerIdentity || undefined);
   const serializedContext = JSON.stringify({
     customerKey,
+    returnPath: normalizedReturnPath,
     ...(normalizedCustomerIdentity ? { customerIdentity: normalizedCustomerIdentity } : {}),
   });
+
+  // Write to fixed pending-session key (primary)
+  try {
+    window.sessionStorage.setItem(BRANDPAY_PENDING_SESSION_KEY, serializedContext);
+  } catch {
+    // ignore storage failures
+  }
+
+  try {
+    window.localStorage.setItem(BRANDPAY_PENDING_SESSION_KEY, serializedContext);
+  } catch {
+    // ignore storage failures
+  }
+
+  // Also write to legacy per-path key for backward compatibility
+  const storageKey = getBrandpayCustomerKeyStorageKey(returnPath);
 
   try {
     window.sessionStorage.setItem(storageKey, serializedContext);
@@ -366,6 +408,20 @@ export function clearExpectedBrandpayCustomerKey(returnPath?: string | null) {
     return;
   }
 
+  // Clear fixed pending-session key
+  try {
+    window.sessionStorage.removeItem(BRANDPAY_PENDING_SESSION_KEY);
+  } catch {
+    // ignore storage failures
+  }
+
+  try {
+    window.localStorage.removeItem(BRANDPAY_PENDING_SESSION_KEY);
+  } catch {
+    // ignore storage failures
+  }
+
+  // Also clear legacy per-path key
   const storageKey = getBrandpayCustomerKeyStorageKey(returnPath);
 
   try {
@@ -408,11 +464,22 @@ export function buildBrandpayCallbackRedirectTargets(
   };
 }
 
-export function getBrandpayRedirectUrl(origin: string, returnPath?: string | null) {
-  const normalizedReturnPath = normalizeBrandpayReturnPath(returnPath);
+export function getBrandpayRedirectUrl(origin: string, _returnPath?: string | null) {
+  // IMPORTANT: Return a clean URL without query parameters.
+  // The Toss Developer Center requires the redirectUrl to exactly match the registered URL.
+  // Appending query parameters (e.g., ?returnUrl=...) causes SDK bridge validation to fail,
+  // resulting in [BRIDGE] Request Timeout for brandpayCustomerToken.
+  // The returnPath is stored separately via persistExpectedBrandpayCustomerKey → sessionStorage.
   const url = new URL("/account/payment/callback", origin);
 
-  url.searchParams.set("returnUrl", normalizedReturnPath);
-
   return url.toString();
+}
+
+export function readBrandpayPendingReturnPath() {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  const storedContext = readStoredBrandpayContext();
+  return storedContext?.returnPath || null;
 }

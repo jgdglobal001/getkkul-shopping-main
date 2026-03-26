@@ -73,12 +73,11 @@ test.describe("tossUtils", () => {
     expect(nextPath).toBe("/checkout?orderId=abc#payment");
   });
 
-  test("getBrandpayRedirectUrl embeds a safe returnUrl", () => {
+  test("getBrandpayRedirectUrl returns clean URL without query params", () => {
     const redirectUrl = getBrandpayRedirectUrl("https://www.getkkul.com", "/cart?step=payment");
 
-    expect(redirectUrl).toBe(
-      "https://www.getkkul.com/account/payment/callback?returnUrl=%2Fcart%3Fstep%3Dpayment",
-    );
+    // Must match Toss Developer Center registered URL exactly — no query parameters
+    expect(redirectUrl).toBe("https://www.getkkul.com/account/payment/callback");
   });
 
   test("getBrandpayCustomerKeyStorageKey is stable for the same return path", () => {

@@ -28,6 +28,7 @@ import {
   removeQueryParams,
 } from "@/lib/tossUtils";
 import {
+  TossPaymentsAgreementWidget,
   TossPaymentsMethodWidget,
   TossPaymentsWidgetsInstance,
   useTossPaymentsReady,
@@ -145,6 +146,7 @@ export default function OrdersList({
   const [paymentWidgetRetryKey, setPaymentWidgetRetryKey] = useState(0);
   const paymentWidgetRef = useRef<TossPaymentsWidgetsInstance | null>(null);
   const paymentMethodWidgetRef = useRef<TossPaymentsMethodWidget | null>(null);
+  const agreementWidgetRef = useRef<TossPaymentsAgreementWidget | null>(null);
   const paymentWidgetReadyRef = useRef(false);
   const initializingPaymentWidgetRef = useRef(false);
   const { isReady: tossReady, sdkError, tossPaymentsFactory } = useTossPaymentsReady();
@@ -499,6 +501,14 @@ export default function OrdersList({
           paymentMethodWidgetRef.current = null;
           paymentWidgetRef.current = null;
         }
+        if (agreementWidgetRef.current) {
+          try {
+            await agreementWidgetRef.current.destroy?.();
+          } catch (cleanupError) {
+            console.warn("Failed to destroy previous agreement widget:", cleanupError);
+          }
+          agreementWidgetRef.current = null;
+        }
 
         if (!isMounted) {
           initializingPaymentWidgetRef.current = false;
@@ -512,19 +522,27 @@ export default function OrdersList({
           return;
         }
 
-        const methodWidget = await paymentWidget.renderPaymentMethods({
-          selector: "#cancel-payment-widget",
-          variantKey: "getkkul-live-toss",
-        });
+        // Render payment methods + agreement in parallel (V2 SDK requirement)
+        const [methodWidget, agreementWidget] = await Promise.all([
+          paymentWidget.renderPaymentMethods({
+            selector: "#cancel-payment-widget",
+            variantKey: "getkkul-live-toss",
+          }),
+          paymentWidget.renderAgreement({
+            selector: "#cancel-agreement-widget",
+          }),
+        ]);
 
         if (!isMounted) {
           await methodWidget.destroy?.();
+          await agreementWidget.destroy?.();
           initializingPaymentWidgetRef.current = false;
           return;
         }
 
         paymentWidgetRef.current = paymentWidget;
         paymentMethodWidgetRef.current = methodWidget;
+        agreementWidgetRef.current = agreementWidget;
         setPaymentWidgetReady(true);
         setPaymentWidgetError(null);
         initializingPaymentWidgetRef.current = false;
@@ -548,8 +566,16 @@ export default function OrdersList({
       });
       paymentMethodWidgetRef.current = null;
       paymentWidgetRef.current = null;
+      if (agreementWidgetRef.current) {
+        void Promise.resolve(agreementWidgetRef.current.destroy?.()).catch((e) =>
+          console.warn("Failed to cleanup agreement widget:", e),
+        );
+        agreementWidgetRef.current = null;
+      }
     };
-  }, [paymentAmount, paymentCustomerKey, paymentOrderId, paymentWidgetRetryKey, sdkError, showPaymentWidget, tossPaymentsFactory, tossReady]);
+    // FIX: sdkError and tossPaymentsFactory removed from deps to prevent widget destroy during bridge handshake.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paymentAmount, paymentCustomerKey, paymentOrderId, paymentWidgetRetryKey, showPaymentWidget, tossReady]);
 
   // 실제 결제 요청
   const handleCancelPaymentRequest = async () => {
@@ -1400,6 +1426,9 @@ export default function OrdersList({
                   </div>
                 )}
               </div>
+
+              {/* Agreement Widget (V2 SDK requirement for BrandPay) */}
+              <div id="cancel-agreement-widget" className="mt-2" />
 
               <div className="flex space-x-3 mt-4">
                 <button

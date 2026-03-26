@@ -8,7 +8,7 @@ import {
   clearExpectedBrandpayCustomerKey,
   formatBrandpayRegistrationErrorMessage,
   isBrandpayCustomerKeyVerified,
-  normalizeBrandpayReturnPath,
+  readBrandpayPendingReturnPath,
   readExpectedBrandpayCustomerIdentity,
   readExpectedBrandpayCustomerKey,
 } from "@/lib/tossUtils";
@@ -32,7 +32,9 @@ export default function PaymentCallbackClient() {
     const authorizationCode = customerKey ? rawCode : null;
     const errorMessage = searchParams.get("message");
     const errorCode = searchParams.get("errorCode") ?? (customerKey ? null : rawCode);
-    const returnUrl = normalizeBrandpayReturnPath(searchParams.get("returnUrl"));
+    // Read returnPath from sessionStorage instead of URL query params.
+    // The redirectUrl must be clean (no query params) to match the Toss Developer Center registration.
+    const returnUrl = readBrandpayPendingReturnPath() || searchParams.get("returnUrl") || "/account/payment";
     const { successRedirectUrl, errorRedirectUrl } = buildBrandpayCallbackRedirectTargets(
       returnUrl,
       errorMessage,

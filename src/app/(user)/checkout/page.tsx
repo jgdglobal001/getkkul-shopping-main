@@ -22,6 +22,7 @@ import {
   removeQueryParams,
 } from "@/lib/tossUtils";
 import {
+  TossPaymentsAgreementWidget,
   TossPaymentsMethodWidget,
   TossPaymentsWidgetsInstance,
   useTossPaymentsReady,
@@ -58,6 +59,7 @@ const CheckoutPage = () => {
   const [brandpayNotice, setBrandpayNotice] = useState<BrandpayNotice | null>(null);
   const paymentWidgetRef = useRef<TossPaymentsWidgetsInstance | null>(null);
   const paymentMethodWidgetRef = useRef<Promise<TossPaymentsMethodWidget> | TossPaymentsMethodWidget | null>(null);
+  const agreementWidgetRef = useRef<TossPaymentsAgreementWidget | null>(null);
   const initializingRef = useRef(false);
   const widgetReadyRef = useRef(false);
   const { isReady: tossReady, sdkError, tossPaymentsFactory } = useTossPaymentsReady();
@@ -255,33 +257,47 @@ const CheckoutPage = () => {
           paymentMethodWidgetRef.current = null;
           paymentWidgetRef.current = null;
         }
+        if (agreementWidgetRef.current) {
+          try {
+            await agreementWidgetRef.current.destroy?.();
+          } catch (e) {
+            console.warn("Agreement pre-cleanup failed:", e);
+          }
+          agreementWidgetRef.current = null;
+        }
 
-        // Render payment methods UI and store promise for cleanup
+        // Render payment methods + agreement in parallel (V2 SDK requirement)
         const renderPromise = paymentWidget.renderPaymentMethods({
           selector: "#payment-widget-checkout",
           variantKey: process.env.NEXT_PUBLIC_TOSS_VARIANT_KEY || "DEFAULT",
         });
 
+        const agreementPromise = paymentWidget.renderAgreement({
+          selector: "#agreement-widget-checkout",
+        });
+
         // Save promise to handle cleanup if unmount happens during render
         (paymentMethodWidgetRef.current as any) = renderPromise;
 
-        const paymentMethodsWidget = await renderPromise;
+        const [paymentMethodsWidget, agreementWidget] = await Promise.all([renderPromise, agreementPromise]);
 
         // If unmounted during await, destroy immediately
         if (!isMounted) {
           await paymentMethodsWidget.destroy?.();
+          await agreementWidget.destroy?.();
           initializingRef.current = false;
           return;
         }
 
-        // Store resolved widget instance
+        // Store resolved widget instances
         paymentWidgetRef.current = paymentWidget;
         paymentMethodWidgetRef.current = paymentMethodsWidget;
+        agreementWidgetRef.current = agreementWidget;
 
         setWidgetReady(true);
         setWidgetError(null);
         initializingRef.current = false;
-        console.log("Toss Payment Widget initialized successfully");
+        console.log("Toss Payment Widget initialized successfully (methods + agreement)");
       } catch (error) {
         console.error("Failed to initialize Toss Payment Widget:", error);
         if (isMounted) {
@@ -306,10 +322,20 @@ const CheckoutPage = () => {
         paymentMethodWidgetRef.current = null;
         paymentWidgetRef.current = null;
       }
+      if (agreementWidgetRef.current) {
+        void Promise.resolve(agreementWidgetRef.current.destroy?.()).catch((e) =>
+          console.warn("Agreement cleanup error:", e),
+        );
+        agreementWidgetRef.current = null;
+      }
       setWidgetReady(false);
     };
+    // FIX: sdkError and tossPaymentsFactory removed from deps.
+    // sdkError changes (null → message) caused cleanup → widget destroy during bridge handshake → timeout.
+    // tossPaymentsFactory is now a stable ref from the hook.
+    // tossReady guards the effect; when true, the factory is guaranteed to be available.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [brandpayReturnPath, customerKey, existingOrder, sdkError, tossPaymentsFactory, tossReady]);
+  }, [brandpayReturnPath, customerKey, existingOrder, tossReady]);
 
   useEffect(() => {
     if (existingOrder && sdkError) {
@@ -772,6 +798,9 @@ const CheckoutPage = () => {
                 </div>
               )}
             </div>
+
+            {/* Agreement Widget (V2 SDK requirement for BrandPay) */}
+            <div id="agreement-widget-checkout" className="mb-4" />
 
             <button
               onClick={handleTossPayment}

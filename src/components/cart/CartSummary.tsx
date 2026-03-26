@@ -22,6 +22,7 @@ import {
   removeQueryParams,
 } from "@/lib/tossUtils";
 import {
+  TossPaymentsAgreementWidget,
   TossPaymentsMethodWidget,
   TossPaymentsWidgetsInstance,
   useTossPaymentsReady,
@@ -151,6 +152,7 @@ const CartSummary = ({ cart }: Props) => {
 
   // Initialize Toss Widget when showPaymentWidget becomes true
   const paymentMethodWidgetRef = useRef<TossPaymentsMethodWidget | null>(null);
+  const agreementWidgetRef = useRef<TossPaymentsAgreementWidget | null>(null);
   const initializingRef = useRef(false);
   // Ref to store the amount used during widget initialization
   const initializedAmountRef = useRef<number | null>(null);
@@ -223,7 +225,7 @@ const CartSummary = ({ cart }: Props) => {
           },
         });
 
-        // Cleanup existing widget if any
+        // Cleanup existing widgets if any
         if (paymentMethodWidgetRef.current) {
           try {
             if (typeof paymentMethodWidgetRef.current.destroy === 'function') {
@@ -232,6 +234,14 @@ const CartSummary = ({ cart }: Props) => {
           } catch (e) {
             console.warn("Error destroying previous widget instance in CartSummary:", e);
           }
+        }
+        if (agreementWidgetRef.current) {
+          try {
+            await agreementWidgetRef.current.destroy?.();
+          } catch (e) {
+            console.warn("Agreement pre-cleanup failed in CartSummary:", e);
+          }
+          agreementWidgetRef.current = null;
         }
 
         if (!isMounted) {
@@ -254,22 +264,29 @@ const CartSummary = ({ cart }: Props) => {
           return;
         }
 
-        // Render payment methods UI
-        const paymentMethodsWidget = await paymentWidget.renderPaymentMethods({
-          selector: "#payment-widget-cart",
-          variantKey: process.env.NEXT_PUBLIC_TOSS_VARIANT_KEY || "DEFAULT",
-        });
+        // Render payment methods + agreement in parallel (V2 SDK requirement)
+        const [paymentMethodsWidget, agreementWidget] = await Promise.all([
+          paymentWidget.renderPaymentMethods({
+            selector: "#payment-widget-cart",
+            variantKey: process.env.NEXT_PUBLIC_TOSS_VARIANT_KEY || "DEFAULT",
+          }),
+          paymentWidget.renderAgreement({
+            selector: "#agreement-widget-cart",
+          }),
+        ]);
 
         // If unmounted during await, destroy immediately
         if (!isMounted) {
           await paymentMethodsWidget.destroy?.();
+          await agreementWidget.destroy?.();
           initializingRef.current = false;
           return;
         }
 
-        // Store resolved widget instance
+        // Store resolved widget instances
         paymentWidgetRef.current = paymentWidget;
         paymentMethodWidgetRef.current = paymentMethodsWidget;
+        agreementWidgetRef.current = agreementWidget;
 
         setWidgetReady(true);
         setWidgetError(null);
@@ -296,13 +313,18 @@ const CartSummary = ({ cart }: Props) => {
         paymentMethodWidgetRef.current = null;
         paymentWidgetRef.current = null;
       }
+      if (agreementWidgetRef.current) {
+        void Promise.resolve(agreementWidgetRef.current.destroy?.()).catch((e) =>
+          console.warn("Agreement cleanup error in CartSummary:", e),
+        );
+        agreementWidgetRef.current = null;
+      }
       setWidgetReady(false);
     };
-    // FIX: Removed session and widgetReady from dependencies to prevent infinite re-initialization loop
-    // - session: useSession() returns new object reference every render → triggers cleanup → loop
-    // - widgetReady: cleanup sets it to false → triggers effect again → loop
+    // FIX: sdkError and tossPaymentsFactory removed from deps to prevent widget destroy during bridge handshake.
+    // tossReady guards the effect; when true, the factory is guaranteed to be available via stable ref.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [customerKey, lockedAmount, sdkError, showPaymentWidget, status, tossPaymentsFactory, tossReady]);
+  }, [customerKey, lockedAmount, showPaymentWidget, status, tossReady]);
 
   const handleCheckout = async () => {
     if (!session?.user) {
@@ -424,6 +446,14 @@ const CartSummary = ({ cart }: Props) => {
       }
       paymentMethodWidgetRef.current = null;
     }
+    if (agreementWidgetRef.current) {
+      try {
+        await agreementWidgetRef.current.destroy?.();
+      } catch (e) {
+        console.warn("Error destroying agreement widget on cancel:", e);
+      }
+      agreementWidgetRef.current = null;
+    }
     paymentWidgetRef.current = null;
 
     // FIX 3: Cancel the pending order in DB to prevent accumulation
@@ -531,6 +561,9 @@ const CartSummary = ({ cart }: Props) => {
                     </div>
                   )}
                 </div>
+
+                {/* Agreement Widget (V2 SDK requirement for BrandPay) */}
+                <div id="agreement-widget-cart" className="mb-4" />
 
                 {/* Payment Button */}
                 <button
