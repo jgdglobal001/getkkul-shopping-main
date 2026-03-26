@@ -13,7 +13,11 @@ import { FaSignInAlt } from "react-icons/fa";
 import Link from "next/link";
 import Script from "next/script";
 import { getPartnerInfo } from "../PartnerRefTracker";
-import { buildTossCustomerKey, getBrandpayRedirectUrl } from "@/lib/tossUtils";
+import {
+  buildTossCustomerKey,
+  getBrandpayRedirectUrl,
+  persistExpectedBrandpayCustomerKey,
+} from "@/lib/tossUtils";
 
 // SessionStorage keys for persisting payment state
 const PENDING_ORDER_KEY = "getkkul_pending_order";
@@ -141,6 +145,8 @@ const CartSummary = ({ cart }: Props) => {
           initializingRef.current = false;
           return;
         }
+
+        persistExpectedBrandpayCustomerKey(customerKey, "/cart");
 
         const brandpayRedirectUrl = getBrandpayRedirectUrl(window.location.origin, "/cart");
 

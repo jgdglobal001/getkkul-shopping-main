@@ -13,6 +13,7 @@
    - `src/lib/tossUtils.ts`의 `buildTossCustomerKey()` 사용
    - `userId` 우선, 없으면 `email` 기반으로 안정적인 키 생성
    - `Date.now()` 같은 비안정 fallback 제거
+   - BrandPay redirect 전 기대 `customerKey`를 브라우저 저장소에 보관하고 callback에서 동일 값인지 검증
 3. **BrandPay redirectUrl 공통화**
    - 모든 `widgets()`/`brandpay()` 초기화 시 `getBrandpayRedirectUrl()` 사용
    - callback은 `returnUrl`을 받아 원래 화면으로 복귀
@@ -39,14 +40,17 @@
 4. `addPaymentMethod()` 또는 `openSettings()` 호출
 5. 토스 callback → `/account/payment/callback`
 6. callback이 `code + customerKey`를 `/api/toss/brandpay/access-token`으로 전달
-7. 토큰 교환 완료 후 원래 화면으로 복귀
+7. callback은 저장해둔 expected `customerKey`와 URL의 `customerKey`를 먼저 비교
+8. callback 화면은 브리지 완료 전까지 유지하고, 즉시 `router.push()` 하지 않음
+9. 토큰 교환과 SDK 브리지 정리 후 원래 화면으로 복귀
 
 #### 2. 체크아웃/장바구니 BrandPay 결제
 1. 기존 pending order 생성 로직 유지
 2. 위젯 초기화 시 `widgets({ customerKey, brandpay: { redirectUrl } })` 사용
 3. 최초 BrandPay 등록이 필요하면 callback을 거쳐 원래 페이지로 돌아옴
-4. 같은 `customerKey`를 다시 사용하므로 등록 카드가 위젯에 노출됨
-5. `requestPayment()`는 기존처럼 `successUrl/failUrl`로 진행
+4. callback에서 expected `customerKey` 검증 후 Access Token을 발급함
+5. 같은 `customerKey`를 다시 사용하므로 등록 카드가 위젯에 노출됨
+6. `requestPayment()`는 기존처럼 `successUrl/failUrl`로 진행
 
 #### 3. 파트너 커미션 지급
 1. 파트너 링크 유입 시 `partnerLinkId`를 주문에 저장
@@ -64,3 +68,5 @@
 - BrandPay 등록 callback에서 파트너 보상을 처리하면 안 됨
 - 결제 성공 후 승인/정산은 반드시 기존 `toss-confirm` 한 곳에서 처리
 - customerKey 생성 규칙을 다른 파일에서 다시 구현하지 말고 공통 유틸만 사용할 것
+- callback 페이지에서 Access Token 교환 직후 즉시 SPA 이동하면 SDK의 `customerToken` 브리지가 끊길 수 있으므로, callback은 server wrapper + client processor 구조로 유지할 것
+- 팝업 callback도 고려해 expected `customerKey`는 `sessionStorage`와 `localStorage`에 함께 저장하고, callback에서 검증 후 정리할 것

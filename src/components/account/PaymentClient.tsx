@@ -5,13 +5,22 @@ import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { FiCreditCard, FiSettings, FiLoader, FiCheck, FiAlertCircle } from "react-icons/fi";
-import { buildTossCustomerKey, getBrandpayRedirectUrl } from "@/lib/tossUtils";
+import {
+  buildTossCustomerKey,
+  getBrandpayRedirectUrl,
+  persistExpectedBrandpayCustomerKey,
+} from "@/lib/tossUtils";
 
 export default function PaymentClient() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
   const { t } = useTranslation();
+  const brandpayReturnPath = "/account/payment";
+  const customerKey = buildTossCustomerKey({
+    userId: session?.user?.id,
+    email: session?.user?.email,
+  });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -58,10 +67,6 @@ export default function PaymentClient() {
       const TossPayments = (window as any).TossPayments;
       if (!TossPayments) return;
       
-      const customerKey = buildTossCustomerKey({
-        userId: session.user?.id,
-        email: session.user?.email,
-      });
       if (!customerKey) {
         setError("고객 식별 정보를 확인할 수 없습니다. 다시 로그인 후 시도해주세요.");
         return;
@@ -70,13 +75,13 @@ export default function PaymentClient() {
       const tp = TossPayments(tossClientKey);
       const bp = tp.brandpay({
         customerKey,
-        redirectUrl: getBrandpayRedirectUrl(window.location.origin, "/account/payment"),
+        redirectUrl: getBrandpayRedirectUrl(window.location.origin, brandpayReturnPath),
       });
       setBrandpay(bp);
     } catch (err) {
       console.error("Failed to initialize Brandpay:", err);
     }
-  }, [session, status]);
+  }, [brandpayReturnPath, customerKey, session, status]);
 
   const handleAddCard = async () => {
     if (!brandpay) {
@@ -84,9 +89,15 @@ export default function PaymentClient() {
       return;
     }
 
+    if (!customerKey) {
+      setError("고객 식별 정보를 확인할 수 없습니다. 다시 로그인 후 시도해주세요.");
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
+      persistExpectedBrandpayCustomerKey(customerKey, brandpayReturnPath);
       await brandpay.addPaymentMethod();
     } catch (err: any) {
       console.error("Error adding card:", err);
@@ -110,9 +121,15 @@ export default function PaymentClient() {
       return;
     }
 
+    if (!customerKey) {
+      setError("고객 식별 정보를 확인할 수 없습니다. 다시 로그인 후 시도해주세요.");
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
+      persistExpectedBrandpayCustomerKey(customerKey, brandpayReturnPath);
       await brandpay.openSettings();
     } catch (err: any) {
       console.error("Error opening brandpay settings:", err);

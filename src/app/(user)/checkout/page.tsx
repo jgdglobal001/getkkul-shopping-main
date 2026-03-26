@@ -11,7 +11,11 @@ import Container from "@/components/Container";
 import PriceFormat from "@/components/PriceFormat";
 import { loadStripe } from "@stripe/stripe-js";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import { buildTossCustomerKey, getBrandpayRedirectUrl } from "@/lib/tossUtils";
+import {
+  buildTossCustomerKey,
+  getBrandpayRedirectUrl,
+  persistExpectedBrandpayCustomerKey,
+} from "@/lib/tossUtils";
 import {
   FiPackage,
   FiMapPin,
@@ -129,10 +133,12 @@ const CheckoutPage = () => {
           return;
         }
 
-        const brandpayRedirectUrl = getBrandpayRedirectUrl(
-          window.location.origin,
-          existingOrderId ? `/checkout?orderId=${encodeURIComponent(existingOrderId)}` : "/checkout",
-        );
+        const brandpayReturnPath = existingOrderId
+          ? `/checkout?orderId=${encodeURIComponent(existingOrderId)}`
+          : "/checkout";
+        persistExpectedBrandpayCustomerKey(customerKey, brandpayReturnPath);
+
+        const brandpayRedirectUrl = getBrandpayRedirectUrl(window.location.origin, brandpayReturnPath);
 
         let amount = 0;
         if (typeof existingOrder.amount === 'string') amount = parseFloat(existingOrder.amount);

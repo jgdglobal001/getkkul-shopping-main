@@ -16,7 +16,11 @@ import {
   FiLoader,
 } from "react-icons/fi";
 import Link from "next/link";
-import { buildTossCustomerKey, getBrandpayRedirectUrl } from "@/lib/tossUtils";
+import {
+  buildTossCustomerKey,
+  getBrandpayRedirectUrl,
+  persistExpectedBrandpayCustomerKey,
+} from "@/lib/tossUtils";
 
 // 토스페이먼츠 V2 타입
 declare global {
@@ -351,6 +355,8 @@ export default function OrdersList({
         if (!customerKey) {
           throw new Error("고객 식별 정보를 확인할 수 없습니다. 다시 로그인 후 시도해주세요.");
         }
+
+        persistExpectedBrandpayCustomerKey(customerKey, "/account/orders");
 
         const brandpayRedirectUrl = getBrandpayRedirectUrl(window.location.origin, "/account/orders");
 
