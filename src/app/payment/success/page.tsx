@@ -17,6 +17,7 @@ export default function PaymentSuccess() {
   const [loading, setLoading] = useState(true);
   const [verified, setVerified] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [errorType, setErrorType] = useState<"PAYMENT_REJECTED" | "TECHNICAL_ERROR" | null>(null);
   const verificationAttempted = useRef(false);
 
   const paymentKey = searchParams.get("paymentKey");
@@ -45,6 +46,7 @@ export default function PaymentSuccess() {
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Backend error response:", errorData);
+        setErrorType(errorData.errorType || "TECHNICAL_ERROR");
         throw new Error(errorData.error || "Payment verification failed");
       }
 
@@ -104,6 +106,43 @@ export default function PaymentSuccess() {
 
   // Show error if verification failed
   if (error) {
+    // Payment Rejection: card company declined (insufficient balance, limit exceeded, etc.)
+    if (errorType === "PAYMENT_REJECTED") {
+      return (
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
+          <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8 text-center">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <span className="text-3xl">😔</span>
+            </div>
+            <h1 className="text-xl font-bold text-gray-900 mb-3">
+              결제가 정상적으로 처리되지 않았어요
+            </h1>
+            <p className="text-gray-600 mb-4 text-sm leading-relaxed">{error}</p>
+            <div className="bg-gray-50 rounded p-4 mb-6 text-left">
+              <p className="text-sm text-gray-600">
+                <span className="font-semibold">주문번호:</span> {orderId}
+              </p>
+            </div>
+            <div className="space-y-3">
+              <Link
+                href="/cart"
+                className="block w-full bg-pink-500 text-white py-3 px-4 rounded-lg font-semibold hover:bg-pink-600 transition text-center"
+              >
+                🛒 다른 결제수단으로 다시 시도
+              </Link>
+              <Link
+                href="/account/orders"
+                className="block w-full bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-semibold hover:bg-gray-300 transition text-center"
+              >
+                주문 내역 확인
+              </Link>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // Technical Error: server/network issue
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4">
         <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8 text-center">
@@ -112,7 +151,7 @@ export default function PaymentSuccess() {
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">결제 확인 필요</h1>
           <p className="text-gray-600 mb-4">
-            결제는 완료되었으나 확인 중 문제가 발생했습니다.
+            결제 확인 중 일시적인 문제가 발생했습니다.
           </p>
           <p className="text-sm text-gray-500 mb-4">{error}</p>
           <div className="bg-gray-50 rounded p-4 mb-6 text-left">

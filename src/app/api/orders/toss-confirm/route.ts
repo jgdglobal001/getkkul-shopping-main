@@ -15,6 +15,49 @@ import {
   normalizeTossAmount,
 } from "@/lib/tossPaymentValidation";
 
+/**
+ * Determines if a Toss error code represents a payment rejection
+ * (card company declined, insufficient balance, limit exceeded, etc.)
+ * vs a technical/server error that may need manual investigation.
+ */
+function isPaymentRejectionError(errorCode: string, httpStatus: number): boolean {
+  // 400-level errors from card companies / payment processing
+  const rejectionCodes = [
+    "REJECT_CARD_COMPANY",              // 카드사 거절
+    "EXCEED_MAX_DAILY_PAYMENT_COUNT",   // 일일 결제 횟수 초과
+    "EXCEED_MAX_PAYMENT_AMOUNT",        // 결제 한도 초과
+    "EXCEED_MAX_MONTHLY_PAYMENT_COUNT", // 월간 결제 횟수 초과
+    "EXCEED_MAX_AMOUNT",                // 거래금액 한도 초과
+    "INVALID_CARD_EXPIRATION",          // 카드 유효기간 오류
+    "INVALID_STOPPED_CARD",             // 정지된 카드
+    "INVALID_CARD_LOST_OR_STOLEN",      // 분실/도난 카드
+    "RESTRICT_CARD",                    // 사용 제한 카드
+    "NOT_SUPPORTED_INSTALLMENT_PLAN_CARD_OR_MERCHANT", // 할부 불가
+    "INVALID_CARD_NUMBER",              // 잘못된 카드번호
+    "BELOW_MINIMUM_AMOUNT",             // 최소 결제금액 미만
+    "FORBIDDEN_CONSECUTIVE_PAYMENTS",   // 연속 결제 제한
+    "NOT_AVAILABLE_PAYMENT",            // 결제 불가
+    "REJECT_ACCOUNT_PAYMENT",           // 계좌 결제 거절
+    "REJECT_TOSSPAY_INVALID_ACCOUNT",   // 토스페이 유효하지 않은 계좌
+    "INSUFFICIENT_BALANCE",             // 잔액 부족 (계좌)
+  ];
+
+  if (rejectionCodes.includes(errorCode)) {
+    return true;
+  }
+
+  // Check for known rejection patterns in error code
+  if (
+    errorCode.startsWith("REJECT_") ||
+    errorCode.startsWith("EXCEED_") ||
+    errorCode.includes("CARD_") && httpStatus === 400
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { orderId, paymentKey, amount, userEmail } = await request.json();
@@ -122,8 +165,38 @@ export async function POST(request: NextRequest) {
     if (!tossResponse.ok) {
       const errorData = await tossResponse.json();
       console.error("Toss payment verification failed:", errorData);
+
+      // Determine if this is a payment rejection (card company declined)
+      // vs a technical/server error that may need manual investigation.
+      const tossErrorCode = errorData.code || "";
+      const isPaymentRejection = isPaymentRejectionError(tossErrorCode, tossResponse.status);
+
+      // If payment was rejected by card company, cancel the pending order
+      if (isPaymentRejection) {
+        try {
+          await db.update(orders).set({
+            status: ORDER_STATUSES.CANCELLED,
+            paymentStatus: PAYMENT_STATUSES.FAILED,
+            updatedAt: new Date(),
+          }).where(
+            and(
+              eq(orders.orderId, orderId),
+              eq(orders.paymentStatus, PAYMENT_STATUSES.PENDING),
+            )
+          );
+          console.log(`[PaymentRejection] Order ${orderId} cancelled due to: ${tossErrorCode}`);
+        } catch (cancelError) {
+          console.error(`[PaymentRejection] Failed to cancel order ${orderId}:`, cancelError);
+        }
+      }
+
       return NextResponse.json(
-        { success: false, error: errorData.message || "Payment verification failed", details: errorData },
+        {
+          success: false,
+          error: errorData.message || "Payment verification failed",
+          errorType: isPaymentRejection ? "PAYMENT_REJECTED" : "TECHNICAL_ERROR",
+          details: errorData,
+        },
         { status: 400 }
       );
     }
