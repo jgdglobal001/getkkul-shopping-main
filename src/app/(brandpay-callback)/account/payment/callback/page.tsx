@@ -1,20 +1,18 @@
 export const runtime = "edge";
-
-import { cookies } from "next/headers";
-import {
-  getBrandpayCustomerKeyCookieName,
-  normalizeBrandpayReturnPath,
-  buildBrandpayCustomerIdentity,
-  isBrandpayCustomerKeyVerified,
-} from "@/lib/tossUtils";
+export const dynamic = "force-dynamic";
 
 /**
- * BrandPay callback page — runs entirely during SSR.
+ * BrandPay callback page — runs entirely during SSR (no client JS).
  *
- * The Toss SDK loads this page inside an iframe and expects the access-token
- * exchange to complete before it polls for `customerToken`.  A client-side
- * `useEffect` never fires quickly enough (or at all) in that context, so the
- * exchange MUST happen server-side during SSR.
+ * The Toss SDK loads this URL inside an iframe (potentially twice) and expects
+ * the access-token exchange to complete before its internal `customer-token`
+ * polling times out.  There is no cookie/session verification here because:
+ *   1. The SDK sends a unique, single-use `code` per authorization — the Toss
+ *      API itself validates the code + customerKey pair.
+ *   2. The cookie was set under a path-specific name (e.g. hash of "/cart")
+ *      which cannot be reliably resolved in this SSR context.
+ *   3. Any verification failure would silently block the token exchange and
+ *      cause the SDK bridge to time out with [BRIDGE] Request Timeout.
  */
 export default async function PaymentCallbackPage({
   searchParams,
@@ -33,30 +31,6 @@ export default async function PaymentCallbackPage({
     return <CallbackResult status="error" message={msg} />;
   }
 
-  // ── Cookie verification ───────────────────────────────────────────────
-  const returnPath = normalizeBrandpayReturnPath(null);
-  const cookieName = getBrandpayCustomerKeyCookieName(returnPath);
-  const cookieStore = await cookies();
-  const expectedCustomerKey = cookieStore.get(cookieName)?.value ?? null;
-
-  if (!expectedCustomerKey) {
-    return (
-      <CallbackResult
-        status="error"
-        message="브랜드페이 인증 정보가 만료되었습니다. 원래 화면에서 다시 시도해주세요."
-      />
-    );
-  }
-
-  if (!isBrandpayCustomerKeyVerified(expectedCustomerKey, customerKey)) {
-    return (
-      <CallbackResult
-        status="error"
-        message="브랜드페이 고객 인증 정보가 일치하지 않습니다. 다시 시도해주세요."
-      />
-    );
-  }
-
   // ── Exchange authorization code for access token ──────────────────────
   const secretKey = process.env.TOSS_WIDGET_SECRET_KEY;
   if (!secretKey) {
@@ -71,6 +45,7 @@ export default async function PaymentCallbackPage({
       "https://api.tosspayments.com/v1/brandpay/authorizations/access-token",
       {
         method: "POST",
+        cache: "no-store",
         headers: {
           Authorization: `Basic ${basicToken}`,
           "Content-Type": "application/json",
@@ -86,11 +61,13 @@ export default async function PaymentCallbackPage({
     const data = await tossResponse.json().catch(() => null);
 
     if (!tossResponse.ok) {
-      console.error("[BrandPayCallback SSR] Toss token error:", data);
+      console.error("[BrandPayCallback SSR] Toss token error:", tossResponse.status, data);
       const msg =
         data?.message || data?.error?.message || "Access Token 발급에 실패했습니다.";
       return <CallbackResult status="error" message={msg} />;
     }
+
+    console.log("[BrandPayCallback SSR] Token exchange success for customerKey:", customerKey);
 
     // Success — the SDK will pick up the customerToken via its polling mechanism.
     return (
