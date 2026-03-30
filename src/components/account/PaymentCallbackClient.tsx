@@ -115,10 +115,12 @@ export default function PaymentCallbackClient() {
 
           if (!active) return;
 
-          clearExpectedBrandpayCustomerKey(returnUrl);
+          // Do NOT clear credentials or redirect here.
+          // The SDK may trigger a second authorization → callback cycle.
+          // Both callbacks must successfully exchange for an access token.
+          // The SDK will handle navigation after all authorizations complete.
           setStatus("success");
-          setMessage("브랜드페이 인증이 완료되었습니다. 원래 화면으로 안전하게 돌아가는 중입니다...");
-          redirectToTarget(successRedirectUrl, SUCCESS_REDIRECT_DELAY_MS);
+          setMessage("브랜드페이 인증을 처리했습니다. 잠시만 기다려주세요...");
           return;
         }
 

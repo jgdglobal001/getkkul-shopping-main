@@ -132,7 +132,10 @@ export async function POST(req: Request) {
             );
         }
 
-        return appendClearCookieHeader(NextResponse.json(data), cookieName, isSecure);
+        // Do NOT clear the cookie on success.
+        // The SDK may trigger a second authorization → callback cycle,
+        // and the cookie must still be available for the second access-token exchange.
+        return NextResponse.json(data);
     } catch (error: any) {
         console.error("Access Token API Error:", error);
         return appendClearCookieHeader(
