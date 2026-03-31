@@ -233,12 +233,13 @@ export default function PaymentClient() {
 
         const methodWidget = await pw.renderPaymentMethods({
           selector: "#payment-method-add-widget",
-          variantKey: "DEFAULT",
+          variantKey: process.env.NEXT_PUBLIC_TOSS_VARIANT_KEY || "DEFAULT",
         });
         methodWidgetRef.current = methodWidget;
 
         const agreeWidget = await pw.renderAgreement({
           selector: "#payment-agreement-add-widget",
+          variantKey: "AGREEMENT",
         });
         agreementWidgetRef.current = agreeWidget;
 
