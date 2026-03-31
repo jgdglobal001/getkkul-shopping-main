@@ -9,8 +9,6 @@ import {
   FiLoader,
   FiCheck,
   FiAlertCircle,
-  FiTrash2,
-  FiPlus,
   FiX,
 } from "react-icons/fi";
 import {
@@ -26,30 +24,6 @@ import {
   TossPaymentsWidgetsInstance,
   useTossPaymentsReady,
 } from "@/hooks/useTossPayments";
-
-/* ── Types ─────────────────────────────────────────────── */
-
-interface BrandPayCard {
-  id: string;
-  methodKey: string;
-  cardName: string;
-  cardNumber: string;
-  cardType: string;
-  ownerType: string;
-  issuerCode: string;
-  iconUrl: string;
-  cardImgUrl: string;
-  registeredAt: string;
-  status: string;
-  color: { background: string; text: string };
-}
-
-interface BrandPayMethodsResponse {
-  cards: BrandPayCard[];
-  accounts: any[];
-  isIdentified: boolean;
-  selectedMethodId: string | null;
-}
 
 /* ── Component ─────────────────────────────────────────── */
 
@@ -81,14 +55,11 @@ export default function PaymentClient() {
   );
 
   // ── State ──
-  const [cards, setCards] = useState<BrandPayCard[]>([]);
-  const [listLoading, setListLoading] = useState(true);
-  const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-  // Widget modal state
-  const [showAddModal, setShowAddModal] = useState(false);
+  // Widget modal
+  const [showWidget, setShowWidget] = useState(false);
   const [widgetReady, setWidgetReady] = useState(false);
   const paymentWidgetRef = useRef<TossPaymentsWidgetsInstance | null>(null);
   const methodWidgetRef = useRef<TossPaymentsMethodWidget | null>(null);
@@ -96,7 +67,7 @@ export default function PaymentClient() {
 
   const { isReady: tossReady, sdkError, tossPaymentsFactory } = useTossPaymentsReady();
 
-  /* ── URL params handling ── */
+  /* ── URL params (BrandPay callback) ── */
   useEffect(() => {
     const bp = searchParams.get("brandpay");
     const bpError = searchParams.get("brandpayError");
@@ -104,8 +75,6 @@ export default function PaymentClient() {
     if (bp === "success") {
       setSuccessMessage("결제수단이 성공적으로 등록되었습니다.");
       router.replace("/account/payment");
-      // Refresh card list after successful registration
-      if (customerKey) fetchCards(customerKey);
     } else if (bpError) {
       setError(decodeURIComponent(bpError));
       router.replace("/account/payment");
@@ -131,70 +100,8 @@ export default function PaymentClient() {
     if (status === "authenticated" && sdkError) setError(sdkError);
   }, [sdkError, status]);
 
-  /* ── Fetch cards on mount ── */
-  const fetchCards = useCallback(async (ck: string) => {
-    try {
-      setListLoading(true);
-      const res = await fetch(`/api/toss/brandpay/methods?customerKey=${encodeURIComponent(ck)}`);
-      const data: BrandPayMethodsResponse = await res.json();
-
-      if (!res.ok) {
-        throw new Error((data as any).error || "결제수단 조회에 실패했습니다.");
-      }
-
-      setCards(data.cards ?? []);
-    } catch (err: any) {
-      console.error("[PaymentClient] fetchCards error:", err);
-      // 조회 실패는 빈 목록 표시 (최초 가입 전 등)
-      setCards([]);
-    } finally {
-      setListLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (status === "authenticated" && customerKey) {
-      fetchCards(customerKey);
-    } else if (status !== "loading") {
-      setListLoading(false);
-    }
-  }, [customerKey, fetchCards, status]);
-
-  /* ── Delete card ── */
-  const handleDeleteCard = async (card: BrandPayCard) => {
-    if (!customerKey) return;
-
-    const confirmed = window.confirm(`${card.cardName} (${card.cardNumber})을(를) 삭제하시겠습니까?`);
-    if (!confirmed) return;
-
-    try {
-      setDeleteLoading(card.methodKey);
-      setError(null);
-
-      const res = await fetch("/api/toss/brandpay/methods/remove", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ customerKey, methodKey: card.methodKey }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || "카드 삭제에 실패했습니다.");
-      }
-
-      setSuccessMessage(`${card.cardName}이(가) 삭제되었습니다.`);
-      setCards((prev) => prev.filter((c) => c.methodKey !== card.methodKey));
-    } catch (err: any) {
-      console.error("[PaymentClient] deleteCard error:", err);
-      setError(err.message || "카드 삭제 중 오류가 발생했습니다.");
-    } finally {
-      setDeleteLoading(null);
-    }
-  };
-
-  /* ── Add card via widgets() modal ── */
-  const openAddCardModal = useCallback(() => {
+  /* ── Open widget ── */
+  const openWidget = useCallback(() => {
     if (!tossReady || !tossPaymentsFactory || !customerKey) {
       setError("결제 시스템을 불러오는 중입니다. 잠시 후 다시 시도해주세요.");
       return;
@@ -205,13 +112,13 @@ export default function PaymentClient() {
       customerIdentity: brandpayCustomerIdentity,
     });
 
-    setShowAddModal(true);
+    setShowWidget(true);
     setWidgetReady(false);
   }, [brandpayCustomerIdentity, brandpayReturnPath, customerKey, tossPaymentsFactory, tossReady]);
 
-  /* ── Initialize widget when modal opens ── */
+  /* ── Initialize widget when opened ── */
   useEffect(() => {
-    if (!showAddModal || !tossReady || !tossPaymentsFactory || !customerKey) return;
+    if (!showWidget || !tossReady || !tossPaymentsFactory || !customerKey) return;
 
     let isMounted = true;
     const tossClientKey = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY;
@@ -232,13 +139,13 @@ export default function PaymentClient() {
         if (!isMounted) return;
 
         const methodWidget = await pw.renderPaymentMethods({
-          selector: "#payment-method-add-widget",
+          selector: "#brandpay-manage-widget",
           variantKey: process.env.NEXT_PUBLIC_TOSS_VARIANT_KEY || "DEFAULT",
         });
         methodWidgetRef.current = methodWidget;
 
         const agreeWidget = await pw.renderAgreement({
-          selector: "#payment-agreement-add-widget",
+          selector: "#brandpay-agreement-widget",
           variantKey: "AGREEMENT",
         });
         agreementWidgetRef.current = agreeWidget;
@@ -267,13 +174,11 @@ export default function PaymentClient() {
       paymentWidgetRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [showAddModal, tossReady, customerKey]);
+  }, [showWidget, tossReady, customerKey]);
 
-  const closeAddModal = () => {
-    setShowAddModal(false);
+  const closeWidget = () => {
+    setShowWidget(false);
     setWidgetReady(false);
-    // Refresh card list after modal closes (may have registered a card)
-    if (customerKey) fetchCards(customerKey);
   };
 
   /* ── Render ── */
@@ -306,107 +211,47 @@ export default function PaymentClient() {
         </div>
       )}
 
-      {/* Card List */}
-      <div className="bg-white rounded-lg shadow border border-gray-100">
-        {/* Section header + Add button */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-100">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center">
-              <FiCreditCard className="text-xl text-blue-600" />
-            </div>
-            <div>
-              <h3 className="font-bold text-gray-900">등록된 결제수단</h3>
-              <p className="text-sm text-gray-500">겟꿀페이 (BrandPay)</p>
-            </div>
-          </div>
-          <button
-            onClick={openAddCardModal}
-            disabled={!isAuthenticated || isLoading || !tossReady}
-            className="inline-flex items-center gap-2 px-4 py-2.5 bg-theme-color text-white rounded-lg hover:bg-theme-color/90 transition-colors disabled:opacity-50 text-sm font-medium shadow-sm"
-          >
-            <FiPlus className="text-lg" />
-            결제수단 추가
-          </button>
+      {/* Main Card */}
+      <div className="bg-white rounded-lg shadow border border-gray-100 p-8 text-center">
+        <div className="w-24 h-24 mx-auto mb-6 bg-blue-50 rounded-full flex items-center justify-center">
+          <FiCreditCard className="text-4xl text-blue-600" />
         </div>
 
-        {/* Card list body */}
-        <div className="p-6">
-          {listLoading ? (
-            <div className="flex flex-col items-center justify-center py-12">
-              <FiLoader className="animate-spin text-3xl text-blue-600 mb-3" />
-              <p className="text-gray-500">결제수단을 불러오는 중...</p>
-            </div>
-          ) : cards.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-12 text-center">
-              <div className="w-20 h-20 mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-                <FiCreditCard className="text-3xl text-gray-400" />
-              </div>
-              <p className="text-gray-700 font-semibold mb-1">등록된 결제수단이 없습니다</p>
-              <p className="text-sm text-gray-500 max-w-xs">
-                결제수단을 추가하면, 결제 시 비밀번호 하나로 빠르게 결제할 수 있어요.
-              </p>
-            </div>
+        <h3 className="text-xl font-bold text-gray-900 mb-3">
+          겟꿀페이 간편결제 (BrandPay)
+        </h3>
+        <p className="text-gray-500 mb-8 max-w-md mx-auto leading-relaxed">
+          결제수단을 등록해두면, 결제 시마다 카드번호를 입력할 필요 없이
+          비밀번호 하나로 쉽고 빠르게 결제할 수 있습니다.
+        </p>
+
+        <button
+          onClick={openWidget}
+          disabled={!isAuthenticated || isLoading || !tossReady}
+          className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-theme-color text-white rounded-xl hover:bg-theme-color/90 transition-colors disabled:opacity-50 text-base font-medium shadow-md shadow-theme-color/20"
+        >
+          {isLoading ? (
+            <FiLoader className="animate-spin text-xl" />
           ) : (
-            <ul className="space-y-3">
-              {cards.map((card) => (
-                <li
-                  key={card.methodKey}
-                  className="flex items-center justify-between p-4 rounded-xl border border-gray-200 hover:border-gray-300 transition-colors"
-                >
-                  <div className="flex items-center gap-4">
-                    {/* Card icon */}
-                    {card.iconUrl ? (
-                      <img
-                        src={card.iconUrl}
-                        alt={card.cardName}
-                        className="w-10 h-10 rounded-lg object-contain"
-                      />
-                    ) : (
-                      <div
-                        className="w-10 h-10 rounded-lg flex items-center justify-center text-xs font-bold"
-                        style={{
-                          backgroundColor: card.color?.background || "#e5e7eb",
-                          color: card.color?.text || "#374151",
-                        }}
-                      >
-                        {card.cardName?.slice(0, 2) || "카드"}
-                      </div>
-                    )}
-                    <div>
-                      <p className="font-semibold text-gray-900">{card.cardName}</p>
-                      <p className="text-sm text-gray-500">
-                        {card.cardNumber} · {card.cardType}
-                      </p>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => handleDeleteCard(card)}
-                    disabled={deleteLoading === card.methodKey}
-                    className="p-2.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
-                    title="결제수단 삭제"
-                  >
-                    {deleteLoading === card.methodKey ? (
-                      <FiLoader className="animate-spin text-lg" />
-                    ) : (
-                      <FiTrash2 className="text-lg" />
-                    )}
-                  </button>
-                </li>
-              ))}
-            </ul>
+            <FiCreditCard className="text-xl" />
           )}
-        </div>
+          결제수단 관리하기
+        </button>
+
+        <p className="text-xs text-gray-400 mt-4">
+          카드 추가 · 삭제 · 비밀번호 변경을 한 곳에서 관리할 수 있어요.
+        </p>
       </div>
 
-      {/* ── Add Card Modal (widgets) ── */}
-      {showAddModal && (
+      {/* ── Widget Modal ── */}
+      {showWidget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
             {/* Modal header */}
             <div className="flex items-center justify-between p-5 border-b border-gray-100">
-              <h3 className="text-lg font-bold text-gray-900">결제수단 추가</h3>
+              <h3 className="text-lg font-bold text-gray-900">결제수단 관리</h3>
               <button
-                onClick={closeAddModal}
+                onClick={closeWidget}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
               >
                 <FiX className="w-5 h-5" />
@@ -415,25 +260,14 @@ export default function PaymentClient() {
 
             {/* Widget area */}
             <div className="p-5">
-              <p className="text-sm text-gray-500 mb-4">
-                아래에서 브랜드페이를 선택하여 카드를 등록해주세요.
-              </p>
-
-              {/* Payment method widget */}
-              <div id="payment-method-add-widget" className="mb-3">
+              <div id="brandpay-manage-widget" className="mb-3">
                 {!widgetReady && (
                   <div className="flex items-center justify-center py-16">
                     <FiLoader className="animate-spin text-blue-600 text-3xl" />
                   </div>
                 )}
               </div>
-
-              {/* Agreement widget */}
-              <div id="payment-agreement-add-widget" className="mb-4" />
-
-              <p className="text-xs text-gray-400 text-center">
-                위젯에서 브랜드페이 카드를 등록하면 자동으로 결제수단이 추가됩니다.
-              </p>
+              <div id="brandpay-agreement-widget" className="mb-4" />
             </div>
           </div>
         </div>
