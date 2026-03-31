@@ -13,6 +13,9 @@ export default function AuthProvider({ children }: AuthProviderProps) {
       {children}
       <Toaster
         position="bottom-right"
+        containerStyle={{
+          bottom: 80,
+        }}
         toastOptions={{
           duration: 4000,
           style: {
