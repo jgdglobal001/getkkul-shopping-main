@@ -6,8 +6,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { getT, getLanguageFromCookie } from "@/lib/i18nUtils";
 import { cookies } from "next/headers";
-import { db, products as productsTable } from "@/lib/db";
-import { eq, sql } from "drizzle-orm";
+import { db, products as productsTable, categories } from "@/lib/db";
+import { eq, sql, asc } from "drizzle-orm";
 
 export async function generateMetadata(): Promise<Metadata> {
   const cookieStore = await cookies();
@@ -45,29 +45,21 @@ export default async function CategoriesPage() {
   const lang = getLanguageFromCookie(cookieStore);
   const t = getT(lang);
 
-  // Fetch categories from our database API
-  let categoriesData = [];
-
-  try {
-    // Server Components require absolute URL
-    const baseUrl = process.env.NEXTAUTH_URL ||
-      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3002");
-
-    const categoriesResponse = await fetch(`${baseUrl}/api/categories`, {
-      next: { revalidate: 0 }, // No caching - always fetch fresh data
-      headers: { 'Content-Type': 'application/json' }
-    });
-
-    if (!categoriesResponse.ok) {
-      console.error(`카테고리 API 오류: ${categoriesResponse.status}`);
-      categoriesData = [];
-    } else {
-      categoriesData = await categoriesResponse.json();
-    }
-  } catch (error) {
-    console.error("카테고리 페칭 실패:", error);
-    categoriesData = [];
-  }
+  // DB에서 카테고리 직접 조회
+  const categoriesData = await db
+    .select({
+      id: categories.id,
+      name: categories.name,
+      slug: categories.slug,
+      description: categories.description,
+      image: categories.image,
+      icon: categories.icon,
+      order: categories.order,
+      isActive: categories.isActive,
+    })
+    .from(categories)
+    .where(eq(categories.isActive, true))
+    .orderBy(asc(categories.order));
 
   // DB에서 카테고리별 상품 수 조회
   const productCounts = await db
