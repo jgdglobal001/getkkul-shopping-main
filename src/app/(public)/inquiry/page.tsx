@@ -10,7 +10,9 @@ import {
   FiUsers,
   FiHelpCircle,
   FiMessageSquare,
+  FiPhone,
 } from "react-icons/fi";
+import EmailProviderModal from "@/components/EmailProviderModal";
 
 export const metadata: Metadata = {
   title: "비즈니스 문의 - Getkkul-shopping",
@@ -285,18 +287,14 @@ export default function InquiryPage() {
           <p className="text-light-text mb-6">
             저희 비즈니스 개발팀이 완벽한 솔루션을 찾는 데 도움을 드릴 준비가 되어 있습니다.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
-              href="mailto:jgdglobal@kakao.com"
-              className="inline-block bg-theme-color text-theme-white px-6 py-3 rounded-lg hover:bg-theme-color/90 transition-colors duration-200 font-medium"
-            >
-              비즈니스팀 이메일
-            </a>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <EmailProviderModal subject="[겟꿀쇼핑] 비즈니스 문의드립니다" />
             <a
               href="tel:010-7218-2858"
-              className="inline-block bg-theme-white text-theme-color border-2 border-theme-color px-6 py-3 rounded-lg hover:bg-theme-color hover:text-theme-white transition-colors duration-200 font-medium"
+              className="inline-flex items-center gap-2 bg-theme-white text-theme-color border-2 border-theme-color px-6 py-3 rounded-lg hover:bg-theme-color hover:text-theme-white transition-colors duration-200 font-medium"
             >
-              전화 상담 예약
+              <FiPhone className="w-4 h-4" />
+              전화 문의
             </a>
           </div>
         </div>

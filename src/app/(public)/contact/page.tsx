@@ -6,6 +6,7 @@ import { Metadata } from "next";
 import { BsEnvelopeAt, BsTelephone } from "react-icons/bs";
 import { GrLocation } from "react-icons/gr";
 import { FiClock, FiMail, FiMapPin, FiPhone } from "react-icons/fi";
+import EmailProviderModal from "@/components/EmailProviderModal";
 
 export const metadata: Metadata = {
   title: "연락처 - Getkkul-shopping",
@@ -210,21 +211,15 @@ export default function ContactPage() {
           <p className="text-light-text mb-6">
             긴급한 문의는 고객센터 전화 또는 이메일로 직접 연락해 주세요.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
               href="tel:01072182858"
-              className="inline-flex items-center gap-2 bg-theme-color text-theme-white px-6 py-3 rounded-lg hover:bg-theme-color/90 transition-colors duration-200 font-medium"
+              className="inline-flex items-center gap-2 bg-theme-white text-theme-color border-2 border-theme-color px-6 py-3 rounded-lg hover:bg-theme-color hover:text-theme-white transition-colors duration-200 font-medium"
             >
               <FiPhone className="w-4 h-4" />
               전화 문의
             </a>
-            <a
-              href="mailto:jgdglobal@kakao.com"
-              className="inline-flex items-center gap-2 bg-theme-white text-theme-color border-2 border-theme-color px-6 py-3 rounded-lg hover:bg-theme-color hover:text-theme-white transition-colors duration-200 font-medium"
-            >
-              <FiMail className="w-4 h-4" />
-              이메일 문의
-            </a>
+            <EmailProviderModal subject="[겟꿀쇼핑] 문의드립니다" />
           </div>
         </div>
       </div >
