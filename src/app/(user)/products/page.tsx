@@ -2,7 +2,6 @@ export const runtime = 'edge';
 
 import Container from "@/components/Container";
 import EnhancedProductsSideNav from "@/components/products/EnhancedProductsSideNav";
-import { getData } from "../helpers";
 import InfiniteProductList from "@/components/products/InfiniteProductList";
 import {
   getBestSellers,
@@ -143,10 +142,6 @@ const ProductsPage = async ({ searchParams }: Props) => {
     .where(eq(categories.isActive, true))
     .orderBy(asc(categories.order));
 
-  // 더미 참고용 상품 (모바일 카테고리만)
-  const dummyData = await getData(`https://dummyjson.com/products/category/smartphones?limit=0`);
-  const dummyProducts = dummyData?.products || [];
-
   let filteredProducts = [...dbProducts]; // DB 상품을 메인으로
   const allProducts = [...filteredProducts]; // Keep original for filters
 
@@ -155,10 +150,8 @@ const ProductsPage = async ({ searchParams }: Props) => {
     ...new Set(allProducts.map((product: any) => product.brand).filter(Boolean)),
   ].sort();
 
-  // 카테고리 필터링 - smartphones는 더미에서 가져오기
-  if (params.category === "smartphones") {
-    filteredProducts = dummyProducts;
-  } else if (params.category) {
+  // 카테고리 필터링
+  if (params.category) {
     // 다른 카테고리는 DB에서만
     switch (params.category) {
       case "bestsellers":
@@ -303,10 +296,7 @@ const ProductsPage = async ({ searchParams }: Props) => {
         {/* Sidebar Filters */}
         <div className="w-full lg:w-1/5">
           <EnhancedProductsSideNav
-            categories={[
-              ...mergedCategories,
-              { name: "스마트폰", slug: "smartphones" },
-            ]}
+            categories={mergedCategories}
             brands={uniqueBrands}
             allProducts={allProducts}
           />

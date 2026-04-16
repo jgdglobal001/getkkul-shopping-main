@@ -2,12 +2,12 @@ export const runtime = 'edge';
 
 import Container from "@/components/Container";
 import InfiniteCategoryGrid from "@/components/pages/categories/InfiniteCategoryGrid";
-import { getData } from "../helpers";
-import { getCategoriesWithCounts } from "../helpers/productHelpers";
 import { Metadata } from "next";
 import Link from "next/link";
 import { getT, getLanguageFromCookie } from "@/lib/i18nUtils";
 import { cookies } from "next/headers";
+import { db, products as productsTable } from "@/lib/db";
+import { eq, sql } from "drizzle-orm";
 
 export async function generateMetadata(): Promise<Metadata> {
   const cookieStore = await cookies();
@@ -69,19 +69,27 @@ export default async function CategoriesPage() {
     categoriesData = [];
   }
 
-  const allProductsData = await getData(`https://dummyjson.com/products?limit=0`); // Fetch all products
+  // DB에서 카테고리별 상품 수 조회
+  const productCounts = await db
+    .select({
+      category: productsTable.category,
+      count: sql<number>`count(*)::int`,
+    })
+    .from(productsTable)
+    .where(eq(productsTable.isActive, true))
+    .groupBy(productsTable.category);
 
-  // Get categories with product counts
-  const categoriesWithCounts = getCategoriesWithCounts(
-    allProductsData?.products || []
+  const countMap = new Map(
+    productCounts.map((pc) => [pc.category.toLowerCase(), pc.count])
   );
+
+  const totalProducts = productCounts.reduce((sum, pc) => sum + pc.count, 0);
 
   // Combine API categories with counts
   const enrichedCategories =
     categoriesData?.map((category: any) => ({
       ...category,
-      count:
-        categoriesWithCounts.find((c) => c.slug === category.slug)?.count || 0,
+      count: countMap.get(category.name?.toLowerCase()) || countMap.get(category.slug?.toLowerCase()) || 0,
     })) || [];
 
   return (
@@ -112,7 +120,7 @@ export default async function CategoriesPage() {
       {/* Categories Grid */}
       <InfiniteCategoryGrid
         initialCategories={enrichedCategories}
-        totalProducts={allProductsData?.total || 0}
+        totalProducts={totalProducts}
       />
     </Container>
   );

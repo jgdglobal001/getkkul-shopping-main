@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { getData } from "@/app/(user)/helpers";
 import { ProductType } from "../../type";
 
 interface UseProductSearchProps {
@@ -27,9 +26,6 @@ export const useProductSearch = ({
   const [isLoading, setIsLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
-
-  const API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_BASE_URL || "https://dummyjson.com";
 
   // Fetch all products on hook initialization (DB에서만)
   useEffect(() => {

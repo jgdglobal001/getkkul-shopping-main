@@ -1,7 +1,6 @@
 export const runtime = 'edge';
 
 import { ProductType } from "../../../../../type";
-import { getData } from "@/app/(user)/helpers";
 import { db, products, productOptions, productVariants, productQuestions, productAnswers, users } from "@/lib/db";
 import { eq, and, ne, asc, desc } from "drizzle-orm";
 import { notFound } from "next/navigation";
@@ -33,37 +32,26 @@ const SingleProductPage = async ({ params }: Props) => {
     product.variants = variants;
   }
 
-  // 3. 더미 데이터 지원 (스마트폰 카테고리만)
+  // 3. DB에 없으면 404
   if (!product) {
-    const dummyEndpoint = `https://dummyjson.com/products/${id}`;
-    product = await getData(dummyEndpoint);
-
-    if (!product || product.category !== "smartphones") {
-      notFound();
-    }
+    notFound();
   }
 
   // 4. 관련 상품 조회
-  let allProducts: ProductType[] = [];
-  if (product.category === "smartphones") {
-    const dummyData = await getData(`https://dummyjson.com/products/category/smartphones?limit=0`);
-    allProducts = dummyData?.products || [];
-  } else {
-    const dbRelated = await db
-      .select()
-      .from(products)
-      .where(and(
-        eq(products.category, product.category),
-        eq(products.isActive, true),
-        ne(products.id, product.id)
-      ))
-      .limit(10);
-    allProducts = dbRelated as ProductType[];
-  }
+  const dbRelated = await db
+    .select()
+    .from(products)
+    .where(and(
+      eq(products.category, product.category),
+      eq(products.isActive, true),
+      ne(products.id, product.id)
+    ))
+    .limit(10);
+  const allProducts: ProductType[] = dbRelated as ProductType[];
 
   // 5. 상품 질문 조회
   let questions: any[] = [];
-  if (product.category !== "smartphones") {
+  {
     const questionsResult = await db
       .select({
         id: productQuestions.id,

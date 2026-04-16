@@ -1,7 +1,6 @@
 export const runtime = 'edge';
 
 import Container from "@/components/Container";
-import { getData } from "../helpers";
 import OffersHero from "@/components/pages/offers/OffersHero";
 import OffersPageHeader from "@/components/pages/offers/OffersPageHeader";
 import { ProductType } from "../../../../type";
