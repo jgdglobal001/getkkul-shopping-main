@@ -20,10 +20,10 @@ export default function ContactPage() {
         {/* Header Section */}
         <div className="text-center mb-12">
           <Title className="text-3xl lg:text-4xl font-bold mb-4">
-            Contact Us
+            문의하기
           </Title>
           <p className="text-light-text text-lg">
-            We&apos;d love to hear from you. Get in touch with our team.
+            궁금한 점이 있으시면 언제든지 연락해 주세요.
           </p>
         </div>
 
@@ -31,11 +31,11 @@ export default function ContactPage() {
           {/* Contact Information */}
           <div>
             <h2 className="text-2xl font-semibold text-theme-color mb-6">
-              Get in Touch
+              연락처 안내
             </h2>
             <p className="text-light-text mb-8">
-              Have questions about our products or services? Need help with an
-              order? Our friendly customer service team is here to assist you.
+              상품이나 서비스에 대해 궁금한 점이 있으신가요? 주문 관련 도움이
+              필요하신가요? 저희 고객 서비스 팀이 도와드리겠습니다.
             </p>
 
             {/* Contact Cards */}
@@ -45,13 +45,11 @@ export default function ContactPage() {
                   <FiMapPin className="w-6 h-6 text-theme-color" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-800 mb-1">Address</h3>
+                  <h3 className="font-semibold text-gray-800 mb-1">주소</h3>
                   <p className="text-light-text">
-                    123 Business Street
+                    인천광역시 연수구 송도과학로 32
                     <br />
-                    Commerce City, CC 12345
-                    <br />
-                    United States
+                    엠동 2201호 (송도동, 송도테크노파크 IT센터)
                   </p>
                 </div>
               </div>
@@ -61,10 +59,10 @@ export default function ContactPage() {
                   <FiPhone className="w-6 h-6 text-theme-color" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-800 mb-1">Phone</h3>
+                  <h3 className="font-semibold text-gray-800 mb-1">전화번호</h3>
                   <p className="text-light-text">010-7218-2858</p>
                   <p className="text-light-text text-sm">
-                    Monday - Friday, 9AM - 6PM
+                    월요일 - 금요일, 오전 9시 - 오후 6시
                   </p>
                 </div>
               </div>
@@ -74,7 +72,7 @@ export default function ContactPage() {
                   <FiMail className="w-6 h-6 text-theme-color" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-800 mb-1">Email</h3>
+                  <h3 className="font-semibold text-gray-800 mb-1">이메일</h3>
                   <p className="text-light-text">jgdglobal@kakao.com</p>
                 </div>
               </div>
@@ -85,12 +83,12 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-800 mb-1">
-                    Business Hours
+                    영업시간
                   </h3>
                   <div className="text-light-text text-sm">
-                    <p>Monday - Friday: 9:00 AM - 6:00 PM</p>
-                    <p>Saturday: 10:00 AM - 4:00 PM</p>
-                    <p>Sunday: Closed</p>
+                    <p>월요일 - 금요일: 오전 9:00 - 오후 6:00</p>
+                    <p>토요일: 오전 10:00 - 오후 4:00</p>
+                    <p>일요일: 휴무</p>
                   </div>
                 </div>
               </div>
@@ -100,7 +98,7 @@ export default function ContactPage() {
           {/* Contact Form */}
           <div className="bg-theme-white border border-border-color rounded-lg p-6 lg:p-8">
             <h2 className="text-2xl font-semibold text-theme-color mb-6">
-              Send us a Message
+              메시지 보내기
             </h2>
             <form className="space-y-6">
               <div className="grid md:grid-cols-2 gap-4">
@@ -109,7 +107,7 @@ export default function ContactPage() {
                     htmlFor="firstName"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    First Name *
+                    이름 *
                   </label>
                   <input
                     type="text"
@@ -117,7 +115,7 @@ export default function ContactPage() {
                     name="firstName"
                     required
                     className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent outline-none transition-colors"
-                    placeholder="Your first name"
+                    placeholder="이름을 입력하세요"
                   />
                 </div>
                 <div>
@@ -125,7 +123,7 @@ export default function ContactPage() {
                     htmlFor="lastName"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
-                    Last Name *
+                    성 *
                   </label>
                   <input
                     type="text"
@@ -133,7 +131,7 @@ export default function ContactPage() {
                     name="lastName"
                     required
                     className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent outline-none transition-colors"
-                    placeholder="Your last name"
+                    placeholder="성을 입력하세요"
                   />
                 </div>
               </div>
@@ -143,7 +141,7 @@ export default function ContactPage() {
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Email Address *
+                  이메일 주소 *
                 </label>
                 <input
                   type="email"
@@ -151,7 +149,7 @@ export default function ContactPage() {
                   name="email"
                   required
                   className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent outline-none transition-colors"
-                  placeholder="your.email@example.com"
+                  placeholder="example@email.com"
                 />
               </div>
 
@@ -160,7 +158,7 @@ export default function ContactPage() {
                   htmlFor="subject"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Subject *
+                  문의 유형 *
                 </label>
                 <select
                   id="subject"
@@ -168,12 +166,12 @@ export default function ContactPage() {
                   required
                   className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent outline-none transition-colors"
                 >
-                  <option value="">Select a subject</option>
-                  <option value="general">General Inquiry</option>
-                  <option value="support">Technical Support</option>
-                  <option value="orders">Order Related</option>
-                  <option value="returns">Returns & Refunds</option>
-                  <option value="partnerships">Business Partnerships</option>
+                  <option value="">문의 유형을 선택하세요</option>
+                  <option value="general">일반 문의</option>
+                  <option value="support">기술 지원</option>
+                  <option value="orders">주문 관련</option>
+                  <option value="returns">반품 및 환불</option>
+                  <option value="partnerships">비즈니스 제휴</option>
                 </select>
               </div>
 
@@ -182,7 +180,7 @@ export default function ContactPage() {
                   htmlFor="message"
                   className="block text-sm font-medium text-gray-700 mb-2"
                 >
-                  Message *
+                  문의 내용 *
                 </label>
                 <textarea
                   id="message"
@@ -190,7 +188,7 @@ export default function ContactPage() {
                   required
                   rows={6}
                   className="w-full px-4 py-3 border border-border-color rounded-lg focus:ring-2 focus:ring-theme-color focus:border-transparent outline-none transition-colors resize-vertical"
-                  placeholder="Tell us how we can help you..."
+                  placeholder="문의하실 내용을 입력해 주세요..."
                 />
               </div>
 
@@ -198,7 +196,7 @@ export default function ContactPage() {
                 type="submit"
                 className="w-full bg-theme-color text-theme-white py-3 px-6 rounded-lg hover:bg-theme-color/90 transition-colors duration-200 font-medium"
               >
-                Send Message
+                메시지 보내기
               </button>
             </form>
           </div>
@@ -207,11 +205,10 @@ export default function ContactPage() {
         {/* Additional Information */}
         <div className="mt-16 text-center bg-sky-color/10 rounded-lg p-8">
           <h2 className="text-2xl font-semibold text-theme-color mb-4">
-            Need Immediate Help?
+            빠른 도움이 필요하신가요?
           </h2>
           <p className="text-light-text mb-6">
-            For urgent matters, you can reach us directly through our customer
-            support hotline.
+            긴급한 문의는 고객센터 전화 또는 이메일로 직접 연락해 주세요.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
@@ -219,14 +216,14 @@ export default function ContactPage() {
               className="inline-flex items-center gap-2 bg-theme-color text-theme-white px-6 py-3 rounded-lg hover:bg-theme-color/90 transition-colors duration-200 font-medium"
             >
               <FiPhone className="w-4 h-4" />
-              Call Us Now
+              전화 문의
             </a>
             <a
               href="mailto:jgdglobal@kakao.com"
               className="inline-flex items-center gap-2 bg-theme-white text-theme-color border-2 border-theme-color px-6 py-3 rounded-lg hover:bg-theme-color hover:text-theme-white transition-colors duration-200 font-medium"
             >
               <FiMail className="w-4 h-4" />
-              Email Support
+              이메일 문의
             </a>
           </div>
         </div>
